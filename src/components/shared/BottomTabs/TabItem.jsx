@@ -55,7 +55,7 @@ const TabItem = ({
     useEffect(() => {
         animatedActiveIndex.value = activeIndex;
         if (activeIndex === index + 1) {
-            iconColor.value = withTiming('white');
+            iconColor.value = withTiming('black');
         } else {
             iconColor.value = withTiming('rgba(128,128,128,0.8)');
         }
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         width: LABEL_WIDTH,
     },
     label: {
-        color: 'rgba(128,128,128,0.8)',
+        color: '#000',
         fontSize: 17,
     },
 });

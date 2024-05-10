@@ -30,14 +30,16 @@ export const CustomBottomTab = ({
     };
     const selectIcon = (routeName) => {
         switch (routeName) {
-            case 'Products':
+            case 'Home':
                 return 'home';
-            case 'Cart':
-                return 'shopping-bag';
-            case 'Favourites':
-                return 'star';
+            case 'Members':
+                return 'users';
+            case 'Auth':
+                return 'log-in';
             case 'Profile':
                 return 'user';
+            case 'More':
+                return 'info';
             default:
                 return 'home';
         }
@@ -62,9 +64,9 @@ export const CustomBottomTab = ({
     return (
         <View style={styles.tabBarContainer}>
             <Svg width={SCREEN_WIDTH} height={tHeight} style={styles.shadowMd}>
-                <AnimatedPath fill={'white'} animatedProps={animatedProps} />
+                <AnimatedPath fill={'#E5E5E5'} animatedProps={animatedProps} />
             </Svg>
-            <AnimatedCircle circleX={circleXCoordinate} />
+            {/* <AnimatedCircle circleX={circleXCoordinate} /> */}
             <View
                 style={[
                     styles.tabItemsContainer,
