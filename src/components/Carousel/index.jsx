@@ -187,39 +187,29 @@ export const list = [
 ];
 
 function Parallax() {
-    const [isVertical, setIsVertical] = useState(false);
+    // const [isVertical, setIsVertical] = useState(false);
     const [autoPlay, setAutoPlay] = useState(true);
-    const [pagingEnabled, setPagingEnabled] = useState(true);
+    // const [pagingEnabled, setPagingEnabled] = useState(true);
     const [snapEnabled, setSnapEnabled] = useState(true);
     const progressValue = useSharedValue(0);
-    const baseOptions = isVertical
-        ? {
-            vertical: true,
-        }
-        :
-        {
-            vertical: false,
-            width: PAGE_WIDTH,
-            height: PAGE_WIDTH * 0.6,
-        };
 
     return (
         <View
-            style={{
-                alignItems: "center",
-                height: PAGE_WIDTH * 0.6 + 12
-            }}
-            className="flex bg-white mx-3 p-2 rounded-2xl overflow-hidden"
+        /* style={{
+            alignItems: "center",
+            height: PAGE_WIDTH * 0.6 + 12
+        }} */
+        // className="flex bg-white mx-3 p-2 rounded-2xl overflow-hidden"
         >
             <Carousel
                 style={{ alignSelf: 'stretch', display: "flex", gap: 8 }}
-                className="px-2 mx-5"
-                width={PAGE_WIDTH - 15}
+                // className="px-2 mx-5"
+                width={PAGE_WIDTH}
                 height={PAGE_WIDTH * 0.6}
                 vertical={false}
 
                 loop
-                pagingEnabled={pagingEnabled}
+                // pagingEnabled={pagingEnabled}
                 snapEnabled={snapEnabled}
                 autoPlay={autoPlay}
                 autoPlayInterval={1500}

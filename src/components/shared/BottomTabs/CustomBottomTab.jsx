@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import Animated, {
@@ -15,6 +15,7 @@ import { getPathXCenter } from '../../../utils/path';
 import TabItem from './TabItem';
 import AnimatedCircle from './AnimatedCircle';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { GlobalContext } from '../../../context/globalState';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 export const CustomBottomTab = ({
@@ -22,12 +23,13 @@ export const CustomBottomTab = ({
     descriptors,
     navigation,
 }) => {
-    const { containerPath, curvedPaths, tHeight } = usePath();
-    const circleXCoordinate = useSharedValue(0);
-    const progress = useSharedValue(1);
-    const handleMoveCircle = (currentPath) => {
-        circleXCoordinate.value = getPathXCenter(currentPath);
-    };
+    const { progress, containerPath, curvedPaths, tHeight, circleXCoordinate, handleMoveCircle, animatedProps } = useContext(GlobalContext)
+    // const { containerPath, curvedPaths, tHeight } = usePath();
+    // const circleXCoordinate = useSharedValue(0);
+    // const progress = useSharedValue(1);
+    /*    const handleMoveCircle = (currentPath) => {
+           circleXCoordinate.value = getPathXCenter(currentPath);
+       }; */
     const selectIcon = (routeName) => {
         switch (routeName) {
             case 'Home':
@@ -44,17 +46,17 @@ export const CustomBottomTab = ({
                 return 'home';
         }
     };
-    const animatedProps = useAnimatedProps(() => {
-        const currentPath = interpolatePath(
-            progress.value,
-            Array.from({ length: curvedPaths.length }, (_, index) => index + 1),
-            curvedPaths,
-        );
-        runOnJS(handleMoveCircle)(currentPath);
-        return {
-            d: `${containerPath} ${currentPath}`,
-        };
-    });
+    /*  const animatedProps = useAnimatedProps(() => {
+         const currentPath = interpolatePath(
+             progress.value,
+             Array.from({ length: curvedPaths.length }, (_, index) => index + 1),
+             curvedPaths,
+         );
+         runOnJS(handleMoveCircle)(currentPath);
+         return {
+             d: `${containerPath} ${currentPath}`,
+         };
+     }); */
 
     const handleTabPress = (index, tab) => {
         navigation.navigate(tab);

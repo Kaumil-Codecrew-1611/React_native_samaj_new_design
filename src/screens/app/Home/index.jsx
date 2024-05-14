@@ -1,18 +1,43 @@
-import React from 'react';
-import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 // import ImageSlider from '../../../components/ImageSlider';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Carousel from '../../../components/Carousel';
+import CardDetails from '../../../components/CardDetails';
+import { FlatList } from 'react-native-gesture-handler';
 
 const Home = ({ navigation }) => {
+    const cards = [
+        { id: 1, name: "About us", redirectTo: "Aboutus" },
+        { id: 2, name: "Directory", redirectTo: "Directory" },
+        { id: 3, name: "Villages", redirectTo: "Villages" },
+        { id: 4, name: "Search", redirectTo: "Search" },
+        { id: 5, name: "News", redirectTo: "News" },
+        { id: 6, name: "", redirectTo: "" },
+    ]
+    const renderItem = ({ item }) => {
+        return (
+            <View className="flex-1 flex-row">
+                <View className="flex-1 flex-col mx-1">
+                    <CardDetails
+                        content={item.name}
+                        redirectTo={item.redirectTo}
+                        navigation={navigation}
+                        size="sm"
+                        idx={item.id}
+                    />
+                </View>
+            </View>
+        );
+    };
     const width = Dimensions.get('window').width;
     const Pres = () => {
         navigation.navigate('LoginScreen');
         console.log("Pressed")
     }
     return (
-        <View className="flex-1 bg-gray-300 space-y-5 w-full" edges={['top']}>
-            <View className="bg-white mt-3 mx-3 h-fit rounded-2xl flex items-center " style={{ alignSelf: 'stretch' }}>
+        <View className="flex-1 bg-gray-300 space-y-5 w-full pb-20" edges={['top']}>
+            <View className="bg-white mt-3 mx-3 h-fit rounded-2xl flex items-center" style={{ alignSelf: 'stretch' }}>
                 <View className="flex-row justify-around my-4 w-full items-center mx-5">
                     <View className="space-y-1">
                         <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
@@ -27,31 +52,15 @@ const Home = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-            <ScrollView>
-                <Carousel />
-                <View className="h-full">
-                    <Text className="mt-5 font-bold">
-
-                    </Text>
-                </View>
-
-            </ScrollView>
-
-            {/* <SafeAreaView>
-            <View>
-                <View className="flex flex-row p-4 justify-between">
-                    <View className="flex-col">
-                        <Text className="font-normal text-black-[#464646]">Welcome Home</Text>
-                        <Text className="font-semibold font-serif text-2xl text-black">Kaumil Patel</Text>
-                    </View>
-                    <View className="overflow-hidden h-16 w-16" >
-                        <Image source={{ uri: "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=600" }} className="h-full w-full rounded-full" resizeMethod='resize' resizeMode='cover' />
-                    </View>
-                </View>
-            </View>
-            <ImageSlider />
-        </SafeAreaView> */}
-
+            <FlatList
+                data={cards}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                numColumns={3}
+                key={3}
+                horizontal={false}
+                ListHeaderComponent={<Carousel />}
+            />
         </View>
     )
 }

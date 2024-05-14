@@ -8,7 +8,7 @@ const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
     return (
         <RootStack.Navigator screenOptions={{
-            headerTitleAlign: 'center', // Align the title to the center
+            headerTitleAlign: 'center',
         }}>
             <RootStack.Screen name='Home' component={HomeScreen} />
             <RootStack.Screen name='Login' component={HomeScreen} />
