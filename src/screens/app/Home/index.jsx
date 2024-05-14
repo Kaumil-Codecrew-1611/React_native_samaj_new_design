@@ -4,8 +4,12 @@ import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Carousel from '../../../components/Carousel';
 
-const Home = () => {
+const Home = ({ navigation }) => {
     const width = Dimensions.get('window').width;
+    const Pres = () => {
+        navigation.navigate('LoginScreen');
+        console.log("Pressed")
+    }
     return (
         <View className="flex-1 bg-gray-300 space-y-5 w-full" edges={['top']}>
             <View className="bg-white mt-3 mx-3 h-fit rounded-2xl flex items-center " style={{ alignSelf: 'stretch' }}>
@@ -14,7 +18,7 @@ const Home = () => {
                         <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
                             Welcome
                         </Text>
-                        <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-rose-700">
+                        <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-rose-700"  onPress={Pres}>
                             Kaumil Patel
                         </Text>
                     </View>

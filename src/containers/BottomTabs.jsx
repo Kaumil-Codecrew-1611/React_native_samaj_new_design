@@ -5,6 +5,7 @@ import Cart from '../screens/Carts';
 import Favourites from '../screens/Favourites';
 import Profile from '../screens/Profile';
 import Home from '../screens/app/Home';
+import RootNavigator from '../navigators/RootNavigator';
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
@@ -18,7 +19,7 @@ const BottomTabs = () => {
                 <Tab.Screen
                     options={{ tabBarLabel: 'Home' }}
                     name="Home"
-                    component={Home}
+                    component={RootNavigator}
                 />
                 <Tab.Screen
                     options={{ tabBarLabel: 'Members' }}

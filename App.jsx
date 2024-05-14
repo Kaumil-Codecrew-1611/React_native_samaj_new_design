@@ -7,7 +7,6 @@ import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import SplashScreen from 'react-native-splash-screen';
-
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
