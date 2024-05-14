@@ -19,7 +19,7 @@ const CardDetails = ({ content, size, thumbnail, redirectTo, navigation, idx }) 
     const redirect = () => {
         if (redirectTo) {
             navigation.navigate(redirectTo);
-            progress.value = withTiming(idx);
+            // progress.value = withTiming(idx);
         }
     }
     return (

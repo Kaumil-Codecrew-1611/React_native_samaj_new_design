@@ -3,10 +3,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Products from '../screens/Products';
 import Cart from '../screens/Carts';
 import Favourites from '../screens/FavoriteScreen';
-import Profile from '../screens/Profile';
 import Home from '../screens/app/Home';
 import RootNavigator from '../navigators/RootNavigator';
 import VillageListing from '../screens/app/VillageListing';
+import LoginScreen from '../screens/Login';
+import Member from '../screens/app/Member';
+import Profile from '../screens/app/Profile';
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
@@ -23,9 +25,9 @@ const BottomTabs = () => {
                     component={RootNavigator}
                 />
                 <Tab.Screen
-                    options={{ tabBarLabel: 'Members' }}
-                    name="Members"
-                    component={Cart}
+                    options={{ tabBarLabel: 'Member' }}
+                    name="Member"
+                    component={Member}
                 />
                 {isLoggedIn && <Tab.Screen
                     options={{ tabBarLabel: 'Profile' }}
@@ -35,7 +37,7 @@ const BottomTabs = () => {
                 {!isLoggedIn && <Tab.Screen
                     options={{ tabBarLabel: 'Auth' }}
                     name="Auth"
-                    component={Favourites}
+                    component={LoginScreen}
                 />}
                 <Tab.Screen
                     options={{ tabBarLabel: 'More Details' }}

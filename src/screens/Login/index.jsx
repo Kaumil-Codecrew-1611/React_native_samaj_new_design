@@ -91,14 +91,14 @@ export default function LoginScreen() {
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
-        <Svg height={height + 100} width={width}>
+        <Svg height={height + 60} width={width}>
           <ClipPath id="clipPathId">
-            <Ellipse cx={width / 2} rx={height} ry={height + 100} />
+            <Ellipse cx={width / 2} rx={height} ry={height + 60} />
           </ClipPath>
           <Image
             href={require("../../assets/login-background.jpg")}
-            width={width + 100}
-            height={height + 100}
+            width={width + 60}
+            height={height + 60}
             preserveAspectRatio="xMidYMid slice"
             clipPath="url(#clipPathId)"
           />
@@ -138,13 +138,13 @@ export default function LoginScreen() {
             placeholderTextColor="black"
             style={styles.textInput}
           />
-          <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
             <Pressable onPress={() => formButtonScale.value = withSequence(withSpring(1.5), withSpring(1))}>
+          <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
               <Text style={styles.buttonText}>
                 {isRegistering ? "REGISTER" : "LOG IN"}
               </Text>
-            </Pressable>
           </Animated.View>
+            </Pressable>
         </Animated.View>
       </View>
     </Animated.View>

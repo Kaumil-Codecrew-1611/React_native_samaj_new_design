@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
+    marginBottom: 30
   },
   button: {
     backgroundColor: 'rgba(123,104,238,0.8)',
