@@ -7,6 +7,8 @@ import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import SplashScreen from 'react-native-splash-screen';
+import { GlobalProvider } from './src/context/globalState'
+
 
 const App = () => {
   useEffect(() => {
@@ -16,12 +18,14 @@ const App = () => {
 
   return (
     <GestureHandlerRootView>
-      {/* <SafeAreaProvider> */}
-      <NavigationContainer onReady={() => changeNavigationBarColor('white')}>
-        <BottomTabs />
-      </NavigationContainer>
-      <StatusBar barStyle={'dark-content'} />
-      {/* </SafeAreaProvider> */}
+      <SafeAreaProvider>
+        <NavigationContainer onReady={() => changeNavigationBarColor('white')}>
+          <GlobalProvider>
+            <BottomTabs />
+          </GlobalProvider>
+        </NavigationContainer>
+        <StatusBar barStyle={'dark-content'} />
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   )
 }

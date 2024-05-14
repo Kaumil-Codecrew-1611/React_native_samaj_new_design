@@ -2,9 +2,10 @@ import CustomBottomTab from '../components/shared/BottomTabs/CustomBottomTab';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Products from '../screens/Products';
 import Cart from '../screens/Carts';
-import Favourites from '../screens/Favourites';
+import Favourites from '../screens/FavoriteScreen';
 import Profile from '../screens/Profile';
 import Home from '../screens/app/Home';
+import VillageListing from '../screens/app/VillageListing';
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
@@ -38,7 +39,7 @@ const BottomTabs = () => {
                 <Tab.Screen
                     options={{ tabBarLabel: 'More Details' }}
                     name="More"
-                    component={Favourites}
+                    component={VillageListing}
                 />
             </Tab.Group>
         </Tab.Navigator>
