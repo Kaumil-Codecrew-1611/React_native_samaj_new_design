@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import { Dimensions, ScrollView, Image, TouchableOpacity, StyleSheet, View, Text } from 'react-native';
-import React from "react";
-import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window')
 const IMG_HEIGHT = 300
@@ -31,11 +31,29 @@ const Aboutus = () => {
             ]
         }
     })
+    const scrollY = useSharedValue(0);
 
+    const headerHeight = useSharedValue(0);
+    const headerAnimatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ translateY: -scrollY.value }],
+            height: headerHeight.value,
+            opacity: interpolate(scrollY.value, [0, IMG_HEIGHT / 2], [1, 0]),
+        };
+    });
+
+    /*  const handleScroll = (event) => {
+         scrollY.value = event.nativeEvent.contentOffset.y;
+     }; */
+    const handleScroll = (event) => {
+        scrollY.value = event.nativeEvent.contentOffset.y;
+    };
     return (
         <View style={styles.container}>
-
-            <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
+            <Animated.View style={[styles.header, headerAnimatedStyle]}>
+                <Text className="font-bold text-3xl">Your Header</Text>
+            </Animated.View>
+            <Animated.ScrollView onScroll={handleScroll} ref={scrollRef} scrollEventThrottle={16}>
                 <View>
                     <Animated.Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
                         style={[styles.image, imageAnimatedStyle]} />

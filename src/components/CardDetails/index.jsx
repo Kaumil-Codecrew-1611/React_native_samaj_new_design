@@ -11,7 +11,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { GlobalContext } from "../../context/globalState";
 import { withTiming } from "react-native-reanimated";
 
-const CardDetails = ({ content, size, thumbnail, redirectTo, navigation, idx }) => {
+const CardDetails = ({ content, size, thumbnail, redirectTo, navigation, idx, setSelectedVillage }) => {
     const { progress } = useContext(GlobalContext)
     const image = useImage(thumbnail || 'https://img.freepik.com/free-photo/eiffel-tower-paris-with-gorgeous-colors-autumn_268835-828.jpg');
     const small = (size == 'sm')
@@ -20,8 +20,11 @@ const CardDetails = ({ content, size, thumbnail, redirectTo, navigation, idx }) 
 
     const redirect = () => {
         if (redirectTo) {
+            if (setSelectedVillage) {
+                setSelectedVillage(content)
+            }
             navigation.navigate(redirectTo);
-            progress.value = withTiming(idx);
+            // progress.value = withTiming(idx);
         }
     }
     return (

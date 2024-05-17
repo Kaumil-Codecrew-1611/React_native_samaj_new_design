@@ -34,14 +34,14 @@ export const CustomBottomTab = ({
         switch (routeName) {
             case 'Home':
                 return 'home';
-            case 'Members':
+            case 'Member':
                 return 'users';
             case 'Auth':
                 return 'log-in';
             case 'Profile':
                 return 'user';
-            case 'More':
-                return 'info';
+            case 'Contactus':
+                return 'phone';
             default:
                 return 'home';
         }

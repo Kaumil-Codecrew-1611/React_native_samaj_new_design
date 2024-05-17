@@ -1,15 +1,17 @@
-import CustomBottomTab from '../components/shared/BottomTabs/CustomBottomTab';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Products from '../screens/Products';
-import Cart from '../screens/Carts';
+import CustomBottomTab from '../components/shared/BottomTabs/CustomBottomTab';
 import Favourites from '../screens/FavoriteScreen';
-import Profile from '../screens/Profile';
+import LoginScreen from '../screens/Login';
 import Home from '../screens/app/Home';
-import VillageListing from '../screens/app/VillageListing';
+import Member from '../screens/app/Member';
+// import Profile from '../screens/app/Profile';
+import React, { lazy, Suspense } from 'react';
+import ProfilePage from '../screens/app/Profile';
+import ContectUs from '../screens/app/Contactus';
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
-    const isLoggedIn = false;
+    const isLoggedIn = true;
     return (
         <Tab.Navigator sceneContainerStyle={{ backgroundColor: "#FCFCFC" }} tabBar={props => <CustomBottomTab {...props} />}>
             <Tab.Group
@@ -23,23 +25,23 @@ const BottomTabs = () => {
                 />
                 <Tab.Screen
                     options={{ tabBarLabel: 'Members' }}
-                    name="Members"
-                    component={Cart}
+                    name="Member"
+                    component={Member}
                 />
                 {isLoggedIn && <Tab.Screen
                     options={{ tabBarLabel: 'Profile' }}
                     name="Profile"
-                    component={Profile}
+                    component={ProfilePage}
                 />}
                 {!isLoggedIn && <Tab.Screen
                     options={{ tabBarLabel: 'Auth' }}
                     name="Auth"
-                    component={Favourites}
+                    component={LoginScreen}
                 />}
                 <Tab.Screen
-                    options={{ tabBarLabel: 'More Details' }}
-                    name="More"
-                    component={VillageListing}
+                    options={{ tabBarLabel: 'Contactus' }}
+                    name="Contactus"
+                    component={ContectUs}
                 />
             </Tab.Group>
         </Tab.Navigator>
