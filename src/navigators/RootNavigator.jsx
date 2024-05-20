@@ -1,20 +1,25 @@
-import { View, Text, Dimensions } from 'react-native'
-import React, { useContext, useState } from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import HomeScreen from '../screens/app/Home'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useContext, useState } from 'react';
+import { Dimensions, Text, View } from 'react-native';
+import HomeScreen from '../screens/app/Home';
 
-import LoginScreen from '../screens/Login';
-import VillageListing from '../screens/app/VillageListing';
 import Aboutus from '../screens/app/About';
 import News from '../screens/app/News';
+import VillageListing from '../screens/app/VillageListing';
 // import Profile from '../screens/app/Profile';
-import VillageWisePersons from '../screens/app/VillageWisePersons';
-import BottomTabs from '../containers/BottomTabs';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import BottomTabs from '../containers/BottomTabs';
 import { GlobalContext } from '../context/globalState';
+import VillageWisePersons from '../screens/app/VillageWisePersons';
 
-import FaqsScreen from '../screens/Faqs';
+import ChangePassword from '../screens/app/ChangePassword';
+import Faqs from '../screens/app/Faqs';
+import SelectVillage from '../screens/app/FormWizard/SelectVillage';
+import Login from '../screens/app/Login';
+import Register from '../screens/app/Register';
 import SettingBottomSheet from '../screens/app/Settings';
+import Support from '../screens/app/Support';
+import EmailSupport from '../screens/app/EmailSupport';
 
 const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
@@ -25,15 +30,16 @@ const RootNavigator = () => {
         navigation.navigate('VillageListing', { listingStyle: newListingStyle });
     };
     const { width } = Dimensions.get('window')
-    console.log(width, "width")
+
     return (
         <RootStack.Navigator screenOptions={{
             headerTitleAlign: 'center',
+
             // headerShown: false
         }}>
             <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false }} />
-            <RootStack.Screen name='Login' component={HomeScreen} />
-            <RootStack.Screen name="Faqs" component={FaqsScreen} options={{ headerTitle: 'Faqs' }} />
+            <RootStack.Screen name='Home Screen' component={HomeScreen} />
+
             <RootStack.Screen name="VillageListing" component={VillageListing} initialParams={{ listingStyle }} options={({ navigation }) => ({
                 headerTitle: () => (
                     <View style={{ marginLeft: width - 220 }}>
@@ -50,8 +56,20 @@ const RootNavigator = () => {
             <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: SelectedVillage || 'Village' }} />
             <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: 'Aboutus' }} />
             <RootStack.Screen name="News" component={News} options={{ headerTitle: 'News' }} />
+            <RootStack.Screen name="Support" options={{ headerTitle: 'Support Page' }} component={Support} />
             <RootStack.Screen name="Seetings" component={SettingBottomSheet} options={{ headerTitle: 'Setting' }} />
-            <RootStack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: 'Login' }} />
+            <RootStack.Screen name="EmailSupport" component={EmailSupport} options={{ headerTitle: 'Email Support' }} />
+            <RootStack.Screen name="Faqs" component={Faqs} options={{ headerTitle: 'Faqs' }} />
+            <RootStack.Screen name="ChangePassword" component={ChangePassword} options={{ headerTitle: 'Change Password' }} />
+            <RootStack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                    headerShown: false
+                }}
+            />
+            <RootStack.Screen name="Register" component={Register} options={{ headerTitle: 'Register Page' }} />
+            <RootStack.Screen name="select_village" options={{ headerTitle: 'Register Page' }} component={SelectVillage} />
         </RootStack.Navigator>
     )
 }

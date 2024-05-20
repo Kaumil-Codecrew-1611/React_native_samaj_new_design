@@ -70,7 +70,7 @@ export default function LoginScreen() {
 
   const formButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{scale: formButtonScale.value}]
+      transform: [{ scale: formButtonScale.value }]
     }
   })
 
@@ -138,13 +138,13 @@ export default function LoginScreen() {
             placeholderTextColor="black"
             style={styles.textInput}
           />
-            <Pressable onPress={() => formButtonScale.value = withSequence(withSpring(1.5), withSpring(1))}>
-          <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
+          <Pressable onPress={() => formButtonScale.value = withSequence(withSpring(1.5), withSpring(1))}>
+            <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
               <Text style={styles.buttonText}>
                 {isRegistering ? "REGISTER" : "LOG IN"}
               </Text>
-          </Animated.View>
-            </Pressable>
+            </Animated.View>
+          </Pressable>
         </Animated.View>
       </View>
     </Animated.View>

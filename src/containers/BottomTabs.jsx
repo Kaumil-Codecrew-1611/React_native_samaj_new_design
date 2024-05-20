@@ -1,19 +1,30 @@
+import React from 'react';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CustomBottomTab from '../components/shared/BottomTabs/CustomBottomTab';
-import Favourites from '../screens/FavoriteScreen';
 import LoginScreen from '../screens/Login';
+import ContectUs from '../screens/app/Contactus';
 import Home from '../screens/app/Home';
 import Member from '../screens/app/Member';
-// import Profile from '../screens/app/Profile';
-import React, { lazy, Suspense } from 'react';
 import ProfilePage from '../screens/app/Profile';
-import ContectUs from '../screens/app/Contactus';
+import Welcome from '../screens/app/WelcomeScreen';
+
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
-    const isLoggedIn = true;
+    const isLoggedIn = false;
+
+    // const { keyboardVisible } = useContext(GlobalContext);
     return (
-        <Tab.Navigator sceneContainerStyle={{ backgroundColor: "#FCFCFC" }} tabBar={props => <CustomBottomTab {...props} />}>
+        <Tab.Navigator
+            sceneContainerStyle={{ backgroundColor: "#FCFCFC" }}
+            tabBar={props => <CustomBottomTab {...props} />}
+            screenOptions={{
+                // tabBarStyle: { position: 'absolute', bottom: 0 },
+                tabBarHideOnKeyboard: true,
+                // tabBarHideOnPress: true,
+            }}
+        >
             <Tab.Group
                 screenOptions={{
                     headerShown: false,
@@ -33,12 +44,8 @@ const BottomTabs = () => {
                     name="Profile"
                     component={ProfilePage}
                 />}
-                {!isLoggedIn && <Tab.Screen
-                    options={{ tabBarLabel: 'Auth' }}
-                    name="Auth"
-                    component={LoginScreen}
-                />}
-                <Tab.Screen
+                {!isLoggedIn && <Tab.Screen options={{ tabBarLabel: 'Auth', tabBarStyle: { display: 'none' } }} name="Auth" component={Welcome} />}
+                < Tab.Screen
                     options={{ tabBarLabel: 'Contactus' }}
                     name="Contactus"
                     component={ContectUs}

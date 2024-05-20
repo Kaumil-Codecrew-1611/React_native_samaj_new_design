@@ -88,7 +88,7 @@ const VillageByName = ({ searchValue }) => {
                     extrapolate: 'clamp',
                 });
                 const opacity = scale;
-                // console.log(item.image)
+
                 return (
                     <Animated.View
                         style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]}

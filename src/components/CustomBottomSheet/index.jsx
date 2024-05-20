@@ -1,15 +1,23 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, Keyboard } from 'react-native';
+import React, { useEffect, useContext } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-const CustomBottomSheet = () => {
-    const bottomSheetRef = useRef(null);
-    const snapPoints = useMemo(() => ['30%', '34%'], []);
-    const handleSheetChanges = useCallback((index) => {
-        console.log('handleSheetChanges', index);
-        if (index === -1) {
-            setIsBottomSheetVisible(false);
-        }
+import { GlobalContext } from '../../context/globalState';
+
+const CustomBottomSheet = ({ screenFirstPercentage, screenSecondPercentage }) => {
+    const { isBottomSheetVisible, handleSheetChanges, bottomSheetRef, setScreenpercentage, snapPoints, bottomSheetContent } = useContext(GlobalContext);
+
+    useEffect(() => {
+        setScreenpercentage({
+            first: screenFirstPercentage,
+            second: screenSecondPercentage
+        });
     }, []);
+
+    const handleCloseBottomSheet = () => {
+        // Dismiss the keyboard when the bottom sheet is closed
+        Keyboard.dismiss();
+    };
+
     return (
         <BottomSheet
             aria-label='Setting Bottom Sheet'
@@ -19,10 +27,11 @@ const CustomBottomSheet = () => {
             onChange={handleSheetChanges}
             enablePanDownToClose
             detached={true}
+            onClose={handleCloseBottomSheet}
         >
-            <SettingBottomSheet />
+            {bottomSheetContent}
         </BottomSheet>
-    )
-}
+    );
+};
 
-export default CustomBottomSheet
+export default CustomBottomSheet;

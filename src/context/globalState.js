@@ -1,8 +1,9 @@
-import { createContext, useCallback, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { runOnJS, useAnimatedProps, useSharedValue } from "react-native-reanimated";
 import { interpolatePath } from 'react-native-redash';
 import usePath from "../hooks/usePath";
 import { getPathXCenter } from "../utils/path";
+import { Keyboard } from 'react-native';
 export const GlobalContext = createContext({});
 
 export const GlobalProvider = (props) => {
@@ -26,33 +27,33 @@ export const GlobalProvider = (props) => {
     });
 
     const [SelectedVillage, setSelectedVillage] = useState("");
-    /***
-     *  created for bottom sheet
-     *  */
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-
+    const [screenpercentage, setScreenpercentage] = useState({
+        first: "",
+        second: ""
+    });
     const bottomSheetRef = useRef(null);
+    const [bottomSheetContent, setBottomSheetContent] = useState(null);
 
-    // Memoize the bottom sheet snapPoints
-    const snapPoints = useMemo(() => ['30%', '34%'], []);
+    const snapPoints = useMemo(() => {
+        const firstPoint = screenpercentage.first || "25%";
+        const secondPoint = screenpercentage.second || "50%";
+        return [firstPoint, secondPoint];
+    }, [screenpercentage]);
 
-    // Callback to handle bottom sheet visibility
     const handleSheetChanges = useCallback((index) => {
-        console.log('handleSheetChanges', index);
+
         if (index === -1) {
             setIsBottomSheetVisible(false);
         }
     }, []);
 
-    // Callback to open the bottom sheet
-    const NavigateSettingScreen = () => {
+    const openBottomSheet = (content) => {
+        setBottomSheetContent(content);
         setIsBottomSheetVisible(true);
     };
 
-    /***
-     *  ------ end bottom sheet
-     *  */
-
+    const [isAuthScreenActive, setIsAuthScreenActive] = useState(false);
 
     const value = {
         progress,
@@ -63,9 +64,22 @@ export const GlobalProvider = (props) => {
         circleXCoordinate,
         handleMoveCircle,
         SelectedVillage,
-        setSelectedVillage
-    }
+        setSelectedVillage,
+        isBottomSheetVisible,
+        setIsBottomSheetVisible,
+        setScreenpercentage,
+        screenpercentage,
+        bottomSheetRef,
+        snapPoints,
+        handleSheetChanges,
+        openBottomSheet,
+        bottomSheetContent,
+        setIsAuthScreenActive,
+        isAuthScreenActive
+
+    };
+
     return (
         <GlobalContext.Provider value={value}>{props.children}</GlobalContext.Provider>
     );
-}
+};

@@ -13,8 +13,8 @@ const Home = ({ navigation }) => {
     const cards = [
         { id: 1, name: "About us", redirectTo: "Aboutus", thumbnail: "" },
         { id: 3, name: "Villages", redirectTo: "VillageListing", thumbnail: "" },
-        { id: 2, name: "Faqs", redirectTo: "Faqs", thumbnail: "" },
         { id: 4, name: "News", redirectTo: "News", thumbnail: "" },
+        { id: 4, name: "Support", redirectTo: "Support", thumbnail: "" },
         { id: 5, name: "", redirectTo: "", thumbnail: "" },
     ]
     const renderItem = ({ item }) => {
