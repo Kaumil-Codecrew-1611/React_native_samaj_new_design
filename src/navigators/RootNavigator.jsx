@@ -20,6 +20,10 @@ import Register from '../screens/app/Register';
 import SettingBottomSheet from '../screens/app/Settings';
 import Support from '../screens/app/Support';
 import EmailSupport from '../screens/app/EmailSupport';
+import AddFamilyDetails from '../screens/app/FamilyDetails/AddFamilyDetails';
+
+import ViewFamilyTree from '../screens/app/FamilyDetails';
+import NodeDetails from '../screens/app/FamilyDetails/NodeDetails';
 
 const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
@@ -70,6 +74,9 @@ const RootNavigator = () => {
             />
             <RootStack.Screen name="Register" component={Register} options={{ headerTitle: 'Register Page' }} />
             <RootStack.Screen name="select_village" options={{ headerTitle: 'Register Page' }} component={SelectVillage} />
+            <RootStack.Screen name="ViewFamilyDetails" options={{ headerTitle: 'Family Details' }} component={ViewFamilyTree} />
+            <RootStack.Screen name="NodeDetails" component={NodeDetails} options={{ headerTitle: 'Family Details' }} />
+            <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: 'Add Family Details' }} />
         </RootStack.Navigator>
     )
 }
