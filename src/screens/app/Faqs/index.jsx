@@ -74,7 +74,7 @@ const Faqs = () => {
                 <View className="w-full h-40 bg-[#E9EDF7] flex flex-row ">
                     <View className="basis-[35%] flex flex-row justify-center items-center">
                         <Image
-                            source={{ uri: 'https://deeplor.s3.us-west-2.amazonaws.com/matting_preview/2024/05/17/b95e1d20d69b4f7cbdee05e10f3eb554.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240517T121136Z&X-Amz-SignedHeaders=host&X-Amz-Expires=10800&X-Amz-Credential=AKIAROYXHKZUSZONTWIG%2F20240517%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=f5407faff4456e1574267dd09b849342014410b443e5a5b2ef872db721a7d43b' }}
+                            source={require("../../../assets/faqs_header_bg.png")}
                             className="w-[60px] h-[100px] object-cover"
                         />
                     </View>
