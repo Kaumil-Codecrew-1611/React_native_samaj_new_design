@@ -18,8 +18,9 @@ const schema = yup.object().shape({
     gender: yup.string().required('Gender is required'),
 });
 
-export default function AddFamilyDetails() {
-
+export default function AddFamilyDetails({ route }) {
+    const id = route.params;
+    console.log(id, "hey id get")
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });

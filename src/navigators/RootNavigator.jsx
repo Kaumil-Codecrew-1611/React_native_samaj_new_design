@@ -24,6 +24,7 @@ import AddFamilyDetails from '../screens/app/FamilyDetails/AddFamilyDetails';
 
 import ViewFamilyTree from '../screens/app/FamilyDetails';
 import NodeDetails from '../screens/app/FamilyDetails/NodeDetails';
+import Payment from '../screens/app/Payment';
 
 const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
@@ -73,6 +74,7 @@ const RootNavigator = () => {
                 }}
             />
             <RootStack.Screen name="Register" component={Register} options={{ headerTitle: 'Register Page' }} />
+            <RootStack.Screen name="Payment" component={Payment} options={{ headerTitle: 'Payment Page' }} />
             <RootStack.Screen name="select_village" options={{ headerTitle: 'Register Page' }} component={SelectVillage} />
             <RootStack.Screen name="ViewFamilyDetails" options={{ headerTitle: 'Family Details' }} component={ViewFamilyTree} />
             <RootStack.Screen name="NodeDetails" component={NodeDetails} options={{ headerTitle: 'Family Details' }} />

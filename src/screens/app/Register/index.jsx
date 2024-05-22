@@ -1,7 +1,7 @@
 import { CheckIcon, Select, Radio } from "native-base";
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Pressable, Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -17,7 +17,7 @@ const schema = yup.object().shape({
         'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
     ),
     // dob: yup.date().nullable().required('Date of Birth is required'),
-    village: yup.string().required('Village is required'),
+    // village: yup.string().required('Village is required'),
     phoneNumber: yup.string().required('Phone Number is required').matches(/^[0-9]{10}$/, 'Phone Number must be exactly 10 digits'),
     address: yup.string().required('Address is required'),
     city: yup.string().required('City is required'),
@@ -25,18 +25,23 @@ const schema = yup.object().shape({
     pincode: yup.string().required('Pincode is required').matches(/^[0-9]{6}$/, 'Pincode must be exactly 6 digits'),
     education: yup.string().required('Education is required'),
     profession: yup.string().required('Profession is required'),
-    maritalStatus: yup.string().required('Marital Status is required'),
+    // maritalStatus: yup.string().required('Marital Status is required'),
     gender: yup.string().required('Gender is required'),
 });
 
 
-const Register = () => {
-
-    const navigation = useNavigation();
+const Register = ({ navigation, route }) => {
     const [locations, setLocations] = useState('');
     const [options, setOptions] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
-    const [dob, setDob] = useState(new Date());
+    const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            gender: '', // Ensure gender has an initial value
+        }
+    });
+
+    const dob = watch('dob') || new Date();
 
     // console.log(dob,'dob')
     useEffect(() => {
@@ -389,27 +394,41 @@ const Register = () => {
         setLocations(locations);
     }
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
-    });
+
 
     const onSubmit = (data) => {
+        console.log(dob, 'dob')
         console.log(data);
+        const payload = {
+            Name: data.firstName + ' ' + data.lastName,
+            PhoneNo: data.phoneNumber,
+            Address: data.address + ', ' + data.city + ', ' + data.state + ', Pincode: ' + data.pincode,
+
+        }
+        navigation.navigate('Payment', { payload });
     };
+
 
     const onDateChange = (event, selectedDate) => {
-        if (selectedDate !== undefined && selectedDate !== null) {
-            console.log('s')
-            const currentDate = selectedDate;
-            setShowPicker(Platform.OS === 'ios');
-            setDob(currentDate);
-        } else {
-            setShowPicker(Platform.OS === 'ios');
-        }
+        const currentDate = selectedDate || dob;
+        setShowPicker(false);
+        setValue('dob', currentDate); // Update the 'dob' field value in the form state
     };
+    /*     const onDateChange = (event, selectedDate) => {
+            if (selectedDate !== undefined && selectedDate !== null) {
+                console.log('s')
+                const currentDate = selectedDate;
+                setShowPicker(Platform.OS === 'ios');
+                setDob(currentDate);
+            } else {
+                setShowPicker(Platform.OS === 'ios');
+            }
+        }; */
 
     // console.log(errors.dob, ';errors.dob ')
-
+    const handlePaymentRedirection = () => {
+        navigation.navigate('Payment', { id: node.id });
+    }
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full my-4 p-1 mt-2">
@@ -551,15 +570,25 @@ const Register = () => {
                                     <View className="my-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">Date of Birth:</Text>
                                         <Pressable onPress={() => setShowPicker(true)}>
-                                            <TextInput
-                                                style={[
-                                                    styles.input,
-                                                    { color: dob ? 'black' : 'grey' },
-                                                ]}
-                                                placeholder="Select Date of Birth"
-                                                placeholderTextColor="grey"
-                                                value={dob ? dob.toDateString() : ''}
-                                                editable={false}
+                                            <Controller
+                                                control={control}
+                                                render={({ field: { onChange, onBlur, value } }) => (
+                                                    <TextInput
+                                                        style={[
+                                                            styles.input,
+                                                            { color: value ? 'black' : 'grey' },
+                                                        ]}
+                                                        placeholder="Select Date of Birth"
+                                                        placeholderTextColor="grey"
+                                                        value={dob ? dob.toDateString() : ''}
+                                                        // value={value ? value.toString() : ''}
+                                                        onBlur={onBlur}
+                                                        disableFullscreenUI={true}
+                                                        editable={false}
+                                                    />
+                                                )}
+                                                name="dob"
+
                                             />
                                         </Pressable>
                                         {showPicker && (
@@ -803,9 +832,10 @@ const Register = () => {
                     </KeyboardAvoidingView>
                 </View>
 
-            ) : null}
+            ) : null
+            }
 
-        </View>
+        </View >
     )
 }
 

@@ -1,3 +1,4 @@
+
 import * as d3 from 'd3';
 import React, { useRef, useState } from 'react';
 import { Dimensions, PanResponder, ScrollView, View } from 'react-native';
@@ -7,14 +8,12 @@ const { width, height } = Dimensions.get('window');
 
 const treeData = {
     name: "Root",
-    id: "0",
     spouse: {
         name: "Root's wife"
     },
     children: [
         {
             name: "Child 1",
-            id: "1",
             data: "hey data",
             spouse: {
                 name: "Child 1's wife"
@@ -53,11 +52,7 @@ const treeData = {
                         name: "Grandchild 3.1's wife"
                     },
                 },
-                {
-                    name: "Grandchild 3.2", spouse: {
-                        name: "Grandchild 3.2's wife"
-                    },
-                }
+                { name: "Grandchild 3.2" }
             ]
         }
     ],
@@ -65,18 +60,8 @@ const treeData = {
 
 const nodeWidth = 100;
 const nodeHeight = 40;
-const baseHorizontalSpacing = 60;
+const horizontalSpacing = 60;
 const verticalSpacing = 100;
-
-const calculateHorizontalSpacing = (node) => {
-    let maxChildren = 0;
-    node.each(d => {
-        if (d.children) {
-            maxChildren = Math.max(maxChildren, d.children.length);
-        }
-    });
-    return nodeWidth + (maxChildren > 1 ? maxChildren * baseHorizontalSpacing : baseHorizontalSpacing);
-};
 
 const TreeNode = ({ node, x, y, children, onPress }) => (
     <>
@@ -86,11 +71,11 @@ const TreeNode = ({ node, x, y, children, onPress }) => (
         </Text>
         {node.spouse && (
             <>
-                <Rect x={x + nodeWidth + baseHorizontalSpacing / 2} y={y} width={nodeWidth} height={nodeHeight} fill="white" stroke="black" onPress={() => onPress(node.spouse)} />
-                <Text x={x + nodeWidth + baseHorizontalSpacing / 2 + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
+                <Rect x={x + nodeWidth + horizontalSpacing / 2} y={y} width={nodeWidth} height={nodeHeight} fill="white" stroke="black" onPress={() => onPress(node.spouse)} />
+                <Text x={x + nodeWidth + horizontalSpacing / 2 + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
                     {node.spouse.name}
                 </Text>
-                <Line x1={x + nodeWidth} y1={y + nodeHeight / 2} x2={x + nodeWidth + baseHorizontalSpacing / 2} y2={y + nodeHeight / 2} stroke="black" />
+                <Line x1={x + nodeWidth} y1={y + nodeHeight / 2} x2={x + nodeWidth + horizontalSpacing / 2} y2={y + nodeHeight / 2} stroke="black" />
             </>
         )}
         {children}
@@ -99,8 +84,7 @@ const TreeNode = ({ node, x, y, children, onPress }) => (
 
 const FamilyTree = ({ data, navigation }) => {
     const root = d3.hierarchy(data);
-    const horizontalSpacing = calculateHorizontalSpacing(root);
-    const treeLayout = d3.tree().nodeSize([horizontalSpacing, verticalSpacing]);
+    const treeLayout = d3.tree().nodeSize([nodeWidth + horizontalSpacing, nodeHeight + verticalSpacing]);
     treeLayout(root);
 
     const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -117,11 +101,9 @@ const FamilyTree = ({ data, navigation }) => {
             },
         })
     ).current;
-
     const handleNodePress = (node) => {
         navigation.navigate('NodeDetails', { node });
     };
-
     // Calculate the required width and height for the SVG
     const nodes = root.descendants();
     const minX = Math.min(...nodes.map(d => d.x));
@@ -153,7 +135,6 @@ const FamilyTree = ({ data, navigation }) => {
                                             d.children && d.children.map((child, j) => {
                                                 const childX = child.x - minX;
                                                 const childY = child.y - minY;
-
                                                 return (
                                                     <Line
                                                         key={j}
