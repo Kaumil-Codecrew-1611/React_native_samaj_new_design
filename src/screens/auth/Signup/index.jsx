@@ -13,7 +13,7 @@ const Signup = ({ navigation }) => {
     const [checked, setChecked] = useState(false);
 
     const onSignIn = () => {
-        console.log(" this is click")
+
         navigation.navigate('Signin')
     }
 

@@ -11,30 +11,41 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { GlobalContext } from "../../context/globalState";
 import { withTiming } from "react-native-reanimated";
 
-const CardDetails = ({ content, size, thumbnail, redirectTo, navigation, idx }) => {
+const CardDetails = ({ content, size, thumbnail, redirectTo, navigation, idx, setSelectedVillage }) => {
     const { progress } = useContext(GlobalContext)
     const image = useImage(thumbnail || 'https://img.freepik.com/free-photo/eiffel-tower-paris-with-gorgeous-colors-autumn_268835-828.jpg');
     const small = (size == 'sm')
+    const large = (size == 'lg')
+    const full = (size == 'full')
 
     const redirect = () => {
         if (redirectTo) {
+            if (setSelectedVillage) {
+                setSelectedVillage(content)
+            }
             navigation.navigate(redirectTo);
             // progress.value = withTiming(idx);
         }
     }
     return (
         <>{content &&
-            <TouchableOpacity onPress={redirect} activeOpacity={0.85} className={`${small ? "w-28" : "w-32"} overflow-hidden rounded-2xl shadow-lg shadow-black m-2 mb-5`}>
+            <TouchableOpacity onPress={redirect} activeOpacity={0.85} className={`${small ? "w-28" : large ? "w-40" : full ?
+                "w-full" : "w-32"} overflow-hidden rounded-2xl shadow-lg shadow-black m-2 mb-5`}>
                 <View classname="relative">
-                    <Canvas style={{ width: 256, height: small ? 150 : 180 }}>
-                        <Image image={image} x={0} y={0} width={small ? 120 : 130} height={small ? 170 : 190} fit="cover" />
-                        <BackdropBlur blur={2} clip={{ x: 0, y: small ? 90 : 120, width: 256, height: 120 }}>
+                    <Canvas style={{ width: small ? 256 : large ? 300 : full ? 330 : 156, height: small ? 150 : large ? 230 : full ? 500 : 180 }}>
+                        <Image image={image} x={0} y={0} width={small ? 112 : large ? 160 : full ? 330 : 130} height={small ? 170 : large ? 250 : full ? 500 : 190} fit="cover" />
+                        <BackdropBlur blur={2} clip={
+                            {
+                                x: 0,
+                                y: (small ? 90 : large ? 150 : full ? 380 : 120),
+                                width: (full ? 350 : 256), height: 120
+                            }}>
                             <Fill color="rgba(200, 200, 200, 0.2)" />
                         </BackdropBlur>
                     </Canvas>
                     <View className="bottom-0 p-2 absolute w-full">
-                        <Text className={`h-12 ${small ? 'text-xl text-center' : 'text-2xl'} font-bold text-white`}>
-                            {content || "Hey Test"}
+                        <Text className={`${small ? 'h-12 text-xl text-center' : large ? 'h-16 text-2xl' : full ? 'h-24 text-4xl' : 'h-12 text-2xl'} font-bold text-white`}>
+                            {content}
                         </Text>
                     </View>
                 </View>

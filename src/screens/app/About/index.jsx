@@ -1,44 +1,61 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import AgeCount from '../component/AgeCount';
-import CustomModal from '../component/CustomModal';
+import React, { useState } from 'react';
+import { Dimensions, ScrollView, Image, TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
 
 const FamilyDetailsPage = ({navigation}) => {
  
 
 
-  const renderParentDetails = () => {
-    if (!parentsData) {
-      return null;
-    }
-    const formattedDate = moment(parentsData?.dob).format('DD/MM/YYYY');
-    const parentsAge = AgeCount(parentsData?.dob);
+    const scrollRef = useAnimatedRef();
+    const scrolloffset = useScrollViewOffset(scrollRef);
 
+    const imageAnimatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY: interpolate(
+                        scrolloffset.value,
+                        [-IMG_HEIGHT, 0, IMG_HEIGHT],
+                        [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
+                    ),
+
+                },
+                {
+                    scale: interpolate(
+                        scrolloffset.value,
+                        [-IMG_HEIGHT, 0, IMG_HEIGHT],
+                        [2, 1, 1]
+                    )
+                }
+            ]
+        }
+    })
+    const scrollY = useSharedValue(0);
+
+    const headerHeight = useSharedValue(0);
+    const headerAnimatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ translateY: -scrollY.value }],
+            height: headerHeight.value,
+            opacity: interpolate(scrollY.value, [0, IMG_HEIGHT / 2], [1, 0]),
+        };
+    });
+
+    /*  const handleScroll = (event) => {
+         scrollY.value = event.nativeEvent.contentOffset.y;
+     }; */
+    const handleScroll = (event) => {
+        scrollY.value = event.nativeEvent.contentOffset.y;
+    };
     return (
-      <>
-        <View style={[styles.MainContainer, { marginBottom: 30 }]}>
-          <View style={styles.familyItem}>
-            <Pressable
-              style={styles.EditIcon}
-             >
-              <MaterialCommunityIcons
-                name="account-edit"
-                size={30}
-                color="#00000090"
-              />
-            </Pressable>
-
-            <View style={styles.dropdownContent}>
-              <View>
-                <Text style={styles.FamilyName}>
-                 asasas asasas
-                </Text>
-              </View>
-            </View>
+        <View style={styles.container}>
+            <Animated.View style={[styles.header, headerAnimatedStyle]}>
+                <Text className="font-bold text-3xl">Your Header</Text>
+            </Animated.View>
+            <Animated.ScrollView onScroll={handleScroll} ref={scrollRef} scrollEventThrottle={16}>
+                <View>
+                    <Animated.Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
+                        style={[styles.image, imageAnimatedStyle]} />
 
             <View style={styles.row}>
               <Text style={styles.familylabel}>{t('name')} : </Text>

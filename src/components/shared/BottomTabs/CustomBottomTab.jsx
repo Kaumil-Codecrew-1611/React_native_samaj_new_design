@@ -1,21 +1,14 @@
-import React, { FC, useContext, useMemo, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
 import Animated, {
-    runOnJS,
-    useAnimatedProps,
-    useSharedValue,
-    withTiming,
+    withTiming
 } from 'react-native-reanimated';
-import { interpolatePath } from 'react-native-redash';
+import Svg, { Path } from 'react-native-svg';
 
 import { SCREEN_WIDTH } from '../../../constants/Screen';
-import usePath from '../../../hooks/usePath';
-import { getPathXCenter } from '../../../utils/path';
-import TabItem from './TabItem';
-import AnimatedCircle from './AnimatedCircle';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { GlobalContext } from '../../../context/globalState';
+import TabItem from './TabItem';
+import { useNavigation } from '@react-navigation/native';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 export const CustomBottomTab = ({
@@ -23,75 +16,79 @@ export const CustomBottomTab = ({
     descriptors,
     navigation,
 }) => {
-    const { progress, containerPath, curvedPaths, tHeight, circleXCoordinate, handleMoveCircle, animatedProps } = useContext(GlobalContext)
-    // const { containerPath, curvedPaths, tHeight } = usePath();
-    // const circleXCoordinate = useSharedValue(0);
-    // const progress = useSharedValue(1);
-    /*    const handleMoveCircle = (currentPath) => {
-           circleXCoordinate.value = getPathXCenter(currentPath);
-       }; */
+
+    const { progress, tHeight, animatedProps, setIsAuthScreenActive, isAuthScreenActive } = useContext(GlobalContext)
+    const navigationRef = useNavigation();
+    // const [isAuthScreenActive, setIsAuthScreenActive] = React.useState(false);
+
+    useEffect(() => {
+        const unsubscribe = navigationRef.addListener('state', () => {
+            const isAuthActive = state.routes[state.index]?.name === 'Auth';
+            // const isAuthScreenActive = state.routes.some(route => route.name === 'Auth');
+            setIsAuthScreenActive(isAuthActive);
+        });
+
+        return unsubscribe;
+    }, [navigationRef, state.routes]);
     const selectIcon = (routeName) => {
         switch (routeName) {
             case 'Home':
                 return 'home';
-            case 'Members':
+            case 'Member':
                 return 'users';
             case 'Auth':
                 return 'log-in';
             case 'Profile':
                 return 'user';
-            case 'More':
-                return 'info';
+            case 'Contactus':
+                return 'phone';
             default:
                 return 'home';
         }
     };
-    /*  const animatedProps = useAnimatedProps(() => {
-         const currentPath = interpolatePath(
-             progress.value,
-             Array.from({ length: curvedPaths.length }, (_, index) => index + 1),
-             curvedPaths,
-         );
-         runOnJS(handleMoveCircle)(currentPath);
-         return {
-             d: `${containerPath} ${currentPath}`,
-         };
-     }); */
+
 
     const handleTabPress = (index, tab) => {
         navigation.navigate(tab);
         progress.value = withTiming(index);
     };
 
+    if (isAuthScreenActive) {
+        return null;
+    }
+
     return (
-        <View style={styles.tabBarContainer}>
-            <Svg width={SCREEN_WIDTH} height={tHeight} style={styles.shadowMd}>
-                <AnimatedPath fill={'#E5E5E5'} animatedProps={animatedProps} />
-            </Svg>
-            {/* <AnimatedCircle circleX={circleXCoordinate} /> */}
-            <View
-                style={[
-                    styles.tabItemsContainer,
-                    {
-                        height: tHeight,
-                    },
-                ]}>
-                {state.routes.map((route, index) => {
-                    const { options } = descriptors[route.key];
-                    const label = options.tabBarLabel ? options.tabBarLabel : route.name;
-                    return (
-                        <TabItem
-                            key={index.toString()}
-                            label={label}
-                            icon={selectIcon(route.name)}
-                            activeIndex={state.index + 1}
-                            index={index}
-                            onTabPress={() => handleTabPress(index + 1, route.name)}
-                        />
-                    );
-                })}
+        <>
+
+            <View style={styles.tabBarContainer}>
+                <Svg width={SCREEN_WIDTH} height={tHeight} style={styles.shadowMd}>
+                    <AnimatedPath fill={'#E5E5E5'} animatedProps={animatedProps} />
+                </Svg>
+                {/* <AnimatedCircle circleX={circleXCoordinate} /> */}
+                <View
+                    style={[
+                        styles.tabItemsContainer,
+                        {
+                            height: tHeight,
+                        },
+                    ]}>
+                    {state.routes.map((route, index) => {
+                        const { options } = descriptors[route.key];
+                        const label = options.tabBarLabel ? options.tabBarLabel : route.name;
+                        return (
+                            <TabItem
+                                key={index.toString()}
+                                label={label}
+                                icon={selectIcon(route.name)}
+                                activeIndex={state.index + 1}
+                                index={index}
+                                onTabPress={() => handleTabPress(index + 1, route.name)}
+                            />
+                        );
+                    })}
+                </View>
             </View>
-        </View>
+        </>
     );
 };
 export default CustomBottomTab;
