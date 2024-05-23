@@ -17,6 +17,9 @@ const ProfilePage = ({ navigation, route }) => {
         setScreenpercentage({ first: "30%", second: "34%" });
         openBottomSheet(<SettingBottomSheet />);
     };
+    const openAddFamilyDetails = () => {
+        navigation.navigate('ViewFamilyDetails')
+    }
 
     const openChangePassword = () => {
         // setScreenpercentage({ first: "100%", second: "100%" });
@@ -24,6 +27,13 @@ const ProfilePage = ({ navigation, route }) => {
         navigation.navigate('ChangePassword')
     };
 
+    const navigateToAddProfile = () => {
+        navigation.navigate('AddFamilyDetail');
+    };
+
+    const navigateToEditProfile = () => {
+        navigation.navigate('EditProfile');
+    };
     return (
         <View className="flex-1 bg-white space-y-5 w-full pb-20" edges={['top']}>
             <View className="relative basis-[25%] mb-12">
@@ -57,22 +67,33 @@ const ProfilePage = ({ navigation, route }) => {
                         <Text className="text-neutral-700 font-normal text-xl tracking-wider">Start Date: </Text>
                         <Text className="text-neutral-700 text-xl font-normal tracking-wider">16-05-2024</Text>
                     </View>
-                    <View className="flex flex-row items-center justify-center">
-                        <Pressable hitSlop={20}>
+                    <View className="flex-row gap-1">
+                        <Pressable hitSlop={20} onPress={navigateToEditProfile}>
                             <Text className="text-blue-600 font-medium text-base">Edit Profile</Text>
                         </Pressable>
+                        <Text className="text-blue-600 font-medium text-base">/</Text>
+                        <Pressable hitSlop={20} onPress={navigateToAddProfile}>
+                            <Text className="text-blue-600 font-medium text-base">Add Profile</Text>
+                        </Pressable>
                     </View>
+                    {/* <View className="flex flex-row items-center justify-center">
+                        <Pressable hitSlop={20} className="flex-row gap-1">
+                            <Text className="text-blue-600 font-medium text-base">Edit Profile</Text>
+                            <Text className="text-blue-600 font-medium text-base">/</Text>
+                            <Text className="text-blue-600 font-medium text-base">Add Profile</Text>
+                        </Pressable>
+                    </View> */}
                 </View>
                 <SafeAreaView className="flex-1 h-[2000px] bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7">
                     <ScrollView scrollEnabled={true} nestedScrollEnabled={true} style={styles.scrollView} contentContainerStyle={{ flexGrow: 1 }} className="p-10">
                         <View className="flex flex-col gap-4">
-                            <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
+                            <Pressable onPress={openAddFamilyDetails} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                 <View className="flex-row justify-between gap-2 items-center">
                                     <AnimatedFeatherIcon name="users" size={30} />
                                     <Text className="text-neutral-700 font-normal text-xl tracking-wider">Add Family Details</Text>
                                 </View>
                                 <AnimatedFontistoIcon name="angle-right" size={15} />
-                            </View>
+                            </Pressable>
                             <Pressable onPress={openSettings} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                 <View className="flex-row justify-between gap-2 items-center">
                                     <AnimatedFontistoIcon name="player-settings" size={30} />

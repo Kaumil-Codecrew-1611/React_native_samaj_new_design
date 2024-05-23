@@ -3,7 +3,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CustomBottomTab from '../components/shared/BottomTabs/CustomBottomTab';
 import LoginScreen from '../screens/Login';
-import ContectUs from '../screens/app/Contactus';
+import ContactUs from '../screens/app/Contactus';
 import Home from '../screens/app/Home';
 import Member from '../screens/app/Member';
 import ProfilePage from '../screens/app/Profile';
@@ -48,7 +48,7 @@ const BottomTabs = () => {
                 < Tab.Screen
                     options={{ tabBarLabel: 'Contactus' }}
                     name="Contactus"
-                    component={ContectUs}
+                    component={ContactUs}
                 />
             </Tab.Group>
         </Tab.Navigator>

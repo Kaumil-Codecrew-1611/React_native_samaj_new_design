@@ -45,11 +45,6 @@ function NewsList({ news }) {
 
     }
     return (
-        // <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
-        // <View className="w-full flex flex-row justify-between flex-wrap px-3 mb-14">
-        //     {news.map((item, index) => renderItems({ item, index }))}
-        // </View>
-        // </ScrollView>
         <View className="w-full flex flex-row justify-between flex-wrap px-3 mb-10">
             <SafeAreaView style={{ flex: 1 }}>
                 <FlatList
@@ -60,6 +55,8 @@ function NewsList({ news }) {
                     numColumns={2}
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                     contentContainerStyle={{ paddingHorizontal: 12 }}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                 />
             </SafeAreaView>
         </View>

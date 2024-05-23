@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, Text, View, TouchableOpacity } from 'react-native'
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
-
+const banner_img = require("../../../assets/support_header_bg.png")
 function Support({ navigation }) {
     // console.log(navigation.navigate,'navigation')
 
@@ -21,7 +21,7 @@ function Support({ navigation }) {
             <View className="w-full h-full bg-[#f7f7fa] rounded-[10px] overflow-hidden">
                 <View className="w-full h-52 bg-[#E9EDF7] flex flex-row justify-center items-end object-cover">
                     <Image
-                        source={require("../../../assets/support_header_bg.png")}
+                        source={banner_img}
                         className="w-[80%] h-[100%]"
                     />
                 </View>

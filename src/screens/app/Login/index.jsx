@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Svg, { Image } from 'react-native-svg';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
+import { COLORS } from '../../../utils/colors';
 
 // Define the validation schema using Yup
 const schema = yup.object().shape({
@@ -30,7 +31,7 @@ const schema = yup.object().shape({
     ),
 });
 
-const Login = () => {
+const Login = ({ navigation }) => {
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
@@ -87,6 +88,27 @@ const Login = () => {
                     </View>
                     <View className="mt-3">
                         <Button className="bg-blue-500 py-3 rounded-lg" title="Login" onPress={handleSubmit(onSubmit)} />
+                    </View>
+                    <View style={{
+                        flexDirection: "row",
+                        marginTop: 12,
+                        justifyContent: "center"
+                    }}>
+                        <Text style={{
+                            fontSize: 16,
+                            color: COLORS.black
+                        }}>Don't have an account ?</Text>
+                        <Pressable
+                            onPress={() => navigation.navigate("Register")}
+                        >
+                            <Text style={{
+                                fontSize: 16,
+                                color: COLORS.black,
+                                fontWeight: "bold",
+                                marginLeft: 4
+                            }}>Register</Text>
+                        </Pressable>
+
                     </View>
                 </View>
             </View>

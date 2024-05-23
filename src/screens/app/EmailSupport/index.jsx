@@ -35,7 +35,7 @@ function EmailSupport() {
                             <View className="w-full h-36 bg-[#E9EDF7] flex flex-row ">
                                 <View className="basis-[35%] flex flex-row justify-center items-center">
                                     <Image
-                                        source={{ uri: 'https://deeplor.s3.us-west-2.amazonaws.com/matting/2024/05/17/4df41c221d00447bac0a4907ed2727ed.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240517T111048Z&X-Amz-SignedHeaders=host&X-Amz-Expires=10800&X-Amz-Credential=AKIAROYXHKZUSZONTWIG%2F20240517%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=3609a9252f6aeffb569512bc4bc31136c1658cee415121c6fa5d4656a72b102c' }}
+                                        source={require("../../../assets/send_email_bg.png")}
                                         className="w-[80px] h-[80px] object-cover"
                                     />
                                 </View>
