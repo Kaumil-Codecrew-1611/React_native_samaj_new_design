@@ -4,7 +4,7 @@ import { ScrollView, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
-function ContectUsCard() {
+function ContactUsCard() {
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     return (
@@ -17,6 +17,7 @@ function ContectUsCard() {
                                 <AnimatedFontistoIcon
                                     name="mobile"
                                     size={25}
+                                    color="black"
                                 />
                                 {/* <Image
                                     source={callIcon}
@@ -43,6 +44,7 @@ function ContectUsCard() {
                                 <AnimatedFontistoIcon
                                     name="email"
                                     size={25}
+                                    color="black"
                                 />
 
                                 <Text className=" text-xl tracking-wider text-neutral-700 font-extrabold">E-mail</Text>
@@ -67,6 +69,7 @@ function ContectUsCard() {
                                 <AnimatedFeatherIcon
                                     name="users"
                                     size={25}
+                                    color="black"
                                 />
                                 <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">Socials</Text>
                             </View>
@@ -78,14 +81,17 @@ function ContectUsCard() {
                                 <AnimatedFontistoIcon
                                     name="twitter"
                                     size={25}
+                                    color="black"
                                 />
                                 <AnimatedFontistoIcon
                                     name="instagram"
                                     size={25}
+                                    color="black"
                                 />
                                 <AnimatedFontistoIcon
                                     name="facebook"
                                     size={25}
+                                    color="black"
                                 />
 
                             </View>
@@ -98,4 +104,4 @@ function ContectUsCard() {
     )
 }
 
-export default ContectUsCard
+export default ContactUsCard

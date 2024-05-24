@@ -10,22 +10,23 @@ import { withTiming } from 'react-native-reanimated';
 
 const Home = ({ navigation }) => {
     const { progress } = useContext(GlobalContext)
+    // navigation.navigate('PaymentFailed');
     const cards = [
         { id: 1, name: "About us", redirectTo: "Aboutus", thumbnail: "" },
         { id: 3, name: "Villages", redirectTo: "VillageListing", thumbnail: "" },
         { id: 4, name: "News", redirectTo: "News", thumbnail: "" },
-        { id: 4, name: "Support", redirectTo: "Support", thumbnail: "" },
+
         { id: 5, name: "", redirectTo: "", thumbnail: "" },
     ]
     const renderItem = ({ item }) => {
         return (
-            <View className="flex-1 flex-row justify-between">
+            <View className="flex-1 flex-row justify-around">
                 <CardDetails
                     content={item.name}
                     redirectTo={item.redirectTo}
                     navigation={navigation}
                     thumbnail={item.thumbnail}
-                    size="sm"
+                    size="lg"
                     idx={item.id}
                 />
             </View>
@@ -44,7 +45,7 @@ const Home = ({ navigation }) => {
                         <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
                             Welcome
                         </Text>
-                        <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-rose-700">
+                        <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
                             Kaumil Patel
                         </Text>
                     </View>
@@ -57,8 +58,8 @@ const Home = ({ navigation }) => {
                 data={cards}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
-                numColumns={3}
-                key={3}
+                numColumns={2}
+                key={2}
                 horizontal={false}
                 contentContainerStyle={{ display: 'flex', gap: 2, width: '100%', paddingHorizontal: 3 }}
                 ListHeaderComponent={<Carousel />}

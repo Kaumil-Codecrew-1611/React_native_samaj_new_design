@@ -34,6 +34,7 @@ export const GlobalProvider = (props) => {
     });
     const bottomSheetRef = useRef(null);
     const [bottomSheetContent, setBottomSheetContent] = useState(null);
+    const [registerData, setRegisterData] = useState(null);
 
     const snapPoints = useMemo(() => {
         const firstPoint = screenpercentage.first || "25%";
@@ -75,7 +76,9 @@ export const GlobalProvider = (props) => {
         openBottomSheet,
         bottomSheetContent,
         setIsAuthScreenActive,
-        isAuthScreenActive
+        isAuthScreenActive,
+        setRegisterData,
+        registerData
 
     };
 

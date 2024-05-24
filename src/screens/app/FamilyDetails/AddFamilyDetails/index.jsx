@@ -20,7 +20,7 @@ const schema = yup.object().shape({
 
 export default function AddFamilyDetails({ route }) {
     const id = route.params;
-    console.log(id, "hey id get")
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
