@@ -48,7 +48,7 @@ function PaymentSuccess({ navigation }) {
                 </View>
 
                 <View className=" w-full left-5 absolute bottom-16">
-                    <Button className="bg-[#f56f4c] py-4 rounded-[20px]" title="Go To Login" onPress={() => navigation.navigate('pay_failed')} />
+                    <Button className="bg-[#f56f4c] py-4 rounded-[20px]" title="Go To Login" onPress={() => navigation.navigate('Login')} />
                 </View>
             </View>
         </View>

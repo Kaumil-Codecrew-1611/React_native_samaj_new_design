@@ -26,7 +26,7 @@ function ContactUsCard() {
                                 <Text className=" text-xl tracking-wider text-neutral-700 font-extrabold">Phone</Text>
                             </View>
                             <View className="mb-4 h-14">
-                                <Text className="tracking-wider text-neutral-700">You ca call, text or whatsapp on below numbers. Charges will be applied as per your network problem</Text>
+                                <Text className="tracking-wider text-neutral-700">You can call, text or whatsapp on below numbers. Charges will be applied as per your network problem</Text>
                             </View>
                             <View>
                                 <Text className="text-[#5176df] font-extrabold text-xl">+91 900026514</Text>

@@ -13,7 +13,15 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
     response => response,
     error => {
-        errorHandler(error);
+        console.log(error , " ::::errror here")
+        let message = 'An unknown error occurred';
+
+        if (error.response && error.response.data && error.response.data.error) {
+          message = error.response.data.error;
+        } else if (error.message) {
+          message = error.message;
+        }
+        errorHandler(message);
         return Promise.reject(error);
     }
 );

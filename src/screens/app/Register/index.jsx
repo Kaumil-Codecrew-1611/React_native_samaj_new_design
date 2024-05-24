@@ -49,31 +49,21 @@ const Register = ({ navigation, route }) => {
 
     useEffect(() => {
         getLocation()
-
-
     }, []);
+
     useEffect(() => {
         setOptions(state.locationData, "state.locationData ")
     }, [state.locationData])
-
-
 
     const getSelectedvalue = (locations) => {
         setLocations(locations);
         setValue('location_id', locations);
     }
 
-
-
     const onSubmit = (data) => {
         setRegisterData(data);
-        const payload = {
-            Name: data.firstName + ' ' + data.lastName,
-            PhoneNo: data.mobile_number,
-            Address: data.address + ', ' + data.city + ', ' + data.state + ', Pincode: ' + data.pincode,
 
-        }
-        navigation.navigate('Payment', { payload });
+        navigation.navigate('Payment');
     };
 
 
@@ -129,10 +119,10 @@ const Register = ({ navigation, route }) => {
             </View>
             {locations !== "" ? (
                 <View className="w-full bg-white flex-1 rounded-md p-3">
-                    <Text className="font-extrabold tracking-wider  text-2xl text-rose-700">
+                    <Text className="font-extrabold tracking-wider ml-1 text-2xl text-rose-700">
                         Fill the details
                     </Text>
-                    <View className="w-full my-3 bg-neutral-700 h-[2px]"></View>
+                    <View className="w-full ml-1 my-2 bg-neutral-700 h-[2px]"></View>
 
                     <KeyboardAvoidingView
                         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -142,8 +132,8 @@ const Register = ({ navigation, route }) => {
                             <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                                 <View>
                                     <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">First Name:</Text>
+                                        <View className="w-full ml-1">
+                                            <Text className="font-extrabold  text-base tracking-wider text-neutral-700">First Name:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -166,7 +156,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Last Name:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Last Name:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -189,7 +179,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Middle Name:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Middle Name:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -212,7 +202,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Password :</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Password :</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -234,8 +224,8 @@ const Register = ({ navigation, route }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Date of Birth:</Text>
-                                        <Pressable onPress={() => setShowPicker(true)}>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Birth:</Text>
+                                        <Pressable onPress={() => setShowPicker(true)} className=" w-full mt-2">
                                             <Controller
                                                 control={control}
                                                 render={({ field: { onChange, onBlur, value } }) => (
@@ -270,7 +260,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Phone Number:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Phone Number:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -294,7 +284,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Current Address:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Current Address:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -317,7 +307,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">City:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">City:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -340,7 +330,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">State:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">State:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -363,7 +353,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Pincode:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Pincode:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -387,7 +377,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Education:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Education:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -410,7 +400,7 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">job:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">job:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -433,57 +423,62 @@ const Register = ({ navigation, route }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Marital Status:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Marital Status:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="maritalStatus"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <Select
-                                                        placeholder="Select Marital Status"
-                                                        selectedValue={value}
-                                                        onValueChange={(itemValue) => onChange(itemValue)}
-                                                        _selectedItem={{
-                                                            bg: "blue.300",
-                                                            endIcon: <CheckIcon size="5" />,
-                                                        }}
-                                                        style={styles.select}
-                                                    >
-                                                        <Select.Item label="Marital Status" value="maritalStatus" />
-                                                        <Select.Item label="Married" value="married" />
-                                                        <Select.Item label="Unmarried" value="unmarried" />
-                                                        <Select.Item label="Widower" value="Widower" />
-                                                        <Select.Item label="Widow" value="Widow" />
-                                                        <Select.Item label="Divorcee" value="divorcee" />
-                                                    </Select>
-                                                )}
-                                            />
+                                            <View className="mx-1">
+                                                <Controller
+                                                    control={control}
+                                                    name="maritalStatus"
+                                                    render={({ field: { onChange, onBlur, value } }) => (
+                                                        <Select
+                                                            placeholder="Select Marital Status"
+                                                            selectedValue={value}
+                                                            onValueChange={(itemValue) => onChange(itemValue)}
+                                                            _selectedItem={{
+                                                                bg: "blue.300",
+                                                                endIcon: <CheckIcon size="5" />,
+                                                            }}
+
+                                                        >
+                                                            <Select.Item label="Marital Status" value="maritalStatus" />
+                                                            <Select.Item label="Married" value="married" />
+                                                            <Select.Item label="Unmarried" value="unmarried" />
+                                                            <Select.Item label="Widower" value="Widower" />
+                                                            <Select.Item label="Widow" value="Widow" />
+                                                            <Select.Item label="Divorcee" value="divorcee" />
+                                                        </Select>
+                                                    )}
+                                                />
+                                            </View>
                                             {errors.maritalStatus && <Text style={styles.error}>{errors.maritalStatus.message}</Text>}
                                         </View>
                                     </View>
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-neutral-700">Gender:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Gender:</Text>
                                         </View>
-                                        <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="gender"
-                                                render={({ field: { onChange, value } }) => (
-                                                    <Radio.Group
-                                                        name="genderGroup"
-                                                        value={value}
-                                                        className="flex flex-row "
-                                                        onChange={(nextValue) => onChange(nextValue)}
-                                                    >
-                                                        <Radio value="male" my={1}>Male</Radio>
-                                                        <Radio value="female" my={1} ml={2}>Female</Radio>
-                                                        <Radio value="other" my={1} ml={2}>Other</Radio>
-                                                    </Radio.Group>
-                                                )}
-                                            />
+                                        <View className="w-full mt-2">
+                                            <View className="mb-[10px] ml-1">
+                                                <Controller
+                                                    control={control}
+
+                                                    name="gender"
+                                                    render={({ field: { onChange, value } }) => (
+                                                        <Radio.Group
+                                                            name="genderGroup"
+                                                            value={value}
+                                                            className="flex flex-row"
+                                                            onChange={(nextValue) => onChange(nextValue)}
+                                                        >
+                                                            <Radio value="male" >Male</Radio>
+                                                            <Radio value="female" ml={2}>Female</Radio>
+                                                            <Radio value="other" ml={2}>Other</Radio>
+                                                        </Radio.Group>
+                                                    )}
+                                                />
+                                            </View>
                                             {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
                                         </View>
                                     </View>
@@ -516,12 +511,12 @@ const styles = StyleSheet.create({
         color: '#333',
         borderRadius: 10,
         paddingLeft: 10,
-        marginBottom: 15,
+        marginBottom: 10,
         shadowColor: '#423f40',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
         shadowRadius: 0.2,
-        marginHorizontal: 5,
+        marginHorizontal: 4,
         elevation: 4,
     },
     inputError: {
@@ -530,6 +525,7 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         marginBottom: 16,
+        marginHorizontal: 4,
     },
     scrollViewContent: {
         flexGrow: 1,

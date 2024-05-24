@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,10 +6,11 @@ import Svg, { Image } from 'react-native-svg';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import { COLORS } from '../../../utils/colors';
+import ApiContext from '../../../context/ApiContext';
 
 // Define the validation schema using Yup
 const schema = yup.object().shape({
-    emailOrPhone: yup.string().required('Email or Phone number is required').test(
+    email_or_mobile: yup.string().required('Email or Phone number is required').test(
         'is-email-or-phone',
         'Invalid email or phone number',
         function (value) {
@@ -36,9 +37,22 @@ const Login = ({ navigation }) => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data) => {
+    const { state, login } = useContext(ApiContext);
+
+    const onSubmit = async (data) => {
         console.log(data);
-        // Handle form submission
+        try {
+          const res =  await login({
+                email_or_mobile: data?.email_or_mobile,
+                password: data?.password,
+            });
+            console.log(res,"login res")
+
+        } catch (error) {
+            throw new Error('An error occurred!');
+            console.error('An error occurred while User Login:', error);
+        }
+
     };
 
     return (
@@ -55,18 +69,18 @@ const Login = ({ navigation }) => {
                         <Text style={styles.label}>Email or Phone Number</Text>
                         <Controller
                             control={control}
-                            name="emailOrPhone"
+                            name="email_or_mobile"
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <TextInput
                                     className="rounded-lg"
-                                    style={[styles.input, errors.emailOrPhone && styles.inputError]}
+                                    style={[styles.input, errors.email_or_mobile && styles.inputError]}
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
                                 />
                             )}
                         />
-                        {errors.emailOrPhone && <Text style={styles.error}>{errors.emailOrPhone.message}</Text>}
+                        {errors.email_or_mobile && <Text style={styles.error}>{errors.email_or_mobile.message}</Text>}
                     </View>
                     <View>
                         <Text style={styles.label}>Password</Text>

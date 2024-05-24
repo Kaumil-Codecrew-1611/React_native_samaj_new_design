@@ -1,6 +1,6 @@
 // src/context/ApiContext.js
 import React, { createContext, useReducer } from 'react';
-import { registerUser, viewDetails, addDetails, changePassword, getLocationData, getAmountData, payOrderData } from '../api/apiFunctions';
+import { registerUser, viewDetails, addDetails, changePassword, getLocationData, getAmountData, payOrderData, loginUser } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
 const ApiContext = createContext();
@@ -34,9 +34,10 @@ export const ApiProvider = ({ children }) => {
     const getLocation = () => apiRequest(getLocationData, null, setData, 'locationData');
     const getAmount = () => apiRequest(getAmountData, null, setData, 'amountData');
     const PayOrder = (orderData) => apiRequest(payOrderData, orderData, setData, 'orderDataResponse');
+    const login = (userData) => apiRequest(loginUser,  userData, setData, 'loginDataResponse');
 
     return (
-        <ApiContext.Provider value={{ state, register, viewUserDetails, addNewDetails, changeUserPassword, resetData, getLocation, getAmount, PayOrder }}>
+        <ApiContext.Provider value={{ state, register, viewUserDetails, addNewDetails, changeUserPassword, resetData, getLocation, getAmount, PayOrder, login }}>
             {children}
         </ApiContext.Provider>
     );

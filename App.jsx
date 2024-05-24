@@ -10,6 +10,7 @@ import { GlobalContext, GlobalProvider } from './src/context/globalState';
 import RootNavigator from './src/navigators/RootNavigator';
 import { KeyboardAvoidingView, NativeBaseProvider } from 'native-base';
 import { PaperProvider } from 'react-native-paper';
+import ErrorBoundary from './src/utils/ErrorBoundary';
 
 const App = () => {
   useEffect(() => {
@@ -38,12 +39,14 @@ const App = () => {
       <SafeAreaProvider>
         <PaperProvider>
           <NativeBaseProvider>
+            <ErrorBoundary>
             <NavigationContainer
               onReady={() => changeNavigationBarColor('white')}
               onStateChange={handleStateChange}
             >
               <RootNavigator />
             </NavigationContainer>
+            </ErrorBoundary>
           </NativeBaseProvider>
         </PaperProvider>
         <StatusBar barStyle={'dark-content'} />

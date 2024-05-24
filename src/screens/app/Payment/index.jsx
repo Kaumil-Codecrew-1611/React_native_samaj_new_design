@@ -15,7 +15,7 @@ function Payment({ navigation, route }) {
     }, []);
     useEffect(() => {
 
-        setAmount(parseFloat(state.amountData?.value));
+        setAmount(parseFloat(state?.amountData?.value));
     }, [state.amountData])
 
     const fetchPaymentAmount = async () => {
@@ -27,20 +27,25 @@ function Payment({ navigation, route }) {
     };
     const [orderDataRes, setOrderDataRes] = useState(null)
     useEffect(() => {
-        if (state.orderDataResponse) payNow(state.orderDataResponse)
-        setOrderDataRes(state.orderDataResponse)
+        // if (state.orderDataResponse) payNow(state.orderDataResponse)
+        setOrderDataRes(state?.orderDataResponse)
     }, [state.orderDataResponse])
 
-    const handlePayment = async () => {
+   async function handlePayment(){
         try {
-            await PayOrder({
+       
+            const result =  await PayOrder({
                 firstname: registerData?.firstName,
                 // personal_id: registerData?.personal_id,
                 mobile_number: registerData?.mobile_number,
             });
-            setTimeout(async () => {
-                await payNow(state.orderDataResponse);
-            }, 1000)
+            console.log(result , ":::::resultresultresult")
+          /*   setTimeout(async () => {
+                if (state?.orderDataResponse) { */
+                    
+                    await payNow(result);
+             /*    }
+            }, 1000) */
 
         } catch (error) {
             console.error('An error occurred while handling payment:', error);
@@ -53,10 +58,10 @@ function Payment({ navigation, route }) {
             const options = {
                 description: 'Pay to Panchal Samaj',
                 image: 'https://samajapp.codecrewinfotech.com/uploads/appstore.png',
-                currency: state.orderDataResponse?.order.currency,
-                order_id: state.orderDataResponse?.order.id,
-                key: state.orderDataResponse?.razorpay_key_id,
-                amount: state.orderDataResponse?.order.amount,
+                currency: data?.order?.currency,
+                order_id: data?.order?.id,
+                key: data?.razorpay_key_id,
+                amount: data?.order?.amount,
                 name: 'Pay to Panchal Samaj',
                 prefill: {
                     name: registerData?.firstName,
@@ -66,7 +71,8 @@ function Payment({ navigation, route }) {
                 theme: { color: '#0D5ADD' },
             };
 
-            const paymentResponse = await RazorpayCheckout.open(options);
+            const paymentResponse = await RazorpayCheckout.open(options)
+            console.log(paymentResponse, "::::paymnet response")
             const { razorpay_payment_id, status_code } = paymentResponse;
 
 
@@ -122,7 +128,7 @@ function Payment({ navigation, route }) {
                     </View>
                 </ScrollView>
                 <View className="mb-12">
-                    <Button className="bg-green-600 py-3 rounded-lg" title={`Pay(${amount}₹)`} onPress={handlePayment} />
+                    <Button className="bg-green-600 py-3 rounded-lg" title={`Pay(${amount}₹)`}  onPress={()=>handlePayment()} />
                 </View>
             </View>
         </View>
