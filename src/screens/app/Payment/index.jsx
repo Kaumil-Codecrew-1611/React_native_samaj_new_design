@@ -31,21 +31,21 @@ function Payment({ navigation, route }) {
         setOrderDataRes(state?.orderDataResponse)
     }, [state.orderDataResponse])
 
-   async function handlePayment(){
+    async function handlePayment() {
         try {
-       
-            const result =  await PayOrder({
+
+            const result = await PayOrder({
                 firstname: registerData?.firstName,
                 // personal_id: registerData?.personal_id,
                 mobile_number: registerData?.mobile_number,
             });
-            console.log(result , ":::::resultresultresult")
-          /*   setTimeout(async () => {
-                if (state?.orderDataResponse) { */
-                    
-                    await payNow(result);
-             /*    }
-            }, 1000) */
+            console.log(result, ":::::resultresultresult")
+            /*   setTimeout(async () => {
+                  if (state?.orderDataResponse) { */
+
+            await payNow(result);
+            /*    }
+           }, 1000) */
 
         } catch (error) {
             console.error('An error occurred while handling payment:', error);
@@ -89,8 +89,12 @@ function Payment({ navigation, route }) {
         }
     };
 
-    const { payload } = route.params;
-
+    // const { payload } = route.params;
+    const payload = {
+        Name: registerData.firstName + " " + registerData.lastName,
+        PhoneNo: registerData.mobile_number,
+        Address: registerData.address + " " + registerData.city + " " + registerData.state + " " + registerData.pincode
+    }
     return (
         <View className="flex-1 bg-green-200 relative">
             <View className="w-full absolute top-[117px] z-10 h-32 flex-row justify-center">
@@ -128,7 +132,7 @@ function Payment({ navigation, route }) {
                     </View>
                 </ScrollView>
                 <View className="mb-12">
-                    <Button className="bg-green-600 py-3 rounded-lg" title={`Pay(${amount}₹)`}  onPress={()=>handlePayment()} />
+                    <Button className="bg-green-600 py-3 rounded-lg" title={`Pay(${amount}₹)`} onPress={() => handlePayment()} />
                 </View>
             </View>
         </View>
