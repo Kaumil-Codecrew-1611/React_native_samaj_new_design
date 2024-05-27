@@ -57,7 +57,7 @@ const Register = ({ navigation, route }) => {
 
     const getSelectedvalue = (locations) => {
         setLocations(locations);
-        setValue('location_id', locations);
+        setValue('locations_id', locations);
     }
 
     const onSubmit = (data) => {

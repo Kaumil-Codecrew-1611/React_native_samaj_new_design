@@ -37,16 +37,16 @@ const Login = ({ navigation }) => {
         resolver: yupResolver(schema),
     });
 
-    const { state, login } = useContext(ApiContext);
+    const { state, loginAPICall } = useContext(ApiContext);
 
     const onSubmit = async (data) => {
         console.log(data);
         try {
-          const res =  await login({
+            const res = await loginAPICall({
                 email_or_mobile: data?.email_or_mobile,
                 password: data?.password,
             });
-            console.log(res,"login res")
+            console.log(res, "login res")
 
         } catch (error) {
             throw new Error('An error occurred!');

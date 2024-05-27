@@ -2,7 +2,7 @@
 import axiosInstance from '../utils/axiosInstance';
 
 export const registerUser = async (userData) => {
-    const response = await axiosInstance.post('/register', userData);
+    const response = await axiosInstance.post('/user_register', userData);
     return response.data;
 };
 
@@ -31,7 +31,7 @@ export const changePassword = async (passwordData) => {
 export const getLocationData = async () => {
 
     const response = await axiosInstance.get('/location');
-// console.log(response)
+    // console.log(response)
     return response.data;
 };
 export const getAmountData = async () => {

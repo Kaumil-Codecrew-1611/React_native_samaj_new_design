@@ -54,7 +54,6 @@ function Payment({ navigation, route }) {
 
     const payNow = async (data) => {
         try {
-
             const options = {
                 description: 'Pay to Panchal Samaj',
                 image: 'https://samajapp.codecrewinfotech.com/uploads/appstore.png',
@@ -70,24 +69,29 @@ function Payment({ navigation, route }) {
                 },
                 theme: { color: '#0D5ADD' },
             };
-
-            const paymentResponse = await RazorpayCheckout.open(options)
-            console.log(paymentResponse, "::::paymnet response")
-            const { razorpay_payment_id, status_code } = paymentResponse;
-
-
-            setRegisterData({ ...registerData, payment_id: razorpay_payment_id })
-
-            await register({ PerentsData: registerData });
-
-            // remove data from useContext
+    
+            const paymentResponse = await RazorpayCheckout.open(options);
+            console.log(paymentResponse, "::::paymnet response");
+    
+            const { razorpay_payment_id } = paymentResponse;
+    
+            // Create a new object with the updated payment_id
+            const updatedRegisterData = { ...registerData, payment_id: razorpay_payment_id };
+    
+            await register({ PerentsData: updatedRegisterData });
+    
+            // Update the state with the new data
+            setRegisterData(updatedRegisterData);
+    
+            // Navigate to PaymentSuccess
             navigation.navigate('PaymentSuccess');
         } catch (error) {
-            // remove data from useContext
+            // Navigate to PaymentFailed
             navigation.navigate('PaymentFailed');
             console.error('Payment error:', error);
         }
     };
+    
 
     // const { payload } = route.params;
     const payload = {

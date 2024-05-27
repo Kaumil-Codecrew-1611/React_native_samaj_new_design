@@ -34,10 +34,10 @@ export const ApiProvider = ({ children }) => {
     const getLocation = () => apiRequest(getLocationData, null, setData, 'locationData');
     const getAmount = () => apiRequest(getAmountData, null, setData, 'amountData');
     const PayOrder = (orderData) => apiRequest(payOrderData, orderData, setData, 'orderDataResponse');
-    const login = (userData) => apiRequest(loginUser,  userData, setData, 'loginDataResponse');
-
+    const loginAPICall = (userData) => apiRequest(loginUser, userData, setData, 'loginDataResponse');
+    // loginUser
     return (
-        <ApiContext.Provider value={{ state, register, viewUserDetails, addNewDetails, changeUserPassword, resetData, getLocation, getAmount, PayOrder, login }}>
+        <ApiContext.Provider value={{ state, register, viewUserDetails, addNewDetails, changeUserPassword, resetData, getLocation, getAmount, PayOrder, loginAPICall }}>
             {children}
         </ApiContext.Provider>
     );
