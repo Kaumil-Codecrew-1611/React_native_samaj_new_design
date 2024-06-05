@@ -1,32 +1,31 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
 import { Dimensions, Text, View } from 'react-native';
-import HomeScreen from '../screens/app/Home';
-
-import Aboutus from '../screens/app/About';
-import News from '../screens/app/News';
-import VillageListing from '../screens/app/VillageListing';
-// import Profile from '../screens/app/Profile';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import BottomTabs from '../containers/BottomTabs';
 import { GlobalContext } from '../context/globalState';
-import VillageWisePersons from '../screens/app/VillageWisePersons';
-
+import Aboutus from '../screens/app/About';
 import ChangePassword from '../screens/app/ChangePassword';
+import EmailSupport from '../screens/app/EmailSupport';
+import ViewFamilyTree from '../screens/app/FamilyDetails';
+import AddFamilyDetails from '../screens/app/FamilyDetails/AddFamilyDetails';
+import NodeDetails from '../screens/app/FamilyDetails/NodeDetails';
 import Faqs from '../screens/app/Faqs';
 import SelectVillage from '../screens/app/FormWizard/SelectVillage';
+import HomeScreen from '../screens/app/Home';
 import Login from '../screens/app/Login';
+import News from '../screens/app/News';
+import Payment from '../screens/app/Payment';
+import PaymentFailed from '../screens/app/Payment/PaymentFailed';
+import PaymentSuccess from '../screens/app/Payment/PaymentSuccess';
 import Register from '../screens/app/Register';
 import SettingBottomSheet from '../screens/app/Settings';
 import Support from '../screens/app/Support';
-import EmailSupport from '../screens/app/EmailSupport';
-import AddFamilyDetails from '../screens/app/FamilyDetails/AddFamilyDetails';
-
-import ViewFamilyTree from '../screens/app/FamilyDetails';
-import NodeDetails from '../screens/app/FamilyDetails/NodeDetails';
-import Payment from '../screens/app/Payment';
-import PaymentSuccess from '../screens/app/Payment/PaymentSuccess';
-import PaymentFailed from '../screens/app/Payment/PaymentFailed';
+import VillageListing from '../screens/app/VillageListing';
+import VillageWisePersons from '../screens/app/VillageWisePersons';
+import userProfilePage from '../screens/app/Profile/index';
+import NewsDetailsPage from '../screens/app/News/NewsDetailsPage';
+import NewsList from '../screens/app/News/NewsList';
 
 const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
@@ -62,6 +61,9 @@ const RootNavigator = () => {
             )} />
             <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: SelectedVillage || 'Village' }} />
             <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: 'Aboutus' }} />
+            <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: 'NewsList' }} />
+            <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: 'NewsDetailsPage' }} />
+            <RootStack.Screen name="userProfilePage" component={userProfilePage} options={{ headerTitle: 'userProfilePage' }} />
             <RootStack.Screen name="News" component={News} options={{ headerTitle: 'News' }} />
             <RootStack.Screen name="Support" options={{ headerTitle: 'Support Page' }} component={Support} />
             <RootStack.Screen name="Seetings" component={SettingBottomSheet} options={{ headerTitle: 'Setting' }} />

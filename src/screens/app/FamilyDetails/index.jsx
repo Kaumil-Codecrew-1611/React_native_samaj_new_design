@@ -1,67 +1,9 @@
 import * as d3 from 'd3';
-import React, { useRef, useState } from 'react';
-import { Dimensions, PanResponder, ScrollView, View } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { PanResponder, ScrollView, View } from 'react-native';
 import Svg, { G, Line, Rect, Text } from 'react-native-svg';
-
-const { width, height } = Dimensions.get('window');
-
-const treeData = {
-    name: "Root",
-    id: "0",
-    spouse: {
-        name: "Root's wife"
-    },
-    children: [
-        {
-            name: "Child 1",
-            id: "1",
-            data: "hey data",
-            spouse: {
-                name: "Child 1's wife"
-            },
-            children: [
-                { name: "Grandchild 1.1" },
-                {
-                    name: "Grandchild 1.2",
-                    spouse: {
-                        name: "Grandchild 1.2's wife"
-                    },
-                    children: [
-                        { name: "Great-Grandchild 1.2.1" }
-                    ]
-                },
-            ],
-        },
-        {
-            name: "Child 2",
-            spouse: {
-                name: "Child 2's wife"
-            },
-            children: [
-                { name: "Grandchild 2.1" },
-                { name: "Grandchild 2.2" },
-            ],
-        },
-        {
-            name: "Child 3",
-            spouse: {
-                name: "Child 3's wife"
-            },
-            children: [
-                {
-                    name: "Grandchild 3.1", spouse: {
-                        name: "Grandchild 3.1's wife"
-                    },
-                },
-                {
-                    name: "Grandchild 3.2", spouse: {
-                        name: "Grandchild 3.2's wife"
-                    },
-                }
-            ]
-        }
-    ],
-};
+import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
 
 const nodeWidth = 100;
 const nodeHeight = 40;
@@ -82,13 +24,13 @@ const TreeNode = ({ node, x, y, children, onPress }) => (
     <>
         <Rect x={x} y={y} width={nodeWidth} onPress={() => onPress(node)} height={nodeHeight} fill="white" stroke="black" />
         <Text x={x + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
-            {node.name}
+            {node.firstname}
         </Text>
-        {node.spouse && (
+        {node.wife && (
             <>
-                <Rect x={x + nodeWidth + baseHorizontalSpacing / 2} y={y} width={nodeWidth} height={nodeHeight} fill="white" stroke="black" onPress={() => onPress(node.spouse)} />
+                <Rect x={x + nodeWidth + baseHorizontalSpacing / 2} y={y} width={nodeWidth} height={nodeHeight} fill="white" stroke="black" onPress={() => onPress(node.wife)} />
                 <Text x={x + nodeWidth + baseHorizontalSpacing / 2 + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
-                    {node.spouse.name}
+                    {node.wife.firstname}
                 </Text>
                 <Line x1={x + nodeWidth} y1={y + nodeHeight / 2} x2={x + nodeWidth + baseHorizontalSpacing / 2} y2={y + nodeHeight / 2} stroke="black" />
             </>
@@ -101,6 +43,7 @@ const FamilyTree = ({ data, navigation }) => {
     const root = d3.hierarchy(data);
     const horizontalSpacing = calculateHorizontalSpacing(root);
     const treeLayout = d3.tree().nodeSize([horizontalSpacing, verticalSpacing]);
+
     treeLayout(root);
 
     const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -112,23 +55,19 @@ const FamilyTree = ({ data, navigation }) => {
                     y: prevPan.y + gestureState.dy
                 }));
             },
-            onPanResponderRelease: () => {
-                // Add any cleanup code here if necessary
-            },
         })
     ).current;
 
     const handleNodePress = (node) => {
-        navigation.navigate('NodeDetails', { node });
+        const userId = node._id
+        console.log("nodenodenode", node)
+        navigation.navigate('NodeDetails', { userId, node });
     };
-
-    // Calculate the required width and height for the SVG
     const nodes = root.descendants();
     const minX = Math.min(...nodes.map(d => d.x));
     const maxX = Math.max(...nodes.map(d => d.x));
     const minY = Math.min(...nodes.map(d => d.y));
     const maxY = Math.max(...nodes.map(d => d.y));
-
     const svgWidth = maxX - minX + nodeWidth + horizontalSpacing;
     const svgHeight = maxY - minY + nodeHeight + verticalSpacing;
 
@@ -177,11 +116,28 @@ const FamilyTree = ({ data, navigation }) => {
     );
 };
 
-const ViewFamilyTree = ({ navigation }) => (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <FamilyTree data={treeData} navigation={navigation} />
-    </View>
-);
+const ViewFamilyTree = ({ navigation }) => {
+    const { allDataOfFamilyById, state } = useContext(ApiContext);
+    const { allUserInfo } = useContext(GlobalContext);
+    const [userData, setUserData] = useState("");
+
+    useEffect(() => {
+        (async function () {
+            try {
+                const contentOfAllFamilyMembers = await allDataOfFamilyById(allUserInfo._id);
+                setUserData(contentOfAllFamilyMembers);
+            } catch (error) {
+                console.log("error", error);
+            }
+        })();
+    }, [state.addFamilyMemberDetails]);
+
+    return (
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <FamilyTree data={userData} navigation={navigation} />
+        </View>
+    );
+};
 
 const styles = {
     parentScrollViewStyle: {

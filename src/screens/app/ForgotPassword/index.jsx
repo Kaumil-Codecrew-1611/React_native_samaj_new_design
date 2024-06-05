@@ -12,10 +12,8 @@ const schema = yup.object().shape({
         'Invalid email or phone number',
         function (value) {
             if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(value)) {
-                console.log(value, 'valueif')
                 return true;
             } else if (/^\d{10}$/.test(value)) {
-                console.log(value, 'valueelse')
                 return true;
             }
             return false;

@@ -1,9 +1,9 @@
-import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useCallback, useMemo, useRef, useState } from "react";
 import { runOnJS, useAnimatedProps, useSharedValue } from "react-native-reanimated";
 import { interpolatePath } from 'react-native-redash';
 import usePath from "../hooks/usePath";
 import { getPathXCenter } from "../utils/path";
-import { Keyboard } from 'react-native';
 export const GlobalContext = createContext({});
 
 export const GlobalProvider = (props) => {
@@ -25,7 +25,7 @@ export const GlobalProvider = (props) => {
             d: `${containerPath} ${currentPath}`,
         };
     });
-
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [SelectedVillage, setSelectedVillage] = useState("");
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
     const [screenpercentage, setScreenpercentage] = useState({
@@ -56,6 +56,30 @@ export const GlobalProvider = (props) => {
 
     const [isAuthScreenActive, setIsAuthScreenActive] = useState(false);
 
+    const setuserDataInStorage = async (key, data) => {
+        try {
+            await AsyncStorage.setItem(key, JSON.stringify(data));
+
+        } catch (error) {
+            console.log(error, "set storage error")
+        }
+    }
+    const [allUserInfo, setAllUserInfo] = useState({})
+    const getUserDataFromStorage = async (key) => {
+        try {
+            const userData = await AsyncStorage.getItem(key);
+            if (userData !== null) {
+                const user = await JSON.parse(userData);
+                setIsLoggedIn(!!(user?._id))
+                setAllUserInfo(user)
+                return user
+                // Use the user data as needed
+            }
+        } catch (error) {
+            console.error('Failed to fetch data from storage', error);
+        }
+    };
+
     const value = {
         progress,
         animatedProps,
@@ -78,8 +102,13 @@ export const GlobalProvider = (props) => {
         setIsAuthScreenActive,
         isAuthScreenActive,
         setRegisterData,
-        registerData
-
+        registerData,
+        getUserDataFromStorage,
+        setuserDataInStorage,
+        setIsLoggedIn,
+        isLoggedIn,
+        allUserInfo,
+        setAllUserInfo
     };
 
     return (

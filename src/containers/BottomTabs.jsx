@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CustomBottomTab from '../components/shared/BottomTabs/CustomBottomTab';
-import LoginScreen from '../screens/Login';
+import { GlobalContext } from '../context/globalState';
 import ContactUs from '../screens/app/Contactus';
 import Home from '../screens/app/Home';
 import Member from '../screens/app/Member';
@@ -12,7 +12,9 @@ import Welcome from '../screens/app/WelcomeScreen';
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
-    const isLoggedIn = false;
+    const { isLoggedIn } = useContext(GlobalContext);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false)
+
 
     // const { keyboardVisible } = useContext(GlobalContext);
     return (
@@ -39,12 +41,15 @@ const BottomTabs = () => {
                     name="Member"
                     component={Member}
                 />
-                {isLoggedIn && <Tab.Screen
+                {!!isLoggedIn && <Tab.Screen
                     options={{ tabBarLabel: 'Profile' }}
                     name="Profile"
                     component={ProfilePage}
                 />}
-                {!isLoggedIn && <Tab.Screen options={{ tabBarLabel: 'Auth', tabBarStyle: { display: 'none' } }} name="Auth" component={Welcome} />}
+                {!isLoggedIn && <Tab.Screen options={{ tabBarLabel: 'Auth', tabBarStyle: { display: 'none' } }}
+                    name="Auth"
+                    component={Welcome}
+                />}
                 < Tab.Screen
                     options={{ tabBarLabel: 'Contactus' }}
                     name="Contactus"

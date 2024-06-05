@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
-import { Dimensions, ScrollView, Image, TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
+import RenderHTML from 'react-native-render-html';
+import ApiContext from '../../../context/ApiContext';
 
-const { width } = Dimensions.get('window')
-const IMG_HEIGHT = 300
+const { width } = Dimensions.get('window');
+const IMG_HEIGHT = 300;
 
 const Aboutus = () => {
-
     const scrollRef = useAnimatedRef();
     const scrolloffset = useScrollViewOffset(scrollRef);
+    const { aboutUsContentApi } = useContext(ApiContext);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+
+    useEffect(() => {
+        (async function () {
+            const contentAboutUs = await aboutUsContentApi();
+            setTitle(contentAboutUs[0]?.title);
+            setDescription(contentAboutUs[0]?.description);
+        })();
+    }, []);
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         return {
@@ -19,7 +31,6 @@ const Aboutus = () => {
                         [-IMG_HEIGHT, 0, IMG_HEIGHT],
                         [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
                     ),
-
                 },
                 {
                     scale: interpolate(
@@ -29,10 +40,10 @@ const Aboutus = () => {
                     )
                 }
             ]
-        }
-    })
-    const scrollY = useSharedValue(0);
+        };
+    });
 
+    const scrollY = useSharedValue(0);
     const headerHeight = useSharedValue(0);
     const headerAnimatedStyle = useAnimatedStyle(() => {
         return {
@@ -42,66 +53,48 @@ const Aboutus = () => {
         };
     });
 
-    /*  const handleScroll = (event) => {
-         scrollY.value = event.nativeEvent.contentOffset.y;
-     }; */
     const handleScroll = (event) => {
         scrollY.value = event.nativeEvent.contentOffset.y;
     };
+
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.header, headerAnimatedStyle]}>
-                <Text className="font-bold text-3xl">Your Header</Text>
+                <Text style={styles.headerText}>Your Header</Text>
             </Animated.View>
             <Animated.ScrollView onScroll={handleScroll} ref={scrollRef} scrollEventThrottle={16}>
                 <View>
                     <Animated.Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
                         style={[styles.image, imageAnimatedStyle]} />
-
                 </View>
-
-                <View className="bg-white">
-
-                    <View className="ml-[10px]">
-                        <Text className="tracking-wider text-neutral-700 font-semibold text-3xl">About Us.</Text>
-                        <View className="w-12 h-2 bg-red-400 my-2 rounded"></View>
-                        <Text className="text-[17px] font-medium mt-[10px]">
-                            Were on a missionto add relevancy to every online experince
-                        </Text>
+                <View style={styles.contentContainer}>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>About Us</Text>
+                        <View style={styles.sectionDivider}></View>
+                        <Text style={styles.sectionText}>{title}</Text>
                     </View>
-
-
-                    <TouchableOpacity className="flex items-center justify-center bg-rose-400 h-10 w-40 ml-3 mt-4 mb-10 rounded">
-                        <Text className="tracking-wider text-neutral-700 font-medium text-base">Learn More</Text>
-                    </TouchableOpacity>
-
-                    <View className="p-[10px]">
-                        <Text className="tracking-wider text-neutral-700 font-semibold text-3xl">Our Purpose</Text>
-                        <View className="w-12 h-2 bg-red-400 my-2 rounded"></View>
-                        <Text className="tracking-wider text-neutral-700 font-medium text-base">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.
-                        </Text>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Our Purpose</Text>
+                        <View style={styles.sectionDivider}></View>
+                        <RenderHTML
+                            contentWidth={width}
+                            source={{ html: description }}
+                            tagsStyles={htmlStyles}
+                        />
                     </View>
-
-                    <View className="mt-4">
+                    {/* <View style={styles.section}>
                         <Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
-                            style={[styles.image]} />
+                            style={styles.image} />
                     </View>
-
-                    <View className="p-[10px]">
-                        <Text className="tracking-wider text-neutral-700 font-semibold text-3xl">Our Approach</Text>
-                        <View className="w-12 h-2 bg-red-400 my-2 rounded"></View>
-                        <Text className="tracking-wider text-neutral-700 font-medium text-base">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.
-                        </Text>
-                        <Text className="tracking-wider text-neutral-700 font-medium text-base mt-8">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.
-                        </Text>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Our Approach</Text>
+                        <View style={styles.sectionDivider}></View>
+                        <Text style={styles.sectionText}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.</Text>
+                        <Text style={[styles.sectionText, styles.sectionTextMarginTop]}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.</Text>
                     </View>
-
-                    <TouchableOpacity className="flex items-center justify-center bg-rose-400 h-10 w-40 ml-3 mt-4 mb-20  rounded">
-                        <Text className="tracking-wider text-neutral-700 font-medium text-base">Learn More</Text>
-                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.learnMoreButton}>
+                        <Text style={styles.learnMoreButtonText}>Learn More</Text>
+                    </TouchableOpacity> */}
                 </View>
             </Animated.ScrollView>
         </View>
@@ -115,9 +108,65 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+    headerText: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        textAlign: 'center',
+        padding: 20,
+    },
     image: {
         width,
         height: IMG_HEIGHT,
     },
-
+    contentContainer: {
+        backgroundColor: '#fff',
+        padding: 10,
+    },
+    section: {
+        marginBottom: 20,
+    },
+    sectionTitle: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        color: '#333',
+    },
+    sectionDivider: {
+        width: 50,
+        height: 5,
+        backgroundColor: 'red',
+        marginVertical: 10,
+    },
+    sectionText: {
+        fontSize: 16,
+        color: '#555',
+        textAlign: 'justify',
+    },
+    sectionTextMarginTop: {
+        marginTop: 20,
+    },
+    learnMoreButton: {
+        backgroundColor: 'red',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    learnMoreButtonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
 });
+
+const htmlStyles = {
+    p: {
+        fontSize: 16,
+        textAlign: 'justify',
+        color: '#555',
+    },
+    strong: {
+        fontWeight: 'bold',
+    },
+    i: {
+        fontStyle: 'italic',
+    },
+};

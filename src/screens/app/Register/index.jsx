@@ -1,25 +1,27 @@
-import { CheckIcon, Select, Radio } from "native-base";
-import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Pressable, Platform } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { CheckIcon, Radio, Select } from "native-base";
+import React, { useContext, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const schema = yup.object().shape({
-    firstName: yup.string().required('First Name is required'),
-    lastName: yup.string().required('Last Name is required'),
-    middleName: yup.string().required('Middle Name is required'),
+    firstname: yup.string().required('First Name is required'),
+    lastname: yup.string().required('Last Name is required'),
+    middlename: yup.string().required('Middle Name is required'),
+    email: yup.string()
+        .matches(emailRegex, 'Invalid email address')
+        .required('Email is required'),
     password: yup.string().required('Password is required').matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
         'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
     ),
-    // dob: yup.date().nullable().required('Date of Birth is required'),
-    // village: yup.string().required('Village is required'),
     mobile_number: yup.string().required('Phone Number is required').matches(/^[0-9]{10}$/, 'Phone Number must be exactly 10 digits'),
     address: yup.string().required('Address is required'),
     city: yup.string().required('City is required'),
@@ -27,12 +29,10 @@ const schema = yup.object().shape({
     pincode: yup.string().required('Pincode is required').matches(/^[0-9]{6}$/, 'Pincode must be exactly 6 digits'),
     education: yup.string().required('Education is required'),
     job: yup.string().required('Job is required'),
-    // maritalStatus: yup.string().required('Marital Status is required'),
     gender: yup.string().required('Gender is required'),
 });
 
-
-const Register = ({ navigation, route }) => {
+const Register = ({ navigation }) => {
     const { state, getLocation } = useContext(ApiContext);
     const { setRegisterData } = useContext(GlobalContext);
     const [locations, setLocations] = useState('');
@@ -41,7 +41,7 @@ const Register = ({ navigation, route }) => {
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            gender: '', // Ensure gender has an initial value
+            gender: '',
         }
     });
 
@@ -62,28 +62,14 @@ const Register = ({ navigation, route }) => {
 
     const onSubmit = (data) => {
         setRegisterData(data);
-
         navigation.navigate('Payment');
     };
 
-
-    const onDateChange = (event, selectedDate) => {
+    const onDateChange = (selectedDate) => {
         const currentDate = selectedDate || dob;
         setShowPicker(false);
-        setValue('dob', currentDate); // Update the 'dob' field value in the form state
+        setValue('dob', currentDate);
     };
-    /*     const onDateChange = (event, selectedDate) => {
-            if (selectedDate !== undefined && selectedDate !== null) {
-               
-                const currentDate = selectedDate;
-                setShowPicker(Platform.OS === 'ios');
-                setDob(currentDate);
-            } else {
-                setShowPicker(Platform.OS === 'ios');
-            }
-        }; */
-
-    // console.log(errors.dob, ';errors.dob ')
 
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
@@ -138,7 +124,7 @@ const Register = ({ navigation, route }) => {
                                         <View className=" w-full mt-2">
                                             <Controller
                                                 control={control}
-                                                name="firstName"
+                                                name="firstname"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         placeholder="First name here ...."
@@ -150,7 +136,7 @@ const Register = ({ navigation, route }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.firstName && <Text style={styles.error}>{errors.firstName.message}</Text>}
+                                            {errors.firstname && <Text style={styles.error}>{errors.firstname.message}</Text>}
                                         </View>
                                     </View>
 
@@ -161,7 +147,7 @@ const Register = ({ navigation, route }) => {
                                         <View className=" w-full mt-2">
                                             <Controller
                                                 control={control}
-                                                name="lastName"
+                                                name="lastname"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         placeholder="Last name here ...."
@@ -173,7 +159,7 @@ const Register = ({ navigation, route }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.lastName && <Text style={styles.error}>{errors.lastName.message}</Text>}
+                                            {errors.lastname && <Text style={styles.error}>{errors.lastname.message}</Text>}
                                         </View>
                                     </View>
 
@@ -184,7 +170,7 @@ const Register = ({ navigation, route }) => {
                                         <View className=" w-full mt-2">
                                             <Controller
                                                 control={control}
-                                                name="middleName"
+                                                name="middlename"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         placeholder="Middle name here ...."
@@ -196,7 +182,30 @@ const Register = ({ navigation, route }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.middleName && <Text style={styles.error}>{errors.middleName.message}</Text>}
+                                            {errors.middlename && <Text style={styles.error}>{errors.middlename.message}</Text>}
+                                        </View>
+                                    </View>
+
+                                    <View className="my-1">
+                                        <View className="w-full">
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Email:</Text>
+                                        </View>
+                                        <View className=" w-full mt-2">
+                                            <Controller
+                                                control={control}
+                                                name="email"
+                                                render={({ field: { onChange, onBlur, value } }) => (
+                                                    <TextInput
+                                                        placeholder="Email here ...."
+                                                        placeholderTextColor="grey"
+                                                        style={styles.input}
+                                                        value={value}
+                                                        onBlur={onBlur}
+                                                        onChangeText={(text) => onChange(text)}
+                                                    />
+                                                )}
+                                            />
+                                            {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
                                         </View>
                                     </View>
 
@@ -237,7 +246,6 @@ const Register = ({ navigation, route }) => {
                                                         placeholder="Select Date of Birth"
                                                         placeholderTextColor="grey"
                                                         value={dob ? dob.toDateString() : ''}
-                                                        // value={value ? value.toString() : ''}
                                                         onBlur={onBlur}
                                                         disableFullscreenUI={true}
                                                         editable={false}
@@ -429,7 +437,7 @@ const Register = ({ navigation, route }) => {
                                             <View className="mx-1">
                                                 <Controller
                                                     control={control}
-                                                    name="maritalStatus"
+                                                    name="marital_status"
                                                     render={({ field: { onChange, onBlur, value } }) => (
                                                         <Select
                                                             placeholder="Select Marital Status"
@@ -441,7 +449,7 @@ const Register = ({ navigation, route }) => {
                                                             }}
 
                                                         >
-                                                            <Select.Item label="Marital Status" value="maritalStatus" />
+                                                            <Select.Item label="Marital Status" value="marital_status" />
                                                             <Select.Item label="Married" value="married" />
                                                             <Select.Item label="Unmarried" value="unmarried" />
                                                             <Select.Item label="Widower" value="Widower" />
@@ -451,7 +459,7 @@ const Register = ({ navigation, route }) => {
                                                     )}
                                                 />
                                             </View>
-                                            {errors.maritalStatus && <Text style={styles.error}>{errors.maritalStatus.message}</Text>}
+                                            {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
                                         </View>
                                     </View>
 
@@ -506,7 +514,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     input: {
-        // width: '100%',
         backgroundColor: '#F3F5F7',
         color: '#333',
         borderRadius: 10,
@@ -533,5 +540,3 @@ const styles = StyleSheet.create({
 });
 
 export default Register;
-
-

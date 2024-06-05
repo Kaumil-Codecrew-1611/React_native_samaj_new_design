@@ -1,4 +1,5 @@
 // src/api/apiFunctions.js
+import axios from 'axios';
 import axiosInstance from '../utils/axiosInstance';
 
 export const registerUser = async (userData) => {
@@ -7,9 +8,7 @@ export const registerUser = async (userData) => {
 };
 
 export const payOrderData = async (orderData) => {
-    // console.log(orderData,'')
     const response = await axiosInstance.post('/order', orderData);
-    console.log(response.data, " hey response")
     return response.data;
 };
 
@@ -31,7 +30,6 @@ export const changePassword = async (passwordData) => {
 export const getLocationData = async () => {
 
     const response = await axiosInstance.get('/location');
-    // console.log(response)
     return response.data;
 };
 export const getAmountData = async () => {
@@ -44,4 +42,85 @@ export const getAmountData = async () => {
 export const loginUser = async (userData) => {
     const response = await axiosInstance.post('/userlogin', userData);
     return response.data;
+};
+
+export const homePageSlider = async () => {
+    const response = await axiosInstance.get(`/slider`);
+    return response.data
+};
+
+export const aboutUsContent = async () => {
+    const response = await axiosInstance.get(`/aboutus`);
+    return response.data
+};
+
+export const allVillageListing = async () => {
+    const response = await axiosInstance.get(`/location`);
+    return response.data
+};
+
+export const villagesByUser = async (villageId) => {
+    const response = await axiosInstance.post('/villagebyuser', { searchValue: villageId });
+    return response.data;
+};
+
+export const allNewsListing = async () => {
+    const response = await axiosInstance.get('/news');
+    return response.data
+};
+
+export const addFamilyMember = async (familyData) => {
+    const response = await axiosInstance.post('/addfamily/:id', familyData);
+    return response.data;
+};
+
+export const userPasswordChange = async (userPassword) => {
+    const response = await axiosInstance.post('/password_change', userPassword);
+    return response.data;
+};
+
+export const contactUsDetails = async () => {
+    const response = await axiosInstance.get('/listsettings');
+    return response.data
+};
+
+export const committeeMembers = async () => {
+    const response = await axiosInstance.get('/committee_members');
+    return response.data
+};
+
+export const relationshipDataList = async () => {
+    const response = await axiosInstance.get('/relationaship');
+    return response.data
+};
+
+export const familyDataById = async (parentId) => {
+    const response = await axiosInstance.get(`/familyData/${parentId}`);
+    return response.data
+};
+
+export const familyDataByUserParentId = async (userDataId) => {
+    const response = await axiosInstance.get(`/userList/${userDataId}`);
+    return response.data
+};
+
+export const newsDetailsById = async (newsId) => {
+    const response = await axiosInstance.get(`/news-edit/${newsId}`);
+    return response.data
+};
+
+export const updateUserProfile = async (payload) => {
+    try {
+        const { userData, id } = payload;
+        const axiosWithHeaders = axios.create({
+            baseURL: axiosInstance.defaults.baseURL,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        const response = await axiosWithHeaders.post(`/profile_image/${id}`, userData);
+        return response.data
+    } catch (err) {
+        console.log(err, "Errors")
+    }
 };
