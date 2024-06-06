@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { Dimensions, ScrollView, Image, TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
+import RenderHTML from 'react-native-render-html';
+import ApiContext from '../../../context/ApiContext';
 
-const FamilyDetailsPage = ({navigation}) => {
- 
+const { width } = Dimensions.get('window');
+const IMG_HEIGHT = 300;
 
-
+const Aboutus = () => {
     const scrollRef = useAnimatedRef();
     const scrolloffset = useScrollViewOffset(scrollRef);
+    const { aboutUsContentApi } = useContext(ApiContext);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+
+    useEffect(() => {
+        (async function () {
+            const contentAboutUs = await aboutUsContentApi();
+            setTitle(contentAboutUs[0]?.title);
+            setDescription(contentAboutUs[0]?.description);
+        })();
+    }, []);
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         return {
@@ -18,7 +31,6 @@ const FamilyDetailsPage = ({navigation}) => {
                         [-IMG_HEIGHT, 0, IMG_HEIGHT],
                         [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
                     ),
-
                 },
                 {
                     scale: interpolate(
@@ -28,10 +40,10 @@ const FamilyDetailsPage = ({navigation}) => {
                     )
                 }
             ]
-        }
-    })
-    const scrollY = useSharedValue(0);
+        };
+    });
 
+    const scrollY = useSharedValue(0);
     const headerHeight = useSharedValue(0);
     const headerAnimatedStyle = useAnimatedStyle(() => {
         return {
@@ -41,304 +53,120 @@ const FamilyDetailsPage = ({navigation}) => {
         };
     });
 
-    /*  const handleScroll = (event) => {
-         scrollY.value = event.nativeEvent.contentOffset.y;
-     }; */
     const handleScroll = (event) => {
         scrollY.value = event.nativeEvent.contentOffset.y;
     };
+
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.header, headerAnimatedStyle]}>
-                <Text className="font-bold text-3xl">Your Header</Text>
+                <Text style={styles.headerText}>Your Header</Text>
             </Animated.View>
             <Animated.ScrollView onScroll={handleScroll} ref={scrollRef} scrollEventThrottle={16}>
                 <View>
                     <Animated.Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
                         style={[styles.image, imageAnimatedStyle]} />
-
-            <View style={styles.row}>
-              <Text style={styles.familylabel}>{t('name')} : </Text>
-              <Text style={styles.familyDetails}>
-                {parentsData?.lastname} {parentsData?.firstname} {parentsData?.middlename}{' '}
-
-              </Text>
-            </View>
-
-            <View style={styles.row}>
-              <Text style={styles.familylabel}>{t('personalid')} : </Text>
-              <Text style={styles.familyDetails}>
-                {parentsData?.personal_id}
-              </Text>
-            </View>
-
-            <View style={styles.row}>
-              <Text style={styles.familylabel}>{t('dateofbirth')} : </Text>
-              <Text style={styles.familyDetails}>{formattedDate}</Text>
-            </View>
-
-            <View style={styles.row}>
-              <Text style={styles.familylabel}>{t('age')} : </Text>
-              <Text style={styles.familyDetails}>{parentsAge} years</Text>
-            </View>
-
-            <View style={styles.row}>
-              <Text style={styles.familylabel}>{t('gender')} :</Text>
-              <Text style={styles.familyDetails}>{parentsData?.gender}</Text>
-            </View>
-
-            <View style={styles.row}>
-              <Text style={styles.familylabel}>{t('education')} : </Text>
-              <Text style={styles.familyDetails}>{parentsData?.education}</Text>
-            </View>
-
-            <View style={styles.row}>
-              <Text style={styles.familylabel}>{t('profession')} :</Text>
-              <Text style={styles.familyDetails}>{parentsData?.job}</Text>
-            </View>
-          </View>
-        </View>
-      </>
-    );
-  };
-
-  const renderChildDetails = () => {
-    return childData.length !== 0 ? (
-      childData.map((child, index) => {
-        const childAge = AgeCount(child?.dob);
-        const formattedDate = moment(child?.dob).format('DD/MM/YYYY');
-        return (
-          <View key={index} style={styles.MainContainer}>
-            <View style={styles.familyItem}>
-              <Pressable
-                style={styles.EditIcon}
-                onPress={() =>
-                  navigation.navigate('EditFamilyDetails', {
-                    childId: child && child?._id,
-                  })
-                }>
-                <MaterialCommunityIcons
-                  name="account-edit-outline"
-                  size={30}
-                  color="#00000090"
-                />
-              </Pressable>
-
-
-              <View style={styles.dropdownContent}>
-                <View style={styles.headingRelation}>
-                  <Text style={styles.FamilyName}>
-                    {child && child?.relationship}
-                  </Text>
                 </View>
-              </View>
-
-              <View style={styles.row}>
-                <Text style={styles.familylabel}>{t('name')} : </Text>
-                <Text style={styles.familyDetails}>
-                  {child &&
-                    child?.lastname +
-                    ' ' +
-                    child?.firstname +
-                    ' ' +
-                    child?.middlename}
-                </Text>
-              </View>
-
-              <View style={styles.row}>
-                <Text style={styles.familylabel}>{t('dateofbirth')} : </Text>
-                <Text style={styles.familyDetails}>{formattedDate}</Text>
-              </View>
-
-              <View style={styles.row}>
-                <Text style={styles.familylabel}>{t('age')} : </Text>
-                <Text style={styles.familyDetails}>{childAge} years</Text>
-              </View>
-
-              <View style={styles.row}>
-                <Text style={styles.familylabel}>{t('gender')} :</Text>
-                <Text style={styles.familyDetails}>
-                  {child && child?.gender}
-                </Text>
-              </View>
-
-              <View style={styles.row}>
-                <Text style={styles.familylabel}>{t('education')} : </Text>
-                <Text style={styles.familyDetails}>
-                  {child && child?.education}
-                </Text>
-              </View>
-
-              <View style={styles.row}>
-                <Text style={styles.familylabel}>{t('profession')} :</Text>
-                <Text style={styles.familyDetails}>{child && child?.job}</Text>
-              </View>
-              <View style={styles.DeleteIcon}>
-                <Pressable
-                  // onPress={() => DeleteFamilyMember(child && child?._id)}
-                  onPress={() => setShowModal(true)}>
-                  <MaterialCommunityIcons
-                    name="delete"
-                    size={30}
-                    color="#ff0000"
-                  />
-                </Pressable>
-              </View>
-            </View>
-            {showModal && (
-              <CustomModal
-                showModal={showModal}
-                setShowModal={setShowModal}
-                onConfirm={() => DeleteFamilyMember(child && child?._id)}
-                Title={t('confirm')}
-                Message={t('deleteconfirm')}
-              />
-            )}
-          </View>
-
-        );
-      })
-    ) : (
-      <View style={styles.blankcontainer}>
-        <Text style={styles.blank}>{t('familymembersarenotavailable')}</Text>
-      </View>
+                <View style={styles.contentContainer}>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>About Us</Text>
+                        <View style={styles.sectionDivider}></View>
+                        <Text style={styles.sectionText}>{title}</Text>
+                    </View>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Our Purpose</Text>
+                        <View style={styles.sectionDivider}></View>
+                        <RenderHTML
+                            contentWidth={width}
+                            source={{ html: description }}
+                            tagsStyles={htmlStyles}
+                        />
+                    </View>
+                    {/* <View style={styles.section}>
+                        <Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
+                            style={styles.image} />
+                    </View>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Our Approach</Text>
+                        <View style={styles.sectionDivider}></View>
+                        <Text style={styles.sectionText}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.</Text>
+                        <Text style={[styles.sectionText, styles.sectionTextMarginTop]}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.</Text>
+                    </View>
+                    <TouchableOpacity style={styles.learnMoreButton}>
+                        <Text style={styles.learnMoreButtonText}>Learn More</Text>
+                    </TouchableOpacity> */}
+                </View>
+            </Animated.ScrollView>
+        </View>
     );
-  };
-
-  return (
-    <View style={styles.container}>
-      <ScrollView>
-        {renderParentDetails()}
-        {renderChildDetails()}
-        {childData.length < 7 && (
-          <Pressable
-            style={styles.button}
-            onPress={() =>
-              navigation.navigate('FamilyRegister', {
-                userId: parentsData?._id,
-              })
-            }>
-            <MaterialCommunityIcons name="plus" size={25} color="#fff" />
-            <Text style={styles.btnText}> {t('addnewfamilymembers')}</Text>
-          </Pressable>
-        )}
-
-      </ScrollView>
-    </View>
-  );
 };
 
+export default Aboutus;
+
 const styles = StyleSheet.create({
-  MainContainer: {
-    padding: 15,
-  },
-
-  familyItem: {
-    backgroundColor: '#bbe2ec',
-    padding: 12,
-    borderRadius: 8,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-
-  dropdownContent: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-  },
-
-  EditIcon: {
-    position: 'absolute',
-    right: 7,
-    top: 7,
-  },
-  DeleteIcon: {
-    position: 'absolute',
-    right: 7,
-    bottom: 7,
-  },
-
-  FamilyName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-    textTransform: 'capitalize',
-  },
-
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
-
-  familylabel: {
-    alignItems: 'flex-start',
-    flexBasis: '45%',
-    fontSize: 15,
-    color: '#333',
-    fontWeight: '600',
-  },
-
-  familyDetails: {
-    flexBasis: '55%',
-    fontSize: 14,
-    color: '#444',
-    textTransform: 'capitalize',
-  },
-
-  container: {
-    backgroundColor: '#dae4f0',
-    height: '100%',
-    width: '100%',
-    paddingVertical: 20,
-  },
-
-  blankcontainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-
-  blank: {
-    color: 'black',
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    width: '90%',
-  },
-
-  button: {
-    height: 50,
-    backgroundColor: '#00a9ff',
-    borderRadius: 6,
-    elevation: 5,
-    display: 'flex',
-    flexDirection: 'row',
-    // flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 10,
-    marginHorizontal: 15,
-  },
-
-  btnText: {
-    color: 'white',
-    fontSize: 20,
-    textTransform: 'uppercase',
-    fontWeight: 'bold',
-  },
-
-  // btnText: {
-  //   color: '#fff',
-  //   fontSize: 20,
-  //   textTransform: 'uppercase',
-  //   fontWeight: 'bold',
-  // },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    headerText: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        textAlign: 'center',
+        padding: 20,
+    },
+    image: {
+        width,
+        height: IMG_HEIGHT,
+    },
+    contentContainer: {
+        backgroundColor: '#fff',
+        padding: 10,
+    },
+    section: {
+        marginBottom: 20,
+    },
+    sectionTitle: {
+        fontWeight: 'bold',
+        fontSize: 24,
+        color: '#333',
+    },
+    sectionDivider: {
+        width: 50,
+        height: 5,
+        backgroundColor: 'red',
+        marginVertical: 10,
+    },
+    sectionText: {
+        fontSize: 16,
+        color: '#555',
+        textAlign: 'justify',
+    },
+    sectionTextMarginTop: {
+        marginTop: 20,
+    },
+    learnMoreButton: {
+        backgroundColor: 'red',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    learnMoreButtonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
 });
 
-export default FamilyDetailsPage;
+const htmlStyles = {
+    p: {
+        fontSize: 16,
+        textAlign: 'justify',
+        color: '#555',
+    },
+    strong: {
+        fontWeight: 'bold',
+    },
+    i: {
+        fontStyle: 'italic',
+    },
+};

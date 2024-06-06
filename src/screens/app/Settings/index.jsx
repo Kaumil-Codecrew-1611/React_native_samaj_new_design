@@ -5,7 +5,7 @@ import { Radio, Box } from 'native-base';
 
 const SettingBottomSheet = ({ navigation, route }) => {
     const [language, setLanguage] = useState('');
-    console.log(language)
+
     return (
         <View style={styles.container} className="flex-1 p-6 bg-indigo-50">
             <Radio.Group

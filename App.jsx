@@ -1,22 +1,28 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, StatusBar } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
+import { NativeBaseProvider } from 'native-base';
+import React, { useContext, useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import SplashScreen from 'react-native-splash-screen';
-import { GlobalContext, GlobalProvider } from './src/context/globalState';
-import RootNavigator from './src/navigators/RootNavigator';
-import { KeyboardAvoidingView, NativeBaseProvider } from 'native-base';
 import { PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import SplashScreen from 'react-native-splash-screen';
+import { GlobalContext } from './src/context/globalState';
+import RootNavigator from './src/navigators/RootNavigator';
+import ErrorBoundary from './src/utils/ErrorBoundary';
 
 const App = () => {
+  const { setIsAuthScreenActive, getUserDataFromStorage } = useContext(GlobalContext);
   useEffect(() => {
     SplashScreen.hide();
+    getDataFromStorage();
   }, []);
 
-  const { setIsAuthScreenActive } = useContext(GlobalContext);
+  async function getDataFromStorage() {
+    await getUserDataFromStorage('user');
+  }
+
   const getActiveRouteName = (state) => {
     const route = state.routes[state.index];
 
@@ -38,12 +44,14 @@ const App = () => {
       <SafeAreaProvider>
         <PaperProvider>
           <NativeBaseProvider>
-            <NavigationContainer
-              onReady={() => changeNavigationBarColor('white')}
-              onStateChange={handleStateChange}
-            >
-              <RootNavigator />
-            </NavigationContainer>
+            <ErrorBoundary>
+              <NavigationContainer
+                onReady={() => changeNavigationBarColor('white')}
+                onStateChange={handleStateChange}
+              >
+                <RootNavigator />
+              </NavigationContainer>
+            </ErrorBoundary>
           </NativeBaseProvider>
         </PaperProvider>
         <StatusBar barStyle={'dark-content'} />

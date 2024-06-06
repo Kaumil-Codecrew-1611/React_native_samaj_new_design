@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 const banner_img = require("../../../assets/support_header_bg.png")
 function Support({ navigation }) {
-    // console.log(navigation.navigate,'navigation')
+
 
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
 

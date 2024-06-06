@@ -1,12 +1,20 @@
-import { Text, TextInput, KeyboardAvoidingView, TouchableOpacity, Image, View } from "react-native";
-import React, { useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useContext, useState } from "react";
+import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import VillageByName from "../../../components/VillageByName";
-
+import ApiContext from "../../../context/ApiContext";
 
 const VillageWisePersons = () => {
 
-    const [search, setSearch] = useState("")
-
+    const [search, setSearch] = useState("");
+    const { resetData } = useContext(ApiContext);
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                resetData('allUserByVillage');
+            };
+        }, [])
+    );
     return (
 
         <View className="flex-1 bg-gray-300 space-y-5 w-full" edges={['top']}>
@@ -39,9 +47,7 @@ const VillageWisePersons = () => {
             </View>
             <VillageByName searchValue={search} />
         </View >
-
     );
 };
 
 export default VillageWisePersons;
-

@@ -1,67 +1,30 @@
-import React, { useRef } from 'react';
-import { Animated, FlatList, View, Image, Text, StyleSheet } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Animated, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import ApiContext from '../../context/ApiContext';
 
 const cardHeight = 85;
 const padding = 10;
 const offset = cardHeight + padding;
 
-const contact = [
-    {
-        id: 1,
-        image: "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-    {
-        id: 2,
-        image: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-    {
-        id: 8,
-        image: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-    {
-        id: 3,
-        image: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-    {
-        id: 4,
-        image: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-    {
-        id: 5,
-        image: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-    {
-        id: 6,
-        image: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-    {
-        id: 7,
-        image: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Ajay horilal varma",
-        village: "Vastral"
-    },
-]
-
-
-
 const VillageByName = ({ searchValue }) => {
     const scrollY = useRef(new Animated.Value(0)).current;
+    const { state } = useContext(ApiContext);
+    const [userByVillageId, setUserVillageId] = useState([]);
 
-    const filteredContacts = contact.filter((item) =>
+    useEffect(() => {
+        if (state.allUserByVillage) {
+            setUserVillageId(state.allUserByVillage);
+        }
+    }, [state.allUserByVillage]);
+
+    const formattedContacts = userByVillageId.map(user => ({
+        id: user._id,
+        image: "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg",
+        name: `${user.firstname} ${user.middlename} ${user.lastname}`,
+        village: user.city,
+    }));
+
+    const filteredContacts = formattedContacts.filter((item) =>
         item.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
@@ -72,7 +35,7 @@ const VillageByName = ({ searchValue }) => {
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
                 useNativeDriver: false,
             })}
-            keyExtractor={item => item.toString()}
+            keyExtractor={item => item.id}
             renderItem={({ item, index }) => {
                 const inputRange = [offset * index, offset * (index + 1)];
                 const outputRange1 = [1, 0];
@@ -93,12 +56,12 @@ const VillageByName = ({ searchValue }) => {
                     <Animated.View
                         style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]}
                     >
-                        <View className='basis-[25%] items-center' >
-                            <Image className="w-[60px] h-[60px] rounded-[80px] object-cover" source={{ uri: item.image }} />
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.image} source={{ uri: item.image }} />
                         </View>
-                        <View className="basis-[75%] pr-2">
-                            <Text className="text-[20px] font-extrabold">{item.name}</Text>
-                            <Text className="text-[15px] font-bold">{item.village}</Text>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.name}>{item.name}</Text>
+                            <Text style={styles.village}>{item.village}</Text>
                         </View>
                     </Animated.View>
                 );
@@ -125,6 +88,27 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         alignSelf: "stretch",
-        // overflow: 'hidden'
+    },
+    imageContainer: {
+        flexBasis: '25%',
+        alignItems: 'center',
+    },
+    image: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        objectCover: 'cover',
+    },
+    textContainer: {
+        flexBasis: '75%',
+        paddingRight: 10,
+    },
+    name: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    village: {
+        fontSize: 15,
+        fontWeight: '500',
     },
 });

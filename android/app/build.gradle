@@ -110,6 +110,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
 implementation project(':react-native-vector-icons')
 implementation project(':react-native-linear-gradient')
+implementation project(':react-native-razorpay')
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
