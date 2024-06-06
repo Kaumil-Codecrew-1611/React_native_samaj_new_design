@@ -7,14 +7,14 @@ import CardDetails from '../../../components/CardDetails';
 import Carousel from '../../../components/Carousel';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-
 const Home = ({ navigation }) => {
     const { progress, allUserInfo } = useContext(GlobalContext)
-    const { homePageAllSlider } = useContext(ApiContext);
+    const { homePageAllSlider, contactUsPageDetails } = useContext(ApiContext);
     const [firstName, setFirstName] = useState(allUserInfo?.firstname ? allUserInfo?.firstname : "Panchal")
     const [lastName, setLastName] = useState(allUserInfo?.lastname ? allUserInfo?.lastname : "Samaj")
     const [profileImage, setProfileImage] = useState(`${process.env.IMAGE_URL}${allUserInfo?.photo}`)
     const [sliderImages, setSliderImages] = useState([])
+
     const cards = [
         { id: 1, name: "About us", redirectTo: "Aboutus", image: require('../../../assets/aboutus.png'), thumbnail: "" },
         { id: 3, name: "Villages", redirectTo: "VillageListing", image: require('../../../assets/villageImg.png'), thumbnail: "" },
@@ -29,8 +29,16 @@ const Home = ({ navigation }) => {
             setProfileImage(`${process.env.IMAGE_URL}${allUserInfo?.photo}`)
             const result = await homePageAllSlider()
             setSliderImages(result)
+
         })()
     }, [allUserInfo])
+
+    useEffect(() => {
+        (async function () {
+            const contentContactUs = await contactUsPageDetails();
+            // console.log("contentContactUscontentContactUscontentContactUs", contentContactUs)
+        })()
+    }, [])
 
     const renderItem = ({ item }) => {
         return (

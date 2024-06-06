@@ -39,9 +39,6 @@ function Parallax({ sliderImages }) {
                     <View style={styles.slide}>
                         <LinearGradient colors={['rgba(0, 0.3, 0, 0.3)', 'rgba(0.2, 0.4, 0.4, 0.8)']} style={styles.gradient}>
                             <Animated.Image style={styles.img} source={{ uri: item.image }} />
-                            <Animated.View style={styles.container}>
-                                <Text style={styles.title}>{item.title}</Text>
-                            </Animated.View>
                         </LinearGradient>
                     </View>
                 )}

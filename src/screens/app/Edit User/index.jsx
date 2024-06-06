@@ -36,7 +36,7 @@ const EditUserProfile = ({ navigation }) => {
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            dob: new Date(), // Ensure dob has a default value
+            dob: new Date(),
             gender: '',
             marital_status: '',
         }
@@ -122,6 +122,7 @@ const EditUserProfile = ({ navigation }) => {
                                         {errors.firstname && <Text style={styles.error}>{errors.firstname.message}</Text>}
                                     </View>
                                 </View>
+
                                 <View className="my-1">
                                     <View className="w-full">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Last Name:</Text>
@@ -144,6 +145,7 @@ const EditUserProfile = ({ navigation }) => {
                                         {errors.lastname && <Text style={styles.error}>{errors.lastname.message}</Text>}
                                     </View>
                                 </View>
+
                                 <View className="my-1">
                                     <View className="w-full">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Middle Name:</Text>
@@ -166,6 +168,7 @@ const EditUserProfile = ({ navigation }) => {
                                         {errors.middlename && <Text style={styles.error}>{errors.middlename.message}</Text>}
                                     </View>
                                 </View>
+
                                 <View className="my-1">
                                     <View className="w-full">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Email:</Text>
@@ -186,6 +189,91 @@ const EditUserProfile = ({ navigation }) => {
                                             )}
                                         />
                                         {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+                                    </View>
+                                </View>
+
+                                <View className="my-1">
+                                    <View className="w-full">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Phone Number:</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="mobile_number"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder="Phone Number"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    defaultValue={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                    keyboardType="numeric"
+                                                />
+                                            )}
+                                        />
+                                        {errors.mobile_number && <Text style={styles.error}>{errors.mobile_number.message}</Text>}
+                                    </View>
+                                </View>
+
+                                <View className="my-1">
+                                    <View className="w-full">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Gender:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <View className="mb-[10px] ml-1">
+                                            <Controller
+                                                control={control}
+
+                                                name="gender"
+                                                render={({ field: { onChange, value } }) => (
+                                                    <Radio.Group
+                                                        name="genderGroup"
+                                                        value={value || userData.gender}
+                                                        className="flex flex-row"
+
+                                                        onChange={(nextValue) => onChange(nextValue)}
+                                                    >
+                                                        <Radio value="male" >Male</Radio>
+                                                        <Radio value="female" ml={2}>Female</Radio>
+                                                        <Radio value="other" ml={2}>Other</Radio>
+                                                    </Radio.Group>
+                                                )}
+                                            />
+                                        </View>
+                                        {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
+                                    </View>
+                                </View>
+
+                                <View className="my-1">
+                                    <View className="w-full">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Marital Status:</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <View className="mx-1">
+                                            <Controller
+                                                control={control}
+                                                name="marital_status"
+                                                render={({ field: { onChange, onBlur, value } }) => (
+                                                    <Select
+                                                        placeholder="Select Marital Status"
+                                                        selectedValue={value}
+                                                        onValueChange={onChange}
+                                                        _selectedItem={{
+                                                            bg: "blue.300",
+                                                            endIcon: <CheckIcon size="5" />,
+                                                        }}
+                                                    >
+                                                        <Select.Item label="Married" value="married" />
+                                                        <Select.Item label="Unmarried" value="unmarried" />
+                                                        <Select.Item label="Widower" value="Widower" />
+                                                        <Select.Item label="Widow" value="Widow" />
+                                                        <Select.Item label="Divorcee" value="divorcee" />
+                                                    </Select>
+                                                )}
+                                            />
+                                        </View>
+                                        {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
                                     </View>
                                 </View>
 
@@ -228,25 +316,47 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Phone Number:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Education:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
                                             control={control}
-                                            name="mobile_number"
+                                            name="education"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Phone Number"
+                                                    placeholder="Education"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
                                                     onBlur={onBlur}
                                                     onChangeText={(text) => onChange(text)}
-                                                    keyboardType="numeric"
                                                 />
                                             )}
                                         />
-                                        {errors.mobile_number && <Text style={styles.error}>{errors.mobile_number.message}</Text>}
+                                        {errors.education && <Text style={styles.error}>{errors.education.message}</Text>}
+                                    </View>
+                                </View>
+
+                                <View className="my-1">
+                                    <View className="w-full">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">job:</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="job"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder="job"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    defaultValue={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                        {errors.job && <Text style={styles.error}>{errors.job.message}</Text>}
                                     </View>
                                 </View>
 
@@ -272,6 +382,7 @@ const EditUserProfile = ({ navigation }) => {
                                         {errors.address && <Text style={styles.error}>{errors.address.message}</Text>}
                                     </View>
                                 </View>
+
                                 <View className="my-1">
                                     <View className="w-full">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">City:</Text>
@@ -294,6 +405,7 @@ const EditUserProfile = ({ navigation }) => {
                                         {errors.city && <Text style={styles.error}>{errors.city.message}</Text>}
                                     </View>
                                 </View>
+
                                 <View className="my-1">
                                     <View className="w-full">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">State:</Text>
@@ -316,6 +428,7 @@ const EditUserProfile = ({ navigation }) => {
                                         {errors.state && <Text style={styles.error}>{errors.state.message}</Text>}
                                     </View>
                                 </View>
+
                                 <View className="my-1">
                                     <View className="w-full">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Pincode:</Text>
@@ -339,112 +452,11 @@ const EditUserProfile = ({ navigation }) => {
                                         {errors.pincode && <Text style={styles.error}>{errors.pincode.message}</Text>}
                                     </View>
                                 </View>
-                                <View className="my-1">
-                                    <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Education:</Text>
-                                    </View>
-                                    <View className=" w-full mt-2">
-                                        <Controller
-                                            control={control}
-                                            name="education"
-                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                <TextInput
-                                                    placeholder="Education"
-                                                    placeholderTextColor="grey"
-                                                    style={styles.input}
-                                                    defaultValue={value}
-                                                    onBlur={onBlur}
-                                                    onChangeText={(text) => onChange(text)}
-                                                />
-                                            )}
-                                        />
-                                        {errors.education && <Text style={styles.error}>{errors.education.message}</Text>}
-                                    </View>
-                                </View>
-                                <View className="my-1">
-                                    <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">job:</Text>
-                                    </View>
-                                    <View className=" w-full mt-2">
-                                        <Controller
-                                            control={control}
-                                            name="job"
-                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                <TextInput
-                                                    placeholder="job"
-                                                    placeholderTextColor="grey"
-                                                    style={styles.input}
-                                                    defaultValue={value}
-                                                    onBlur={onBlur}
-                                                    onChangeText={(text) => onChange(text)}
-                                                />
-                                            )}
-                                        />
-                                        {errors.job && <Text style={styles.error}>{errors.job.message}</Text>}
-                                    </View>
-                                </View>
-                                <View className="my-1">
-                                    <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Marital Status:</Text>
-                                    </View>
-                                    <View className=" w-full mt-2">
-                                        <View className="mx-1">
-                                            <Controller
-                                                control={control}
-                                                name="marital_status"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <Select
-                                                        placeholder="Select Marital Status"
-                                                        selectedValue={value}
-                                                        onValueChange={onChange}
-                                                        _selectedItem={{
-                                                            bg: "blue.300",
-                                                            endIcon: <CheckIcon size="5" />,
-                                                        }}
-                                                    >
-                                                        <Select.Item label="Married" value="married" />
-                                                        <Select.Item label="Unmarried" value="unmarried" />
-                                                        <Select.Item label="Widower" value="Widower" />
-                                                        <Select.Item label="Widow" value="Widow" />
-                                                        <Select.Item label="Divorcee" value="divorcee" />
-                                                    </Select>
-                                                )}
-                                            />
-                                        </View>
-                                        {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
-                                    </View>
-                                </View>
-                                <View className="my-1">
-                                    <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Gender:</Text>
-                                    </View>
-                                    <View className="w-full mt-2">
-                                        <View className="mb-[10px] ml-1">
-                                            <Controller
-                                                control={control}
 
-                                                name="gender"
-                                                render={({ field: { onChange, value } }) => (
-                                                    <Radio.Group
-                                                        name="genderGroup"
-                                                        value={value || userData.gender}
-                                                        className="flex flex-row"
-
-                                                        onChange={(nextValue) => onChange(nextValue)}
-                                                    >
-                                                        <Radio value="male" >Male</Radio>
-                                                        <Radio value="female" ml={2}>Female</Radio>
-                                                        <Radio value="other" ml={2}>Other</Radio>
-                                                    </Radio.Group>
-                                                )}
-                                            />
-                                        </View>
-                                        {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
-                                    </View>
-                                </View>
                                 <View className="mt-3 mb-6">
                                     <Button className="bg-blue-500 py-3 rounded-lg" title="Update Profile" onPress={handleSubmit(onSubmit)} />
                                 </View>
+
                             </View>
                         </ScrollView>
                     </TouchableWithoutFeedback>

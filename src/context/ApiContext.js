@@ -26,6 +26,8 @@ import {
     editUserPostProfile,
     handleFamilyUserProfile,
     faqs,
+    editUserFamilyMembers,
+    updateUserFamilyMembers,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -80,6 +82,8 @@ export const ApiProvider = ({ children }) => {
     const handleDeleteProfileUser = (userProfileId) => apiRequest(handleFamilyUserProfile, userProfileId, setData, 'handleDeleteProfileUser');
     const allfaqListing = () => apiRequest(faqs, null, setData, 'allfaqListing');
 
+    const editFamilyDetailsUser = (childId) => apiRequest(editUserFamilyMembers, childId, setData, 'editFamilyDetailsUser');
+    const updateFamilyDetailsUser = (updatedData) => apiRequest(updateUserFamilyMembers, updatedData, setData, 'updateFamilyDetailsUser');
 
     return (
         <ApiContext.Provider value={{
@@ -110,7 +114,9 @@ export const ApiProvider = ({ children }) => {
             updateUserProfileUser,
             updateUserPostProfile,
             handleDeleteProfileUser,
-            allfaqListing
+            allfaqListing,
+            editFamilyDetailsUser,
+            updateFamilyDetailsUser,
         }}>
             {children}
         </ApiContext.Provider>
