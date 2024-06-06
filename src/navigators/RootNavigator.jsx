@@ -26,6 +26,7 @@ import VillageWisePersons from '../screens/app/VillageWisePersons';
 import userProfilePage from '../screens/app/Profile/index';
 import NewsDetailsPage from '../screens/app/News/NewsDetailsPage';
 import NewsList from '../screens/app/News/NewsList';
+import EditUserProfile from '../screens/app/Edit User';
 
 const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
@@ -60,10 +61,10 @@ const RootNavigator = () => {
             }
             )} />
             <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: SelectedVillage || 'Village' }} />
-            <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: 'Aboutus' }} />
-            <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: 'NewsList' }} />
-            <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: 'NewsDetailsPage' }} />
-            <RootStack.Screen name="userProfilePage" component={userProfilePage} options={{ headerTitle: 'userProfilePage' }} />
+            <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: 'About Us' }} />
+            <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: 'News List' }} />
+            <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: 'News Details' }} />
+            <RootStack.Screen name="userProfilePage" component={userProfilePage} options={{ headerTitle: 'User Profile Page' }} />
             <RootStack.Screen name="News" component={News} options={{ headerTitle: 'News' }} />
             <RootStack.Screen name="Support" options={{ headerTitle: 'Support Page' }} component={Support} />
             <RootStack.Screen name="Seetings" component={SettingBottomSheet} options={{ headerTitle: 'Setting' }} />
@@ -78,6 +79,7 @@ const RootNavigator = () => {
                 }}
             />
             <RootStack.Screen name="Register" component={Register} options={{ headerTitle: 'Register Page' }} />
+            <RootStack.Screen name="EditUserProfile" component={EditUserProfile} options={{ headerTitle: 'Edit User Profile' }} />
             <RootStack.Screen name="Payment" component={Payment} options={{ headerTitle: 'Payment Page' }} />
             <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} options={{ headerTitle: 'Payment Page' }} />
             <RootStack.Screen name="PaymentFailed" component={PaymentFailed} options={{ headerTitle: 'Payment Page' }} />

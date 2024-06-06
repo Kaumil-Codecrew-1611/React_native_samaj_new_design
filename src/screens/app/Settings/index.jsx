@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Radio, Box } from 'native-base';
+import i18n from '../../../context/i18n';
 
 const SettingBottomSheet = ({ navigation, route }) => {
     const [language, setLanguage] = useState('');

@@ -60,7 +60,6 @@ const FamilyTree = ({ data, navigation }) => {
 
     const handleNodePress = (node) => {
         const userId = node._id
-        console.log("nodenodenode", node)
         navigation.navigate('NodeDetails', { userId, node });
     };
     const nodes = root.descendants();
@@ -130,7 +129,7 @@ const ViewFamilyTree = ({ navigation }) => {
                 console.log("error", error);
             }
         })();
-    }, [state.addFamilyMemberDetails]);
+    }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser]);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>

@@ -124,3 +124,18 @@ export const updateUserProfile = async (payload) => {
         console.log(err, "Errors")
     }
 };
+
+export const editUserProfile = async (userId) => {
+    const response = await axiosInstance.get(`/user-edit/${userId}`);
+    return response.data
+};
+
+export const editUserPostProfile = async (userUpdatedData) => {
+    const response = await axiosInstance.post(`/user-update/${userUpdatedData.id}`, userUpdatedData.data);
+    return response.data;
+};
+
+export const handleFamilyUserProfile = async (userProfileId) => {
+    const response = await axiosInstance.post(`/user-delete/${userProfileId}`);
+    return response.data;
+};

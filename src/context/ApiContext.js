@@ -1,6 +1,31 @@
 // src/context/ApiContext.js
 import React, { createContext, useReducer } from 'react';
-import { registerUser, viewDetails, addDetails, changePassword, getLocationData, getAmountData, payOrderData, loginUser, homePageSlider, aboutUsContent, allVillageListing, villagesByUser, allNewsListing, addFamilyMember, userPasswordChange, contactUsDetails, committeeMembers, relationshipDataList, familyDataById, familyDataByUserParentId, newsDetailsById, updateUserProfile } from '../api/apiFunctions';
+import {
+    registerUser, viewDetails,
+    addDetails,
+    changePassword,
+    getLocationData,
+    getAmountData,
+    payOrderData,
+    loginUser,
+    homePageSlider,
+    aboutUsContent,
+    allVillageListing,
+    villagesByUser,
+    allNewsListing,
+    addFamilyMember,
+    userPasswordChange,
+    contactUsDetails,
+    committeeMembers,
+    relationshipDataList,
+    familyDataById,
+    familyDataByUserParentId,
+    newsDetailsById,
+    updateUserProfile,
+    editUserProfile,
+    editUserPostProfile,
+    handleFamilyUserProfile,
+} from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
 const ApiContext = createContext();
@@ -49,9 +74,40 @@ export const ApiProvider = ({ children }) => {
     const userDataByParentId = (userDataId) => apiRequest(familyDataByUserParentId, userDataId, setData, 'userDataByParentId');
     const newsDataById = (newsId) => apiRequest(newsDetailsById, newsId, setData, 'newsDataById');
     const updateUserProfileImage = (payload) => apiRequest(updateUserProfile, payload, setData, 'updateUserProfileImage');
+    const updateUserProfileUser = (userId) => apiRequest(editUserProfile, userId, setData, 'updateUserProfileUser');
+    const updateUserPostProfile = (userUpdatedData) => apiRequest(editUserPostProfile, userUpdatedData, setData, 'updateUserPostProfile');
+    const handleDeleteProfileUser = (userProfileId) => apiRequest(handleFamilyUserProfile, userProfileId, setData, 'handleDeleteProfileUser');
 
     return (
-        <ApiContext.Provider value={{ state, register, viewUserDetails, addNewDetails, changeUserPassword, resetData, getLocation, getAmount, PayOrder, loginAPICall, homePageAllSlider, aboutUsContentApi, villagesListing, allUserByVillageId, newsListing, addFamilyMemberDetails, userChangePassword, contactUsPageDetails, allcommitteeMembersListing, allRelationshipDataList, allDataOfFamilyById, userDataByParentId, newsDataById, updateUserProfileImage }}>
+        <ApiContext.Provider value={{
+            state,
+            register,
+            viewUserDetails,
+            addNewDetails,
+            changeUserPassword,
+            resetData,
+            getLocation,
+            getAmount,
+            PayOrder,
+            loginAPICall,
+            homePageAllSlider,
+            aboutUsContentApi,
+            villagesListing,
+            allUserByVillageId,
+            newsListing,
+            addFamilyMemberDetails,
+            userChangePassword,
+            contactUsPageDetails,
+            allcommitteeMembersListing,
+            allRelationshipDataList,
+            allDataOfFamilyById,
+            userDataByParentId,
+            newsDataById,
+            updateUserProfileImage,
+            updateUserProfileUser,
+            updateUserPostProfile,
+            handleDeleteProfileUser,
+        }}>
             {children}
         </ApiContext.Provider>
     );
