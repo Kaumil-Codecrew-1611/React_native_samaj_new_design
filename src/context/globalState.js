@@ -57,9 +57,10 @@ export const GlobalProvider = (props) => {
     const [isAuthScreenActive, setIsAuthScreenActive] = useState(false);
 
     const setuserDataInStorage = async (key, data) => {
+        console.log(data,'newDataset nowwww')
         try {
             await AsyncStorage.setItem(key, JSON.stringify(data));
-
+           await  getUserDataFromStorage(key)
         } catch (error) {
             console.log(error, "set storage error")
         }
@@ -75,6 +76,14 @@ export const GlobalProvider = (props) => {
                 return user
                 // Use the user data as needed
             }
+        } catch (error) {
+            console.error('Failed to fetch data from storage', error);
+        }
+    };
+    const removeUserDataFromStorage = async (key) => {
+        try {
+            await AsyncStorage.removeItem(key);
+            console.log('removedata')
         } catch (error) {
             console.error('Failed to fetch data from storage', error);
         }
@@ -104,6 +113,7 @@ export const GlobalProvider = (props) => {
         setRegisterData,
         registerData,
         getUserDataFromStorage,
+        removeUserDataFromStorage,
         setuserDataInStorage,
         setIsLoggedIn,
         isLoggedIn,

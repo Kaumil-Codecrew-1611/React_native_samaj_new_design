@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Image, ImageBackground, Modal, PermissionsAndroid, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View,Share } from 'react-native';
+import { Image, ImageBackground, Modal, PermissionsAndroid, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Share } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import ImageViewing from 'react-native-image-viewing';
 import Animated from 'react-native-reanimated';
@@ -13,9 +13,8 @@ import ApiContext from '../../../context/ApiContext';
 const ProfilePage = ({ navigation }) => {
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo, setAllUserInfo } = useContext(GlobalContext);
-    // const { setuserDataInStorage, progress, setIsLoggedIn, getUserDataFromStorage, setAllUserInfo } = useContext(GlobalContext);
-
+    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, removeUserDataFromStorage, setAllUserInfo, allUserInfo } = useContext(GlobalContext);
+    console.log(allUserInfo, 'allUserInfo in profile')
     const [isVisible, setIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const { updateUserProfileImage } = useContext(ApiContext);
@@ -42,7 +41,7 @@ const ProfilePage = ({ navigation }) => {
     };
 
     const navigateToEditProfile = () => {
-        navigation.navigate('EditProfile');
+        navigation.navigate('EditUserProfile');
     };
 
     const handleLogout = async () => {
@@ -123,9 +122,8 @@ const ProfilePage = ({ navigation }) => {
                         };
                         const response = await updateUserProfileImage(payload);
                         setIsPopupVisible(false);
-                        await setAllUserInfo("")
-                        await setAllUserInfo(response)
-                        console.log(response, "responseresponseresponse ");
+                        await setuserDataInStorage('user', response.userData);
+                        navigation.navigate('userProfilePage');
                     }
                 } else {
                     console.log("Camera or storage permission denied");
@@ -166,22 +164,22 @@ const ProfilePage = ({ navigation }) => {
     };
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
     const handleShare = async () => {
-      try {
-        const result = await Share.share({
-          message: `Check out this awesome app: ${appUrl}`,
-        });
-        if (result.action === Share.sharedAction) {
-          if (result.activityType) {
-            // Shared with activity type of result.activityType
-          } else {
-            // Shared
-          }
-        } else if (result.action === Share.dismissedAction) {
-          // Dismissed
+        try {
+            const result = await Share.share({
+                message: `Check out this awesome app: ${appUrl}`,
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // Shared with activity type of result.activityType
+                } else {
+                    // Shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // Dismissed
+            }
+        } catch (error) {
+            console.error('Error sharing:', error.message);
         }
-      } catch (error) {
-        console.error('Error sharing:', error.message);
-      }
     };
 
     return (
@@ -254,13 +252,13 @@ const ProfilePage = ({ navigation }) => {
                                 <AnimatedFontistoIcon name="angle-right" size={15} />
                             </Pressable>
                             <Pressable onPress={handleShare}>
-                            <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
-                                <View className="flex-row justify-between gap-2 items-center">
-                                    <AnimatedFontistoIcon name="share" size={30} />
-                                    <Text className="text-neutral-700 font-normal text-xl tracking-wider">Share App</Text>
+                                <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
+                                    <View className="flex-row justify-between gap-2 items-center">
+                                        <AnimatedFontistoIcon name="share" size={30} />
+                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">Share App</Text>
+                                    </View>
+                                    <AnimatedFontistoIcon name="angle-right" size={15} />
                                 </View>
-                                <AnimatedFontistoIcon name="angle-right" size={15} />
-                            </View>
                             </Pressable>
                         </View>
                     </ScrollView>
@@ -282,10 +280,10 @@ const ProfilePage = ({ navigation }) => {
                 <View style={styles.modalBackground}>
                     <View style={styles.popup}>
                         <TouchableOpacity onPress={viewProfileImage}>
-                            <Text style={styles.popupText}>View Profile</Text>
+                            <Text style={styles.popupText}>View Profile Image</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectImage}>
-                            <Text style={styles.popupText}>Edit Profile</Text>
+                            <Text style={styles.popupText}>Edit Profile Image</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closePopup}>
                             <Text style={styles.popupText}>Close</Text>

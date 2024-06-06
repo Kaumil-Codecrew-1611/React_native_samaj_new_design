@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
 import ApiContext from '../../../context/ApiContext';
-
+import { useTranslation } from 'react-i18next';
 const { width } = Dimensions.get('screen');
 
 export default function Member() {
@@ -9,7 +9,8 @@ export default function Member() {
     const [height1, setHeight1] = useState(100);
     const [height2, setHeight2] = useState(0);
     const [committeeMembers, setCommitteeMembers] = useState([]);
-
+    const { t } = useTranslation();
+    console.log(t('contactusheading'),"translateX")
     const translateX = scrollY.interpolate({
         inputRange: [0, Math.max(height1 - height2, 1)],
         outputRange: [-width, 0]
