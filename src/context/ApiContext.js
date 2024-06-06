@@ -25,6 +25,8 @@ import {
     editUserProfile,
     editUserPostProfile,
     handleFamilyUserProfile,
+    editUserFamilyMembers,
+    updateUserFamilyMembers,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -77,6 +79,8 @@ export const ApiProvider = ({ children }) => {
     const updateUserProfileUser = (userId) => apiRequest(editUserProfile, userId, setData, 'updateUserProfileUser');
     const updateUserPostProfile = (userUpdatedData) => apiRequest(editUserPostProfile, userUpdatedData, setData, 'updateUserPostProfile');
     const handleDeleteProfileUser = (userProfileId) => apiRequest(handleFamilyUserProfile, userProfileId, setData, 'handleDeleteProfileUser');
+    const editFamilyDetailsUser = (childId) => apiRequest(editUserFamilyMembers, childId, setData, 'editFamilyDetailsUser');
+    const updateFamilyDetailsUser = (updatedData) => apiRequest(updateUserFamilyMembers, updatedData, setData, 'updateFamilyDetailsUser');
 
     return (
         <ApiContext.Provider value={{
@@ -107,6 +111,8 @@ export const ApiProvider = ({ children }) => {
             updateUserProfileUser,
             updateUserPostProfile,
             handleDeleteProfileUser,
+            editFamilyDetailsUser,
+            updateFamilyDetailsUser,
         }}>
             {children}
         </ApiContext.Provider>

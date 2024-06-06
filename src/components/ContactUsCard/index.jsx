@@ -21,13 +21,10 @@ function ContactUsCard() {
     useEffect(() => {
         (async function () {
             const contentContactUs = await contactUsPageDetails();
-            console.log("This is for all details of contact us", contentContactUs);
-
             const desiredKeys = ['contact1', 'contactno1', 'contact2', 'contactno2', 'email', "instagram", "facebook", "twitter"];
 
             contentContactUs.forEach((item) => {
                 if (desiredKeys.includes(item.key)) {
-                    console.log(item.key, item.value);
                     switch (item.key) {
                         case 'contact1':
                             setContact1(item.value);

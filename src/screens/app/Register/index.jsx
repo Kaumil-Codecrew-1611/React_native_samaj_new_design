@@ -65,10 +65,14 @@ const Register = ({ navigation }) => {
         navigation.navigate('Payment');
     };
 
-    const onDateChange = (selectedDate) => {
-        const currentDate = selectedDate || dob;
-        setShowPicker(false);
-        setValue('dob', currentDate);
+    const onDateChange = (event, selectedDate) => {
+        // Check if the user canceled the date selection
+        if (selectedDate !== undefined) {
+            setShowPicker(false);
+            // Ensure currentDate is a Date object
+            const currentDate = new Date(selectedDate);
+            setValue('dob', currentDate);
+        }
     };
 
     return (
@@ -117,6 +121,7 @@ const Register = ({ navigation }) => {
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                                 <View>
+
                                     <View className="my-1">
                                         <View className="w-full ml-1">
                                             <Text className="font-extrabold  text-base tracking-wider text-neutral-700">First Name:</Text>
@@ -234,30 +239,40 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Birth:</Text>
-                                        <Pressable onPress={() => setShowPicker(true)} className=" w-full mt-2">
+                                        <Pressable onPress={() => setShowPicker(true)} className="w-full mt-2">
                                             <Controller
                                                 control={control}
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <TextInput
-                                                        style={[
-                                                            styles.input,
-                                                            { color: value ? 'black' : 'grey' },
-                                                        ]}
-                                                        placeholder="Select Date of Birth"
-                                                        placeholderTextColor="grey"
-                                                        value={dob ? dob.toDateString() : ''}
-                                                        onBlur={onBlur}
-                                                        disableFullscreenUI={true}
-                                                        editable={false}
-                                                    />
-                                                )}
-                                                name="dob"
+                                                render={({ field: { onChange, onBlur, value } }) => {
+                                                    let dateValue;
+                                                    if (value instanceof Date) {
+                                                        dateValue = value;
+                                                    } else if (typeof value === 'string' || value instanceof String) {
+                                                        dateValue = new Date(value);
+                                                    } else {
+                                                        dateValue = new Date();
+                                                    }
 
+                                                    return (
+                                                        <TextInput
+                                                            style={[
+                                                                styles.input,
+                                                                { color: dateValue ? 'black' : 'grey' },
+                                                            ]}
+                                                            placeholder="Select Date of Birth"
+                                                            placeholderTextColor="grey"
+                                                            value={dateValue ? dateValue.toDateString() : ''}
+                                                            onBlur={onBlur}
+                                                            disableFullscreenUI={true}
+                                                            editable={false}
+                                                        />
+                                                    );
+                                                }}
+                                                name="dob"
                                             />
                                         </Pressable>
                                         {showPicker && (
                                             <DateTimePicker
-                                                value={dob}
+                                                value={dob ? new Date(dob) : new Date()}
                                                 mode="date"
                                                 display="default"
                                                 onChange={onDateChange}

@@ -22,7 +22,6 @@ function NewsList({ navigation, news }) {
     };
 
     const openNewsDetailsPage = (id) => {
-        console.log("ididididididid", id)
         navigation.navigate('NewsDetailsPage', { newsId: id });
     };
 

@@ -13,8 +13,7 @@ import ApiContext from '../../../context/ApiContext';
 const ProfilePage = ({ navigation }) => {
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, removeUserDataFromStorage, setAllUserInfo, allUserInfo } = useContext(GlobalContext);
-    console.log(allUserInfo, 'allUserInfo in profile')
+    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo } = useContext(GlobalContext);
     const [isVisible, setIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const { updateUserProfileImage } = useContext(ApiContext);
@@ -121,6 +120,7 @@ const ProfilePage = ({ navigation }) => {
                             userData
                         };
                         const response = await updateUserProfileImage(payload);
+                        console.log(response,'newnewnenwewn')
                         setIsPopupVisible(false);
                         await setuserDataInStorage('user', response.userData);
                         navigation.navigate('userProfilePage');
@@ -159,7 +159,7 @@ const ProfilePage = ({ navigation }) => {
                 }
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Errssssssor:', error);
         }
     };
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
@@ -201,7 +201,7 @@ const ProfilePage = ({ navigation }) => {
                 <View className="absolute p-6 flex h-36 top-20 w-full items-center justify-center -space-x-2 overflow-visible">
                     <Pressable onPress={openModal}>
                         <View className="h-40 w-40 p-2 rounded-full bg-white">
-                            <Image className="inline-block h-36 w-36 rounded-full ring-2 ring-white" source={{ uri: process.env.IMAGE_URL + allUserInfo?.photo }} alt='profile-img' />
+                            <Image className="inline-block h-36 w-36 rounded-full ring-2 ring-white" source={{ uri: process.env.IMAGE_URL + allUserInfo?.photo ? process.env.IMAGE_URL + allUserInfo?.photo : 'https://eclatsuperior.com/wp-content/uploads/2021/04/man4.jpg' }} alt='profile-img' />
                         </View>
                     </Pressable>
                 </View>
@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     popupText: {
+        color: "black",
         fontSize: 18,
         padding: 10,
     },

@@ -9,22 +9,19 @@ import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import { COLORS } from '../../../utils/colors';
-// Define the validation schema using Yup
+
 const schema = yup.object().shape({
     email_or_mobile: yup.string().required('Email or Phone number is required').test(
         'is-email-or-phone',
         'Invalid email or phone number',
         function (value) {
-            // Check if value looks like an email
             if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(value)) {
-                return true; // Pass email validation
+                return true;
             }
-            // Check if value starts with a number (assumed as phone number)
             else if (/^\d/.test(value)) {
-                // Assuming phone number length should be at least 10 digits
                 return /^\d{10,}$/.test(value);
             }
-            return false; // Fail validation for other cases
+            return false;
         }
     ),
     password: yup.string().required('Password is required').matches(
@@ -38,7 +35,7 @@ const Login = ({ navigation }) => {
         resolver: yupResolver(schema),
     });
 
-    const { state, loginAPICall } = useContext(ApiContext);
+    const { loginAPICall } = useContext(ApiContext);
     const { setuserDataInStorage, progress, setIsLoggedIn, getUserDataFromStorage, setAllUserInfo } = useContext(GlobalContext);
 
     const onSubmit = async (data) => {
@@ -48,17 +45,14 @@ const Login = ({ navigation }) => {
                 password: data?.password,
             });
             if (res?.status) {
-                // Store user data in AsyncStorage
                 if (res.user) {
                     setIsLoggedIn(!!(res?.user?._id))
                     setAllUserInfo(res.user)
                     await setuserDataInStorage("user", res.user);
                     await getUserDataFromStorage("user")
                 }
-
-                // Navigate to Home screen
                 progress.value = withTiming("1");
-                navigation.navigate('Home'); // Adjust according to your navigation setup
+                navigation.navigate('Home');
             } else {
                 throw new Error('Invalid login response');
             }
@@ -153,12 +147,14 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         fontWeight: 'bold',
         fontSize: 16,
+        color: "black"
     },
     input: {
         height: 40,
         marginBottom: 7,
         paddingHorizontal: 10,
         backgroundColor: '#e7e7e9',
+        color: "black"
     },
     inputError: {
         borderWidth: 1,

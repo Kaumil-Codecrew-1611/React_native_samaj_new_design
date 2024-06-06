@@ -129,7 +129,7 @@ const ViewFamilyTree = ({ navigation }) => {
                 console.log("error", error);
             }
         })();
-    }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser]);
+    }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser, state.updateFamilyDetailsUser]);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>

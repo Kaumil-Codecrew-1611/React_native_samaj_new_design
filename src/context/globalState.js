@@ -57,10 +57,9 @@ export const GlobalProvider = (props) => {
     const [isAuthScreenActive, setIsAuthScreenActive] = useState(false);
 
     const setuserDataInStorage = async (key, data) => {
-        console.log(data,'newDataset nowwww')
         try {
             await AsyncStorage.setItem(key, JSON.stringify(data));
-           await  getUserDataFromStorage(key)
+            await getUserDataFromStorage(key)
         } catch (error) {
             console.log(error, "set storage error")
         }

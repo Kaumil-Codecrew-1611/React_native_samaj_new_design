@@ -119,6 +119,7 @@ export const updateUserProfile = async (payload) => {
             },
         });
         const response = await axiosWithHeaders.post(`/profile_image/${id}`, userData);
+        console.log(response.data, 'new updatedData......')
         return response.data
     } catch (err) {
         console.log(err, "Errors")
@@ -138,4 +139,14 @@ export const editUserPostProfile = async (userUpdatedData) => {
 export const handleFamilyUserProfile = async (userProfileId) => {
     const response = await axiosInstance.post(`/user-delete/${userProfileId}`);
     return response.data;
+};
+
+export const editUserFamilyMembers = async (childId) => {
+    const response = await axiosInstance.get(`/childuser-edit/${childId}`);
+    return response.data
+};
+
+export const updateUserFamilyMembers = async (updatedData) => {
+    const response = await axiosInstance.post(`/child_update/${updatedData.id}`, updatedData.data);
+    return response.data
 };
