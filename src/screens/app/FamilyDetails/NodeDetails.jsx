@@ -3,10 +3,13 @@ import { Image, Pressable, ScrollView, Text, View, Modal } from 'react-native';
 import Animated from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
 
 const NodeDetails = ({ navigation, route }) => {
     const { userId } = route.params;
+    const paramsData = route.params;
     const { userDataByParentId, handleDeleteProfileUser, state } = useContext(ApiContext);
+    const { allUserInfo } = useContext(GlobalContext);
     const [userData, setUserData] = useState([]);
     const [menuVisible, setMenuVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -46,6 +49,55 @@ const NodeDetails = ({ navigation, route }) => {
     const closeDeleteModal = () => {
         setModalVisible(false);
     };
+    console.log(allUserInfo._id, paramsData.paramsId, "userData?._id")
+    function visibleEditDetail() {
+        console.log("called");
+        const id = paramsData?.paramsId;
+        const userId = allUserInfo?._id;
+        console.log(userId, ":::::userId::::::", id, ":::::id:::::");
+
+        function renderPressable() {
+            return (
+                <>
+                    <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
+                        <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">
+                            <AnimatedFontAwesomeIcon
+                                name="user-plus"
+                                size={27}
+                                color="green"
+                            />
+                        </Text>
+                    </Pressable>
+                    <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
+                        <AnimatedFontAwesomeIcon
+                            name="ellipsis-v"
+                            size={27}
+                            color="green"
+                        />
+                    </Pressable>
+                </>
+            )
+        };
+
+        if (id === undefined || id === null) {
+            // When id is not available but userId is
+            if (userId) {
+                console.log(" 111111")
+                return renderPressable();
+            }
+        } else if (id === userId) {
+            console.log(" 222222 ")
+            return renderPressable();
+        }
+        else if (!id || typeof id === undefined && userId) {
+            console.log(" 3333333 ")
+            return renderPressable();
+        }
+        console.log(" 4444444 ")
+        return <></>;
+    }
+
+
 
     return (
         <View className="w-full p-3 bg-white flex-1">
@@ -58,14 +110,9 @@ const NodeDetails = ({ navigation, route }) => {
                     <View className="p-4 bg-white absolute bottom-2 rounded-[15px] left-2 shadow-green-700" style={{ elevation: 10 }}>
                         <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData.firstname + ' ' + userData.lastname}</Text>
                     </View>
-                    <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
-                        <AnimatedFontAwesomeIcon
-                            name="ellipsis-v"
-                            size={27}
-                            color="green"
-                        />
-                    </Pressable>
-                    <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
+                    {visibleEditDetail()}
+
+                    {/* <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
                         <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">
                             <AnimatedFontAwesomeIcon
                                 name="user-plus"
@@ -73,7 +120,7 @@ const NodeDetails = ({ navigation, route }) => {
                                 color="green"
                             />
                         </Text>
-                    </Pressable>
+                    </Pressable> */}
                     {menuVisible && (
                         <View className="absolute top-2 right-14 bg-white rounded-[15px] shadow-lg px-2 py-1">
                             <View className="flex flex-row items-center gap-2">

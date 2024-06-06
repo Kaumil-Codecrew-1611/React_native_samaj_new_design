@@ -4,7 +4,7 @@ import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import VillageByName from "../../../components/VillageByName";
 import ApiContext from "../../../context/ApiContext";
 
-const VillageWisePersons = () => {
+const VillageWisePersons = ({ navigation }) => {
 
     const [search, setSearch] = useState("");
     const { resetData } = useContext(ApiContext);
@@ -19,7 +19,7 @@ const VillageWisePersons = () => {
 
         <View className="flex-1 bg-gray-300 space-y-5 w-full" edges={['top']}>
             <View>
-                <Text className="font-bold text-3xl tracking-wider text-neutral-700 mt-4 ml-6">Village Persons</Text>
+                <Text className="font-bold text-3xl tracking-wider text-neutral-700 mt-4 ml-6">Village people</Text>
             </View>
             <View className="relative bg-white m-3 px-3 h-14 rounded-2xl">
                 <View className='flex-1 justify-center items-center'>
@@ -45,7 +45,7 @@ const VillageWisePersons = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <VillageByName searchValue={search} />
+            <VillageByName searchValue={search} navigation={navigation} />
         </View >
     );
 };

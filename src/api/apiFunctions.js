@@ -54,8 +54,8 @@ export const aboutUsContent = async () => {
     return response.data
 };
 
-export const allVillageListing = async () => {
-    const response = await axiosInstance.get(`/location`);
+export const allVillageListing = async (search) => {
+    const response = await axiosInstance.get(`/location?searchValue=${search ? search : ''}`);
     return response.data
 };
 
@@ -138,4 +138,9 @@ export const editUserPostProfile = async (userUpdatedData) => {
 export const handleFamilyUserProfile = async (userProfileId) => {
     const response = await axiosInstance.post(`/user-delete/${userProfileId}`);
     return response.data;
+};
+
+export const faqs = async () => {
+    const response = await axiosInstance.get('/faq');
+    return response.data
 };

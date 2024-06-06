@@ -82,7 +82,7 @@ function Payment({ navigation, route }) {
             setRegisterData(updatedRegisterData);
 
             // Navigate to PaymentSuccess
-            navigation.navigate('PaymentSuccess');
+            navigation.navigate('PaymentSuccess', { registerData: updatedRegisterData });
         } catch (error) {
             // Navigate to PaymentFailed
             navigation.navigate('PaymentFailed');

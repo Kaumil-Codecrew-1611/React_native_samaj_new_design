@@ -39,7 +39,7 @@ const TreeNode = ({ node, x, y, children, onPress }) => (
     </>
 );
 
-const FamilyTree = ({ data, navigation }) => {
+const FamilyTree = ({ data, navigation, paramsId }) => {
     const root = d3.hierarchy(data);
     const horizontalSpacing = calculateHorizontalSpacing(root);
     const treeLayout = d3.tree().nodeSize([horizontalSpacing, verticalSpacing]);
@@ -60,7 +60,7 @@ const FamilyTree = ({ data, navigation }) => {
 
     const handleNodePress = (node) => {
         const userId = node._id
-        navigation.navigate('NodeDetails', { userId, node });
+        navigation.navigate('NodeDetails', { userId, node, paramsId });
     };
     const nodes = root.descendants();
     const minX = Math.min(...nodes.map(d => d.x));
@@ -115,25 +115,33 @@ const FamilyTree = ({ data, navigation }) => {
     );
 };
 
-const ViewFamilyTree = ({ navigation }) => {
+const ViewFamilyTree = ({ navigation, route }) => {
     const { allDataOfFamilyById, state } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
+    const paramsData = route.params;
     const [userData, setUserData] = useState("");
 
     useEffect(() => {
         (async function () {
             try {
-                const contentOfAllFamilyMembers = await allDataOfFamilyById(allUserInfo._id);
-                setUserData(contentOfAllFamilyMembers);
+                if (paramsData?.id) {
+                    const contentOfAllFamilyMembers = await allDataOfFamilyById(paramsData?.id);
+                    setUserData(contentOfAllFamilyMembers);
+                } else {
+                    const contentOfAllFamilyMembers = await allDataOfFamilyById(allUserInfo._id);
+                    setUserData(contentOfAllFamilyMembers);
+                }
+
             } catch (error) {
                 console.log("error", error);
             }
         })();
-    }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser]);
+        console.log(allUserInfo, "allUserInfo")
+    }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser, paramsData]);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <FamilyTree data={userData} navigation={navigation} />
+            <FamilyTree data={userData} paramsId={paramsData?.id} navigation={navigation} />
         </View>
     );
 };

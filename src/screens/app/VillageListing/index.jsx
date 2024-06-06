@@ -1,25 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Text, TouchableOpacity, Image, View } from 'react-native';
+import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Fontisto';
 import CardDetails from '../../../components/CardDetails';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import { useFocusEffect } from '@react-navigation/native';
 
 const VillageListing = ({ navigation, route }) => {
     const AnimatedIcon = Animated.createAnimatedComponent(Feather);
     const [listingStyle, setListingStyle] = useState(route.params.listingStyle);
     const [allVillagesListing, setAllVillagesListing] = useState([]);
+    const [search, setSearch] = useState("");
     const { villagesListing, allUserByVillageId } = useContext(ApiContext);
-    const { setSelectedVillage, SelectedVillage  } = useContext(GlobalContext);
+    const { setSelectedVillage, SelectedVillage } = useContext(GlobalContext);
 
     useEffect(() => {
         (async function () {
             const allVillages = await villagesListing();
             setAllVillagesListing(allVillages.village);
-        })();   
+        })();
     }, []);
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                setSearch("");
+            };
+        }, []))
 
     useEffect(() => {
         if (SelectedVillage) {
@@ -29,6 +37,14 @@ const VillageListing = ({ navigation, route }) => {
         }
     }, [SelectedVillage]);
 
+    useEffect(() => {
+        setTimeout(() => {
+            (async function () {
+                const allVillages = await villagesListing(search ? search : "");
+                setAllVillagesListing(allVillages.village);
+            })();
+        }, 100)
+    }, [search])
     useEffect(() => {
         const params = route.params;
         if (route.params.listingStyle !== listingStyle) {
@@ -69,6 +85,28 @@ const VillageListing = ({ navigation, route }) => {
                     <View>
                         <Text className="text-3xl text-black font-bold">Villages</Text>
                     </View>
+                </View>
+            </View>
+            <View className="w-full px-4 mb-2">
+                <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
+                    <TextInput placeholder={'  Search here...'} placeholderTextColor="#000000" className="basis-[90%] tracking-wider  text-neutral-700  pl-2 " value={search} onChangeText={text => setSearch(text)} />
+                    <TouchableOpacity onPress={() => {
+                        setSearch("");
+                    }}>
+                        <View className="">
+                            {search !== "" ? (
+                                <Image
+                                    source={{ uri: 'https://e7.pngegg.com/pngimages/211/405/png-clipart-computer-icons-close-button-trademark-logo-thumbnail.png' }}
+                                    className="w-7 h-7"
+                                />
+                            ) : (
+                                <Image
+                                    source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvGrZtor2wBaCgpZI0EcGW9--2YrKKIQatZ2Qz4dse-d3nGE3fBKRvp6R_Que1_Ophe4s&usqp=CAU' }}
+                                    className="w-6 h-6"
+                                />
+                            )}
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
             <FlatList

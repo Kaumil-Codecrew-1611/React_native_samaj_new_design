@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { Animated, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import ApiContext from '../../context/ApiContext';
 
 const cardHeight = 85;
 const padding = 10;
 const offset = cardHeight + padding;
 
-const VillageByName = ({ searchValue }) => {
+const VillageByName = ({ searchValue, navigation }) => {
     const scrollY = useRef(new Animated.Value(0)).current;
     const { state } = useContext(ApiContext);
     const [userByVillageId, setUserVillageId] = useState([]);
@@ -51,19 +51,20 @@ const VillageByName = ({ searchValue }) => {
                     extrapolate: 'clamp',
                 });
                 const opacity = scale;
-
                 return (
-                    <Animated.View
-                        style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]}
-                    >
-                        <View style={styles.imageContainer}>
-                            <Image style={styles.image} source={{ uri: item.image }} />
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            <Text style={styles.village}>{item.village}</Text>
-                        </View>
-                    </Animated.View>
+                    <Pressable onPress={() => navigation.navigate('ViewFamilyDetails', { id: item.id })}>
+                        <Animated.View
+                            style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]}
+                        >
+                            <View style={styles.imageContainer}>
+                                <Image style={styles.image} source={{ uri: item.image }} />
+                            </View>
+                            <View style={styles.textContainer}>
+                                <Text style={styles.name}>{item.name}</Text>
+                                <Text style={styles.village}>{item.village}</Text>
+                            </View>
+                        </Animated.View>
+                    </Pressable>
                 );
             }}
         />

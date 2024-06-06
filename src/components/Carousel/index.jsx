@@ -8,8 +8,8 @@ const PAGE_WIDTH = Dimensions.get('window').width;
 function Parallax({ sliderImages }) {
     const [autoPlay] = useState(true);
     const [snapEnabled] = useState(true);
-    const modifiedImages = sliderImages.map(item => {
-        const imageName = item?.image.split('.')[0];
+    const modifiedImages = sliderImages?.map(item => {
+        const imageName = item?.image?.split('.')[0];
         return {
             ...item,
             image: `${process.env.IMAGE_URL}${item?.image}`,

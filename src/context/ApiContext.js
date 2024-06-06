@@ -25,6 +25,7 @@ import {
     editUserProfile,
     editUserPostProfile,
     handleFamilyUserProfile,
+    faqs,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -62,7 +63,7 @@ export const ApiProvider = ({ children }) => {
     const loginAPICall = (userData) => apiRequest(loginUser, userData, setData, 'loginDataResponse');
     const homePageAllSlider = () => apiRequest(homePageSlider, null, setData, 'homesliderimage');
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
-    const villagesListing = () => apiRequest(allVillageListing, null, setData, 'villagesListing');
+    const villagesListing = (search) => apiRequest(allVillageListing, search, setData, 'villagesListing'); //village listing
     const allUserByVillageId = (villageId) => apiRequest(villagesByUser, villageId, setData, 'allUserByVillage');
     const newsListing = () => apiRequest(allNewsListing, null, setData, 'allNewsListing');
     const addFamilyMemberDetails = (familyData) => apiRequest(addFamilyMember, familyData, setData, 'addFamilyMemberDetails');
@@ -77,6 +78,8 @@ export const ApiProvider = ({ children }) => {
     const updateUserProfileUser = (userId) => apiRequest(editUserProfile, userId, setData, 'updateUserProfileUser');
     const updateUserPostProfile = (userUpdatedData) => apiRequest(editUserPostProfile, userUpdatedData, setData, 'updateUserPostProfile');
     const handleDeleteProfileUser = (userProfileId) => apiRequest(handleFamilyUserProfile, userProfileId, setData, 'handleDeleteProfileUser');
+    const allfaqListing = () => apiRequest(faqs, null, setData, 'allfaqListing');
+
 
     return (
         <ApiContext.Provider value={{
@@ -107,6 +110,7 @@ export const ApiProvider = ({ children }) => {
             updateUserProfileUser,
             updateUserPostProfile,
             handleDeleteProfileUser,
+            allfaqListing
         }}>
             {children}
         </ApiContext.Provider>

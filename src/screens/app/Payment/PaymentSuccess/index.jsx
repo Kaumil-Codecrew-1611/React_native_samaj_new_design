@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, View } from 'react-native'
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Button from '../../../../components/Button';
+import { GlobalContext } from '../../../../context/globalState';
 
-function PaymentSuccess({ navigation }) {
-
+function PaymentSuccess({ navigation, route }) {
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const data = route.params;
 
+    console.log(data, "data")
     return (
         <View className="bg-[#fafafa] flex-1">
             <View className="flex-row mt-10 mb-5 items-center justify-center">

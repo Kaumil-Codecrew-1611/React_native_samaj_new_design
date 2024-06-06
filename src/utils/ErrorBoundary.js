@@ -20,7 +20,9 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <ErrorToast error={this.state.error} />
+        <>
+          {/*r <ErrorToast error={this.state.error} /> */}
+        </>
       );
     }
 
