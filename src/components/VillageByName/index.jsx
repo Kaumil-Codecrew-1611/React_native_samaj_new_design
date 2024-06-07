@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, FlatList, Image, StyleSheet, Text, View, Pressable } from 'react-native';
 import ApiContext from '../../context/ApiContext';
 
 const cardHeight = 85;

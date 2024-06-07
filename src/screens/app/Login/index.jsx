@@ -112,6 +112,13 @@ const Login = ({ navigation }) => {
                         <Text style={styles.registerLink}>Register</Text>
                     </Pressable>
                 </View>
+                <View style={styles.registerContainer}>
+                    <Text style={styles.registerText}>Go to</Text>
+                    <Pressable onPress={() => navigation.navigate("Home")}>
+                        <Text style={styles.registerLink}>Home Page</Text>
+                    </Pressable>
+                </View>
+
             </View>
         </View>
     );

@@ -114,6 +114,8 @@ const VillageListing = ({ navigation, route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}
                 numColumns={(listingStyle === 'grid') ? 2 : 1}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 key={listingStyle}
                 contentContainerStyle={{ display: 'flex', overflow: 'hidden', gap: 2, width: '100%', paddingHorizontal: 2 }}
                 horizontal={false}

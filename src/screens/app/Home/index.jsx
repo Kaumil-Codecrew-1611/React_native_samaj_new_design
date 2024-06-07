@@ -7,9 +7,11 @@ import CardDetails from '../../../components/CardDetails';
 import Carousel from '../../../components/Carousel';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import imageOfDefaule from '../../../assets/profile_img.png';
+
 const Home = ({ navigation }) => {
     const { progress, allUserInfo } = useContext(GlobalContext)
-    const { homePageAllSlider, contactUsPageDetails } = useContext(ApiContext);
+    const { homePageAllSlider } = useContext(ApiContext);
     const [firstName, setFirstName] = useState(allUserInfo?.firstname ? allUserInfo?.firstname : "Panchal")
     const [lastName, setLastName] = useState(allUserInfo?.lastname ? allUserInfo?.lastname : "Samaj")
     const [profileImage, setProfileImage] = useState(`${process.env.IMAGE_URL}${allUserInfo?.photo}`)
@@ -32,13 +34,6 @@ const Home = ({ navigation }) => {
 
         })()
     }, [allUserInfo])
-
-    useEffect(() => {
-        (async function () {
-            const contentContactUs = await contactUsPageDetails();
-            // console.log("contentContactUscontentContactUscontentContactUs", contentContactUs)
-        })()
-    }, [])
 
     const renderItem = ({ item }) => {
         return (
@@ -73,7 +68,11 @@ const Home = ({ navigation }) => {
                         </Text>
                     </View>
                     <View className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
-                        <Image source={{ uri: profileImage }} style={{ height: hp(10), width: hp(10) }} className="rounded-full" />
+                        {allUserInfo ? (
+                            <Image source={{ uri: profileImage }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                        ) : (
+                            <Image source={imageOfDefaule} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                        )}
                     </View>
                 </View>
             </Pressable>
@@ -84,6 +83,8 @@ const Home = ({ navigation }) => {
                 numColumns={2}
                 key={2}
                 horizontal={false}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ display: 'flex', gap: 2, width: '100%', paddingHorizontal: 3 }}
                 ListHeaderComponent={<Carousel sliderImages={sliderImages} />}
             />

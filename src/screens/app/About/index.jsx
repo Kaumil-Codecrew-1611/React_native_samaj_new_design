@@ -8,6 +8,7 @@ const { width } = Dimensions.get('window');
 const IMG_HEIGHT = 300;
 
 const Aboutus = () => {
+
     const scrollRef = useAnimatedRef();
     const scrolloffset = useScrollViewOffset(scrollRef);
     const { aboutUsContentApi } = useContext(ApiContext);
@@ -17,8 +18,8 @@ const Aboutus = () => {
     useEffect(() => {
         (async function () {
             const contentAboutUs = await aboutUsContentApi();
-            setTitle(contentAboutUs[0]?.title);
-            setDescription(contentAboutUs[0]?.description);
+            setTitle(contentAboutUs?.title);
+            setDescription(contentAboutUs?.description);
         })();
     }, []);
 
@@ -62,7 +63,13 @@ const Aboutus = () => {
             <Animated.View style={[styles.header, headerAnimatedStyle]}>
                 <Text style={styles.headerText}>Your Header</Text>
             </Animated.View>
-            <Animated.ScrollView onScroll={handleScroll} ref={scrollRef} scrollEventThrottle={16}>
+            <Animated.ScrollView
+                onScroll={handleScroll}
+                ref={scrollRef}
+                scrollEventThrottle={16}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
                 <View>
                     <Animated.Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
                         style={[styles.image, imageAnimatedStyle]} />
@@ -82,19 +89,6 @@ const Aboutus = () => {
                             tagsStyles={htmlStyles}
                         />
                     </View>
-                    {/* <View style={styles.section}>
-                        <Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
-                            style={styles.image} />
-                    </View>
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Our Approach</Text>
-                        <View style={styles.sectionDivider}></View>
-                        <Text style={styles.sectionText}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.</Text>
-                        <Text style={[styles.sectionText, styles.sectionTextMarginTop]}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur repellat, iste iusto, culpa recusandae fugiat deserunt molestias praesentium nulla magnam tenetur! Sit neque sapiente tempore, laudantium perferendis eius tenetur dicta.</Text>
-                    </View>
-                    <TouchableOpacity style={styles.learnMoreButton}>
-                        <Text style={styles.learnMoreButtonText}>Learn More</Text>
-                    </TouchableOpacity> */}
                 </View>
             </Animated.ScrollView>
         </View>
