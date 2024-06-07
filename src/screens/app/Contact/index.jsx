@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('screen');
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -8,6 +9,7 @@ export default function Contact() {
     const scrollY = useRef(new Animated.Value(0)).current;
     const [height1, setHeight1] = useState(100); 
     const [height2, setHeight2] = useState(0); 
+    const { t } = useTranslation();
 
     const translateX = scrollY.interpolate({
         inputRange: [0, Math.max(height1 - height2, 1)], 

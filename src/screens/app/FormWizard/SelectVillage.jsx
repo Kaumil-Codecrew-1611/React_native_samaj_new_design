@@ -4,6 +4,8 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { Button, MD3Colors, ProgressBar, TextInput } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import { useWizard } from "../../../context/WizardProvider"; // Adjust the import path as necessary
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 export default function SelectVillage({ navigation }) {
 

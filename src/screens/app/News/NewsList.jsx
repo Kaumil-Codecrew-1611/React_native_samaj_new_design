@@ -2,18 +2,19 @@ import React from 'react';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 function NewsList({ navigation, news }) {
     var a = null;
     let IMAGE_URL = process.env.IMAGE_URL;
 
     const formatDate = (timestamp) => {
         if (!timestamp) {
-            return 'Invalid date';
+            return t('invalidDate');
         }
         const date = new Date(Number(timestamp));
         if (isNaN(date)) {
-            return 'Invalid date';
+            return t('invalidDate');
         }
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');

@@ -4,6 +4,8 @@ import Button from '../../../components/Button';
 import { GlobalContext } from '../../../context/globalState';
 import ApiContext from '../../../context/ApiContext';
 import RazorpayCheckout from 'react-native-razorpay';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 function Payment({ navigation, route }) {
     const { registerData, setRegisterData } = useContext(GlobalContext);
@@ -101,7 +103,7 @@ function Payment({ navigation, route }) {
         <View className="flex-1 bg-green-200 relative">
             <View className="w-full absolute top-[117px] z-10 h-32 flex-row justify-center">
                 <View className=" w-72 rounded-xl bg-green-600 h-full flex-row justify-center items-center">
-                    <Text className="text-white text-3xl tracking-wider font-extrabold">PAYMENT</Text>
+                    <Text className="text-white text-3xl tracking-wider font-extrabold">{t('paymentPage')}</Text>
                 </View>
             </View>
             <View className="w-full bg-white h-[75%] pt-24 px-8 rounded-t-[45px] overflow-hidden absolute bottom-0">
@@ -109,7 +111,7 @@ function Payment({ navigation, route }) {
                     <View className="flex-1 ">
                         <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-4 rounded-[10px]">
                             <View className="h-full basis-[37%]">
-                                <Text className="text-lg tracking-wider  text-rose-700  font-extrabold">Name:</Text>
+                                <Text className="text-lg tracking-wider  text-rose-700  font-extrabold">{t('name')}:</Text>
                             </View>
                             <View className="basis-[63%]">
                                 <Text className="text-base tracking-wider text-neutral-700  font-bold">{payload?.Name}</Text>
@@ -117,7 +119,7 @@ function Payment({ navigation, route }) {
                         </View>
                         <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-4 rounded-[10px]">
                             <View className="h-full basis-[37%]">
-                                <Text className="text-lg tracking-wider  text-rose-700  font-extrabold">Phone:</Text>
+                                <Text className="text-lg tracking-wider  text-rose-700  font-extrabold">{t('mobile')}:</Text>
                             </View>
                             <View className="basis-[63%]">
                                 <Text className="text-base tracking-wider text-neutral-700  font-bold">{payload?.PhoneNo}</Text>
@@ -125,7 +127,7 @@ function Payment({ navigation, route }) {
                         </View>
                         <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-4 rounded-[10px]">
                             <View className="h-full basis-[37%]">
-                                <Text className="text-lg tracking-wider  text-rose-700  font-extrabold">Address:</Text>
+                                <Text className="text-lg tracking-wider  text-rose-700  font-extrabold">{t('address')}:</Text>
                             </View>
                             <View className="basis-[63%]">
                                 <Text className="text-base tracking-wider text-neutral-700  font-bold">{payload?.Address}</Text>

@@ -3,6 +3,10 @@ import { Image, Text, View, TouchableOpacity } from 'react-native'
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 const banner_img = require("../../../assets/support_header_bg.png")
+
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
+
 function Support({ navigation }) {
 
 

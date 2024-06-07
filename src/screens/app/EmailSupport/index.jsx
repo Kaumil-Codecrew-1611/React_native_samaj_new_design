@@ -4,6 +4,8 @@ import Button from '../../../components/Button';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const schema = yup.object().shape({
     subject: yup.string().required('Subject is Requried'),
@@ -48,8 +50,8 @@ function EmailSupport() {
 
                             <View className="w-full mt-6 mb-3 flex flex-row justify-center">
                                 <View className="w-[90%]">
-                                    <Text className="font-extrabold tracking-wider mb-3 text-2xl text-neutral-700 text-center">Send us on email</Text>
-                                    <Text className="tracking-wider text-lg text-neutral-700 text-center">Facing an issue? Our support team is here to help. Contact us via email.</Text>
+                                    <Text className="font-extrabold tracking-wider mb-3 text-2xl text-neutral-700 text-center">{t('sendusonemail')}</Text>
+                                    <Text className="tracking-wider text-lg text-neutral-700 text-center">{t('facinganissue')}</Text>
                                 </View>
                             </View>
 

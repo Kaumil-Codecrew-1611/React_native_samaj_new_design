@@ -9,11 +9,13 @@ import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import { COLORS } from '../../../utils/colors';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const schema = yup.object().shape({
-    email_or_mobile: yup.string().required('Email or Phone number is required').test(
+    email_or_mobile: yup.string().required(t('emailOrMobileRequired')).test(
         'is-email-or-phone',
-        'Invalid email or phone number',
+        t('invalidEmailOrPhone'),
         function (value) {
             if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(value)) {
                 return true;
@@ -24,9 +26,9 @@ const schema = yup.object().shape({
             return false;
         }
     ),
-    password: yup.string().required('Password is required').matches(
+    password: yup.string().required(t('passwordisrequired')).matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
+        t('passwordmusthaveatleastoneletteronenumberandonespecialcharacter')
     ),
 });
 
@@ -58,7 +60,7 @@ const Login = ({ navigation }) => {
             }
         } catch (error) {
             console.error('An error occurred while User Login:', error);
-            throw new Error('An error occurred!');
+            throw new Error('An error occurred while User Login');
         }
     };
 
@@ -71,7 +73,7 @@ const Login = ({ navigation }) => {
             </View>
             <View style={styles.formContainer}>
                 <View>
-                    <Text style={styles.label}>Email or Phone Number</Text>
+                    <Text style={styles.label}>{t('emailOrMobileNumber')}</Text>
                     <Controller
                         control={control}
                         name="email_or_mobile"
@@ -87,7 +89,7 @@ const Login = ({ navigation }) => {
                     {errors.email_or_mobile && <Text style={styles.error}>{errors.email_or_mobile.message}</Text>}
                 </View>
                 <View>
-                    <Text style={styles.label}>Password</Text>
+                    <Text style={styles.label}>{t('password')}</Text>
                     <Controller
                         control={control}
                         name="password"

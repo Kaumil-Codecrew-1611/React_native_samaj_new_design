@@ -6,6 +6,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ApiContext from '../../../context/ApiContext';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const Faqs = () => {
 
@@ -75,7 +77,7 @@ const Faqs = () => {
                     </View>
                     <View className="basis-[65%] flex flex-row justify-center items-center">
                         <Text className="font-extrabold tracking-wider text-2xl text-rose-700">
-                            Quick help for common issues 👋
+                            {t('Quickhelpforcommonissues')}
                         </Text>
                     </View>
                 </View>

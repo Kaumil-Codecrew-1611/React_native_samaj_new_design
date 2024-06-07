@@ -4,10 +4,12 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const schema = yup.object().shape({
 
-    emailOrPhone: yup.string().required('Email or Phone number is required').test(
+    emailOrPhone: yup.string().required(t('EmailorPhonenumberisrequired')).test(
         'is-email-or-phone',
         'Invalid email or phone number',
         function (value) {
@@ -22,7 +24,7 @@ const schema = yup.object().shape({
 
     otp: yup.string().when('isEmailOrPnoneValid', {
         is: true,
-        then: yup.string().required('OTP is required')
+        then: yup.string().required(t('OTPisrequired'))
     }),
 
 });
@@ -73,7 +75,7 @@ const ForgotPassword = () => {
                                 {!isEmailOrPnoneValid ? (
                                     <View className="my-9">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">Email/Number </Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('EmailNumber')} </Text>
                                         </View>
                                         <View className=" w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
                                             <Controller
@@ -82,7 +84,7 @@ const ForgotPassword = () => {
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         style={styles.input}
-                                                        placeholder="Enter mail or number"
+                                                        placeholder={t('EmailNumber')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
@@ -124,7 +126,7 @@ const ForgotPassword = () => {
                     <View className="mb-16">
                         <Button
                             className="bg-green-600 py-4 rounded-lg"
-                            title={isEmailOrPnoneValid ? "Submit" : "Send OTP"}
+                            title={isEmailOrPnoneValid ? t('submit') : "Send OTP"}
                             onPress={handleSubmit(data => onSubmit(data, isEmailOrPnoneValid ? '2' : '1'))} />
                     </View>
                 </View>

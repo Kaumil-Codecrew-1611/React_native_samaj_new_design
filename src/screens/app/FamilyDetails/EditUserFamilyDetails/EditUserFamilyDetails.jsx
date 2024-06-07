@@ -7,16 +7,18 @@ import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const schema = yup.object().shape({
-    firstname: yup.string().required('First Name is required'),
-    lastname: yup.string().required('Last Name is required'),
-    education: yup.string().required('Education is required'),
-    address: yup.string().required('Address is required'),
-    job: yup.string().required('Job is required'),
-    relationship: yup.string().required('Relation is required'),
-    marital_status: yup.string().required('Marital Status is required'),
-    gender: yup.string().required('Gender is required'),
+    firstname: yup.string().required(t('pleaseenterfirstname')),
+    lastname: yup.string().required(t('pleaseenterlastname')),
+    education: yup.string().required(t('pleaseentereducation')),
+    address: yup.string().required(t('pleaseenteraddress')),
+    job: yup.string().required(t('pleaseenterjob')),
+    relationship: yup.string().required(t('pleasechooserelation')),
+    marital_status: yup.string().required(t('pleasechoosemaritalstatus')),
+    gender: yup.string().required(t('pleaseentergender')),
 });
 
 export default function EditUserFamilyDetails({ navigation, route }) {
@@ -98,7 +100,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                             <View>
                                 <View>
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">First Name:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -106,7 +108,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             name="firstname"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="First name here ...."
+                                                    placeholder={t('firstname')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -121,7 +123,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
 
                                 <View>
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Last Name:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('lastname')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -129,7 +131,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             name="lastname"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Last name here ...."
+                                                    placeholder={t('lastname')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -144,7 +146,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
 
                                 <View>
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Gender:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <View className="mx-1 mb-2">
@@ -158,9 +160,9 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                         className="flex flex-row"
                                                         onChange={(nextValue) => onChange(nextValue)}
                                                     >
-                                                        <Radio value="male" my={1}>Male</Radio>
-                                                        <Radio value="female" my={1} ml={2}>Female</Radio>
-                                                        <Radio value="other" my={1} ml={2}>Other</Radio>
+                                                        <Radio value="male" my={1}>{t('male')}:</Radio>
+                                                        <Radio value="female" my={1} ml={2}>{t('female')}:</Radio>
+                                                        <Radio value="other" my={1} ml={2}>{t('other')}:</Radio>
                                                     </Radio.Group>
                                                 )}
                                             />
@@ -170,7 +172,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View className="w-full mx-1">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Birth:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
                                     <Pressable onPress={() => setShowPicker(true)} className="w-full mt-2">
                                         <Controller
                                             control={control}
@@ -221,7 +223,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
 
                                 <View>
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Education:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('education')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -229,7 +231,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             name="education"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Education"
+                                                    placeholder={t('education')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -244,7 +246,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
 
                                 <View>
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Job:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('job')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -252,7 +254,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             name="job"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Job"
+                                                    placeholder={t('job')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -267,7 +269,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
 
                                 <View>
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Address:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('address')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -275,7 +277,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             name="address"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Address"
+                                                    placeholder={t('address')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -290,7 +292,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
 
                                 <View>
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Marital Status:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('marital_status')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <View className="mx-1 mb-2">
@@ -299,7 +301,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                 name="marital_status"
                                                 render={({ field: { onChange, value } }) => (
                                                     <Select
-                                                        placeholder="Select Marital Status"
+                                                        placeholder={t('marital_status')}
                                                         selectedValue={value}
                                                         onValueChange={(itemValue) => onChange(itemValue)}
                                                         _selectedItem={{
@@ -308,11 +310,11 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                         }}
                                                         style={styles.select}
                                                     >
-                                                        <Select.Item label="Married" value="married" />
-                                                        <Select.Item label="Unmarried" value="unmarried" />
-                                                        <Select.Item label="Widower" value="widower" />
-                                                        <Select.Item label="Widow" value="widow" />
-                                                        <Select.Item label="Divorcee" value="divorcee" />
+                                                        <Select.Item label={t('married')} value="married" />
+                                                        <Select.Item label={t('unmarried')} value="unmarried" />
+                                                        <Select.Item label={t('widower')} value="widower" />
+                                                        <Select.Item label={t('widow')} value="widow" />
+                                                        <Select.Item label={t('divorcee')} value="divorcee" />
                                                     </Select>
                                                 )}
                                             />
@@ -322,7 +324,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                 </View>
                                 <View className=" w-full mt-2">
                                     <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Relation:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('relationship')}:</Text>
                                     </View>
                                     <View className="mx-1 mb-2">
                                         <Controller
@@ -330,7 +332,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             name="relationship"
                                             render={({ field: { onChange, value } }) => (
                                                 <Select
-                                                    placeholder="Select Relationship"
+                                                    placeholder={t('relationship')}
                                                     selectedValue={value}
                                                     onValueChange={(itemValue) => onChange(itemValue)}
                                                     _selectedItem={{
@@ -354,7 +356,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View className="mt-3 mb-6">
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title="Edit Family Member" onPress={handleSubmit(onSubmit)} />
+                                    <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} onPress={handleSubmit(onSubmit)} />
                                 </View>
                             </View>
                         </ScrollView>

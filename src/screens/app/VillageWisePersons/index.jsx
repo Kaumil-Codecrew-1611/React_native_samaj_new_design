@@ -3,6 +3,8 @@ import React, { useCallback, useContext, useState } from "react";
 import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import VillageByName from "../../../components/VillageByName";
 import ApiContext from "../../../context/ApiContext";
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const VillageWisePersons = ({ navigation }) => {
 
@@ -19,7 +21,7 @@ const VillageWisePersons = ({ navigation }) => {
 
         <View className="flex-1 bg-gray-300 space-y-5 w-full" edges={['top']}>
             <View>
-                <Text className="font-bold text-3xl tracking-wider text-neutral-700 mt-4 ml-6">Village People</Text>
+                <Text className="font-bold text-3xl tracking-wider text-neutral-700 mt-4 ml-6">{t('VillagePeople')}</Text>
             </View>
             <View className="relative bg-white m-3 px-3 h-14 rounded-2xl">
                 <View className='flex-1 justify-center items-center'>

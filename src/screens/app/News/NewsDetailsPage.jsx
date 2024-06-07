@@ -5,6 +5,8 @@ import ImageViewing from 'react-native-image-viewing';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
 import { ScrollView } from 'native-base';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const NewsDetailsPage = ({ route }) => {
     const { newsId } = route.params;
@@ -33,11 +35,11 @@ const NewsDetailsPage = ({ route }) => {
 
     const formatDate = (timestamp) => {
         if (!timestamp) {
-            return 'Invalid date';
+            return t('invalidDate');
         }
         const date = new Date(Number(timestamp));
         if (isNaN(date)) {
-            return 'Invalid date';
+            return t('invalidDate');
         }
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -79,7 +81,7 @@ const NewsDetailsPage = ({ route }) => {
         >
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.title}>News Details</Text>
+                    <Text style={styles.title}>{t('newsDetails')}</Text>
                 </View>
                 <View>
                     <View>

@@ -6,11 +6,12 @@ import ApiContext from '../../../context/ApiContext';
 import ImageViewing from 'react-native-image-viewing';
 import * as ImagePicker from 'react-native-image-picker';
 import { GlobalContext } from '../../../context/globalState';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const NodeDetails = ({ navigation, route }) => {
     var { userId } = route.params;
     const paramsData = route.params;
-    console.log(userId, "userid")
     const { userDataByParentId, handleDeleteProfileUser, updateUserProfileImage } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
     const [userData, setUserData] = useState([]);
@@ -75,11 +76,9 @@ const NodeDetails = ({ navigation, route }) => {
         const userId = allUserInfo?._id;
         if (id === undefined || id === null) {
             if (userId) {
-                console.log(" 111111")
                 setIsPopupVisible(true);
             }
         } else if (id === userId) {
-            console.log(" 222222 ")
             setIsPopupVisible(true);
         }
         else if (!id || typeof id === undefined && userId) {
@@ -196,10 +195,8 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     function visibleEditDetail() {
-        console.log("called");
         const id = paramsData?.paramsId;
         const userId = allUserInfo?._id;
-        console.log(userId, ":::::userId::::::", id, ":::::id:::::");
 
         function renderPressable() {
             return (
@@ -226,18 +223,14 @@ const NodeDetails = ({ navigation, route }) => {
 
         if (id === undefined || id === null) {
             if (userId) {
-                console.log(" 111111")
                 return renderPressable();
             }
         } else if (id === userId) {
-            console.log(" 222222 ")
             return renderPressable();
         }
         else if (!id || typeof id === undefined && userId) {
-            console.log(" 3333333 ")
             return renderPressable();
         }
-        console.log(" 4444444 ")
         return <></>;
     }
 
@@ -297,7 +290,7 @@ const NodeDetails = ({ navigation, route }) => {
                 </View>
                 <View className="mb-8 p-1 flex-1">
                     <View className="w-full">
-                        <Text className="font-extrabold tracking-wider text-xl my-2 ml-2 text-rose-700">Basic Info</Text>
+                        <Text className="font-extrabold tracking-wider text-xl my-2 ml-2 text-rose-700">{t('basicinfo')}</Text>
                         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
                             {Object.entries(filteredUserData).map(([key, value], index) => (
                                 <View key={index + "keyyyss"}>
@@ -327,13 +320,13 @@ const NodeDetails = ({ navigation, route }) => {
                         <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-14">
-                        <Text className="font-bold text-lg mb-4">Are you sure you want to delete?</Text>
+                        <Text className="font-bold text-lg mb-4">{t('deleteconfirm')}</Text>
                         <View className="flex-row justify-between items-center">
                             <Pressable onPress={closeDeleteModal} className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2">
-                                <Text>Cancel</Text>
+                                <Text>{t('cancel')}</Text>
                             </Pressable>
                             <Pressable onPress={() => handleDelete(userData._id)} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white">Delete</Text>
+                                <Text className="text-white">{t('delete')}</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -353,13 +346,13 @@ const NodeDetails = ({ navigation, route }) => {
                 <View style={styles.modalBackground}>
                     <View style={styles.popup}>
                         <TouchableOpacity onPress={viewProfileImage}>
-                            <Text style={styles.popupText}>View Profile Image</Text>
+                            <Text style={styles.popupText}>{t('ViewProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectImage}>
-                            <Text style={styles.popupText}>Edit Profile Image</Text>
+                            <Text style={styles.popupText}>{t('EditProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closePopup}>
-                            <Text style={styles.popupText}>Close</Text>
+                            <Text style={styles.popupText}>{t('cancel')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

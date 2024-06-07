@@ -3,6 +3,8 @@ import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { COLORS } from '../../../utils/colors';
 import Button from '../../../components/Button';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 const Welcome = ({ navigation }) => {
     return (

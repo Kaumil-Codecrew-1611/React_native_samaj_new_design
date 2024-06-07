@@ -7,6 +7,9 @@ import CardDetails from '../../../components/CardDetails';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
+
 
 const VillageListing = ({ navigation, route }) => {
     const AnimatedIcon = Animated.createAnimatedComponent(Feather);
@@ -83,13 +86,13 @@ const VillageListing = ({ navigation, route }) => {
                         />
                     </View>
                     <View>
-                        <Text className="text-3xl text-black font-bold">Villages</Text>
+                        <Text className="text-3xl text-black font-bold">{t('village')}</Text>
                     </View>
                 </View>
             </View>
             <View className="w-full px-4 mb-2">
                 <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
-                    <TextInput placeholder={'  Search here...'} placeholderTextColor="#000000" className="basis-[90%] tracking-wider  text-neutral-700  pl-2 " value={search} onChangeText={text => setSearch(text)} />
+                    <TextInput placeholder={t('search')} placeholderTextColor="#000000" className="basis-[90%] tracking-wider  text-neutral-700  pl-2 " value={search} onChangeText={text => setSearch(text)} />
                     <TouchableOpacity onPress={() => {
                         setSearch("");
                     }}>

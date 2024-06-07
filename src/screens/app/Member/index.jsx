@@ -3,13 +3,14 @@ import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
 import ApiContext from '../../../context/ApiContext';
 import { useTranslation } from 'react-i18next';
 const { width } = Dimensions.get('screen');
+const { t } = useTranslation();
+
 
 export default function Member() {
     const scrollY = useRef(new Animated.Value(0)).current;
     const [height1, setHeight1] = useState(100);
     const [height2, setHeight2] = useState(0);
     const [committeeMembers, setCommitteeMembers] = useState([]);
-    const { t } = useTranslation();
     const translateX = scrollY.interpolate({
         inputRange: [0, Math.max(height1 - height2, 1)],
         outputRange: [-width, 0]
@@ -32,7 +33,7 @@ export default function Member() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Committee Members</Text>
+                <Text style={styles.headerText}>{t('committeeMember')}</Text>
             </View>
             <Animated.ScrollView
                 onContentSizeChange={(_, h) => setHeight1(h)}
@@ -45,15 +46,15 @@ export default function Member() {
                 {committeeMembers.map((member) => (
                     <View style={styles.card} key={member._id}>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Full Name: </Text>
+                            <Text style={styles.cardTitle}>{t('fullName')}: </Text>
                             <Text style={styles.cardText}>{member.fullname}</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Mobile Number: </Text>
+                            <Text style={styles.cardTitle}>{t('mobile')}: </Text>
                             <Text style={styles.cardText}>{member.mobile_number}</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Village: </Text>
+                            <Text style={styles.cardTitle}>{t('village')}: </Text>
                             <Text style={styles.cardText}>{member.village}</Text>
                         </View>
                     </View>

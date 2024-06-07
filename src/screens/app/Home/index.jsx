@@ -8,6 +8,10 @@ import Carousel from '../../../components/Carousel';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import imageOfDefaule from '../../../assets/profile_img.png';
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18n from '../../../context/i18n';
+const { t } = useTranslation();
 
 const Home = ({ navigation }) => {
     const { progress, allUserInfo } = useContext(GlobalContext)
@@ -35,6 +39,25 @@ const Home = ({ navigation }) => {
         })()
     }, [allUserInfo])
 
+    useEffect(() => {
+        const getSelectedLanguage = async () => {
+          try {
+            const storedLanguage = await AsyncStorage.getItem('selectedLanguage');
+            if (storedLanguage) {
+              i18n.changeLanguage(storedLanguage).catch((error) => {
+                console.error('Error changing language:', error);
+              });
+              console.log(storedLanguage,"storedLanguage")
+              setLanguage(storedLanguage);
+            }
+          } catch (error) {
+            console.error('Error retrieving language:', error);
+          }
+        };
+    
+        getSelectedLanguage();
+      }, []);
+
     const renderItem = ({ item }) => {
         return (
             <View className="flex-1 flex-row justify-around">
@@ -60,7 +83,7 @@ const Home = ({ navigation }) => {
                 <View className="flex-row justify-around my-4 w-full items-center mx-1">
                     <View className="space-y-1 basis-2/3 justify-center px-5">
                         <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
-                            Welcome
+                            {t('welcome')}
                         </Text>
                         <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
 
