@@ -12,13 +12,13 @@ const VillageListing = ({ navigation, route }) => {
     const [listingStyle, setListingStyle] = useState(route.params.listingStyle);
     const [allVillagesListing, setAllVillagesListing] = useState([]);
     const { villagesListing, allUserByVillageId } = useContext(ApiContext);
-    const { setSelectedVillage, SelectedVillage  } = useContext(GlobalContext);
+    const { setSelectedVillage, SelectedVillage } = useContext(GlobalContext);
 
     useEffect(() => {
         (async function () {
             const allVillages = await villagesListing();
             setAllVillagesListing(allVillages.village);
-        })();   
+        })();
     }, []);
 
     useEffect(() => {
@@ -76,6 +76,8 @@ const VillageListing = ({ navigation, route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}
                 numColumns={(listingStyle === 'grid') ? 2 : 1}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 key={listingStyle}
                 contentContainerStyle={{ display: 'flex', overflow: 'hidden', gap: 2, width: '100%', paddingHorizontal: 2 }}
                 horizontal={false}

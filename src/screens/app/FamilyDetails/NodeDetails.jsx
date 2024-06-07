@@ -5,11 +5,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
 import ImageViewing from 'react-native-image-viewing';
 import * as ImagePicker from 'react-native-image-picker';
+import { GlobalContext } from '../../../context/globalState';
 
 const NodeDetails = ({ navigation, route }) => {
     var { userId } = route.params;
+    const paramsData = route.params;
     console.log(userId, "userid")
     const { userDataByParentId, handleDeleteProfileUser, updateUserProfileImage } = useContext(ApiContext);
+    const { allUserInfo } = useContext(GlobalContext);
     const [userData, setUserData] = useState([]);
     const [newImagae, setImage] = useState(null);
     const [menuVisible, setMenuVisible] = useState(false);
@@ -68,7 +71,24 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     const openModal = () => {
-        setIsPopupVisible(true);
+        const id = paramsData?.paramsId;
+        const userId = allUserInfo?._id;
+        if (id === undefined || id === null) {
+            if (userId) {
+                console.log(" 111111")
+                setIsPopupVisible(true);
+            }
+        } else if (id === userId) {
+            console.log(" 222222 ")
+            setIsPopupVisible(true);
+        }
+        else if (!id || typeof id === undefined && userId) {
+           
+            setIsPopupVisible(true);
+        }
+       else{
+        setIsPopupVisible(false);;
+       }
     };
 
     const closePopup = () => {
@@ -174,20 +194,16 @@ const NodeDetails = ({ navigation, route }) => {
             console.error('Error:', error);
         }
     };
-    return (
-        <View className="w-full p-3 bg-white flex-1">
-            <View className="w-full bg-[#E9EDF7] flex-1 rounded-[15px] overflow-hidden">
-                <View className="w-full h-[38%] relative">
-                    <Pressable onPress={openModal}>
-                        <Image
-                            source={newImagae ? { uri: `${process.env.IMAGE_URL}${newImagae}` } : { uri: `${process.env.IMAGE_URL}${userData.photo}` }}
-                            className="w-full h-full object-cover"
-                        />
 
-                    </Pressable>
-                    <View className="p-4 bg-white absolute bottom-2 rounded-[15px] left-2 shadow-green-700" style={{ elevation: 10 }}>
-                        <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData.firstname + ' ' + userData.lastname}</Text>
-                    </View>
+    function visibleEditDetail() {
+        console.log("called");
+        const id = paramsData?.paramsId;
+        const userId = allUserInfo?._id;
+        console.log(userId, ":::::userId::::::", id, ":::::id:::::");
+
+        function renderPressable() {
+            return (
+                <>
                     <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
                         <AnimatedFontAwesomeIcon
                             name="ellipsis-v"
@@ -204,6 +220,60 @@ const NodeDetails = ({ navigation, route }) => {
                             />
                         </Text>
                     </Pressable>
+                </>
+            )
+        };
+
+        if (id === undefined || id === null) {
+            if (userId) {
+                console.log(" 111111")
+                return renderPressable();
+            }
+        } else if (id === userId) {
+            console.log(" 222222 ")
+            return renderPressable();
+        }
+        else if (!id || typeof id === undefined && userId) {
+            console.log(" 3333333 ")
+            return renderPressable();
+        }
+        console.log(" 4444444 ")
+        return <></>;
+    }
+
+
+
+    return (
+        <View className="w-full p-3 bg-white flex-1">
+            <View className="w-full bg-[#E9EDF7] flex-1 rounded-[15px] overflow-hidden">
+                <View className="w-full h-[38%] relative">
+                    <Pressable onPress={openModal}>
+                        <Image
+                            source={newImagae ? { uri: `${process.env.IMAGE_URL}${newImagae}` } : { uri: `${process.env.IMAGE_URL}${userData.photo}` }}
+                            className="w-full h-full object-cover"
+                        />
+
+                    </Pressable>
+                    <View className="p-4 bg-white absolute bottom-2 rounded-[15px] left-2 shadow-green-700" style={{ elevation: 10 }}>
+                        <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData.firstname + ' ' + userData.lastname}</Text>
+                    </View>
+                    {visibleEditDetail()}
+                    {/*  <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
+                        <AnimatedFontAwesomeIcon
+                            name="ellipsis-v"
+                            size={27}
+                            color="green"
+                        />
+                    </Pressable>
+                    <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
+                        <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">
+                            <AnimatedFontAwesomeIcon
+                                name="user-plus"
+                                size={27}
+                                color="green"
+                            />
+                        </Text>
+                    </Pressable> */}
                     {menuVisible && (
                         <View className="absolute top-2 right-14 bg-white rounded-[15px] shadow-lg px-2 py-1">
                             <View className="flex flex-row items-center gap-2">

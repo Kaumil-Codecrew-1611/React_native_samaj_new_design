@@ -46,7 +46,7 @@ const RootNavigator = () => {
             // headerShown: false
         }}>
             <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false }} />
-            <RootStack.Screen name='Home Screen' component={HomeScreen} />
+            <RootStack.Screen name='HomeScreen' component={HomeScreen} />
 
             <RootStack.Screen name="VillageListing" component={VillageListing} initialParams={{ listingStyle }} options={({ navigation }) => ({
                 headerTitle: () => (
