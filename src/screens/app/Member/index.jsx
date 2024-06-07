@@ -10,7 +10,6 @@ export default function Member() {
     const [height2, setHeight2] = useState(0);
     const [committeeMembers, setCommitteeMembers] = useState([]);
     const { t } = useTranslation();
-    console.log(t('contactusheading'),"translateX")
     const translateX = scrollY.interpolate({
         inputRange: [0, Math.max(height1 - height2, 1)],
         outputRange: [-width, 0]

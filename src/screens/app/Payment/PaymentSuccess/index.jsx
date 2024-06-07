@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, View } from 'react-native'
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Button from '../../../../components/Button';
+import { GlobalContext } from '../../../../context/globalState';
 
-function PaymentSuccess({ navigation }) {
-
+function PaymentSuccess({ navigation, route }) {
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const data = route.params;
 
+    console.log(data, "data")
     return (
         <View className="bg-[#fafafa] flex-1">
             <View className="flex-row mt-10 mb-5 items-center justify-center">
@@ -29,19 +31,19 @@ function PaymentSuccess({ navigation }) {
                 <View className="bg-white my-4 w-full p-3 rounded-[15px]" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                     <View className="flex-row mb-3 items-center justify-between" >
                         <Text className="tracking-wider text-xl mr-7  text-[#acacac]">Name</Text>
-                        <Text className="tracking-wider text-lg font-semibold text-neutral-700">Ajay Varma</Text>
+                        <Text className="tracking-wider text-lg font-semibold text-neutral-700">{data?.registerData?.firstname + " " + data?.registerData?.lastname}</Text>
                     </View>
 
                     <View className="flex-row my-2 mb-6 items-center justify-between" >
                         <Text className="tracking-wider text-xl mr-7  text-[#acacac]">Phone No</Text>
-                        <Text className="tracking-wider text-lg font-semibold text-neutral-700">12345679890</Text>
+                        <Text className="tracking-wider text-lg font-semibold text-neutral-700">{data?.registerData?.mobile_number}</Text>
                     </View>
 
                     <View className="h-[1px] mb-3 bg-neutral-400"></View>
 
                     <View className="flex-row items-center justify-between" >
                         <Text className="tracking-wider text-xl mr-7  text-[#acacac]">Total Amount</Text>
-                        <Text className="tracking-wider text-xl font-extrabold text-[#e1a58a]">100 (PAID)</Text>
+                        <Text className="tracking-wider text-xl font-extrabold text-[#e1a58a]">{data?.amount / 100} (PAID)</Text>
                     </View>
 
 

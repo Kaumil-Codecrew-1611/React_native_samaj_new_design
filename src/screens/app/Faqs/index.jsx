@@ -1,15 +1,30 @@
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import ApiContext from '../../../context/ApiContext';
 
 const Faqs = () => {
 
     const [search, setSearch] = useState("")
     const [visibleAnswers, setVisibleAnswers] = useState({});
+    const { allfaqListing } = useContext(ApiContext);
+    const [faqs, setFaq] = useState([]);
+
+    useEffect(() => {
+        const fetchCommitteeMembers = async () => {
+            try {
+                const faqDetails = await allfaqListing();
+                setFaq(faqDetails);
+            } catch (error) {
+                console.error("Failed to fetch committee members", error);
+            }
+        };
+        fetchCommitteeMembers();
+    }, []);
 
     const toggleAnswerVisibility = (id) => {
         setVisibleAnswers((prev) => ({
@@ -20,32 +35,12 @@ const Faqs = () => {
 
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
 
-    const questions = [
-        {
-            id: 1,
-            question: " What is React Native?",
-            answer: " React Native is an open-source framework for building mobile applications using React and JavaScript. It allows developers to create apps that work on both iOS and Android platforms."
-        },
-        {
-            id: 2,
-            question: " What is React?",
-            answer: " React is an open-source framework for building mobile applications using React and JavaScript. It allows developers to create apps that work on both iOS and Android platforms."
-        },
-        {
-            id: 3,
-            question: " What is Laravel?",
-            answer: " Laravel is an open-source framework for building mobile applications using React and JavaScript. It allows developers to create apps that work on both iOS and Android platforms."
-        }
-    ]
-
-
-
     const renderItems = ({ item }) => {
-        const isAnswerVisible = visibleAnswers[item.id];
+        const isAnswerVisible = visibleAnswers[item._id];
 
         return (
             <View className="w-full p-[10px]">
-                <TouchableOpacity activeOpacity={0.95} onPress={() => toggleAnswerVisibility(item.id)}>
+                <TouchableOpacity activeOpacity={0.95} onPress={() => toggleAnswerVisibility(item._id)}>
                     <View className="flex flex-row justify-between items-center bg-white shadow-2xl shadow-black  rounded-[15px] p-[15px]" style={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 2, elevation: 5 }}>
                         <Text className="font-extrabold tracking-wider text-lg text-neutral-700 basis-[91%]">
                             {item.question}
@@ -85,7 +80,7 @@ const Faqs = () => {
                     </View>
                 </View>
 
-                <View className="w-full p-3">
+                {/* <View className="w-full p-3">
 
                     <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                         <TextInput placeholder={'  Search here...'} placeholderTextColor="#000000" className="basis-[90%] tracking-wider  text-neutral-700  pl-2 " value={search} onChangeText={text => setSearch(text)} />
@@ -107,13 +102,13 @@ const Faqs = () => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </View> */}
 
                 <SafeAreaView style={{ flex: 1 }}>
                     <FlatList
-                        data={questions}
+                        data={faqs}
                         renderItem={renderItems}
-                        keyExtractor={item => item.id.toString()}
+                        keyExtractor={item => item._id.toString()}
                     />
                 </SafeAreaView>
 
@@ -124,4 +119,5 @@ const Faqs = () => {
 }
 
 export default Faqs
+
 

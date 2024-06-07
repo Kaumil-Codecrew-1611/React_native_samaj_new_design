@@ -8,8 +8,8 @@ const PAGE_WIDTH = Dimensions.get('window').width;
 function Parallax({ sliderImages }) {
     const [autoPlay] = useState(true);
     const [snapEnabled] = useState(true);
-    const modifiedImages = sliderImages.map(item => {
-        const imageName = item?.image.split('.')[0];
+    const modifiedImages = sliderImages?.map(item => {
+        const imageName = item?.image?.split('.')[0];
         return {
             ...item,
             image: `${process.env.IMAGE_URL}${item?.image}`,
@@ -39,9 +39,6 @@ function Parallax({ sliderImages }) {
                     <View style={styles.slide}>
                         <LinearGradient colors={['rgba(0, 0.3, 0, 0.3)', 'rgba(0.2, 0.4, 0.4, 0.8)']} style={styles.gradient}>
                             <Animated.Image style={styles.img} source={{ uri: item.image }} />
-                            <Animated.View style={styles.container}>
-                                <Text style={styles.title}>{item.title}</Text>
-                            </Animated.View>
                         </LinearGradient>
                     </View>
                 )}

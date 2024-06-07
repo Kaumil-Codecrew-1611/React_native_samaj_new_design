@@ -27,6 +27,7 @@ import userProfilePage from '../screens/app/Profile/index';
 import NewsDetailsPage from '../screens/app/News/NewsDetailsPage';
 import NewsList from '../screens/app/News/NewsList';
 import EditUserProfile from '../screens/app/Edit User';
+import EditUserFamilyDetails from '../screens/app/FamilyDetails/EditUserFamilyDetails/EditUserFamilyDetails';
 
 const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
@@ -45,7 +46,7 @@ const RootNavigator = () => {
             // headerShown: false
         }}>
             <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false }} />
-            <RootStack.Screen name='Home Screen' component={HomeScreen} />
+            <RootStack.Screen name='HomeScreen' component={HomeScreen} />
 
             <RootStack.Screen name="VillageListing" component={VillageListing} initialParams={{ listingStyle }} options={({ navigation }) => ({
                 headerTitle: () => (
@@ -87,6 +88,7 @@ const RootNavigator = () => {
             <RootStack.Screen name="ViewFamilyDetails" options={{ headerTitle: 'Family Details' }} component={ViewFamilyTree} />
             <RootStack.Screen name="NodeDetails" component={NodeDetails} options={{ headerTitle: 'Family Details' }} />
             <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: 'Add Family Details' }} />
+            <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: 'Edit Family Details' }} />
         </RootStack.Navigator>
     )
 }

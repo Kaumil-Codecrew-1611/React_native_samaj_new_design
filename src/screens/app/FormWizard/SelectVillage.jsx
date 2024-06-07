@@ -6,12 +6,6 @@ import { useIsFocused } from "@react-navigation/native";
 import { useWizard } from "../../../context/WizardProvider"; // Adjust the import path as necessary
 
 export default function SelectVillage({ navigation }) {
-    // keep back arrow from showing
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => null,
-        });
-    }, [navigation]);
 
     const { wizardState, updateWizardState } = useWizard();
 

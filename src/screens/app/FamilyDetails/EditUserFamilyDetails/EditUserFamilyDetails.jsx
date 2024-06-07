@@ -2,12 +2,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { Keyboard, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
-import { GlobalContext } from '../../../../context/globalState';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const schema = yup.object().shape({
     firstname: yup.string().required('First Name is required'),
@@ -18,41 +17,58 @@ const schema = yup.object().shape({
     relationship: yup.string().required('Relation is required'),
     marital_status: yup.string().required('Marital Status is required'),
     gender: yup.string().required('Gender is required'),
-    parent_id: yup.string().required('Parent ID is required'),
-    payment_id: yup.string().required('Payment ID is required'),
 });
 
-export default function AddFamilyDetails({ navigation, route }) {
+export default function EditUserFamilyDetails({ navigation, route }) {
 
-    const { addFamilyMemberDetails, allRelationshipDataList } = useContext(ApiContext);
-    const { allUserInfo } = useContext(GlobalContext);
+    const { editFamilyDetailsUser, allRelationshipDataList, updateFamilyDetailsUser } = useContext(ApiContext);
     const [relationData, setRelationData] = useState([]);
+    const { userId } = route.params;
     const [showPicker, setShowPicker] = useState(false);
-    const { parent_id } = route.params;
-
-    const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+    const [dob, setDob] = useState(null);
+    const { control, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            gender: "",
-            parent_id: parent_id,
-            payment_id: allUserInfo?.payment_id,
+            firstname: '',
+            lastname: '',
+            education: '',
+            address: '',
+            job: '',
+            relationship: '',
+            marital_status: '',
+            gender: '',
         }
     });
 
-    const dob = watch('dob') || new Date();
-
     const onSubmit = async (data) => {
-        addFamilyMemberDetails(data);
+        const payload = {
+            id: userId,
+            data: data
+        }
+        updateFamilyDetailsUser(payload);
         navigation.navigate('ViewFamilyDetails');
     };
 
-    const onDateChange = (event, selectedDate) => {
-        if (selectedDate !== undefined) {
-            setShowPicker(false);
-            const currentDate = new Date(selectedDate);
-            setValue('dob', currentDate);
-        }
-    };
+    useEffect(() => {
+        (async function () {
+            const response = await editFamilyDetailsUser(userId);
+            if (response) {
+                setValue('firstname', response.firstname);
+                setValue('lastname', response.lastname);
+                setValue('education', response.education);
+                setValue('address', response.address);
+                setValue('job', response.job);
+                setValue('relationship', response.relationship);
+                setValue('marital_status', response.marital_status);
+                setValue('gender', response.gender);
+
+                if (response.dob) {
+                    setDob(new Date(response.dob));
+                    setValue('dob', response.dob);
+                }
+            }
+        })();
+    }, [userId, setValue]);
 
     useEffect(() => {
         (async function () {
@@ -80,7 +96,6 @@ export default function AddFamilyDetails({ navigation, route }) {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             <View>
-
                                 <View>
                                     <View className="w-full mx-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">First Name:</Text>
@@ -154,76 +169,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                     </View>
                                 </View>
 
-                                <View>
-                                    <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Education:</Text>
-                                    </View>
-                                    <View className=" w-full mt-2">
-                                        <Controller
-                                            control={control}
-                                            name="education"
-                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                <TextInput
-                                                    placeholder="Education"
-                                                    placeholderTextColor="grey"
-                                                    style={styles.input}
-                                                    value={value}
-                                                    onBlur={onBlur}
-                                                    onChangeText={(text) => onChange(text)}
-                                                />
-                                            )}
-                                        />
-                                        {errors.education && <Text style={styles.error}>{errors.education.message}</Text>}
-                                    </View>
-                                </View>
-
-                                <View>
-                                    <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Address:</Text>
-                                    </View>
-                                    <View className=" w-full mt-2">
-                                        <Controller
-                                            control={control}
-                                            name="address"
-                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                <TextInput
-                                                    placeholder="Address"
-                                                    placeholderTextColor="grey"
-                                                    style={styles.input}
-                                                    value={value}
-                                                    onBlur={onBlur}
-                                                    onChangeText={(text) => onChange(text)}
-                                                />
-                                            )}
-                                        />
-                                        {errors.address && <Text style={styles.error}>{errors.address.message}</Text>}
-                                    </View>
-                                </View>
-
-                                <View>
-                                    <View className="w-full mx-1">
-                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Job:</Text>
-                                    </View>
-                                    <View className=" w-full mt-2">
-                                        <Controller
-                                            control={control}
-                                            name="job"
-                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                <TextInput
-                                                    placeholder="Job"
-                                                    placeholderTextColor="grey"
-                                                    style={styles.input}
-                                                    value={value}
-                                                    onBlur={onBlur}
-                                                    onChangeText={(text) => onChange(text)}
-                                                />
-                                            )}
-                                        />
-                                        {errors.job && <Text style={styles.error}>{errors.job.message}</Text>}
-                                    </View>
-                                </View>
-
-                                <View className="my-1">
+                                <View className="w-full mx-1">
                                     <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Birth:</Text>
                                     <Pressable onPress={() => setShowPicker(true)} className="w-full mt-2">
                                         <Controller
@@ -261,10 +207,85 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             value={dob ? new Date(dob) : new Date()}
                                             mode="date"
                                             display="default"
-                                            onChange={onDateChange}
+                                            onChange={(event, selectedDate) => {
+                                                setShowPicker(false);
+                                                if (selectedDate) {
+                                                    setDob(selectedDate);
+                                                    setValue('dob', selectedDate.toISOString());
+                                                }
+                                            }}
                                         />
                                     )}
                                     {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
+                                </View>
+
+                                <View>
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Education:</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="education"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder="Education"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    value={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                        {errors.education && <Text style={styles.error}>{errors.education.message}</Text>}
+                                    </View>
+                                </View>
+
+                                <View>
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Job:</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="job"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder="Job"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    value={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                        {errors.job && <Text style={styles.error}>{errors.job.message}</Text>}
+                                    </View>
+                                </View>
+
+                                <View>
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Address:</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="address"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder="Address"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    value={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                        {errors.address && <Text style={styles.error}>{errors.address.message}</Text>}
+                                    </View>
                                 </View>
 
                                 <View>
@@ -299,7 +320,6 @@ export default function AddFamilyDetails({ navigation, route }) {
                                         {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
                                     </View>
                                 </View>
-
                                 <View className=" w-full mt-2">
                                     <View className="w-full mx-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">Relation:</Text>
@@ -333,36 +353,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                     {errors.relationship && <Text style={styles.error}>{errors.relationship.message}</Text>}
                                 </View>
 
-                                <View>
-                                    <Controller
-                                        control={control}
-                                        name="parent_id"
-                                        render={({ field: { value } }) => (
-                                            <TextInput
-                                                style={{ display: 'none' }}
-                                                value={value}
-                                            />
-                                        )}
-                                    />
-                                </View>
-
-                                <View>
-                                    <Controller
-                                        control={control}
-                                        name="payment_id"
-                                        render={({ field: { value } }) => (
-                                            <TextInput
-                                                style={{ display: 'none' }}
-                                                value={value}
-                                            />
-                                        )}
-                                    />
-                                </View>
-
                                 <View className="mt-3 mb-6">
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title="Add Family Member" onPress={handleSubmit(onSubmit)} />
+                                    <Button className="bg-blue-500 py-3 rounded-lg" title="Edit Family Member" onPress={handleSubmit(onSubmit)} />
                                 </View>
-
                             </View>
                         </ScrollView>
                     </TouchableWithoutFeedback>
