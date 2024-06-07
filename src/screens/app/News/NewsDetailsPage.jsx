@@ -4,6 +4,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
+import { ScrollView } from 'native-base';
 
 const NewsDetailsPage = ({ route }) => {
     const { newsId } = route.params;
@@ -72,44 +73,49 @@ const NewsDetailsPage = ({ route }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View>
-                <Text style={styles.title}>News Details</Text>
-            </View>
-            <View>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+        >
+            <View style={styles.container}>
                 <View>
-                    <View style={styles.imageContainer}>
-                        <TouchableOpacity onPress={openModal}>
-                            <Image
-                                source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
-                                style={styles.image}
-                            />
-                        </TouchableOpacity>
-                        <View style={styles.textContainer}>
-                            <View>
-                                <Text style={styles.author}>{newsDetailsTitle}</Text>
-                            </View>
-                            <View>
-                                <Text style={styles.date}>{formatDate(newsDetailsCreateDate)}</Text>
+                    <Text style={styles.title}>News Details</Text>
+                </View>
+                <View>
+                    <View>
+                        <View style={styles.imageContainer}>
+                            <TouchableOpacity onPress={openModal}>
+                                <Image
+                                    source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
+                                    style={styles.image}
+                                />
+                            </TouchableOpacity>
+                            <View style={styles.textContainer}>
+                                <View>
+                                    <Text style={styles.author}>{newsDetailsTitle}</Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.date}>{formatDate(newsDetailsCreateDate)}</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.descriptionContainer}>
-                        <RenderHTML
-                            contentWidth={width}
-                            source={{ html: newsDetailsDescription }}
-                            tagsStyles={htmlStyles}
-                        />
+                        <View style={styles.descriptionContainer}>
+                            <RenderHTML
+                                contentWidth={width}
+                                source={{ html: newsDetailsDescription }}
+                                tagsStyles={htmlStyles}
+                            />
+                        </View>
                     </View>
                 </View>
+                <ImageViewing
+                    images={images}
+                    imageIndex={0}
+                    visible={isVisible}
+                    onRequestClose={closeModal}
+                />
             </View>
-            <ImageViewing
-                images={images}
-                imageIndex={0}
-                visible={isVisible}
-                onRequestClose={closeModal}
-            />
-        </View>
+        </ScrollView>
     );
 }
 
