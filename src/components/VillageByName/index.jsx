@@ -19,7 +19,7 @@ const VillageByName = ({ searchValue, navigation }) => {
 
     const formattedContacts = userByVillageId.map(user => ({
         id: user._id,
-        image: "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg",
+        image: process.env.IMAGE_URL + user?.photo,
         name: `${user.firstname} ${user.middlename} ${user.lastname}`,
         village: user.city,
     }));

@@ -120,7 +120,7 @@ const FamilyTree = ({ data, navigation }) => {
                 <ScrollView style={styles.childScrollViewStyle}>
                     <Svg width={svgWidth} height={svgHeight} {...panResponder.panHandlers}>
                         <G transform={`translate(${pan.x},${pan.y})`}>
-                            {root.descendants().map((d, i) => {
+                            {root?.descendants()?.map((d, i) => {
                                 const x = d.x - minX;
                                 const y = d.y - minY;
 
@@ -132,7 +132,7 @@ const FamilyTree = ({ data, navigation }) => {
                                         y={y}
                                         onPress={handleNodePress}
                                         children={
-                                            d.children && d.children.map((child, j) => {
+                                            d.children && d.children?.map((child, j) => {
                                                 const childX = child.x - minX;
                                                 const childY = child.y - minY;
                                                 return (

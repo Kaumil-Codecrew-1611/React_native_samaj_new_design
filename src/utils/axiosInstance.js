@@ -2,8 +2,7 @@
 import axios from 'axios';
 import errorHandler from './errorHandler';
 const axiosInstance = axios.create({
-  // baseURL: process.env.API_URL,
-  baseURL: "http://192.168.1.4:5000/api",
+  baseURL: process.env.API_URL,
   // You can add common headers here if needed
   // headers: { 'Authorization': 'Bearer YOUR_TOKEN' }
   headers: { "x-api-key": process.env.API_KEY }

@@ -35,7 +35,7 @@ function NewsList({ navigation, news }) {
         const truncateText = (text, wordLimit) => {
             const plainText = text.replace(/<[^>]*>?/gm, '');
             const words = plainText.split(' ');
-            if (words.length > wordLimit) {
+            if (words?.length > wordLimit) {
                 return words.slice(0, wordLimit).join(' ') + '...';
             }
             return plainText;
@@ -45,11 +45,23 @@ function NewsList({ navigation, news }) {
             <TouchableOpacity onPress={() => { openNewsDetailsPage(item._id) }}>
                 <View className='w-full'>
                     <View className="w-full overflow-hidden object-cover">
-                        <Image
-                            className="object-cover"
-                            source={{ uri: IMAGE_URL + item.image }}
-                            style={{ height: 180, width: '100%', borderRadius: 20 }}
-                        />
+                        <View className="relative">
+                            <Image
+                                className="object-cover"
+                                source={{ uri: IMAGE_URL + item.image }}
+                                style={{ height: 180, width: '100%', borderRadius: 20 }}
+                            />
+                            {item.createdBy && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
+                                <View className="flex flex-row items-center gap-2">
+                                    <Text className="font-bold text-base">
+                                        Create By
+                                    </Text>
+                                    <Text className="text-base font-medium">
+                                        {item.createdBy}
+                                    </Text>
+                                </View>
+                            </View>}
+                        </View>
                         <View className="flex flex-row justify-between flex-wrap items-center">
                             <View>
                                 <Text className='font-bold text-[19px] tracking-tighter text-justify my-2'>

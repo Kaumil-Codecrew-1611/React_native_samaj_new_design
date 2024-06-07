@@ -82,7 +82,6 @@ export const GlobalProvider = (props) => {
     const removeUserDataFromStorage = async (key) => {
         try {
             await AsyncStorage.removeItem(key);
-            console.log('removedata')
         } catch (error) {
             console.error('Failed to fetch data from storage', error);
         }

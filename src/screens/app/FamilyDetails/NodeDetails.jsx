@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Modal, Pressable, ScrollView, Text, View, StyleSheet, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import { Image, Modal, PermissionsAndroid, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as ImagePicker from 'react-native-image-picker';
+import ImageViewing from 'react-native-image-viewing';
 import Animated from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
-import ImageViewing from 'react-native-image-viewing';
-import * as ImagePicker from 'react-native-image-picker';
 import { GlobalContext } from '../../../context/globalState';
 
 const NodeDetails = ({ navigation, route }) => {
     var { userId } = route.params;
     const paramsData = route.params;
-    console.log(userId, "userid")
     const { userDataByParentId, handleDeleteProfileUser, updateUserProfileImage } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
     const [userData, setUserData] = useState([]);
@@ -20,6 +19,7 @@ const NodeDetails = ({ navigation, route }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const AnimatedFontAwesomeIcon = Animated.createAnimatedComponent(FontAwesome);
+
     const images = [
         { uri: `${process.env.IMAGE_URL}${userData?.photo}`, },
     ];
@@ -33,7 +33,7 @@ const NodeDetails = ({ navigation, route }) => {
     }, []);
 
     const filteredUserData = Object.keys(userData)
-        .filter(key => key !== '_id' && key !== 'firstname' && key !== 'lastname' && key !== '__v' && key !== 'created_at' && key !== 'deleted_at' && key !== 'updated_at' && key !== 'device_token' && key !== 'payment_id' && key !== 'email' && key !== 'photo' && key !== 'address' && key !== 'relationship' && key !== 'parent_id' && key !== "password" && key !== "locations_id" && key !== "personal_id" && key !== "")
+        .filter(key => key !== '_id' && key !== 'firstname' && key !== 'lastname' && key !== '__v' && key !== 'created_at' && key !== 'deleted_at' && key !== 'updated_at' && key !== 'device_token' && key !== 'payment_id' && key !== 'email' && key !== 'photo' && key !== 'address' && key !== 'relationship' && key !== 'parent_id' && key !== "password" && key !== "locations_id" && key !== "personal_id" && key !== "" && key !== "profile_banner")
         .reduce((obj, key) => {
             obj[key] = userData[key];
             return obj;
@@ -75,15 +75,12 @@ const NodeDetails = ({ navigation, route }) => {
         const userId = allUserInfo?._id;
         if (id === undefined || id === null) {
             if (userId) {
-                console.log(" 111111")
                 setIsPopupVisible(true);
             }
         } else if (id === userId) {
-            console.log(" 222222 ")
             setIsPopupVisible(true);
         }
         else if (!id || typeof id === undefined && userId) {
-
             setIsPopupVisible(true);
         }
         else {
@@ -108,21 +105,17 @@ const NodeDetails = ({ navigation, route }) => {
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
                     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
                 ]);
-
                 const cameraPermission = granted['android.permission.CAMERA'];
                 const writePermission = granted['android.permission.WRITE_EXTERNAL_STORAGE'];
                 const readPermission = granted['android.permission.READ_EXTERNAL_STORAGE'];
-
                 if (cameraPermission === PermissionsAndroid.RESULTS.GRANTED &&
                     writePermission === PermissionsAndroid.RESULTS.GRANTED &&
                     readPermission === PermissionsAndroid.RESULTS.GRANTED) {
-
                     const result = await ImagePicker.launchImageLibrary({
                         selectionLimit: 1,
                         mediaType: 'photo',
                         includeBase64: true,
                     });
-
                     if (result.didCancel) {
                         console.log("User canceled ImagePicker");
                     } else if (result.errorCode) {
@@ -145,7 +138,6 @@ const NodeDetails = ({ navigation, route }) => {
                             userData
                         };
                         const response = await updateUserProfileImage(payload);
-                        console.log(response)
                         if (response) {
                             setImage(response.userData.photo)
                             setIsPopupVisible(false);
@@ -164,7 +156,6 @@ const NodeDetails = ({ navigation, route }) => {
                     mediaType: 'photo',
                     includeBase64: true,
                 });
-
                 if (result.didCancel) {
                     console.log("User canceled ImagePicker");
                 } else if (result.errorCode) {
@@ -186,7 +177,6 @@ const NodeDetails = ({ navigation, route }) => {
                         id: userId,
                         userData
                     };
-
                     await updateUserProfileImage(payload);
                 }
             }
@@ -196,10 +186,9 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     function visibleEditDetail() {
-        console.log("called");
+
         const id = paramsData?.paramsId;
         const userId = allUserInfo?._id;
-        console.log(userId, ":::::userId::::::", id, ":::::id:::::");
 
         function renderPressable() {
             return (
@@ -226,22 +215,16 @@ const NodeDetails = ({ navigation, route }) => {
 
         if (id === undefined || id === null) {
             if (userId) {
-                console.log(" 111111")
                 return renderPressable();
             }
         } else if (id === userId) {
-            console.log(" 222222 ")
             return renderPressable();
         }
         else if (!id || typeof id === undefined && userId) {
-            console.log(" 3333333 ")
             return renderPressable();
         }
-        console.log(" 4444444 ")
         return <></>;
     }
-
-
 
     return (
         <View className="w-full p-3 bg-white flex-1">
@@ -258,22 +241,6 @@ const NodeDetails = ({ navigation, route }) => {
                         <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData.firstname + ' ' + userData.lastname}</Text>
                     </View>
                     {visibleEditDetail()}
-                    {/*  <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
-                        <AnimatedFontAwesomeIcon
-                            name="ellipsis-v"
-                            size={27}
-                            color="green"
-                        />
-                    </Pressable>
-                    <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
-                        <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">
-                            <AnimatedFontAwesomeIcon
-                                name="user-plus"
-                                size={27}
-                                color="green"
-                            />
-                        </Text>
-                    </Pressable> */}
                     {menuVisible && (
                         <View className="absolute top-2 right-14 bg-white rounded-[15px] shadow-lg px-2 py-1">
                             <View className="flex flex-row items-center gap-2">
@@ -388,6 +355,5 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 });
-
 
 export default NodeDetails;

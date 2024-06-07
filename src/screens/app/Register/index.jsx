@@ -52,7 +52,11 @@ const Register = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        setOptions(state.locationData, "state.locationData ")
+        try {
+            setOptions(state.locationData, "state.locationData ")
+        } catch (error) {
+            console.log("Error", error)
+        }
     }, [state.locationData])
 
     const getSelectedvalue = (locations) => {

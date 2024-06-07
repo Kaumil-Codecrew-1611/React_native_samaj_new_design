@@ -28,6 +28,8 @@ import {
     faqs,
     editUserFamilyMembers,
     updateUserFamilyMembers,
+    profileBannerImageUpdate,
+    sendMailSupport,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -81,9 +83,10 @@ export const ApiProvider = ({ children }) => {
     const updateUserPostProfile = (userUpdatedData) => apiRequest(editUserPostProfile, userUpdatedData, setData, 'updateUserPostProfile');
     const handleDeleteProfileUser = (userProfileId) => apiRequest(handleFamilyUserProfile, userProfileId, setData, 'handleDeleteProfileUser');
     const allfaqListing = () => apiRequest(faqs, null, setData, 'allfaqListing');
-
     const editFamilyDetailsUser = (childId) => apiRequest(editUserFamilyMembers, childId, setData, 'editFamilyDetailsUser');
     const updateFamilyDetailsUser = (updatedData) => apiRequest(updateUserFamilyMembers, updatedData, setData, 'updateFamilyDetailsUser');
+    const updateUserBannerProfileImage = (payload) => apiRequest(profileBannerImageUpdate, payload, setData, 'updateUserBannerProfileImage');
+    const supportMailSend = (emailPayload) => apiRequest(sendMailSupport, emailPayload, setData, 'supportMailSend');
 
     return (
         <ApiContext.Provider value={{
@@ -117,6 +120,8 @@ export const ApiProvider = ({ children }) => {
             allfaqListing,
             editFamilyDetailsUser,
             updateFamilyDetailsUser,
+            updateUserBannerProfileImage,
+            supportMailSend,
         }}>
             {children}
         </ApiContext.Provider>

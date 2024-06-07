@@ -1,15 +1,13 @@
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
-
 import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ApiContext from '../../../context/ApiContext';
 
 const Faqs = () => {
 
-    const [search, setSearch] = useState("")
     const [visibleAnswers, setVisibleAnswers] = useState({});
     const { allfaqListing } = useContext(ApiContext);
     const [faqs, setFaq] = useState([]);
@@ -79,31 +77,6 @@ const Faqs = () => {
                         </Text>
                     </View>
                 </View>
-
-                {/* <View className="w-full p-3">
-
-                    <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
-                        <TextInput placeholder={'  Search here...'} placeholderTextColor="#000000" className="basis-[90%] tracking-wider  text-neutral-700  pl-2 " value={search} onChangeText={text => setSearch(text)} />
-                        <TouchableOpacity onPress={() => {
-                            setSearch("");
-                        }}>
-                            <View className="">
-                                {search !== "" ? (
-                                    <Image
-                                        source={{ uri: 'https://e7.pngegg.com/pngimages/211/405/png-clipart-computer-icons-close-button-trademark-logo-thumbnail.png' }}
-                                        className="w-7 h-7"
-                                    />
-                                ) : (
-                                    <Image
-                                        source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvGrZtor2wBaCgpZI0EcGW9--2YrKKIQatZ2Qz4dse-d3nGE3fBKRvp6R_Que1_Ophe4s&usqp=CAU' }}
-                                        className="w-6 h-6"
-                                    />
-                                )}
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View> */}
-
                 <SafeAreaView style={{ flex: 1 }}>
                     <FlatList
                         data={faqs}
@@ -111,8 +84,6 @@ const Faqs = () => {
                         keyExtractor={item => item._id.toString()}
                     />
                 </SafeAreaView>
-
-
             </View>
         </View>
     )

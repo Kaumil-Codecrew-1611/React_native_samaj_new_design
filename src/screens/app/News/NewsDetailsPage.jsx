@@ -14,6 +14,7 @@ const NewsDetailsPage = ({ route }) => {
     const [newsDetailsImage, setNewsDetailsImage] = useState("");
     const [newsDetailsDescription, setNewsDetailsDescription] = useState("");
     const [newsDetailsCreateDate, setNewsDetailsCreateDate] = useState("");
+    const [newsAddPerson, setNewsAddPerson] = useState("");
 
     const { width } = Dimensions.get('window');
 
@@ -53,6 +54,7 @@ const NewsDetailsPage = ({ route }) => {
                 setNewsDetailsDescription(contentNewsDetails.description)
                 setNewsDetailsCreateDate(contentNewsDetails.created_at)
                 setNewsDetailsImage(contentNewsDetails.image)
+                setNewsAddPerson(contentNewsDetails.createdBy)
             } catch (error) {
                 console.log("error", error)
             }
@@ -73,23 +75,36 @@ const NewsDetailsPage = ({ route }) => {
     };
 
     return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-        >
-            <View style={styles.container}>
+        <View className="bg-gray-300" style={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
                 <View>
                     <Text style={styles.title}>News Details</Text>
                 </View>
                 <View>
                     <View>
                         <View style={styles.imageContainer}>
-                            <TouchableOpacity onPress={openModal}>
-                                <Image
-                                    source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
-                                    style={styles.image}
-                                />
-                            </TouchableOpacity>
+                            <View className="relative">
+                                <TouchableOpacity onPress={openModal}>
+                                    <Image
+                                        source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
+                                        style={styles.image}
+                                    />
+                                </TouchableOpacity>
+                                {newsAddPerson && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
+                                    <View className="flex flex-row items-center gap-2">
+                                        <Text className="font-bold text-base">
+                                            Create By
+                                        </Text>
+                                        <Text className="text-base font-medium">
+                                            {newsAddPerson}
+                                        </Text>
+                                    </View>
+                                </View>}
+                            </View>
+
                             <View style={styles.textContainer}>
                                 <View>
                                     <Text style={styles.author}>{newsDetailsTitle}</Text>
@@ -114,15 +129,14 @@ const NewsDetailsPage = ({ route }) => {
                     visible={isVisible}
                     onRequestClose={closeModal}
                 />
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         padding: 10,
     },
     title: {

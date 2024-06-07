@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, Text, View, TouchableOpacity, Linking } from 'react-native';
+import { Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -22,7 +22,6 @@ function ContactUsCard() {
         (async function () {
             const contentContactUs = await contactUsPageDetails();
             const desiredKeys = ['contact1', 'contactno1', 'contact2', 'contactno2', 'email', "instagram", "facebook", "twitter"];
-
             contentContactUs.forEach((item) => {
                 if (desiredKeys.includes(item.key)) {
                     switch (item.key) {
@@ -64,6 +63,18 @@ function ContactUsCard() {
         }
     };
 
+    const handleCallOpenLink = (phoneNumber) => {
+        if (phoneNumber) {
+            Linking.openURL(`tel:${phoneNumber}`);
+        }
+    };
+
+    const handleClickOnMail = (mail) => {
+        if (mail) {
+            Linking.openURL(`mailto:${mail}`);
+        }
+    };
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
             <View className="mb-20">
@@ -87,11 +98,13 @@ function ContactUsCard() {
                                         {contact1}
                                     </Text>
                                 </View>
-                                <View>
-                                    <Text>
-                                        {contactno1}
-                                    </Text>
-                                </View>
+                                <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno1)}>
+                                    <View>
+                                        <Text className="text-blue-700">
+                                            +91 {contactno1}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                             <View className="flex flex-row justify-between">
                                 <View>
@@ -99,11 +112,13 @@ function ContactUsCard() {
                                         {contact2}
                                     </Text>
                                 </View>
-                                <View>
-                                    <Text>
-                                        {contactno2}
-                                    </Text>
-                                </View>
+                                <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno2)}>
+                                    <View>
+                                        <Text className="text-blue-700">
+                                            +91 {contactno2}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -123,9 +138,11 @@ function ContactUsCard() {
                             <View className="mb-4 h-11">
                                 <Text className="tracking-wider text-neutral-700">We response to mails whithin 24 hours</Text>
                             </View>
-                            <View>
-                                <Text className="text-[#5176df] font-extrabold text-xl">{email}</Text>
-                            </View>
+                            <TouchableOpacity onPress={() => handleClickOnMail(email)}>
+                                <View>
+                                    <Text className="text-[#5176df] font-extrabold text-xl">{email}</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

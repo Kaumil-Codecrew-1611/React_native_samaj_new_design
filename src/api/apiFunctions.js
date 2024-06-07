@@ -119,7 +119,22 @@ export const updateUserProfile = async (payload) => {
             },
         });
         const response = await axiosWithHeaders.post(`/profile_image/${id}`, userData);
-        console.log(response.data, 'new updatedData......')
+        return response.data
+    } catch (err) {
+        console.log(err, "Errors")
+    }
+};
+
+export const profileBannerImageUpdate = async (payload) => {
+    try {
+        const { userData, id } = payload;
+        const axiosWithHeaders = axios.create({
+            baseURL: axiosInstance.defaults.baseURL,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        const response = await axiosWithHeaders.post(`/profile_banner/${id}`, userData);
         return response.data
     } catch (err) {
         console.log(err, "Errors")
@@ -154,4 +169,10 @@ export const editUserFamilyMembers = async (childId) => {
 export const updateUserFamilyMembers = async (updatedData) => {
     const response = await axiosInstance.post(`/child_update/${updatedData.id}`, updatedData.data);
     return response.data
+};
+
+export const sendMailSupport = async (emailPayload) => {
+    const response = await axiosInstance.post('/email_support', emailPayload);
+    console.log("This is for support email response", response)
+    return response.data;
 };

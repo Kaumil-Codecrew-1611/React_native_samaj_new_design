@@ -1,12 +1,12 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, Image, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Fontisto';
 import CardDetails from '../../../components/CardDetails';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-import { useFocusEffect } from '@react-navigation/native';
 
 const VillageListing = ({ navigation, route }) => {
     const AnimatedIcon = Animated.createAnimatedComponent(Feather);
@@ -22,6 +22,7 @@ const VillageListing = ({ navigation, route }) => {
             setAllVillagesListing(allVillages.village);
         })();
     }, []);
+
     useFocusEffect(
         useCallback(() => {
             return () => {
@@ -45,6 +46,7 @@ const VillageListing = ({ navigation, route }) => {
             })();
         }, 100)
     }, [search])
+
     useEffect(() => {
         const params = route.params;
         if (route.params.listingStyle !== listingStyle) {

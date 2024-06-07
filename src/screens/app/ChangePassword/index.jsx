@@ -183,7 +183,7 @@ const ChangePassword = ({ navigation }) => {
                             </ScrollView>
                         </TouchableWithoutFeedback>
                     </KeyboardAvoidingView>
-                    <View className="mb-16">
+                    <View className="mb-auto">
                         <Button className="bg-green-600 py-4 rounded-lg" title="Change Password" onPress={handleSubmit(onSubmit)} />
                     </View>
                 </View>

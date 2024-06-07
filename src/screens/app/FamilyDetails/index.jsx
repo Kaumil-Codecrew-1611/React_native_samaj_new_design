@@ -14,7 +14,7 @@ const calculateHorizontalSpacing = (node) => {
     let maxChildren = 0;
     node.each(d => {
         if (d.children) {
-            maxChildren = Math.max(maxChildren, d.children.length);
+            maxChildren = Math.max(maxChildren, d.children?.length);
         }
     });
     return nodeWidth + (maxChildren > 1 ? maxChildren * baseHorizontalSpacing : baseHorizontalSpacing);
@@ -72,7 +72,12 @@ const FamilyTree = ({ data, navigation, paramsId }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <ScrollView style={styles.parentScrollViewStyle} horizontal>
+            <ScrollView
+                style={styles.parentScrollViewStyle}
+                horizontal
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
                 <ScrollView style={styles.childScrollViewStyle}>
                     <Svg width={svgWidth} height={svgHeight} {...panResponder.panHandlers}>
                         <G transform={`translate(${pan.x},${pan.y})`}>
@@ -136,7 +141,6 @@ const ViewFamilyTree = ({ navigation, route }) => {
                 console.log("error", error);
             }
         })();
-        console.log(allUserInfo, "allUserInfo")
     }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser, state.updateFamilyDetailsUser, paramsData]);
 
     return (

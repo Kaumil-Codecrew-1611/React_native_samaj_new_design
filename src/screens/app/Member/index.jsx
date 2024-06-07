@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Animated, Dimensions, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import ApiContext from '../../../context/ApiContext';
 import { useTranslation } from 'react-i18next';
 const { width } = Dimensions.get('screen');
@@ -29,12 +29,20 @@ export default function Member() {
         fetchCommitteeMembers();
     }, []);
 
+    const handleCallOpenLink = (phoneNumber) => {
+        if (phoneNumber) {
+            Linking.openURL(`tel:${phoneNumber}`);
+        }
+    };
+
     return (
-        <View style={styles.container}>
+        <View className="bg-gray-300" style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Committee Members</Text>
             </View>
             <Animated.ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 onContentSizeChange={(_, h) => setHeight1(h)}
                 onLayout={e => setHeight2(e.nativeEvent.layout.height)}
                 onScroll={Animated.event(
@@ -49,8 +57,14 @@ export default function Member() {
                             <Text style={styles.cardText}>{member.fullname}</Text>
                         </View>
                         <View style={styles.cardContent}>
+                            <Text style={styles.cardTitle}>Position: </Text>
+                            <Text style={styles.cardText}>{member.role}</Text>
+                        </View>
+                        <View style={styles.cardContent}>
                             <Text style={styles.cardTitle}>Mobile Number: </Text>
-                            <Text style={styles.cardText}>{member.mobile_number}</Text>
+                            <TouchableOpacity onPress={() => handleCallOpenLink("+91" + member.mobile_number)}>
+                                <Text className="text-blue-700" style={styles.cardText}>+91 {member.mobile_number}</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.cardContent}>
                             <Text style={styles.cardTitle}>Village: </Text>
@@ -67,7 +81,6 @@ export default function Member() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f0f0f0',
         paddingBottom: 80
     },
     header: {
@@ -107,7 +120,6 @@ const styles = StyleSheet.create({
     },
     cardText: {
         fontSize: 16,
-        color: '#333',
         flexShrink: 1,
     },
     bar: {

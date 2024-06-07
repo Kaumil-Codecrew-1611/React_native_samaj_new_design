@@ -15,11 +15,17 @@ const ProfilePage = ({ navigation }) => {
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo } = useContext(GlobalContext);
     const [isVisible, setIsVisible] = useState(false);
+    const [isBannerVisible, setBannerIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [isBannerPopupVisible, setIsBannerPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const { updateUserProfileImage } = useContext(ApiContext);
-    const images = [
+    const { updateUserProfileImage, updateUserBannerProfileImage } = useContext(ApiContext);
+
+    const profileImage = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}`, },
+    ];
+    const bannerImages = [
+        { uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}`, },
     ];
 
     const openSettings = () => {
@@ -66,14 +72,24 @@ const ProfilePage = ({ navigation }) => {
     const openModal = () => {
         setIsPopupVisible(true);
     };
+    const openBannerModal = () => {
+        setIsBannerPopupVisible(true);
+    };
 
     const closePopup = () => {
         setIsPopupVisible(false);
+    };
+    const closeBannerPopup = () => {
+        setIsBannerPopupVisible(false);
     };
 
     const viewProfileImage = () => {
         closePopup();
         setIsVisible(true);
+    };
+    const viewBannerImage = () => {
+        closeBannerPopup();
+        setBannerIsVisible(true);
     };
 
     const openLogoutModal = async () => {
@@ -129,10 +145,9 @@ const ProfilePage = ({ navigation }) => {
                             userData
                         };
                         const response = await updateUserProfileImage(payload);
-                        console.log(response, 'newnewnenwewn')
                         setIsPopupVisible(false);
                         await setuserDataInStorage('user', response.userData);
-                        navigation.navigate('userProfilePage');
+                        navigation.navigate('Profile');
                     }
                 } else {
                     console.log("Camera or storage permission denied");
@@ -171,6 +186,93 @@ const ProfilePage = ({ navigation }) => {
             console.error('Errssssssor:', error);
         }
     };
+    const selectBannerImage = async () => {
+        try {
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.requestMultiple([
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                ]);
+
+                const cameraPermission = granted['android.permission.CAMERA'];
+                const writePermission = granted['android.permission.WRITE_EXTERNAL_STORAGE'];
+                const readPermission = granted['android.permission.READ_EXTERNAL_STORAGE'];
+
+                if (cameraPermission === PermissionsAndroid.RESULTS.GRANTED &&
+                    writePermission === PermissionsAndroid.RESULTS.GRANTED &&
+                    readPermission === PermissionsAndroid.RESULTS.GRANTED) {
+
+                    const result = await ImagePicker.launchImageLibrary({
+                        selectionLimit: 1,
+                        mediaType: 'photo',
+                        includeBase64: true,
+                    });
+
+                    if (result.didCancel) {
+                        console.log("User canceled ImagePicker");
+                    } else if (result.errorCode) {
+                        console.error('ImagePicker Error: ', result.errorMessage);
+                    } else {
+                        const image = result.assets[0];
+                        const userData = new FormData();
+                        const imagePath = image.uri;
+                        const fileName = image.fileName;
+                        const fileType = image.type;
+
+                        userData.append('image', {
+                            uri: imagePath,
+                            type: fileType,
+                            name: fileName,
+                        });
+
+                        const payload = {
+                            id: allUserInfo?._id,
+                            userData
+                        };
+                        const response = await updateUserBannerProfileImage(payload);
+                        setIsBannerPopupVisible(false);
+                        await setuserDataInStorage('user', response.userData);
+                        navigation.navigate('Profile');
+                    }
+                } else {
+                    console.log("Camera or storage permission denied");
+                }
+            } else {
+                const result = await ImagePicker.launchImageLibrary({
+                    selectionLimit: 1,
+                    mediaType: 'photo',
+                    includeBase64: true,
+                });
+
+                if (result.didCancel) {
+                    console.log("User canceled ImagePicker");
+                } else if (result.errorCode) {
+                    console.error('ImagePicker Error: ', result.errorMessage);
+                } else {
+                    const image = result.assets[0];
+                    const userData = new FormData();
+                    const imagePath = image.uri;
+                    const fileName = image.fileName;
+                    const fileType = image.type;
+
+                    userData.append('image', {
+                        uri: imagePath,
+                        type: fileType,
+                        name: fileName,
+                    });
+                    const payload = {
+                        id: allUserInfo?._id,
+                        userData
+                    };
+                    await updateUserBannerProfileImage(payload);
+                }
+            }
+        } catch (error) {
+            console.error('Errssssssor:', error);
+        }
+    };
+
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
     const handleShare = async () => {
         try {
@@ -195,11 +297,13 @@ const ProfilePage = ({ navigation }) => {
         <>
             <View className="flex-1 bg-white space-y-5 w-full pb-20" edges={['top']}>
                 <View className="relative basis-[25%] mb-12">
-                    <View className="overflow-hidden bg-slate-300">
-                        <ImageBackground className="h-full w-full transition-all duration-300 overflow-hidden" source={{ uri: "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/content-gallery-3.png" }} alt="bg-image">
-                            <View className="h-full bg-[#121a1c50]" />
-                        </ImageBackground>
-                    </View>
+                    <Pressable onPress={openBannerModal}>
+                        <View className="overflow-hidden bg-slate-300">
+                            <ImageBackground className="h-full w-full transition-all duration-300 overflow-hidden" source={{ uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}` }} alt="bg-image">
+                                <View className="h-full bg-[#121a1c50]" />
+                            </ImageBackground>
+                        </View>
+                    </Pressable>
                     <Pressable onPress={openLogoutModal} className="absolute right-2 top-2 flex w-12 h-12 shadow-lg shadow-white items-center justify-center rounded-full bg-gray-600">
                         <AnimatedFeatherIcon
                             name="log-out"
@@ -275,33 +379,38 @@ const ProfilePage = ({ navigation }) => {
                     </SafeAreaView>
                 </View>
                 <ImageViewing
-                    images={images}
+                    images={profileImage}
                     imageIndex={0}
                     visible={isVisible}
                     onRequestClose={() => setIsVisible(false)}
                 />
+                <ImageViewing
+                    images={bannerImages}
+                    imageIndex={0}
+                    visible={isBannerVisible}
+                    onRequestClose={() => setBannerIsVisible(false)}
+                />
                 <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
-
-                <Modal
-                    transparent={true}
-                    visible={isPopupVisible}
-                    onRequestClose={closePopup}
-                >
-                    <View style={styles.modalBackground}>
-                        <View style={styles.popup}>
-                            <TouchableOpacity onPress={viewProfileImage}>
-                                <Text style={styles.popupText}>View Profile Image</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={selectImage}>
-                                <Text style={styles.popupText}>Edit Profile Image</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={closePopup}>
-                                <Text style={styles.popupText}>Close</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
             </View>
+            <Modal
+                transparent={true}
+                visible={isPopupVisible}
+                onRequestClose={closePopup}
+            >
+                <View style={styles.modalBackground}>
+                    <View style={styles.popup}>
+                        <TouchableOpacity onPress={viewProfileImage}>
+                            <Text style={styles.popupText}>View Profile Image</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={selectImage}>
+                            <Text style={styles.popupText}>Edit Profile Image</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={closePopup}>
+                            <Text style={styles.popupText}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <Modal
                 transparent={true}
                 visible={modalVisible}
@@ -322,6 +431,25 @@ const ProfilePage = ({ navigation }) => {
                                 <Text className="text-white">Logout</Text>
                             </Pressable>
                         </View>
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                transparent={true}
+                visible={isBannerPopupVisible}
+                onRequestClose={closeBannerPopup}
+            >
+                <View style={styles.modalBackground}>
+                    <View style={styles.popup}>
+                        <TouchableOpacity onPress={viewBannerImage}>
+                            <Text style={styles.popupText}>View Banner Image</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={selectBannerImage}>
+                            <Text style={styles.popupText}>Edit Banner Image</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={closeBannerPopup}>
+                            <Text style={styles.popupText}>Close</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>

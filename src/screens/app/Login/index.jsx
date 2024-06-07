@@ -118,7 +118,6 @@ const Login = ({ navigation }) => {
                         <Text style={styles.registerLink}>Home Page</Text>
                     </Pressable>
                 </View>
-
             </View>
         </View>
     );

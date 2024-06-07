@@ -1,27 +1,33 @@
-import React from 'react'
-import { View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native'
-import Button from '../../../components/Button';
-import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useContext } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Image, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, Platform } from 'react-native';
 import * as yup from 'yup';
+import Button from '../../../components/Button';
+import ApiContext from '../../../context/ApiContext';
 
 const schema = yup.object().shape({
-    subject: yup.string().required('Subject is Requried'),
-    message: yup.string().required('Message is required')
+    subject: yup.string().required('Subject is required'),
+    message: yup.string().required('Message is required'),
+    email: yup.string().email('Invalid email format').required('Email is required'),
 });
 
+function EmailSupport({ navigation }) {
 
-
-function EmailSupport() {
-
+    const { supportMailSend } = useContext(ApiContext);
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        console.log("this is for support email", data)
+        try {
+            await supportMailSend(data);
+            navigation.navigate('Support');
+        } catch (error) {
+            console.error('Failed to send email:', error);
+        }
     };
-
 
     return (
         <KeyboardAvoidingView
@@ -45,15 +51,38 @@ function EmailSupport() {
                                     </Text>
                                 </View>
                             </View>
-
                             <View className="w-full mt-6 mb-3 flex flex-row justify-center">
                                 <View className="w-[90%]">
-                                    <Text className="font-extrabold tracking-wider mb-3 text-2xl text-neutral-700 text-center">Send us on email</Text>
+                                    <Text className="font-extrabold tracking-wider mb-3 text-2xl text-neutral-700 text-center">Send us an email</Text>
                                     <Text className="tracking-wider text-lg text-neutral-700 text-center">Facing an issue? Our support team is here to help. Contact us via email.</Text>
                                 </View>
                             </View>
-
                             <View className="w-full p-3">
+                                <View className="my-1">
+                                    <View className="w-full">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Email:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="email"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder="Email here ...."
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    value={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={onChange}
+                                                />
+                                            )}
+                                        />
+                                        {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+                                    </View>
+                                </View>
+                                <View className="w-full">
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Subject:</Text>
+                                </View>
                                 <Controller
                                     control={control}
                                     name="subject"
@@ -73,15 +102,17 @@ function EmailSupport() {
                                                 shadowOpacity: 0.3,
                                                 shadowRadius: 4,
                                                 elevation: 5,
-
                                             }}
                                             value={value}
                                             onBlur={onBlur}
-                                            onChangeText={(text) => onChange(text)}
+                                            onChangeText={onChange}
                                         />
                                     )}
                                 />
                                 {errors.subject && <Text style={styles.error}>{errors.subject.message}</Text>}
+                                <View className="w-full">
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Message:</Text>
+                                </View>
                                 <Controller
                                     control={control}
                                     name="message"
@@ -106,15 +137,12 @@ function EmailSupport() {
                                             }}
                                             value={value}
                                             onBlur={onBlur}
-                                            onChangeText={(text) => onChange(text)}
+                                            onChangeText={onChange}
                                         />
                                     )}
                                 />
                                 {errors.message && <Text style={styles.error}>{errors.message.message}</Text>}
-
-
                             </View>
-
                             <View className="w-full p-3">
                                 <Button className="bg-blue-500 py-3 rounded-lg" title="Send Email" onPress={handleSubmit(onSubmit)} />
                             </View>
@@ -126,6 +154,7 @@ function EmailSupport() {
         </KeyboardAvoidingView>
     )
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -140,6 +169,19 @@ const styles = StyleSheet.create({
     scrollViewContent: {
         flexGrow: 1,
     },
+    input: {
+        width: '100%',
+        backgroundColor: 'white',
+        color: '#333',
+        borderRadius: 10,
+        paddingLeft: 10,
+        marginBottom: 15,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 5,
+    },
 });
 
-export default EmailSupport
+export default EmailSupport;
