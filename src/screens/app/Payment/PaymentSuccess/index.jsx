@@ -8,8 +8,6 @@ import { GlobalContext } from '../../../../context/globalState';
 function PaymentSuccess({ navigation, route }) {
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const data = route.params;
-
-    console.log(data, "data")
     return (
         <View className="bg-[#fafafa] flex-1">
             <View className="flex-row mt-10 mb-5 items-center justify-center">

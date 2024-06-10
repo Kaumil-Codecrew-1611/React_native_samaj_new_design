@@ -173,6 +173,5 @@ export const updateUserFamilyMembers = async (updatedData) => {
 
 export const sendMailSupport = async (emailPayload) => {
     const response = await axiosInstance.post('/email_support', emailPayload);
-    console.log("This is for support email response", response)
     return response.data;
 };

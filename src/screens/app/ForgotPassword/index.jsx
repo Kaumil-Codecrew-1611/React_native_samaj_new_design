@@ -40,11 +40,7 @@ const ForgotPassword = () => {
     });
 
     const onSubmit = (data, key) => {
-        console.log(data);
         if (key == 1) {
-            //send email api
-            console.log('send email api')
-            //if response was success
             setEmailOrPhoneValid(true)
             reset({ otp: '' });
         } else {

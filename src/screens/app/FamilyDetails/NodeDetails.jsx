@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Modal, PermissionsAndroid, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'react-native-image-picker';
 import ImageViewing from 'react-native-image-viewing';
 import Animated from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const NodeDetails = ({ navigation, route }) => {
     var { userId } = route.params;
@@ -98,91 +98,40 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     const selectImage = async () => {
-        try {
-            if (Platform.OS === 'android') {
-                const granted = await PermissionsAndroid.requestMultiple([
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                ]);
-                const cameraPermission = granted['android.permission.CAMERA'];
-                const writePermission = granted['android.permission.WRITE_EXTERNAL_STORAGE'];
-                const readPermission = granted['android.permission.READ_EXTERNAL_STORAGE'];
-                if (cameraPermission === PermissionsAndroid.RESULTS.GRANTED &&
-                    writePermission === PermissionsAndroid.RESULTS.GRANTED &&
-                    readPermission === PermissionsAndroid.RESULTS.GRANTED) {
-                    const result = await ImagePicker.launchImageLibrary({
-                        selectionLimit: 1,
-                        mediaType: 'photo',
-                        includeBase64: true,
-                    });
-                    if (result.didCancel) {
-                        console.log("User canceled ImagePicker");
-                    } else if (result.errorCode) {
-                        console.error('ImagePicker Error: ', result.errorMessage);
-                    } else {
-                        const image = result.assets[0];
-                        const userUpdatedData = new FormData();
-                        const imagePath = image.uri;
-                        const fileName = image.fileName;
-                        const fileType = image.type;
+        ImagePicker.openPicker({
+            width: 400,
+            height: 300,
+            cropping: true,
+        }).then(async (image) => {
+            const filePath = image.path;
+            const imageName = filePath.substring(filePath.lastIndexOf('/') + 1);
+            const userData = new FormData();
+            const imagePath = image.path;
+            const fileName = imageName;
+            const fileType = image.mime;
 
-                        userUpdatedData.append('image', {
-                            uri: imagePath,
-                            type: fileType,
-                            name: fileName,
-                        });
-                        const userData = userUpdatedData;
-                        const payload = {
-                            id: userId,
-                            userData
-                        };
-                        const response = await updateUserProfileImage(payload);
-                        if (response) {
-                            setImage(response.userData.photo)
-                            setIsPopupVisible(false);
-                            navigation.navigate('NodeDetails', { userId: userId });
-                        } else {
-                            setIsPopupVisible(false);
-                            navigation.navigate('NodeDetails', { userId: userId });
-                        }
-                    }
-                } else {
-                    console.log("Camera or storage permission denied");
-                }
+            userData.append('image', {
+                uri: imagePath,
+                type: fileType,
+                name: fileName,
+            });
+
+            const payload = {
+                id: userId,
+                userData
+            };
+            const response = await updateUserProfileImage(payload);
+            if (response) {
+                setImage(response.userData.photo)
+                setIsPopupVisible(false);
+                navigation.navigate('NodeDetails', { userId: userId });
             } else {
-                const result = await ImagePicker.launchImageLibrary({
-                    selectionLimit: 1,
-                    mediaType: 'photo',
-                    includeBase64: true,
-                });
-                if (result.didCancel) {
-                    console.log("User canceled ImagePicker");
-                } else if (result.errorCode) {
-                    console.error('ImagePicker Error: ', result.errorMessage);
-                } else {
-                    const image = result.assets[0];
-                    const userUpdatedData = new FormData();
-                    const imagePath = image.uri;
-                    const fileName = image.fileName;
-                    const fileType = image.type;
-
-                    userUpdatedData.append('image', {
-                        uri: imagePath,
-                        type: fileType,
-                        name: fileName,
-                    });
-                    const userData = userUpdatedData;
-                    const payload = {
-                        id: userId,
-                        userData
-                    };
-                    await updateUserProfileImage(payload);
-                }
+                setIsPopupVisible(false);
+                navigation.navigate('NodeDetails', { userId: userId });
             }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        }).catch((error) => {
+            console.log(error, "errorChangingImage")
+        });
     };
 
     function visibleEditDetail() {

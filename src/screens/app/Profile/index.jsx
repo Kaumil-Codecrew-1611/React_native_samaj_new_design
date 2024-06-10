@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Image, ImageBackground, Modal, PermissionsAndroid, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Share } from 'react-native';
-import * as ImagePicker from 'react-native-image-picker';
+import { Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Share } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
@@ -10,6 +9,9 @@ import { GlobalContext } from '../../../context/globalState';
 import SettingBottomSheet from '../Settings';
 import ApiContext from '../../../context/ApiContext';
 import { withTiming } from 'react-native-reanimated';
+import ImagePicker from 'react-native-image-crop-picker';
+
+
 const ProfilePage = ({ navigation }) => {
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
@@ -27,7 +29,6 @@ const ProfilePage = ({ navigation }) => {
     const bannerImages = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}`, },
     ];
-    console.log("bannerImagesbannerImagesbannerImagesbannerImages", bannerImages)
 
     const openSettings = () => {
         setScreenpercentage({ first: "30%", second: "34%" });
@@ -103,176 +104,66 @@ const ProfilePage = ({ navigation }) => {
     };
 
     const selectImage = async () => {
-        try {
-            if (Platform.OS === 'android') {
-                const granted = await PermissionsAndroid.requestMultiple([
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                ]);
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true,
+        }).then(async (image) => {
+            const filePath = image.path;
+            const imageName = filePath.substring(filePath.lastIndexOf('/') + 1);
+            const userData = new FormData();
+            const imagePath = image.path;
+            const fileName = imageName;
+            const fileType = image.mime;
 
-                const cameraPermission = granted['android.permission.CAMERA'];
-                const writePermission = granted['android.permission.WRITE_EXTERNAL_STORAGE'];
-                const readPermission = granted['android.permission.READ_EXTERNAL_STORAGE'];
+            userData.append('image', {
+                uri: imagePath,
+                type: fileType,
+                name: fileName,
+            });
 
-                if (cameraPermission === PermissionsAndroid.RESULTS.GRANTED &&
-                    writePermission === PermissionsAndroid.RESULTS.GRANTED &&
-                    readPermission === PermissionsAndroid.RESULTS.GRANTED) {
-
-                    const result = await ImagePicker.launchImageLibrary({
-                        selectionLimit: 1,
-                        mediaType: 'photo',
-                        includeBase64: true,
-                    });
-
-                    if (result.didCancel) {
-                        console.log("User canceled ImagePicker");
-                    } else if (result.errorCode) {
-                        console.error('ImagePicker Error: ', result.errorMessage);
-                    } else {
-                        const image = result.assets[0];
-                        const userData = new FormData();
-                        const imagePath = image.uri;
-                        const fileName = image.fileName;
-                        const fileType = image.type;
-
-                        userData.append('image', {
-                            uri: imagePath,
-                            type: fileType,
-                            name: fileName,
-                        });
-
-                        const payload = {
-                            id: allUserInfo?._id,
-                            userData
-                        };
-                        const response = await updateUserProfileImage(payload);
-                        setIsPopupVisible(false);
-                        await setuserDataInStorage('user', response.userData);
-                        navigation.navigate('Profile');
-                    }
-                } else {
-                    console.log("Camera or storage permission denied");
-                }
-            } else {
-                const result = await ImagePicker.launchImageLibrary({
-                    selectionLimit: 1,
-                    mediaType: 'photo',
-                    includeBase64: true,
-                });
-
-                if (result.didCancel) {
-                    console.log("User canceled ImagePicker");
-                } else if (result.errorCode) {
-                    console.error('ImagePicker Error: ', result.errorMessage);
-                } else {
-                    const image = result.assets[0];
-                    const userData = new FormData();
-                    const imagePath = image.uri;
-                    const fileName = image.fileName;
-                    const fileType = image.type;
-
-                    userData.append('image', {
-                        uri: imagePath,
-                        type: fileType,
-                        name: fileName,
-                    });
-                    const payload = {
-                        id: allUserInfo?._id,
-                        userData
-                    };
-                    await updateUserProfileImage(payload);
-                }
-            }
-        } catch (error) {
-            console.error('Errssssssor:', error);
-        }
-    };
+            const payload = {
+                id: allUserInfo?._id,
+                userData
+            };
+            const response = await updateUserProfileImage(payload);
+            setIsPopupVisible(false);
+            await setuserDataInStorage('user', response.userData);
+            navigation.navigate('Profile');
+        }).catch((error) => {
+            console.log(error, "errorChangingImage")
+        });
+    }
     const selectBannerImage = async () => {
-        try {
-            if (Platform.OS === 'android') {
-                const granted = await PermissionsAndroid.requestMultiple([
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                ]);
+        ImagePicker.openPicker({
+            width: 1600,
+            height: 900,
+            cropping: true,
+        }).then(async (image) => {
+            const filePath = image.path;
+            const imageName = filePath.substring(filePath.lastIndexOf('/') + 1);
+            const userData = new FormData();
+            const imagePath = image.path;
+            const fileName = imageName;
+            const fileType = image.mime;
 
-                const cameraPermission = granted['android.permission.CAMERA'];
-                const writePermission = granted['android.permission.WRITE_EXTERNAL_STORAGE'];
-                const readPermission = granted['android.permission.READ_EXTERNAL_STORAGE'];
+            userData.append('image', {
+                uri: imagePath,
+                type: fileType,
+                name: fileName,
+            });
 
-                if (cameraPermission === PermissionsAndroid.RESULTS.GRANTED &&
-                    writePermission === PermissionsAndroid.RESULTS.GRANTED &&
-                    readPermission === PermissionsAndroid.RESULTS.GRANTED) {
-
-                    const result = await ImagePicker.launchImageLibrary({
-                        selectionLimit: 1,
-                        mediaType: 'photo',
-                        includeBase64: true,
-                    });
-
-                    if (result.didCancel) {
-                        console.log("User canceled ImagePicker");
-                    } else if (result.errorCode) {
-                        console.error('ImagePicker Error: ', result.errorMessage);
-                    } else {
-                        const image = result.assets[0];
-                        const userData = new FormData();
-                        const imagePath = image.uri;
-                        const fileName = image.fileName;
-                        const fileType = image.type;
-
-                        userData.append('image', {
-                            uri: imagePath,
-                            type: fileType,
-                            name: fileName,
-                        });
-
-                        const payload = {
-                            id: allUserInfo?._id,
-                            userData
-                        };
-                        const response = await updateUserBannerProfileImage(payload);
-                        setIsBannerPopupVisible(false);
-                        await setuserDataInStorage('user', response.userData);
-                        navigation.navigate('Profile');
-                    }
-                } else {
-                    console.log("Camera or storage permission denied");
-                }
-            } else {
-                const result = await ImagePicker.launchImageLibrary({
-                    selectionLimit: 1,
-                    mediaType: 'photo',
-                    includeBase64: true,
-                });
-
-                if (result.didCancel) {
-                    console.log("User canceled ImagePicker");
-                } else if (result.errorCode) {
-                    console.error('ImagePicker Error: ', result.errorMessage);
-                } else {
-                    const image = result.assets[0];
-                    const userData = new FormData();
-                    const imagePath = image.uri;
-                    const fileName = image.fileName;
-                    const fileType = image.type;
-
-                    userData.append('image', {
-                        uri: imagePath,
-                        type: fileType,
-                        name: fileName,
-                    });
-                    const payload = {
-                        id: allUserInfo?._id,
-                        userData
-                    };
-                    await updateUserBannerProfileImage(payload);
-                }
-            }
-        } catch (error) {
-            console.error('Errssssssor:', error);
-        }
+            const payload = {
+                id: allUserInfo?._id,
+                userData
+            };
+            const response = await updateUserBannerProfileImage(payload);
+            setIsBannerPopupVisible(false);
+            await setuserDataInStorage('user', response.userData);
+            navigation.navigate('Profile');
+        }).catch((error) => {
+            console.log(error, "errorChangingImage")
+        });
     };
 
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
