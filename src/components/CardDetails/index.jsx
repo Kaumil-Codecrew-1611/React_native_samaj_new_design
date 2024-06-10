@@ -10,9 +10,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { GlobalContext } from "../../context/globalState";
 
-const CardDetails = ({ content, size, image, thumbnail, redirectTo, navigation, idx, setSelectedVillage }) => {
-    const { progress } = useContext(GlobalContext)
-    // const image = useImage(thumbnail || 'https://img.freepik.com/free-photo/eiffel-tower-paris-with-gorgeous-colors-autumn_268835-828.jpg');
+const CardDetails = ({ content, size, image, redirectTo, functionality, navigation, setSelectedVillage }) => {
     const small = (size == 'sm')
     const large = (size == 'lg')
     const full = (size == 'full')
@@ -24,6 +22,8 @@ const CardDetails = ({ content, size, image, thumbnail, redirectTo, navigation, 
             }
             navigation.navigate(redirectTo);
             // progress.value = withTiming(idx);
+        } else {
+            functionality()
         }
     }
     const imageURL = useImage(image);

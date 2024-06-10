@@ -210,6 +210,7 @@ const resources = {
       EditFamilyDetails: "Edit Family Details",
       Members: "Members",
       Contactus: "Contact us",
+      okay: "Okay"
     },
   },
   gu: {
@@ -416,6 +417,7 @@ const resources = {
       EditFamilyDetails: "કૌટુંબિક વિગતો બદલો",
       Members: "સભ્યો",
       Contactus: "સંપર્ક",
+      okay: "થીક છે."
     },
   },
 };

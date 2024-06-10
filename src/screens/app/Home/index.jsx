@@ -14,9 +14,11 @@ import i18n from '../../../context/i18n';
 
 
 import ImageViewing from 'react-native-image-viewing';
+import SettingBottomSheet from '../Settings';
+import CustomBottomSheet from '../../../components/CustomBottomSheet';
 const Home = ({ navigation }) => {
     const { t } = useTranslation();
-    const { progress, allUserInfo } = useContext(GlobalContext);
+    const { progress, allUserInfo, setScreenpercentage, openBottomSheet } = useContext(GlobalContext);
     const { homePageAllSlider } = useContext(ApiContext);
     const [firstName, setFirstName] = useState(allUserInfo?.firstname ? allUserInfo?.firstname : "Panchal");
     const [lastName, setLastName] = useState(allUserInfo?.lastname ? allUserInfo?.lastname : "Samaj");
@@ -28,11 +30,17 @@ const Home = ({ navigation }) => {
     const images = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}` },
     ];
+    const openSettings = () => {
+        setScreenpercentage({ first: "30%", second: "34%" });
+        openBottomSheet(<SettingBottomSheet />);
+    };
     const cards = [
         { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutus.png'), thumbnail: "" },
         { id: 3, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageImg.png'), thumbnail: "" },
         { id: 4, name: t('news'), redirectTo: "News", image: require('../../../assets/NewsImg.png'), thumbnail: "" },
-        { id: 5, name: "", redirectTo: "", image: "", thumbnail: "" },
+        ...[allUserInfo ?
+            { id: 5, name: "", redirectTo: "", image: "", thumbnail: "" } :
+            { id: 5, name: t('settings'), functionality: openSettings, image: require('../../../assets/setting.jpg'), thumbnail: "" }]
     ];
 
     useEffect(() => {
@@ -71,6 +79,7 @@ const Home = ({ navigation }) => {
                 redirectTo={item.redirectTo}
                 navigation={navigation}
                 thumbnail={item.thumbnail}
+                functionality={item.functionality}
                 size="lg"
                 image={item.image}
                 idx={item.id}
@@ -133,6 +142,7 @@ const Home = ({ navigation }) => {
                 visible={isVisible}
                 onRequestClose={() => setIsVisible(false)}
             />
+              <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
         </>
     );
 };
