@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Modal, PermissionsAndroid, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'react-native-image-picker';
-import ImageViewing from 'react-native-image-viewing';
+import { Image, Modal, Pressable, ScrollView, Text, View, StyleSheet, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import Animated from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
+import ImageViewing from 'react-native-image-viewing';
+import * as ImagePicker from 'react-native-image-picker';
 import { GlobalContext } from '../../../context/globalState';
+import { useTranslation } from 'react-i18next';
 
 const NodeDetails = ({ navigation, route }) => {
+    const { t } = useTranslation();
+
     var { userId } = route.params;
     const paramsData = route.params;
     const { userDataByParentId, handleDeleteProfileUser, updateUserProfileImage } = useContext(ApiContext);
@@ -19,7 +22,6 @@ const NodeDetails = ({ navigation, route }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const AnimatedFontAwesomeIcon = Animated.createAnimatedComponent(FontAwesome);
-
     const images = [
         { uri: `${process.env.IMAGE_URL}${userData?.photo}`, },
     ];
@@ -62,7 +64,6 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     const openUserEditScreen = () => {
-
         navigation.navigate('EditUserFamilyDetails', { userId: userId });
     };
 
@@ -81,6 +82,7 @@ const NodeDetails = ({ navigation, route }) => {
             setIsPopupVisible(true);
         }
         else if (!id || typeof id === undefined && userId) {
+
             setIsPopupVisible(true);
         }
         else {
@@ -105,17 +107,21 @@ const NodeDetails = ({ navigation, route }) => {
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
                     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
                 ]);
+
                 const cameraPermission = granted['android.permission.CAMERA'];
                 const writePermission = granted['android.permission.WRITE_EXTERNAL_STORAGE'];
                 const readPermission = granted['android.permission.READ_EXTERNAL_STORAGE'];
+
                 if (cameraPermission === PermissionsAndroid.RESULTS.GRANTED &&
                     writePermission === PermissionsAndroid.RESULTS.GRANTED &&
                     readPermission === PermissionsAndroid.RESULTS.GRANTED) {
+
                     const result = await ImagePicker.launchImageLibrary({
                         selectionLimit: 1,
                         mediaType: 'photo',
                         includeBase64: true,
                     });
+
                     if (result.didCancel) {
                         console.log("User canceled ImagePicker");
                     } else if (result.errorCode) {
@@ -138,6 +144,7 @@ const NodeDetails = ({ navigation, route }) => {
                             userData
                         };
                         const response = await updateUserProfileImage(payload);
+                        console.log(response)
                         if (response) {
                             setImage(response.userData.photo)
                             setIsPopupVisible(false);
@@ -156,6 +163,7 @@ const NodeDetails = ({ navigation, route }) => {
                     mediaType: 'photo',
                     includeBase64: true,
                 });
+
                 if (result.didCancel) {
                     console.log("User canceled ImagePicker");
                 } else if (result.errorCode) {
@@ -177,6 +185,7 @@ const NodeDetails = ({ navigation, route }) => {
                         id: userId,
                         userData
                     };
+
                     await updateUserProfileImage(payload);
                 }
             }
@@ -186,20 +195,23 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     function visibleEditDetail() {
-
         const id = paramsData?.paramsId;
         const userId = allUserInfo?._id;
 
         function renderPressable() {
             return (
                 <>
-                    <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
-                        <AnimatedFontAwesomeIcon
-                            name="ellipsis-v"
-                            size={27}
-                            color="green"
-                        />
-                    </Pressable>
+                    {allUserInfo._id == userData._id ? null :
+                        (
+                            <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
+                                <AnimatedFontAwesomeIcon
+                                    name="ellipsis-v"
+                                    size={27}
+                                    color="green"
+                                />
+                            </Pressable>
+                        )
+                    }
                     <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
                         <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">
                             <AnimatedFontAwesomeIcon
@@ -225,6 +237,8 @@ const NodeDetails = ({ navigation, route }) => {
         }
         return <></>;
     }
+
+
 
     return (
         <View className="w-full p-3 bg-white flex-1">
@@ -264,7 +278,7 @@ const NodeDetails = ({ navigation, route }) => {
                 </View>
                 <View className="mb-8 p-1 flex-1">
                     <View className="w-full">
-                        <Text className="font-extrabold tracking-wider text-xl my-2 ml-2 text-rose-700">Basic Info</Text>
+                        <Text className="font-extrabold tracking-wider text-xl my-2 ml-2 text-rose-700">{t('basicinfo')}</Text>
                         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
                             {Object.entries(filteredUserData).map(([key, value], index) => (
                                 <View key={index + "keyyyss"}>
@@ -294,13 +308,13 @@ const NodeDetails = ({ navigation, route }) => {
                         <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-14">
-                        <Text className="font-bold text-lg mb-4">Are you sure you want to delete?</Text>
+                        <Text className="font-bold text-lg mb-4">{t('deleteconfirm')}</Text>
                         <View className="flex-row justify-between items-center">
                             <Pressable onPress={closeDeleteModal} className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2">
-                                <Text>Cancel</Text>
+                                <Text>{t('cancel')}</Text>
                             </Pressable>
                             <Pressable onPress={() => handleDelete(userData._id)} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white">Delete</Text>
+                                <Text className="text-white">{t('delete')}</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -320,13 +334,13 @@ const NodeDetails = ({ navigation, route }) => {
                 <View style={styles.modalBackground}>
                     <View style={styles.popup}>
                         <TouchableOpacity onPress={viewProfileImage}>
-                            <Text style={styles.popupText}>View Profile Image</Text>
+                            <Text style={styles.popupText}>{t('ViewProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectImage}>
-                            <Text style={styles.popupText}>Edit Profile Image</Text>
+                            <Text style={styles.popupText}>{t('EditProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closePopup}>
-                            <Text style={styles.popupText}>Close</Text>
+                            <Text style={styles.popupText}>{t('cancel')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -355,5 +369,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 });
+
 
 export default NodeDetails;

@@ -6,23 +6,48 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CardDetails from '../../../components/CardDetails';
 import Carousel from '../../../components/Carousel';
 import ApiContext from '../../../context/ApiContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GlobalContext } from '../../../context/globalState';
 import DefaultImage from '../../../assets/profile_img.png';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../../context/i18n';
+
 
 const Home = ({ navigation }) => {
+    const { t } = useTranslation();
     const { progress, allUserInfo } = useContext(GlobalContext);
     const { homePageAllSlider } = useContext(ApiContext);
     const [firstName, setFirstName] = useState(allUserInfo?.firstname ? allUserInfo?.firstname : "Panchal");
     const [lastName, setLastName] = useState(allUserInfo?.lastname ? allUserInfo?.lastname : "Samaj");
     const [profileImage, setProfileImage] = useState(`${process.env.IMAGE_URL}${allUserInfo?.photo}`);
     const [sliderImages, setSliderImages] = useState([]);
+    const [language, setLanguage] = useState('');
 
     const cards = [
-        { id: 1, name: "About us", redirectTo: "Aboutus", image: require('../../../assets/aboutus.png'), thumbnail: "" },
-        { id: 3, name: "Villages", redirectTo: "VillageListing", image: require('../../../assets/villageImg.png'), thumbnail: "" },
-        { id: 4, name: "News", redirectTo: "News", image: require('../../../assets/NewsImg.png'), thumbnail: "" },
+        { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutus.png'), thumbnail: "" },
+        { id: 3, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageImg.png'), thumbnail: "" },
+        { id: 4, name: t('news'), redirectTo: "News", image: require('../../../assets/NewsImg.png'), thumbnail: "" },
         { id: 5, name: "", redirectTo: "", image: "", thumbnail: "" },
     ];
+
+    useEffect(() => {
+        const getSelectedLanguage = async () => {
+          try {
+            const storedLanguage = await AsyncStorage.getItem('selectedLanguage');
+            if (storedLanguage) {
+              i18n.changeLanguage(storedLanguage).catch((error) => {
+                console.error('Error changing language:', error);
+              });
+              console.log(storedLanguage,"storedLanguage")
+              setLanguage(storedLanguage);
+            }
+          } catch (error) {
+            console.error('Error retrieving language:', error);
+          }
+        };
+    
+        getSelectedLanguage();
+      }, []);
 
     useEffect(() => {
         (async function () {
@@ -63,7 +88,7 @@ const Home = ({ navigation }) => {
                 <View className="flex-row justify-around my-4 w-full items-center mx-1">
                     <View className="space-y-1 basis-2/3 justify-center px-5">
                         <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
-                            Welcome
+                        {t('welcome')}
                         </Text>
                         <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
                             {!firstName ? "Panchal Samaj" : `${firstName} ${lastName}`}

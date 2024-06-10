@@ -5,15 +5,19 @@ import { Image, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, Te
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
+import { useTranslation } from 'react-i18next';
 
-const schema = yup.object().shape({
-    subject: yup.string().required('Subject is required'),
-    message: yup.string().required('Message is required'),
-    email: yup.string().email('Invalid email format').required('Email is required'),
-});
+
+
 
 function EmailSupport({ navigation }) {
+    const { t } = useTranslation();
 
+    const schema = yup.object().shape({
+        subject: yup.string().required('Subject is required'),
+        message: yup.string().required('Message is required'),
+        email: yup.string().email('Invalid email format').required('Email is required'),
+    });
     const { supportMailSend } = useContext(ApiContext);
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -47,20 +51,20 @@ function EmailSupport({ navigation }) {
                                 </View>
                                 <View className="basis-[65%] flex flex-row justify-center items-center">
                                     <Text className="font-extrabold tracking-wider text-2xl text-rose-700 ">
-                                        Get in touch with us via email. 👋
+                                        {t('gettouchmail')}
                                     </Text>
                                 </View>
                             </View>
                             <View className="w-full mt-6 mb-3 flex flex-row justify-center">
                                 <View className="w-[90%]">
-                                    <Text className="font-extrabold tracking-wider mb-3 text-2xl text-neutral-700 text-center">Send us an email</Text>
-                                    <Text className="tracking-wider text-lg text-neutral-700 text-center">Facing an issue? Our support team is here to help. Contact us via email.</Text>
+                                    <Text className="font-extrabold tracking-wider mb-3 text-2xl text-neutral-700 text-center">{t('sendemail')}</Text>
+                                    <Text className="tracking-wider text-lg text-neutral-700 text-center">{t('facinganissue')}</Text>
                                 </View>
                             </View>
                             <View className="w-full p-3">
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">Email:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2"> {t('email')}:</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <Controller
@@ -68,7 +72,7 @@ function EmailSupport({ navigation }) {
                                             name="email"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Please enter email"
+                                                    placeholder={t('pleaseenteremail')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -81,14 +85,14 @@ function EmailSupport({ navigation }) {
                                     </View>
                                 </View>
                                 <View className="w-full">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">Subject:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">{t('subject')}:</Text>
                                 </View>
                                 <Controller
                                     control={control}
                                     name="subject"
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <TextInput
-                                            placeholder="Please enter subject"
+                                            placeholder={t('pleaseentersubject')}
                                             placeholderTextColor="grey"
                                             style={{
                                                 width: '100%',
@@ -111,14 +115,14 @@ function EmailSupport({ navigation }) {
                                 />
                                 {errors.subject && <Text style={styles.error}>{errors.subject.message}</Text>}
                                 <View className="w-full">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">Message:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">{t('message')}:</Text>
                                 </View>
                                 <Controller
                                     control={control}
                                     name="message"
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <TextInput
-                                            placeholder="Please enter message"
+                                            placeholder={t('pleaseentermessage')}
                                             placeholderTextColor="grey"
                                             multiline
                                             style={{

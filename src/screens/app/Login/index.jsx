@@ -9,28 +9,30 @@ import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import { COLORS } from '../../../utils/colors';
-
-const schema = yup.object().shape({
-    email_or_mobile: yup.string().required('Email or Phone number is required').test(
-        'is-email-or-phone',
-        'Invalid email or phone number',
-        function (value) {
-            if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(value)) {
-                return true;
-            }
-            else if (/^\d/.test(value)) {
-                return /^\d{10,}$/.test(value);
-            }
-            return false;
-        }
-    ),
-    password: yup.string().required('Password is required').matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
-    ),
-});
+import { useTranslation } from 'react-i18next';
 
 const Login = ({ navigation }) => {
+    const { t } = useTranslation();
+
+    const schema = yup.object().shape({
+        email_or_mobile: yup.string().required(t('emailOrMobileRequired')).test(
+            'is-email-or-phone',
+            t('invalidEmailOrPhone'),
+            function (value) {
+                if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(value)) {
+                    return true;
+                }
+                else if (/^\d/.test(value)) {
+                    return /^\d{10,}$/.test(value);
+                }
+                return false;
+            }
+        ),
+        password: yup.string().required(t('passwordisrequired')).matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+            t('passwordmusthaveatleastoneletteronenumberandonespecialcharacter')
+        ),
+    });
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
@@ -58,7 +60,7 @@ const Login = ({ navigation }) => {
             }
         } catch (error) {
             console.error('An error occurred while User Login:', error);
-            throw new Error('An error occurred!');
+            throw new Error('An error occurred while User Login');
         }
     };
 
@@ -71,7 +73,7 @@ const Login = ({ navigation }) => {
             </View>
             <View style={styles.formContainer}>
                 <View>
-                    <Text style={styles.label}>Email or Phone Number</Text>
+                    <Text style={styles.label}>{t('emailOrMobileNumber')}</Text>
                     <Controller
                         control={control}
                         name="email_or_mobile"
@@ -79,7 +81,9 @@ const Login = ({ navigation }) => {
                             <TextInput
                                 style={[styles.input, errors.email_or_mobile && styles.inputError]}
                                 onBlur={onBlur}
+                                placeholder={t("emailOrMobileNumber")}
                                 onChangeText={onChange}
+                                placeholderTextColor="grey"
                                 value={value}
                             />
                         )}
@@ -87,7 +91,7 @@ const Login = ({ navigation }) => {
                     {errors.email_or_mobile && <Text style={styles.error}>{errors.email_or_mobile.message}</Text>}
                 </View>
                 <View>
-                    <Text style={styles.label}>Password</Text>
+                    <Text style={styles.label}>{t('password')}</Text>
                     <Controller
                         control={control}
                         name="password"
@@ -95,6 +99,7 @@ const Login = ({ navigation }) => {
                             <TextInput
                                 style={[styles.input, errors.password && styles.inputError]}
                                 onBlur={onBlur}
+                                placeholder={t("password")}
                                 onChangeText={onChange}
                                 value={value}
                                 secureTextEntry
@@ -104,12 +109,12 @@ const Login = ({ navigation }) => {
                     {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button title="Login" onPress={handleSubmit(onSubmit)} />
+                    <Button title={t('login')} onPress={handleSubmit(onSubmit)} />
                 </View>
                 <View style={styles.registerContainer}>
-                    <Text style={styles.registerText}>Don't have an account?</Text>
+                    <Text style={styles.registerText}>{t('donthaveaccount')}</Text>
                     <Pressable onPress={() => navigation.navigate("Register")}>
-                        <Text style={styles.registerLink}>Register</Text>
+                        <Text style={styles.registerLink}>{t('register')}</Text>
                     </Pressable>
                 </View>
                 <View style={styles.registerContainer}>
@@ -118,6 +123,7 @@ const Login = ({ navigation }) => {
                         <Text style={styles.registerLink}>Home Page</Text>
                     </Pressable>
                 </View>
+
             </View>
         </View>
     );
@@ -156,11 +162,17 @@ const styles = StyleSheet.create({
         color: "black"
     },
     input: {
-        height: 40,
+        backgroundColor: '#F3F5F7',
+        color: '#333',
+        borderRadius: 10,
+        paddingLeft: 10,
         marginBottom: 7,
-        paddingHorizontal: 10,
-        backgroundColor: '#e7e7e9',
-        color: "black"
+        shadowColor: '#423f40',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 0.2,
+        marginHorizontal: 4,
+        elevation: 4,
     },
     inputError: {
         borderWidth: 1,

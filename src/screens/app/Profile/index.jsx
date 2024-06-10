@@ -10,7 +10,10 @@ import { GlobalContext } from '../../../context/globalState';
 import SettingBottomSheet from '../Settings';
 import ApiContext from '../../../context/ApiContext';
 import { withTiming } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
+
 const ProfilePage = ({ navigation }) => {
+    const { t } = useTranslation();
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo, progress } = useContext(GlobalContext);
@@ -27,8 +30,6 @@ const ProfilePage = ({ navigation }) => {
     const bannerImages = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}`, },
     ];
-    console.log("bannerImagesbannerImagesbannerImagesbannerImages", bannerImages)
-
     const openSettings = () => {
         setScreenpercentage({ first: "30%", second: "34%" });
         openBottomSheet(<SettingBottomSheet />);
@@ -326,20 +327,20 @@ const ProfilePage = ({ navigation }) => {
                     <View className="flex items-center">
                         <Text className="text-rose-700 font-bold text-2xl">{allUserInfo?.firstname} {allUserInfo?.lastname}</Text>
                         <View className="flex flex-row items-center justify-center">
-                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">Member Id: </Text>
+                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("MemberId")}:</Text>
                             <Text className="text-rose-700 text-xl font-bold tracking-wider">{allUserInfo?.personal_id}</Text>
                         </View>
                         <View className="flex flex-row items-center justify-center">
-                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">Start Date: </Text>
+                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t('StartDate')}: </Text>
                             <Text className="text-rose-700 text-xl font-bold tracking-wider">{formatDate(allUserInfo?.created_at)}</Text>
                         </View>
                         <View className="flex-row gap-1">
                             <Pressable hitSlop={20} onPress={navigateToEditProfile}>
-                                <Text className="text-blue-600 font-medium text-base">Edit Profile</Text>
+                                <Text className="text-blue-600 font-medium text-base">{t('EditProfile')}</Text>
                             </Pressable>
                             <Text className="text-blue-600 font-medium text-base">/</Text>
                             <Pressable hitSlop={20} onPress={navigateToAddProfile}>
-                                <Text className="text-blue-600 font-medium text-base">Add Profile</Text>
+                                <Text className="text-blue-600 font-medium text-base">{t('AddProfile')}</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -349,21 +350,21 @@ const ProfilePage = ({ navigation }) => {
                                 <Pressable onPress={openAddFamilyDetails} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFeatherIcon name="users" size={30} />
-                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">Add Family Details</Text>
+                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("AddFamilyDetails")}</Text>
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} />
                                 </Pressable>
                                 <Pressable onPress={openSettings} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFontistoIcon name="player-settings" size={30} />
-                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">Settings</Text>
+                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("settings")}</Text>
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} />
                                 </Pressable>
                                 <Pressable onPress={openChangePassword} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFontistoIcon name="locked" size={30} />
-                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">Change Password</Text>
+                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("changePassword")}</Text>
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} />
                                 </Pressable>
@@ -371,7 +372,7 @@ const ProfilePage = ({ navigation }) => {
                                     <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                         <View className="flex-row justify-between gap-2 items-center">
                                             <AnimatedFontistoIcon name="share" size={30} />
-                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">Share App</Text>
+                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("ShareApp")}</Text>
                                         </View>
                                         <AnimatedFontistoIcon name="angle-right" size={15} />
                                     </View>
@@ -402,13 +403,13 @@ const ProfilePage = ({ navigation }) => {
                 <View style={styles.modalBackground}>
                     <View style={styles.popup}>
                         <TouchableOpacity onPress={viewProfileImage}>
-                            <Text style={styles.popupText}>View Profile Image</Text>
+                            <Text style={styles.popupText}>{t('ViewProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectImage}>
-                            <Text style={styles.popupText}>Edit Profile Image</Text>
+                            <Text style={styles.popupText}>{t('EditProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closePopup}>
-                            <Text style={styles.popupText}>Close</Text>
+                            <Text style={styles.popupText}>{t('Close')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -424,13 +425,13 @@ const ProfilePage = ({ navigation }) => {
                         <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-[90%]">
-                        <Text className="font-bold text-lg mb-4">Are you sure you want to logout?</Text>
+                        <Text className="font-bold text-lg mb-4">{t("confirmlogout")}</Text>
                         <View className="flex-row justify-between items-center">
                             <Pressable onPress={closeLogoutModal} className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2">
-                                <Text>Cancel</Text>
+                                <Text>{t('cancel')}</Text>
                             </Pressable>
                             <Pressable onPress={() => handleLogout()} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white">Logout</Text>
+                                <Text className="text-white">{t('logout')}</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -444,13 +445,13 @@ const ProfilePage = ({ navigation }) => {
                 <View style={styles.modalBackground}>
                     <View style={styles.popup}>
                         <TouchableOpacity onPress={viewBannerImage}>
-                            <Text style={styles.popupText}>View Banner Image</Text>
+                            <Text style={styles.popupText}>{t("viewbanner")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectBannerImage}>
-                            <Text style={styles.popupText}>Edit Banner Image</Text>
+                            <Text style={styles.popupText}>{t("editbanner")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closeBannerPopup}>
-                            <Text style={styles.popupText}>Close</Text>
+                            <Text style={styles.popupText}>{t('Close')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

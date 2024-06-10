@@ -8,27 +8,14 @@ import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
-
+import { useTranslation } from 'react-i18next';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const schema = yup.object().shape({
-    firstname: yup.string().required('First Name is required'),
-    lastname: yup.string().required('Last Name is required'),
-    middlename: yup.string().required('Middle Name is required'),
-    email: yup.string()
-        .matches(emailRegex, 'Invalid email address')
-        .required('Email is required'),
-    mobile_number: yup.string().required('Phone Number is required').matches(/^[0-9]{10}$/, 'Phone Number must be exactly 10 digits'),
-    address: yup.string().required('Address is required'),
-    city: yup.string().required('City is required'),
-    state: yup.string().required('State is required'),
-    pincode: yup.string().required('Pincode is required').matches(/^[0-9]{6}$/, 'Pincode must be exactly 6 digits'),
-    education: yup.string().required('Education is required'),
-    job: yup.string().required('Job is required'),
-    gender: yup.string().required('Gender is required'),
-});
+
 
 const EditUserProfile = ({ navigation }) => {
+    const { t } = useTranslation();
+
     const { getLocation, updateUserProfileUser, updateUserPostProfile } = useContext(ApiContext);
     const [showPicker, setShowPicker] = useState(false);
     const { allUserInfo, setuserDataInStorage, removeUserDataFromStorage } = useContext(GlobalContext);
@@ -41,6 +28,25 @@ const EditUserProfile = ({ navigation }) => {
             marital_status: '',
         }
     });
+
+    const schema = yup.object().shape({
+        firstname: yup.string().required(t('pleaseenterfirstname')),
+        lastname: yup.string().required(t('pleaseenterlastname')),
+        middlename: yup.string().required(t('pleaseentermiddlename')),
+        email: yup.string()
+            .matches(emailRegex, t('Invalidemailaddress'))
+            .required(t('pleaseenteremail')),
+        mobile_number: yup.string().required(t('pleaseentermobilenumber')).matches(/^[0-9]{10}$/, t('pleaseenteravalidmobilenumber')),
+        address: yup.string().required(t('pleaseenteraddress')),
+        city: yup.string().required(t('pleaseentercity')),
+        state: yup.string().required(t('pleaseenterstate')),
+        pincode: yup.string().required(t('pleaseenterpincode')).matches(/^[0-9]{6}$/, t('pleaseenteravalidpincodenumber')),
+        education: yup.string().required(t('pleaseentereducation')),
+        job: yup.string().required(t('pleaseenterjob')),
+        gender: yup.string().required(t('pleaseentergender')),
+    });
+
+
     const dob = watch('dob') || new Date();
 
     useEffect(() => {
@@ -55,7 +61,7 @@ const EditUserProfile = ({ navigation }) => {
         const response = await updateUserPostProfile(payload)
         if (response.status) {
             await setuserDataInStorage('user', response.newsave);
-            navigation.navigate('Profile');
+            navigation.navigate('userProfilePage');
         }
     };
 
@@ -102,7 +108,7 @@ const EditUserProfile = ({ navigation }) => {
                             <View>
                                 <View className="my-1">
                                     <View className="w-full ml-1">
-                                        <Text className="font-extrabold  text-base tracking-wider text-neutral-700">First Name:</Text>
+                                        <Text className="font-extrabold  text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -110,7 +116,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="firstname"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="First name here ...."
+                                                    placeholder={t('firstname')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -125,7 +131,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Last Name:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('lastname')}</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -133,7 +139,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="lastname"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Last name here ...."
+                                                    placeholder={t('lastname')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -148,7 +154,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Middle Name:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('middlename')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -156,7 +162,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="middlename"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Middle name here ...."
+                                                    placeholder={t('middlename')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -171,7 +177,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Email:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -179,7 +185,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="email"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Email here ...."
+                                                    placeholder={t('email')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -194,7 +200,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Phone Number:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -202,7 +208,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="mobile_number"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Phone Number"
+                                                    placeholder={t('mobile')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -218,7 +224,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Gender:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <View className="mb-[10px] ml-1">
@@ -234,9 +240,9 @@ const EditUserProfile = ({ navigation }) => {
 
                                                         onChange={(nextValue) => onChange(nextValue)}
                                                     >
-                                                        <Radio value="male" >Male</Radio>
-                                                        <Radio value="female" ml={2}>Female</Radio>
-                                                        <Radio value="other" ml={2}>Other</Radio>
+                                                        <Radio value="male" >{t('male')}</Radio>
+                                                        <Radio value="female" ml={2}>{t('famale')}</Radio>
+                                                        <Radio value="other" ml={2}>{t('other')}</Radio>
                                                     </Radio.Group>
                                                 )}
                                             />
@@ -247,7 +253,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Marital Status:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <View className="mx-1">
@@ -256,7 +262,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 name="marital_status"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <Select
-                                                        placeholder="Select Marital Status"
+                                                        placeholder={t('maritalstatus')}
                                                         selectedValue={value}
                                                         onValueChange={onChange}
                                                         _selectedItem={{
@@ -264,11 +270,11 @@ const EditUserProfile = ({ navigation }) => {
                                                             endIcon: <CheckIcon size="5" />,
                                                         }}
                                                     >
-                                                        <Select.Item label="Married" value="married" />
-                                                        <Select.Item label="Unmarried" value="unmarried" />
-                                                        <Select.Item label="Widower" value="Widower" />
-                                                        <Select.Item label="Widow" value="Widow" />
-                                                        <Select.Item label="Divorcee" value="divorcee" />
+                                                        <Select.Item label={t('married')} value="married" />
+                                                        <Select.Item label={t('unmarried')} value="unmarried" />
+                                                        <Select.Item label={t('widower')} value="Widower" />
+                                                        <Select.Item label={t('widow')} value="Widow" />
+                                                        <Select.Item label={t('divorcee')} value="divorcee" />
                                                     </Select>
                                                 )}
                                             />
@@ -279,7 +285,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Birth:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <Pressable onPress={() => setShowPicker(true)}>
@@ -292,7 +298,7 @@ const EditUserProfile = ({ navigation }) => {
                                                     name="dob"
                                                     render={({ field: { value } }) => (
                                                         <TextInput
-                                                            placeholder="Enter Date of Birth"
+                                                            placeholder={t('pleaseenterdob')}
                                                             placeholderTextColor="grey"
                                                             style={styles.input}
                                                             value={new Date(value).toDateString()}
@@ -316,7 +322,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Education:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('education')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -324,7 +330,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="education"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Education"
+                                                    placeholder={t('education')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -339,7 +345,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">job:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('job')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -347,7 +353,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="job"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="job"
+                                                    placeholder={t('job')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -362,7 +368,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Current Address:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('address')}</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -370,7 +376,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="address"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Current Address"
+                                                    placeholder={t('address')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -385,7 +391,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">City:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('city')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -393,7 +399,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="city"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="City"
+                                                    placeholder={t('address')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -408,7 +414,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">State:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('state')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -416,7 +422,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="state"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="State"
+                                                    placeholder={t('state')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -431,7 +437,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Pincode:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('pincode')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -439,7 +445,7 @@ const EditUserProfile = ({ navigation }) => {
                                             name="pincode"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Pincode"
+                                                    placeholder={t('pincode')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -454,7 +460,7 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="mt-3 mb-6">
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title="Update Profile" onPress={handleSubmit(onSubmit)} />
+                                    <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} onPress={handleSubmit(onSubmit)} />
                                 </View>
 
                             </View>

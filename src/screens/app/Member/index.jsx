@@ -10,7 +10,6 @@ export default function Member() {
     const [height2, setHeight2] = useState(0);
     const [committeeMembers, setCommitteeMembers] = useState([]);
     const { t } = useTranslation();
-    console.log(t('contactusheading'),"asdssssddsds")
     const translateX = scrollY.interpolate({
         inputRange: [0, Math.max(height1 - height2, 1)],
         outputRange: [-width, 0]
@@ -39,7 +38,7 @@ export default function Member() {
     return (
         <View className="bg-gray-300" style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Committee Members</Text>
+                <Text style={styles.headerText}>{t('committeeMember')}</Text>
             </View>
             <Animated.ScrollView
                 showsVerticalScrollIndicator={false}
@@ -54,21 +53,21 @@ export default function Member() {
                 {committeeMembers.map((member) => (
                     <View style={styles.card} key={member._id}>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Full Name: </Text>
+                            <Text style={styles.cardTitle}>{t('fullName')}: </Text>
                             <Text style={styles.cardText}>{member.fullname}</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Position: </Text>
+                            <Text style={styles.cardTitle}>{t('position')}: </Text>
                             <Text style={styles.cardText}>{member.role}</Text>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Mobile Number: </Text>
+                            <Text style={styles.cardTitle}>{t('mobile')}: </Text>
                             <TouchableOpacity onPress={() => handleCallOpenLink("+91" + member.mobile_number)}>
                                 <Text className="text-blue-700" style={styles.cardText}>+91 {member.mobile_number}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>Village: </Text>
+                            <Text style={styles.cardTitle}>{t('village')}: </Text>
                             <Text style={styles.cardText}>{member.village}</Text>
                         </View>
                     </View>

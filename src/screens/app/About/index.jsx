@@ -3,12 +3,12 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
-
+import { useTranslation } from 'react-i18next';
 const { width } = Dimensions.get('window');
 const IMG_HEIGHT = 300;
 
 const Aboutus = () => {
-
+    const { t } = useTranslation();
     const scrollRef = useAnimatedRef();
     const scrolloffset = useScrollViewOffset(scrollRef);
     const { aboutUsContentApi } = useContext(ApiContext);
@@ -61,7 +61,7 @@ const Aboutus = () => {
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.header, headerAnimatedStyle]}>
-                <Text style={styles.headerText}>Your Header</Text>
+                <Text style={styles.headerText}>{t('YourHeader')}</Text>
             </Animated.View>
             <Animated.ScrollView
                 onScroll={handleScroll}
@@ -76,12 +76,12 @@ const Aboutus = () => {
                 </View>
                 <View style={styles.contentContainer}>
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>About Us</Text>
+                        <Text style={styles.sectionTitle}>{t('aboutUs')}</Text>
                         <View style={styles.sectionDivider}></View>
                         <Text style={styles.sectionText}>{title}</Text>
                     </View>
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Our Purpose</Text>
+                        <Text style={styles.sectionTitle}>{t('OurPurpose')}</Text>
                         <View style={styles.sectionDivider}></View>
                         <RenderHTML
                             contentWidth={width}

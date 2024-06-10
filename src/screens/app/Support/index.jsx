@@ -3,7 +3,11 @@ import { Image, Text, View, TouchableOpacity } from 'react-native'
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 const banner_img = require("../../../assets/support_header_bg.png")
+
+import { useTranslation } from 'react-i18next';
+
 function Support({ navigation }) {
+    const { t } = useTranslation();
 
 
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
@@ -28,8 +32,8 @@ function Support({ navigation }) {
 
                 <View className="w-full mt-6 mb-3 flex flex-row justify-center">
                     <View className="w-[90%]">
-                        <Text className="font-extrabold tracking-wider mb-3 text-2xl text-rose-700 text-center">Tell us How can I help you👋</Text>
-                        <Text className="tracking-wider text-lg text-neutral-700 text-center">Our crew of experts is always on standby for service</Text>
+                        <Text className="font-extrabold tracking-wider mb-3 text-2xl text-rose-700 text-center">{t('tellmehowcan')}</Text>
+                        <Text className="tracking-wider text-lg text-neutral-700 text-center">{t('ourcrewofexpertsareon')}</Text>
                     </View>
                 </View>
 
@@ -47,8 +51,8 @@ function Support({ navigation }) {
                                 </View>
                             </View>
                             <View className="basis-[55%] p-3">
-                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">Email</Text>
-                                <Text className="tracking-wider text-sm text-neutral-700">Get the solution sent to your inbox</Text>
+                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">{t('email')}</Text>
+                                <Text className="tracking-wider text-sm text-neutral-700">{t('getthesolutionsend')}</Text>
                             </View>
                             <View className="flex flex-row justify-center basis-[20%] h-full items-center">
                                 <AnimatedFeatherIcon
@@ -75,7 +79,7 @@ function Support({ navigation }) {
                             </View>
                             <View className="basis-[55%] p-3">
                                 <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">FAQs</Text>
-                                <Text className="tracking-wider text-sm text-neutral-700">Find intelligent answers instantly</Text>
+                                <Text className="tracking-wider text-sm text-neutral-700">{t('findintelligentanswersInstantly')}</Text>
                             </View>
                             <View className="flex flex-row justify-center basis-[20%] h-full items-center">
                                 <AnimatedFeatherIcon

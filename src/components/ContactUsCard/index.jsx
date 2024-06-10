@@ -4,8 +4,10 @@ import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import ApiContext from '../../context/ApiContext';
+import { useTranslation } from 'react-i18next';
 
 function ContactUsCard() {
+    const { t } = useTranslation();
     const { contactUsPageDetails } = useContext(ApiContext);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
@@ -79,7 +81,7 @@ function ContactUsCard() {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
             <View className="mb-20">
                 <View className="w-full h-64 p-4">
-                    <View className="w-full bg-[#E9EDF7] h-full rounded-[20px] p-5">
+                    <View className="w-full bg-white h-full rounded-[20px] p-5">
                         <View className="w-full h-full">
                             <View className="mb-3 w-full flex flex-row gap-3 items-center">
                                 <AnimatedFontistoIcon
@@ -87,10 +89,10 @@ function ContactUsCard() {
                                     size={25}
                                     color="black"
                                 />
-                                <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">Phone</Text>
+                                <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('mobile')}</Text>
                             </View>
                             <View className="h-14">
-                                <Text className="tracking-wider text-neutral-700">You can call, text or whatsapp on below provided numbers.</Text>
+                                <Text className="tracking-wider text-neutral-700">{t('contactusphoneheading')}</Text>
                             </View>
                             <View className="mb-2">
                                 <View className="flex flex-row justify-between">
@@ -131,7 +133,7 @@ function ContactUsCard() {
                     </View>
                 </View>
                 <View className="w-full h-44 p-4">
-                    <View className="w-full bg-[#E9EDF7] h-full rounded-[20px] p-5">
+                    <View className="w-full bg-white h-full rounded-[20px] p-5">
                         <View className="w-full h-full">
                             <View className="mb-3 w-full flex gap-3 flex-row items-center">
                                 <AnimatedFontistoIcon
@@ -139,10 +141,10 @@ function ContactUsCard() {
                                     size={25}
                                     color="black"
                                 />
-                                <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">E-mail</Text>
+                                <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('email')}</Text>
                             </View>
                             <View className="h-7">
-                                <Text className="tracking-wider text-neutral-700">We respond to emails within 24 hours.</Text>
+                                <Text className="tracking-wider text-neutral-700">{t('contactusemailheading')}</Text>
                             </View>
                             <TouchableOpacity onPress={() => handleClickOnMail(email)}>
                                 <View>
@@ -153,7 +155,7 @@ function ContactUsCard() {
                     </View>
                 </View>
                 <View className="w-full h-56 p-4">
-                    <View className="w-full bg-[#E9EDF7] h-full rounded-[20px] p-5">
+                    <View className="w-full bg-white h-full rounded-[20px] p-5">
                         <View className="w-full h-full">
                             <View className="mb-3 w-full flex gap-3 flex-row items-center">
                                 <AnimatedFeatherIcon
@@ -161,10 +163,10 @@ function ContactUsCard() {
                                     size={25}
                                     color="black"
                                 />
-                                <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">Socials</Text>
+                                <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('socials')}</Text>
                             </View>
                             <View className="mb-4 h-11">
-                                <Text className="tracking-wider text-neutral-700">Follow with our social to get modified with updates offers</Text>
+                                <Text className="tracking-wider text-neutral-700">{t('contactussocialheading')}</Text>
                             </View>
                             <View className="flex flex-row w-full justify-around">
                                 <TouchableOpacity onPress={() => openLink(twitterLink)}>

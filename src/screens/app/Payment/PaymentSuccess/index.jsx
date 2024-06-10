@@ -4,8 +4,10 @@ import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Button from '../../../../components/Button';
 import { GlobalContext } from '../../../../context/globalState';
+import { useTranslation } from 'react-i18next';
 
 function PaymentSuccess({ navigation, route }) {
+    const { t } = useTranslation();
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const data = route.params;
 
@@ -24,33 +26,31 @@ function PaymentSuccess({ navigation, route }) {
 
             <View className="relative flex-1 px-5">
                 <View >
-                    <Text className="tracking-wider marker:text-center my-3 text-3xl font-extrabold text-neutral-700">Payment Success</Text>
-                    <Text className="tracking-wider  mb-3 text-lg font-semibold text-neutral-700">Success! Your payment is complete. Now you can log in to the Panchal Samaj app to get started.</Text>
+                    <Text className="tracking-wider marker:text-center my-3 text-3xl font-extrabold text-neutral-700">{t('paymentSuccess')}</Text>
+                    <Text className="tracking-wider  mb-3 text-lg font-semibold text-neutral-700">{t('paymentSuccess')}{t('Successpaymentmessage')}</Text>
                 </View>
 
                 <View className="bg-white my-4 w-full p-3 rounded-[15px]" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                     <View className="flex-row mb-3 items-center justify-between" >
-                        <Text className="tracking-wider text-xl mr-7  text-[#acacac]">Name</Text>
+                        <Text className="tracking-wider text-xl mr-7  text-[#acacac]">{t('name')}</Text>
                         <Text className="tracking-wider text-lg font-semibold text-neutral-700">{data?.registerData?.firstname + " " + data?.registerData?.lastname}</Text>
                     </View>
 
                     <View className="flex-row my-2 mb-6 items-center justify-between" >
-                        <Text className="tracking-wider text-xl mr-7  text-[#acacac]">Phone No</Text>
+                        <Text className="tracking-wider text-xl mr-7  text-[#acacac]">{t('mobile')}</Text>
                         <Text className="tracking-wider text-lg font-semibold text-neutral-700">{data?.registerData?.mobile_number}</Text>
                     </View>
 
                     <View className="h-[1px] mb-3 bg-neutral-400"></View>
 
                     <View className="flex-row items-center justify-between" >
-                        <Text className="tracking-wider text-xl mr-7  text-[#acacac]">Total Amount</Text>
+                        <Text className="tracking-wider text-xl mr-7  text-[#acacac]">{t('TotalAmount')}</Text>
                         <Text className="tracking-wider text-xl font-extrabold text-[#e1a58a]">{data?.amount / 100} (Paid)</Text>
                     </View>
-
-
                 </View>
 
                 <View className=" w-full left-5 absolute bottom-16">
-                    <Button className="bg-[#f56f4c] py-4 rounded-[20px]" title="Go To Login" onPress={() => navigation.navigate('Login')} />
+                    <Button className="bg-[#f56f4c] py-4 rounded-[20px]" title={t("goTologinpage")} onPress={() => navigation.navigate('Login')} />
                 </View>
             </View>
         </View>

@@ -8,10 +8,12 @@ import Home from '../screens/app/Home';
 import Member from '../screens/app/Member';
 import ProfilePage from '../screens/app/Profile';
 import Welcome from '../screens/app/WelcomeScreen';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
+    const { t } = useTranslation();
     const { isLoggedIn } = useContext(GlobalContext);
     // const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -32,17 +34,17 @@ const BottomTabs = () => {
                     headerShown: false,
                 }}>
                 <Tab.Screen
-                    options={{ tabBarLabel: 'Home' }}
+                    options={{ tabBarLabel: t("home") }}
                     name="Home"
                     component={Home}
                 />
                 <Tab.Screen
-                    options={{ tabBarLabel: 'Members' }}
+                    options={{ tabBarLabel: t('Members') }}
                     name="Member"
                     component={Member}
                 />
                 {!!isLoggedIn && <Tab.Screen
-                    options={{ tabBarLabel: 'Profile' }}
+                    options={{ tabBarLabel: t("profile") }}
                     name="Profile"
                     component={ProfilePage}
                 />}
@@ -51,7 +53,7 @@ const BottomTabs = () => {
                     component={Welcome}
                 />}
                 < Tab.Screen
-                    options={{ tabBarLabel: 'Contactus' }}
+                    options={{ tabBarLabel: t("Contactus") }}
                     name="Contactus"
                     component={ContactUs}
                 />

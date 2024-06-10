@@ -8,21 +8,27 @@ import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import { useTranslation } from 'react-i18next';
+
+
+
+const ChangePassword = ({ navigation }) => {
+const { t } = useTranslation();
 
 const schema = yup.object().shape({
+    
     old_password: yup.string().required('Current password is required'),
     password: yup.string()
-        .required('New password is required')
+        .required(t('newpasswordisrequired'))
         .matches(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-            'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
+            t('passwordmusthaveatleastoneletteronenumberandonespecialcharacter')
         ),
     cpassword: yup.string()
         .oneOf([yup.ref('password'), null], 'Passwords must match')
-        .required('Confirm new password is required'),
+        .required(t('confirmpasswordisrequired')),
 });
 
-const ChangePassword = ({ navigation }) => {
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const { allUserInfo } = useContext(GlobalContext);
     const { userChangePassword } = useContext(ApiContext);
@@ -70,7 +76,7 @@ const ChangePassword = ({ navigation }) => {
             <View className="w-full bg-white mx-2 h-[83%] pt-24 rounded-t-[30px] absolute bottom-0">
                 <View className="w-full absolute top-[-60px] z-10 h-32 flex-row justify-center">
                     <View className="w-72 rounded-xl bg-green-600 h-full flex-row justify-center items-center">
-                        <Text className="text-white text-xl tracking-wider font-extrabold">CHANGE PASSWORD</Text>
+                        <Text className="text-white text-xl tracking-wider font-extrabold">{t('changePassword')}</Text>
                     </View>
                 </View>
                 <View className="flex-1 px-8">
@@ -83,7 +89,7 @@ const ChangePassword = ({ navigation }) => {
                                 <View className="flex-1">
                                     <View>
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">Current Password:</Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('changePassword')}:</Text>
                                         </View>
                                         <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
                                             <Controller
@@ -92,7 +98,7 @@ const ChangePassword = ({ navigation }) => {
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         style={styles.input}
-                                                        placeholder="current password"
+                                                        placeholder={t('currentpassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
@@ -116,7 +122,7 @@ const ChangePassword = ({ navigation }) => {
 
                                     <View className="my-5">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">New Password:</Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('newPassword')}:</Text>
                                         </View>
                                         <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
                                             <Controller
@@ -125,7 +131,7 @@ const ChangePassword = ({ navigation }) => {
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         style={styles.input}
-                                                        placeholder="New password"
+                                                        placeholder={t('newPassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
@@ -149,7 +155,7 @@ const ChangePassword = ({ navigation }) => {
 
                                     <View>
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">Confirm Password:</Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('confirmpassword')}:</Text>
                                         </View>
                                         <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
                                             <Controller
@@ -158,7 +164,7 @@ const ChangePassword = ({ navigation }) => {
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         style={styles.input}
-                                                        placeholder="confirm password"
+                                                        placeholder={t('confirmpassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
@@ -183,8 +189,8 @@ const ChangePassword = ({ navigation }) => {
                             </ScrollView>
                         </TouchableWithoutFeedback>
                     </KeyboardAvoidingView>
-                    <View className="mb-auto">
-                        <Button className="bg-green-600 py-4 rounded-lg" title="Change Password" onPress={handleSubmit(onSubmit)} />
+                    <View className="mb-16">
+                        <Button className="bg-green-600 py-4 rounded-lg" title={t('changePassword')} onPress={handleSubmit(onSubmit)} />
                     </View>
                 </View>
             </View>

@@ -8,31 +8,33 @@ import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
-
+import { useTranslation } from 'react-i18next';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const schema = yup.object().shape({
-    firstname: yup.string().required('First Name is required'),
-    lastname: yup.string().required('Last Name is required'),
-    middlename: yup.string().required('Middle Name is required'),
-    email: yup.string()
-        .matches(emailRegex, 'Invalid email address')
-        .required('Email is required'),
-    password: yup.string().required('Password is required').matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
-    ),
-    mobile_number: yup.string().required('Phone Number is required').matches(/^[0-9]{10}$/, 'Phone Number must be exactly 10 digits'),
-    address: yup.string().required('Address is required'),
-    city: yup.string().required('City is required'),
-    state: yup.string().required('State is required'),
-    pincode: yup.string().required('Pincode is required').matches(/^[0-9]{6}$/, 'Pincode must be exactly 6 digits'),
-    education: yup.string().required('Education is required'),
-    job: yup.string().required('Job is required'),
-    gender: yup.string().required('Gender is required'),
-});
+
 
 const Register = ({ navigation }) => {
+    const { t } = useTranslation();
+    const schema = yup.object().shape({
+        firstname: yup.string().required('First Name is required'),
+        lastname: yup.string().required('Last Name is required'),
+        middlename: yup.string().required('Middle Name is required'),
+        email: yup.string()
+            .matches(emailRegex, 'Invalid email address')
+            .required('Email is required'),
+        password: yup.string().required('Password is required').matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+            'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
+        ),
+        mobile_number: yup.string().required('Phone Number is required').matches(/^[0-9]{10}$/, 'Phone Number must be exactly 10 digits'),
+        address: yup.string().required('Address is required'),
+        city: yup.string().required('City is required'),
+        state: yup.string().required('State is required'),
+        pincode: yup.string().required('Pincode is required').matches(/^[0-9]{6}$/, 'Pincode must be exactly 6 digits'),
+        education: yup.string().required('Education is required'),
+        job: yup.string().required('Job is required'),
+        gender: yup.string().required('Gender is required'),
+    });
     const { state, getLocation } = useContext(ApiContext);
     const { setRegisterData } = useContext(GlobalContext);
     const [locations, setLocations] = useState('');
@@ -83,13 +85,13 @@ const Register = ({ navigation }) => {
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full my-4 p-1 mt-2">
                 <View className="w-full">
-                    <Text className="font-extrabold text-lg tracking-wider text-neutral-700">Select Village :</Text>
+                    <Text className="font-extrabold text-lg tracking-wider text-neutral-700">{t('selectyourvillage')} :</Text>
                 </View>
                 <View className="bg-white w-full mt-2 rounded-md">
                     <Select
                         borderWidth={0}
-                        accessibilityLabel={'Select Village'}
-                        placeholder={'Select Village'}
+                        accessibilityLabel={t('selectyourvillage')}
+                        placeholder={t('selectyourvillage')}
                         size={'lg'}
                         _selectedItem={{
                             bg: "blue.300",
@@ -114,7 +116,7 @@ const Register = ({ navigation }) => {
             {locations !== "" ? (
                 <View className="w-full bg-white flex-1 rounded-md p-3">
                     <Text className="font-extrabold tracking-wider ml-1 text-2xl text-rose-700">
-                        Fill the details
+                        {t("filldetails")}
                     </Text>
                     <View className="w-full ml-1 my-2 bg-neutral-700 h-[2px]"></View>
 
@@ -128,7 +130,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full ml-1">
-                                            <Text className="font-extrabold  text-base tracking-wider text-neutral-700">First Name:</Text>
+                                            <Text className="font-extrabold  text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -136,7 +138,7 @@ const Register = ({ navigation }) => {
                                                 name="firstname"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="First name here ...."
+                                                        placeholder={t('firstname')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -151,7 +153,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Last Name:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('lastname')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -159,7 +161,7 @@ const Register = ({ navigation }) => {
                                                 name="lastname"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="Last name here ...."
+                                                        placeholder={t('lastname')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -174,7 +176,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Middle Name:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('middlename')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -182,7 +184,7 @@ const Register = ({ navigation }) => {
                                                 name="middlename"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="Middle name here ...."
+                                                        placeholder={t('lastname')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -197,7 +199,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Email:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -205,7 +207,7 @@ const Register = ({ navigation }) => {
                                                 name="email"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="Email here ...."
+                                                        placeholder={t('email')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -220,7 +222,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Password :</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('password')} :</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -228,7 +230,7 @@ const Register = ({ navigation }) => {
                                                 name="password"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="Password"
+                                                        placeholder={t('password')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -242,7 +244,7 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Birth:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
                                         <Pressable onPress={() => setShowPicker(true)} className="w-full mt-2">
                                             <Controller
                                                 control={control}
@@ -262,7 +264,7 @@ const Register = ({ navigation }) => {
                                                                 styles.input,
                                                                 { color: dateValue ? 'black' : 'grey' },
                                                             ]}
-                                                            placeholder="Select Date of Birth"
+                                                            placeholder={t('dateofbirth')}
                                                             placeholderTextColor="grey"
                                                             value={dateValue ? dateValue.toDateString() : ''}
                                                             onBlur={onBlur}
@@ -287,7 +289,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Phone Number:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -311,7 +313,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Current Address:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('address')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -319,7 +321,7 @@ const Register = ({ navigation }) => {
                                                 name="address"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="Current Address"
+                                                        placeholder={t('address')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -334,7 +336,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">City:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('city')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -342,7 +344,7 @@ const Register = ({ navigation }) => {
                                                 name="city"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="City"
+                                                        placeholder={t('city')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -357,7 +359,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">State:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('state')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -365,7 +367,7 @@ const Register = ({ navigation }) => {
                                                 name="state"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="State"
+                                                        placeholder={t('state')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -380,7 +382,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Pincode:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('pincode')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -388,7 +390,7 @@ const Register = ({ navigation }) => {
                                                 name="pincode"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="Pincode"
+                                                        placeholder={t('pincode')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -404,7 +406,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Education:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('education')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -412,7 +414,7 @@ const Register = ({ navigation }) => {
                                                 name="education"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="Education"
+                                                        placeholder={t('education')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -427,7 +429,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">job:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('job')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -435,7 +437,7 @@ const Register = ({ navigation }) => {
                                                 name="job"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        placeholder="job"
+                                                        placeholder={t('job')}
                                                         placeholderTextColor="grey"
                                                         style={styles.input}
                                                         value={value}
@@ -450,7 +452,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Marital Status:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <View className="mx-1">
@@ -459,7 +461,7 @@ const Register = ({ navigation }) => {
                                                     name="marital_status"
                                                     render={({ field: { onChange, onBlur, value } }) => (
                                                         <Select
-                                                            placeholder="Select Marital Status"
+                                                            placeholder={t('selectmaritalstatus')}
                                                             selectedValue={value}
                                                             onValueChange={(itemValue) => onChange(itemValue)}
                                                             _selectedItem={{
@@ -468,12 +470,11 @@ const Register = ({ navigation }) => {
                                                             }}
 
                                                         >
-                                                            <Select.Item label="Marital Status" value="marital_status" />
-                                                            <Select.Item label="Married" value="married" />
-                                                            <Select.Item label="Unmarried" value="unmarried" />
-                                                            <Select.Item label="Widower" value="Widower" />
-                                                            <Select.Item label="Widow" value="Widow" />
-                                                            <Select.Item label="Divorcee" value="divorcee" />
+                                                            <Select.Item label={t('married')} value="married" />
+                                                            <Select.Item label={t('unmarried')} value="unmarried" />
+                                                            <Select.Item label={t('widower')} value="Widower" />
+                                                            <Select.Item label={t('widow')} value="Widow" />
+                                                            <Select.Item label={t('divorcee')} value="divorcee" />
                                                         </Select>
                                                     )}
                                                 />
@@ -484,7 +485,7 @@ const Register = ({ navigation }) => {
 
                                     <View className="my-1">
                                         <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Gender:</Text>
+                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
                                         </View>
                                         <View className="w-full mt-2">
                                             <View className="mb-[10px] ml-1">
@@ -499,9 +500,9 @@ const Register = ({ navigation }) => {
                                                             className="flex flex-row"
                                                             onChange={(nextValue) => onChange(nextValue)}
                                                         >
-                                                            <Radio value="male" >Male</Radio>
-                                                            <Radio value="female" ml={2}>Female</Radio>
-                                                            <Radio value="other" ml={2}>Other</Radio>
+                                                            <Radio value="male" >{t('male')}</Radio>
+                                                            <Radio value="female" ml={2}>{t('female')}</Radio>
+                                                            <Radio value="other" ml={2}>{t('other')}</Radio>
                                                         </Radio.Group>
                                                     )}
                                                 />
@@ -511,7 +512,7 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="mt-3 mb-6">
-                                        <Button className="bg-blue-500 py-3 rounded-lg" title="Register" onPress={handleSubmit(onSubmit)} />
+                                        <Button className="bg-blue-500 py-3 rounded-lg" title={t('register')} onPress={handleSubmit(onSubmit)} />
                                     </View>
 
                                 </View>

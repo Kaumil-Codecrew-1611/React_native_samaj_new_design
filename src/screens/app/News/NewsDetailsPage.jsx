@@ -5,8 +5,10 @@ import ImageViewing from 'react-native-image-viewing';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
 import { ScrollView } from 'native-base';
+import { useTranslation } from 'react-i18next';
 
 const NewsDetailsPage = ({ route }) => {
+const { t } = useTranslation();
     const { newsId } = route.params;
     const { newsDataById } = useContext(ApiContext);
     const [isVisible, setIsVisible] = useState(false);
@@ -81,7 +83,7 @@ const NewsDetailsPage = ({ route }) => {
                 showsHorizontalScrollIndicator={false}
             >
                 <View>
-                    <Text style={styles.title}>News Details</Text>
+                    <Text style={styles.title}>{t('newsDetails')}</Text>
                 </View>
                 <View>
                     <View>
