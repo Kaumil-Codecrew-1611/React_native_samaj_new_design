@@ -8,7 +8,7 @@ import Carousel from '../../../components/Carousel';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import DefaultImage from '../../../assets/profile_img.png';
-
+import ImageViewing from 'react-native-image-viewing';
 const Home = ({ navigation }) => {
     const { progress, allUserInfo } = useContext(GlobalContext);
     const { homePageAllSlider } = useContext(ApiContext);
@@ -16,7 +16,11 @@ const Home = ({ navigation }) => {
     const [lastName, setLastName] = useState(allUserInfo?.lastname ? allUserInfo?.lastname : "Samaj");
     const [profileImage, setProfileImage] = useState(`${process.env.IMAGE_URL}${allUserInfo?.photo}`);
     const [sliderImages, setSliderImages] = useState([]);
+    const [isVisible, setIsVisible] = useState(false);
 
+    const images = [
+        { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}` },
+    ];
     const cards = [
         { id: 1, name: "About us", redirectTo: "Aboutus", image: require('../../../assets/aboutus.png'), thumbnail: "" },
         { id: 3, name: "Villages", redirectTo: "VillageListing", image: require('../../../assets/villageImg.png'), thumbnail: "" },
@@ -57,39 +61,53 @@ const Home = ({ navigation }) => {
         }
     };
 
+
+    const openProfileImage = (e) => {
+        e.stopPropagation();
+        setIsVisible(true);
+    }
+
     return (
-        <View className="flex-1 bg-gray-300 space-y-5 w-full pb-20" edges={['top']}>
-            <Pressable onPress={profileNavigate} className="bg-white mt-3 mx-1 h-fit rounded-2xl flex items-center" style={{ alignSelf: 'stretch' }}>
-                <View className="flex-row justify-around my-4 w-full items-center mx-1">
-                    <View className="space-y-1 basis-2/3 justify-center px-5">
-                        <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
-                            Welcome
-                        </Text>
-                        <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
-                            {!firstName ? "Panchal Samaj" : `${firstName} ${lastName}`}
-                        </Text>
+        <>
+            <View className="flex-1 bg-gray-300 space-y-5 w-full pb-20" edges={['top']}>
+                <Pressable onPress={profileNavigate} className="bg-white mt-3 mx-1 h-fit rounded-2xl flex items-center" style={{ alignSelf: 'stretch' }}>
+                    <View className="flex-row justify-around my-4 w-full items-center mx-1">
+                        <View className="space-y-1 basis-2/3 justify-center px-5">
+                            <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
+                                Welcome
+                            </Text>
+                            <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
+                                {!firstName ? "Panchal Samaj" : `${firstName} ${lastName}`}
+                            </Text>
+                        </View>
+                        <Pressable onPress={openProfileImage} className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
+                            {allUserInfo ? (
+                                <Image source={{ uri: profileImage }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                            ) : (
+                                <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                            )}
+                        </Pressable>
                     </View>
-                    <View className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
-                        {allUserInfo ? (
-                            <Image source={{ uri: profileImage }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
-                        ) : (
-                            <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
-                        )}
-                    </View>
-                </View>
-            </Pressable>
-            <FlatList
-                data={cards}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
-                numColumns={2}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ display: 'flex', gap: 2, width: '100%', paddingHorizontal: 3 }}
-                ListHeaderComponent={<Carousel sliderImages={sliderImages} />}
+                </Pressable>
+                <FlatList
+                    data={cards}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id.toString()}
+                    numColumns={2}
+                    horizontal={false}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ display: 'flex', gap: 2, width: '100%', paddingHorizontal: 3 }}
+                    ListHeaderComponent={<Carousel sliderImages={sliderImages} />}
+                />
+            </View>
+            <ImageViewing
+                images={allUserInfo ? images : [DefaultImage]}
+                imageIndex={0}
+                visible={isVisible}
+                onRequestClose={() => setIsVisible(false)}
             />
-        </View>
+        </>
     );
 };
 

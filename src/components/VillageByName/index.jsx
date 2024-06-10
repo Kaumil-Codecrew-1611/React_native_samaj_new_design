@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, FlatList, Image, StyleSheet, Text, View, Pressable } from 'react-native';
 import ApiContext from '../../context/ApiContext';
+import ImageViewing from 'react-native-image-viewing';
 
 const cardHeight = 85;
 const padding = 10;
@@ -10,6 +11,13 @@ const VillageByName = ({ searchValue, navigation }) => {
     const scrollY = useRef(new Animated.Value(0)).current;
     const { state } = useContext(ApiContext);
     const [userByVillageId, setUserVillageId] = useState([]);
+    const [image, setImage] = useState('');
+    const [isVisible, setIsVisible] = useState(false);
+
+    const viewImage = (img) => {
+        setImage(img);
+        setIsVisible(true);
+    }
 
     useEffect(() => {
         if (state.allUserByVillage) {
@@ -29,45 +37,53 @@ const VillageByName = ({ searchValue, navigation }) => {
     );
 
     return (
-        <FlatList
-            style={styles.container}
-            data={filteredContacts}
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-                useNativeDriver: false,
-            })}
-            keyExtractor={item => item.id}
-            renderItem={({ item, index }) => {
-                const inputRange = [offset * index, offset * (index + 1)];
-                const outputRange1 = [1, 0];
-                const outputRange2 = [0, offset / 2];
-                const scale = scrollY.interpolate({
-                    inputRange,
-                    outputRange: outputRange1,
-                    extrapolate: 'clamp',
-                });
-                const translateY = scrollY.interpolate({
-                    inputRange,
-                    outputRange: outputRange2,
-                    extrapolate: 'clamp',
-                });
-                const opacity = scale;
-                return (
-                    <Pressable onPress={() => navigation.navigate('ViewFamilyDetails', { id: item.id })}>
-                        <Animated.View
-                            style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]}
-                        >
-                            <View style={styles.imageContainer}>
-                                <Image style={styles.image} source={{ uri: item.image }} />
-                            </View>
-                            <View style={styles.textContainer}>
-                                <Text style={styles.name}>{item.name}</Text>
-                                <Text style={styles.village}>{item.village}</Text>
-                            </View>
-                        </Animated.View>
-                    </Pressable>
-                );
-            }}
-        />
+        <>
+            <FlatList
+                style={styles.container}
+                data={filteredContacts}
+                onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+                    useNativeDriver: false,
+                })}
+                keyExtractor={item => item.id}
+                renderItem={({ item, index }) => {
+                    const inputRange = [offset * index, offset * (index + 1)];
+                    const outputRange1 = [1, 0];
+                    const outputRange2 = [0, offset / 2];
+                    const scale = scrollY.interpolate({
+                        inputRange,
+                        outputRange: outputRange1,
+                        extrapolate: 'clamp',
+                    });
+                    const translateY = scrollY.interpolate({
+                        inputRange,
+                        outputRange: outputRange2,
+                        extrapolate: 'clamp',
+                    });
+                    const opacity = scale;
+                    return (
+                        <Pressable onPress={() => navigation.navigate('ViewFamilyDetails', { id: item.id })}>
+                            <Animated.View
+                                style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]}
+                            >
+                                <Pressable onPress={() => viewImage(item.image)} style={styles.imageContainer}>
+                                    <Image style={styles.image} source={{ uri: item.image }} />
+                                </Pressable>
+                                <View style={styles.textContainer}>
+                                    <Text style={styles.name}>{item.name}</Text>
+                                    <Text style={styles.village}>{item.village}</Text>
+                                </View>
+                            </Animated.View>
+                        </Pressable>
+                    );
+                }}
+            />
+            <ImageViewing
+                images={[{ uri: image }]}
+                imageIndex={0}
+                visible={isVisible}
+                onRequestClose={() => setIsVisible(false)}
+            />
+        </>
     );
 };
 
