@@ -9,11 +9,11 @@ import CustomBottomSheet from '../../../components/CustomBottomSheet';
 import { GlobalContext } from '../../../context/globalState';
 import SettingBottomSheet from '../Settings';
 import ApiContext from '../../../context/ApiContext';
-
+import { withTiming } from 'react-native-reanimated';
 const ProfilePage = ({ navigation }) => {
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo } = useContext(GlobalContext);
+    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo,progress } = useContext(GlobalContext);
     const [isVisible, setIsVisible] = useState(false);
     const [isBannerVisible, setBannerIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -51,8 +51,9 @@ const ProfilePage = ({ navigation }) => {
     };
 
     const handleLogout = async () => {
+        progress.value = withTiming("1");
         await setuserDataInStorage('user', null);
-        navigation.navigate("Login");
+        navigation.navigate("Home");
     };
 
     const formatDate = (timestamp) => {
