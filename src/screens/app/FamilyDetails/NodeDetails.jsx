@@ -270,7 +270,7 @@ const NodeDetails = ({ navigation, route }) => {
                                 <View key={index + "keyyyss"}>
                                     <View className="w-full p-3 rounded-[15px]">
                                         <View>
-                                            <Text className="font-bold tracking-wider text-lg text-neutral-700">{key}</Text>
+                                            <Text className="font-bold tracking-wider text-lg text-neutral-700 capitalize">{key.replace(/_/g, " ")}</Text>
                                             <Text className="tracking-wider text-[15px] text-neutral-700">{value}</Text>
                                         </View>
                                     </View>

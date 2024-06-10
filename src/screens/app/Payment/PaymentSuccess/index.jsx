@@ -43,7 +43,7 @@ function PaymentSuccess({ navigation, route }) {
 
                     <View className="flex-row items-center justify-between" >
                         <Text className="tracking-wider text-xl mr-7  text-[#acacac]">Total Amount</Text>
-                        <Text className="tracking-wider text-xl font-extrabold text-[#e1a58a]">{data?.amount / 100} (PAID)</Text>
+                        <Text className="tracking-wider text-xl font-extrabold text-[#e1a58a]">{data?.amount / 100} (Paid)</Text>
                     </View>
 
 

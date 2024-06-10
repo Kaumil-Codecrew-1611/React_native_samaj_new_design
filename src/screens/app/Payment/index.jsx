@@ -85,8 +85,13 @@ function Payment({ navigation, route }) {
             navigation.navigate('PaymentSuccess', { registerData: updatedRegisterData, amount: data?.order?.amount });
         } catch (error) {
             // Navigate to PaymentFailed
-            navigation.navigate('PaymentFailed');
-            console.error('Payment error:', error);
+
+            const errorObject = JSON.parse(error.description);
+
+            // Access the description property
+            const errorDescription = errorObject?.error?.description;
+            navigation.navigate('PaymentFailed', { registerData: registerData,amount: data?.order?.amount, description:errorDescription });
+           
         }
     };
 

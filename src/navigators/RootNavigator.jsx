@@ -61,7 +61,7 @@ const RootNavigator = () => {
                 )
             }
             )} />
-            <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: SelectedVillage || 'Village' }} />
+            <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: 'Village wise people' }} />
             <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: 'About Us' }} />
             <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: 'News List' }} />
             <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: 'News Details' }} />

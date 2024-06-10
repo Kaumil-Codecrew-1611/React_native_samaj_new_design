@@ -43,7 +43,7 @@ function NewsList({ navigation, news }) {
 
         return (
             <TouchableOpacity onPress={() => { openNewsDetailsPage(item._id) }}>
-                <View className='w-full'>
+                <View className='w-full mb-4'>
                     <View className="w-full overflow-hidden object-cover">
                         <View className="relative">
                             <Image

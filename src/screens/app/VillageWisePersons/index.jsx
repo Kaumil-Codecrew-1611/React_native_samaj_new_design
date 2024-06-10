@@ -27,7 +27,7 @@ const VillageWisePersons = ({ navigation }) => {
                         setSearch("");
                     }}>
                         <View className="flex flex-row items-center relative overflow-hidden" >
-                            <TextInput placeholder={'  Search here...'} className="w-full" value={search} onChangeText={text => setSearch(text)} />
+                            <TextInput placeholder={'Search person details'} className="w-full" placeholderTextColor="grey" value={search} onChangeText={text => setSearch(text)} />
                             <View className="h-full flex justify-center absolute right-[6px]">
                                 {search !== "" ? (
                                     <Image

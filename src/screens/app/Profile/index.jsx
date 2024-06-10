@@ -13,7 +13,7 @@ import { withTiming } from 'react-native-reanimated';
 const ProfilePage = ({ navigation }) => {
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo,progress } = useContext(GlobalContext);
+    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo, progress } = useContext(GlobalContext);
     const [isVisible, setIsVisible] = useState(false);
     const [isBannerVisible, setBannerIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -27,6 +27,7 @@ const ProfilePage = ({ navigation }) => {
     const bannerImages = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}`, },
     ];
+    console.log("bannerImagesbannerImagesbannerImagesbannerImages", bannerImages)
 
     const openSettings = () => {
         setScreenpercentage({ first: "30%", second: "34%" });

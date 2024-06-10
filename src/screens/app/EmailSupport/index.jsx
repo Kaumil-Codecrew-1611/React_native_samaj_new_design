@@ -60,7 +60,7 @@ function EmailSupport({ navigation }) {
                             <View className="w-full p-3">
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Email:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">Email:</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <Controller
@@ -68,7 +68,7 @@ function EmailSupport({ navigation }) {
                                             name="email"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder="Email here ...."
+                                                    placeholder="Please enter email"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -81,15 +81,15 @@ function EmailSupport({ navigation }) {
                                     </View>
                                 </View>
                                 <View className="w-full">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Subject:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">Subject:</Text>
                                 </View>
                                 <Controller
                                     control={control}
                                     name="subject"
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <TextInput
-                                            placeholder="Subject"
-                                            placeholderTextColor="#000000"
+                                            placeholder="Please enter subject"
+                                            placeholderTextColor="grey"
                                             style={{
                                                 width: '100%',
                                                 backgroundColor: 'white',
@@ -111,15 +111,15 @@ function EmailSupport({ navigation }) {
                                 />
                                 {errors.subject && <Text style={styles.error}>{errors.subject.message}</Text>}
                                 <View className="w-full">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Message:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">Message:</Text>
                                 </View>
                                 <Controller
                                     control={control}
                                     name="message"
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <TextInput
-                                            placeholder="Your message goes here....."
-                                            placeholderTextColor="#000000"
+                                            placeholder="Please enter message"
+                                            placeholderTextColor="grey"
                                             multiline
                                             style={{
                                                 width: '100%',

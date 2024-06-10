@@ -78,7 +78,7 @@ function ContactUsCard() {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
             <View className="mb-20">
-                <View className="w-full h-56 p-4">
+                <View className="w-full h-64 p-4">
                     <View className="w-full bg-[#E9EDF7] h-full rounded-[20px] p-5">
                         <View className="w-full h-full">
                             <View className="mb-3 w-full flex flex-row gap-3 items-center">
@@ -89,32 +89,39 @@ function ContactUsCard() {
                                 />
                                 <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">Phone</Text>
                             </View>
-                            <View className="mb-4 h-14">
-                                <Text className="tracking-wider text-neutral-700">You can call, text or whatsapp on below numbers. Charges will be applied as per your network problem</Text>
+                            <View className="h-14">
+                                <Text className="tracking-wider text-neutral-700">You can call, text or whatsapp on below provided numbers.</Text>
                             </View>
-                            <View className="flex flex-row justify-between">
-                                <View>
-                                    <Text className="font-bold text-sm">
-                                        {contact1}
-                                    </Text>
-                                </View>
-                                <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno1)}>
+                            <View className="mb-2">
+                                <View className="flex flex-row justify-between">
                                     <View>
-                                        <Text className="text-blue-700">
-                                            +91 {contactno1}
+                                        <Text className="font-bold text-sm">
+                                            {contact1}
                                         </Text>
                                     </View>
-                                </TouchableOpacity>
+                                </View>
+                                <View>
+                                    <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno1)}>
+                                        <View>
+                                            <Text className="text-[#5176df] tracking-wider text-sm font-semibold">
+                                                +91 {contactno1}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <View className="flex flex-row justify-between">
+                            <View className="flex flex-row items-center justify-between">
                                 <View>
                                     <Text className="font-bold text-sm">
                                         {contact2}
                                     </Text>
                                 </View>
+
+                            </View>
+                            <View>
                                 <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno2)}>
                                     <View>
-                                        <Text className="text-blue-700">
+                                        <Text className="text-[#5176df] tracking-wider text-sm font-semibold">
                                             +91 {contactno2}
                                         </Text>
                                     </View>
@@ -123,8 +130,7 @@ function ContactUsCard() {
                         </View>
                     </View>
                 </View>
-
-                <View className="w-full h-56 p-4">
+                <View className="w-full h-44 p-4">
                     <View className="w-full bg-[#E9EDF7] h-full rounded-[20px] p-5">
                         <View className="w-full h-full">
                             <View className="mb-3 w-full flex gap-3 flex-row items-center">
@@ -135,18 +141,17 @@ function ContactUsCard() {
                                 />
                                 <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">E-mail</Text>
                             </View>
-                            <View className="mb-4 h-11">
-                                <Text className="tracking-wider text-neutral-700">We response to mails whithin 24 hours</Text>
+                            <View className="h-7">
+                                <Text className="tracking-wider text-neutral-700">We respond to emails within 24 hours.</Text>
                             </View>
                             <TouchableOpacity onPress={() => handleClickOnMail(email)}>
                                 <View>
-                                    <Text className="text-[#5176df] font-extrabold text-xl">{email}</Text>
+                                    <Text className="text-[#5176df] tracking-wider text-base font-semibold">{email}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-
                 <View className="w-full h-56 p-4">
                     <View className="w-full bg-[#E9EDF7] h-full rounded-[20px] p-5">
                         <View className="w-full h-full">
@@ -161,7 +166,7 @@ function ContactUsCard() {
                             <View className="mb-4 h-11">
                                 <Text className="tracking-wider text-neutral-700">Follow with our social to get modified with updates offers</Text>
                             </View>
-                            <View className="flex flex-row w-full justify-between">
+                            <View className="flex flex-row w-full justify-around">
                                 <TouchableOpacity onPress={() => openLink(twitterLink)}>
                                     <AnimatedFontistoIcon
                                         name="twitter"
