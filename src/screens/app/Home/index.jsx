@@ -100,7 +100,7 @@ const Home = ({ navigation }) => {
                     <View className="flex-row justify-around my-4 w-full items-center mx-1">
                         <View className="space-y-1 basis-2/3 justify-center px-5">
                             <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
-                                Welcome
+                                {t("welcome")}
                             </Text>
                             <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
                                 {!firstName ? "Panchal Samaj" : `${firstName} ${lastName}`}
