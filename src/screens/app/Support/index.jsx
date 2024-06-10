@@ -29,7 +29,7 @@ function Support({ navigation }) {
                 <View className="w-full mt-6 mb-3 flex flex-row justify-center">
                     <View className="w-[90%]">
                         <Text className="font-extrabold tracking-wider mb-3 text-2xl text-rose-700 text-center">Tell us How can I help you👋</Text>
-                        <Text className="tracking-wider text-lg text-neutral-700 text-center">Our Crew of experts are on  always on standy for service</Text>
+                        <Text className="tracking-wider text-lg text-neutral-700 text-center">Our crew of experts is always on standby for service</Text>
                     </View>
                 </View>
 
