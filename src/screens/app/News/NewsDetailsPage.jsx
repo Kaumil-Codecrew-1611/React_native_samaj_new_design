@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
@@ -62,19 +61,6 @@ const { t } = useTranslation();
             }
         })();
     }, [newsId]);
-
-    const selectImage = async () => {
-        try {
-            const image = await ImagePicker.openPicker({
-                width: 300,
-                height: 400,
-                cropping: true
-            });
-            setNewsDetailsImage(image.path);
-        } catch (error) {
-            console.error('ImagePicker Error:', error);
-        }
-    };
 
     return (
         <View className="bg-gray-300" style={styles.container}>

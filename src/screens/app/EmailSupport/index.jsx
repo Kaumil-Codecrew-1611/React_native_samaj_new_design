@@ -24,7 +24,6 @@ function EmailSupport({ navigation }) {
     });
 
     const onSubmit = async (data) => {
-        console.log("this is for support email", data)
         try {
             await supportMailSend(data);
             navigation.navigate('Support');

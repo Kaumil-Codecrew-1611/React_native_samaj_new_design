@@ -15,8 +15,6 @@ function Support({ navigation }) {
     const redirect = (redirectPath) => {
         if (redirectPath) {
             navigation.navigate(redirectPath)
-        } else {
-            console.log('path not found')
         }
     }
 
