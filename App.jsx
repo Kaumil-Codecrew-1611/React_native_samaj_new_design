@@ -10,7 +10,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { GlobalContext } from './src/context/globalState';
 import RootNavigator from './src/navigators/RootNavigator';
-import ErrorBoundary from './src/utils/ErrorBoundary';
 
 const App = () => {
   const { setIsAuthScreenActive, getUserDataFromStorage } = useContext(GlobalContext);
@@ -44,14 +43,12 @@ const App = () => {
       <SafeAreaProvider>
         <PaperProvider>
           <NativeBaseProvider>
-            <ErrorBoundary>
-              <NavigationContainer
-                onReady={() => changeNavigationBarColor('white')}
-                onStateChange={handleStateChange}
-              >
-                <RootNavigator />
-              </NavigationContainer>
-            </ErrorBoundary>
+            <NavigationContainer
+              onReady={() => changeNavigationBarColor('white')}
+              onStateChange={handleStateChange}
+            >
+              <RootNavigator />
+            </NavigationContainer>
           </NativeBaseProvider>
         </PaperProvider>
         <StatusBar barStyle={'dark-content'} />
