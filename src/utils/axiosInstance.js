@@ -1,6 +1,7 @@
 // src/utils/axiosInstance.js
 import axios from 'axios';
-import errorHandler from './errorHandler';
+import toastMessage from './toastMessage';
+
 const axiosInstance = axios.create({
   baseURL: process.env.API_URL,
   // You can add common headers here if needed
@@ -10,9 +11,15 @@ const axiosInstance = axios.create({
 
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
-  response => response,
+  response => {
+    if (
+      response.data.message && response.data.showMessage && response.status === 200
+    ) {
+      toastMessage(response.data.message);
+    }
+    return response
+  },
   error => {
-    console.log(error, " ::::errror here")
     let message = 'An unknown error occurred';
 
     if (error.response && error.response.data && error.response.data.error) {
@@ -20,7 +27,7 @@ axiosInstance.interceptors.response.use(
     } else if (error.message) {
       message = error.message;
     }
-    errorHandler(message);
+    toastMessage(message);
     return Promise.reject(error);
   }
 );
