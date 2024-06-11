@@ -1,45 +1,45 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import Animated from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const NodeDetails = ({ navigation, route }) => {
     const { t } = useTranslation();
-
     var { userId } = route.params;
     const paramsData = route.params;
     const { userDataByParentId, handleDeleteProfileUser, updateUserProfileImage } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
-    const [userData, setUserData] = useState([]);
-    const [newImagae, setImage] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [newImage, setImage] = useState(null);
     const [menuVisible, setMenuVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [loading, setLoading] = useState(true); // New state for loading
     const AnimatedFontAwesomeIcon = Animated.createAnimatedComponent(FontAwesome);
-    const images = [
-        { uri: `${process.env.IMAGE_URL}${userData?.photo}`, },
-    ];
+    const images = userData?.photo ? [{ uri: `${process.env.IMAGE_URL}${userData.photo}` }] : [];
 
     useEffect(() => {
         (async function () {
-
+            setLoading(true); // Start loading
             const contentUserDataById = await userDataByParentId(userId);
             setUserData(contentUserDataById);
+            setLoading(false); // Stop loading
         })();
-    }, []);
+    }, [userId]);
 
-    const filteredUserData = Object.keys(userData)
+    const filteredUserData = userData ? Object.keys(userData)
         .filter(key => key !== '_id' && key !== 'firstname' && key !== 'lastname' && key !== '__v' && key !== 'created_at' && key !== 'deleted_at' && key !== 'updated_at' && key !== 'device_token' && key !== 'payment_id' && key !== 'email' && key !== 'photo' && key !== 'address' && key !== 'relationship' && key !== 'parent_id' && key !== "password" && key !== "locations_id" && key !== "personal_id" && key !== "" && key !== "profile_banner")
         .reduce((obj, key) => {
             obj[key] = userData[key];
             return obj;
-        }, {});
+        }, {}) : {};
 
     if (filteredUserData.dob) {
         const dobDate = new Date(filteredUserData.dob);
@@ -51,7 +51,9 @@ const NodeDetails = ({ navigation, route }) => {
     }
 
     const handleAddFamilyDetail = () => {
-        navigation.navigate('AddFamilyDetail', { parent_id: userData._id });
+        if (userData && userData._id) {
+            navigation.navigate('AddFamilyDetail', { parent_id: userData._id });
+        }
     };
 
     const handleDelete = async (user_Id) => {
@@ -82,7 +84,6 @@ const NodeDetails = ({ navigation, route }) => {
             setIsPopupVisible(true);
         }
         else if (!id || typeof id === undefined && userId) {
-
             setIsPopupVisible(true);
         }
         else {
@@ -137,14 +138,13 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     function visibleEditDetail() {
-
         const id = paramsData?.paramsId;
         const userId = allUserInfo?._id;
 
         function renderPressable() {
             return (
                 <>
-                    {allUserInfo._id == userData._id ? null :
+                    {allUserInfo?._id == userData?._id ? null :
                         (
                             <Pressable onPress={() => setMenuVisible(!menuVisible)} className="px-4 py-1 bg-white absolute top-2 rounded-[15px] right-2 shadow-green-600" style={{ elevation: 7 }}>
                                 <AnimatedFontAwesomeIcon
@@ -184,56 +184,90 @@ const NodeDetails = ({ navigation, route }) => {
     return (
         <View className="w-full p-3 bg-white flex-1">
             <View className="w-full bg-[#E9EDF7] flex-1 rounded-[15px] overflow-hidden">
-                <View className="w-full h-[38%] relative">
-                    <Pressable onPress={openModal}>
-                        <Image
-                            source={newImagae ? { uri: `${process.env.IMAGE_URL}${newImagae}` } : { uri: `${process.env.IMAGE_URL}${userData.photo}` }}
-                            className="w-full h-full object-cover"
-                        />
 
-                    </Pressable>
-                    <View className="p-4 bg-white absolute bottom-2 rounded-[15px] left-2 shadow-green-700" style={{ elevation: 10 }}>
-                        <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData.firstname + ' ' + userData.lastname}</Text>
-                    </View>
-                    {visibleEditDetail()}
-                    {menuVisible && (
-                        <View className="absolute top-2 right-14 bg-white rounded-[15px] shadow-lg px-2 py-1">
-                            <View className="flex flex-row items-center gap-2">
-                                <Pressable onPress={openUserEditScreen} className="p-1">
-                                    <AnimatedFontAwesomeIcon
-                                        name="edit"
-                                        size={27}
-                                        color="blue"
-                                    />
-                                </Pressable>
-                                <Pressable onPress={openDeleteModal} className="p-1">
-                                    <AnimatedFontAwesomeIcon
-                                        name="trash"
-                                        size={27}
-                                        color="red"
-                                    />
-                                </Pressable>
-                            </View>
+                {loading ? (
+                    <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item height={300} backgroundColor="#F2F8FC" width={'100%'} />
+                    </SkeletonPlaceholder>
+                ) : (
+                    <View className="w-full h-[38%] relative">
+                        <Pressable onPress={openModal}>
+                            <Image
+                                source={newImage ? { uri: `${process.env.IMAGE_URL}${newImage}` } : userData && { uri: `${process.env.IMAGE_URL}${userData.photo}` }}
+                                className="w-full h-full object-cover"
+                            />
+                        </Pressable>
+                        <View className="p-4 bg-white absolute bottom-2 rounded-[15px] left-2 shadow-green-700" style={{ elevation: 10 }}>
+                            {loading ? (
+                                <SkeletonPlaceholder>
+                                    <SkeletonPlaceholder.Item height={6} width={"100%"} />
+                                    <SkeletonPlaceholder.Item height={6} width={"100%"} />
+                                    <SkeletonPlaceholder.Item height={6} width={"100%"} />
+                                    <SkeletonPlaceholder.Item height={6} width={"100%"} />
+                                    <SkeletonPlaceholder.Item height={6} width={"100%"} />
+                                </SkeletonPlaceholder>
+                            ) : (
+                                userData && (
+                                    <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData?.firstname + ' ' + userData?.lastname}</Text>
+                                )
+                            )}
                         </View>
-                    )}
-                </View>
+                        {visibleEditDetail()}
+                        {menuVisible && (
+                            <View className="absolute top-2 right-14 bg-white rounded-[15px] shadow-lg px-2 py-1">
+                                <View className="flex flex-row items-center gap-2">
+                                    <Pressable onPress={openUserEditScreen} className="p-1">
+                                        <AnimatedFontAwesomeIcon
+                                            name="edit"
+                                            size={27}
+                                            color="blue"
+                                        />
+                                    </Pressable>
+                                    <Pressable onPress={openDeleteModal} className="p-1">
+                                        <AnimatedFontAwesomeIcon
+                                            name="trash"
+                                            size={27}
+                                            color="red"
+                                        />
+                                    </Pressable>
+                                </View>
+                            </View>
+                        )}
+                    </View>
+                )}
+
                 <View className="mb-8 p-1 flex-1">
                     <View className="w-full">
                         <Text className="font-extrabold tracking-wider text-xl my-2 ml-2 text-rose-700">{t('basicinfo')}</Text>
                         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-                            {Object.entries(filteredUserData).map(([key, value], index) => (
-                                <View key={index + "keyyyss"}>
-                                    <View className="w-full p-3 rounded-[15px]">
-                                        <View>
-                                            <Text className="font-bold tracking-wider text-lg text-neutral-700 capitalize">{key.replace(/_/g, " ")}</Text>
-                                            <Text className="tracking-wider text-[15px] text-neutral-700">{value}</Text>
+                            {loading ? (
+                                <SkeletonPlaceholder>
+
+                                    <SkeletonPlaceholder.Item display='flex' flexDirection='column' gap={10} padding={12}>
+                                        <SkeletonPlaceholder.Item height={50} borderRadius={10} width={'100%'} />
+                                        <SkeletonPlaceholder.Item height={50} borderRadius={10} width={'100%'} />
+                                        <SkeletonPlaceholder.Item height={50} borderRadius={10} width={'100%'} />
+                                        <SkeletonPlaceholder.Item height={50} borderRadius={10} width={'100%'} />
+                                        <SkeletonPlaceholder.Item height={50} borderRadius={10} width={'100%'} />
+                                        <SkeletonPlaceholder.Item height={50} borderRadius={10} width={'100%'} />
+                                    </SkeletonPlaceholder.Item>
+
+                                </SkeletonPlaceholder>
+                            ) : (
+                                Object.entries(filteredUserData).map(([key, value], index) => (
+                                    <View key={index + "keyyyss"}>
+                                        <View className="w-full p-3 rounded-[15px]">
+                                            <View>
+                                                <Text className="font-bold tracking-wider text-lg text-neutral-700 capitalize">{key.replace(/_/g, " ")}</Text>
+                                                <Text className="tracking-wider text-[15px] text-neutral-700">{value}</Text>
+                                            </View>
+                                        </View>
+                                        <View className="w-full overflow-hidden">
+                                            <View className="h-[1px] bg-[#747272]"></View>
                                         </View>
                                     </View>
-                                    <View className="w-full overflow-hidden">
-                                        <View className="h-[1px] bg-[#747272]"></View>
-                                    </View>
-                                </View>
-                            ))}
+                                ))
+                            )}
                         </ScrollView>
                     </View>
                 </View>
@@ -254,7 +288,7 @@ const NodeDetails = ({ navigation, route }) => {
                             <Pressable onPress={closeDeleteModal} className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2">
                                 <Text>{t('cancel')}</Text>
                             </Pressable>
-                            <Pressable onPress={() => handleDelete(userData._id)} className="px-6 py-2 bg-red-500 rounded-[15px]">
+                            <Pressable onPress={() => handleDelete(userData?._id)} className="px-6 py-2 bg-red-500 rounded-[15px]">
                                 <Text className="text-white">{t('delete')}</Text>
                             </Pressable>
                         </View>
