@@ -5,6 +5,8 @@ import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
 import { ScrollView } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 
 const NewsDetailsPage = ({ route }) => {
     const { t } = useTranslation();
@@ -16,9 +18,8 @@ const NewsDetailsPage = ({ route }) => {
     const [newsDetailsDescription, setNewsDetailsDescription] = useState("");
     const [newsDetailsCreateDate, setNewsDetailsCreateDate] = useState("");
     const [newsAddPerson, setNewsAddPerson] = useState("");
-
+    const [loading, setLoading] = useState(true);
     const { width } = Dimensions.get('window');
-
     const images = [
         {
             uri: `${process.env.IMAGE_URL}${newsDetailsImage}`,
@@ -51,66 +52,108 @@ const NewsDetailsPage = ({ route }) => {
         (async function () {
             try {
                 const contentNewsDetails = await newsDataById(newsId);
-                setNewsDetailsTitle(contentNewsDetails.title)
-                setNewsDetailsDescription(contentNewsDetails.description)
-                setNewsDetailsCreateDate(contentNewsDetails.created_at)
-                setNewsDetailsImage(contentNewsDetails.image)
-                setNewsAddPerson(contentNewsDetails.createdBy)
+                setNewsDetailsTitle(contentNewsDetails.title);
+                setNewsDetailsDescription(contentNewsDetails.description);
+                setNewsDetailsCreateDate(contentNewsDetails.created_at);
+                setNewsDetailsImage(contentNewsDetails.image);
+                setNewsAddPerson(contentNewsDetails.createdBy);
+                setLoading(false);
             } catch (error) {
-                console.log("error", error)
+                console.log("error", error);
             }
         })();
     }, [newsId]);
 
+    // Animation setup
+    const scrollRef = useAnimatedRef();
+    const scrolloffset = useScrollViewOffset(scrollRef);
+
+    const IMG_HEIGHT = 180; // Adjust to your image height
+
+    const imageAnimatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY: interpolate(
+                        scrolloffset.value,
+                        [-IMG_HEIGHT, 0, IMG_HEIGHT],
+                        [-IMG_HEIGHT / 2, 0, IMG_HEIGHT * 0.75]
+                    ),
+                },
+                {
+                    scale: interpolate(
+                        scrolloffset.value,
+                        [-IMG_HEIGHT, 0, IMG_HEIGHT],
+                        [2, 1, 1]
+                    )
+                }
+            ]
+        };
+    });
+
     return (
         <View className="bg-gray-300" style={styles.container}>
             <ScrollView
+                ref={scrollRef}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <View>
-                    <Text style={styles.title}>{t('newsDetails')}</Text>
-                </View>
-                <View>
+                {loading ? (
+                    <SkeletonPlaceholder>
+                        <View style={styles.skeletonContainer}>
+                            <View style={styles.skeletonImage} />
+                            <View style={styles.skeletonTextLarge} />
+                            <View style={styles.skeletonTextMedium} />
+                            <View style={styles.skeletonTextSmall} />
+                        </View>
+                    </SkeletonPlaceholder>
+                ) : (
                     <View>
-                        <View style={styles.imageContainer}>
-                            <View className="relative">
+                        <View>
+                            <Animated.View style={imageAnimatedStyle} className="relative">
+                                <View>
+                                    <Text className="font-bold text-2xl text-black mt-2 mb-4">{t('newsDetails')}</Text>
+                                </View>
                                 <TouchableOpacity onPress={openModal}>
                                     <Image
                                         source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
                                         style={styles.image}
+                                        className="rounded-[20px]"
                                     />
                                 </TouchableOpacity>
-                                {newsAddPerson && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
-                                    <View className="flex flex-row items-center gap-2">
-                                        <Text className="font-bold text-base">
-                                            Create By
-                                        </Text>
-                                        <Text className="text-base font-medium">
-                                            {newsAddPerson}
-                                        </Text>
+                                {newsAddPerson &&
+                                    <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
+                                        <View className="flex flex-row items-center gap-2">
+                                            <Text className="font-bold text-base text-black">
+                                                {t('createdBy')}
+                                            </Text>
+                                            <Text className="text-base font-medium text-black">
+                                                {newsAddPerson}
+                                            </Text>
+                                        </View>
                                     </View>
-                                </View>}
-                            </View>
-
-                            <View style={styles.textContainer}>
-                                <View>
-                                    <Text style={styles.author}>{newsDetailsTitle}</Text>
+                                }
+                            </Animated.View>
+                            <View className="bg-gray-300">
+                                <View className="flex flex-1 flex-row justify-between items-center flex-wrap">
+                                    <View>
+                                        <Text className="font-bold text-xl text-justify my-3 text-black">{newsDetailsTitle}</Text>
+                                    </View>
+                                    <View>
+                                        <Text className="text-sm text-black font-bold">{formatDate(newsDetailsCreateDate)}</Text>
+                                    </View>
                                 </View>
-                                <View>
-                                    <Text style={styles.date}>{formatDate(newsDetailsCreateDate)}</Text>
+                                <View className="mt-3 mb-5">
+                                    <RenderHTML
+                                        contentWidth={width}
+                                        source={{ html: newsDetailsDescription }}
+                                        tagsStyles={{ body: { color: 'black', textAlign: "justify" } }}
+                                    />
                                 </View>
                             </View>
-                        </View>
-                        <View style={styles.descriptionContainer}>
-                            <RenderHTML
-                                contentWidth={width}
-                                source={{ html: newsDetailsDescription }}
-                                tagsStyles={htmlStyles}
-                            />
                         </View>
                     </View>
-                </View>
+                )}
                 <ImageViewing
                     images={images}
                     imageIndex={0}
@@ -127,56 +170,37 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
     },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 24,
-        color: '#4a4a4a',
-        marginTop: 7,
-        marginBottom: 15
-    },
-    imageContainer: {
-        width: '100%',
-    },
     image: {
-        height: 180,
         width: '100%',
+        height: 180, // Same as IMG_HEIGHT
+    },
+    skeletonContainer: {
+        padding: 10,
+    },
+    skeletonImage: {
+        width: '100%',
+        height: 180,
         borderRadius: 20,
+        marginBottom: 10,
     },
-    textContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
+    skeletonTextLarge: {
+        width: '80%',
+        height: 20,
+        borderRadius: 4,
+        marginBottom: 10,
     },
-    author: {
-        fontWeight: 'bold',
-        fontSize: 20,
-        textAlign: 'justify',
-        marginVertical: 12,
+    skeletonTextMedium: {
+        width: '60%',
+        height: 20,
+        borderRadius: 4,
+        marginBottom: 10,
     },
-    date: {
-        fontSize: 13,
-        color: '#4a4a4a',
-        fontWeight: 'bold',
-    },
-    descriptionContainer: {
-        marginTop: 12,
-        marginBottom: 20,
+    skeletonTextSmall: {
+        width: '40%',
+        height: 20,
+        borderRadius: 4,
+        marginBottom: 10,
     },
 });
-
-const htmlStyles = {
-    p: {
-        fontSize: 16,
-        textAlign: 'justify',
-        color: '#555',
-    },
-    strong: {
-        fontWeight: 'bold',
-    },
-    i: {
-        fontStyle: 'italic',
-    },
-};
 
 export default NewsDetailsPage;
