@@ -137,6 +137,7 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     function visibleEditDetail() {
+
         const id = paramsData?.paramsId;
         const userId = allUserInfo?._id;
 
@@ -179,8 +180,6 @@ const NodeDetails = ({ navigation, route }) => {
         }
         return <></>;
     }
-
-
 
     return (
         <View className="w-full p-3 bg-white flex-1">
@@ -274,20 +273,20 @@ const NodeDetails = ({ navigation, route }) => {
                 onRequestClose={closePopup}
             >
                 <View style={styles.modalBackground}>
-                    <View style={styles.popup}>
+                    <View className="bg-white p-2 rounded-xl items-center w-[250px]">
                         <TouchableOpacity onPress={viewProfileImage}>
-                            <Text style={styles.popupText}>{t('ViewProfileImage')}</Text>
+                            <Text className="text-black text-lg p-1">{t('ViewProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectImage}>
-                            <Text style={styles.popupText}>{t('EditProfileImage')}</Text>
+                            <Text className="text-black text-lg p-1">{t('EditProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closePopup}>
-                            <Text style={styles.popupText}>{t('cancel')}</Text>
+                            <Text className="text-black text-lg p-1">{t('cancel')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-            </Modal>
-        </View>
+            </Modal >
+        </View >
     );
 };
 
@@ -297,18 +296,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    popup: {
-        width: 250,
-        backgroundColor: 'white',
-        padding: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    popupText: {
-        color: "black",
-        fontSize: 18,
-        padding: 10,
     },
 });
 

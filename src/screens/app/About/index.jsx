@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
-import { useTranslation } from 'react-i18next';
 const { width } = Dimensions.get('window');
 const IMG_HEIGHT = 300;
 
@@ -18,8 +18,8 @@ const Aboutus = () => {
     useEffect(() => {
         (async function () {
             const contentAboutUs = await aboutUsContentApi();
-            setTitle(contentAboutUs?.title);
-            setDescription(contentAboutUs?.description);
+            setTitle(contentAboutUs?.AboutusData?.title);
+            setDescription(contentAboutUs?.AboutusData?.description);
         })();
     }, []);
 
@@ -59,9 +59,9 @@ const Aboutus = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Animated.View style={[styles.header, headerAnimatedStyle]}>
-                <Text style={styles.headerText}>{t('YourHeader')}</Text>
+        <View className="flex flex-1 bg-white">
+            <Animated.View style={[headerAnimatedStyle]}>
+                <Text className="font-bold text-2xl text-center p-5">{t('YourHeader')}</Text>
             </Animated.View>
             <Animated.ScrollView
                 onScroll={handleScroll}
@@ -74,15 +74,15 @@ const Aboutus = () => {
                     <Animated.Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
                         style={[styles.image, imageAnimatedStyle]} />
                 </View>
-                <View style={styles.contentContainer}>
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>{t('aboutUs')}</Text>
-                        <View style={styles.sectionDivider}></View>
-                        <Text style={styles.sectionText}>{title}</Text>
+                <View className="bg-white p-2">
+                    <View className="mb-5">
+                        <Text className="text-black font-bold text-2xl">{t('aboutUs')}</Text>
+                        <View className="w-[50px] h-[5px] bg-red-500 my-2"></View>
+                        <Text className="text-base text-black items-center">{title}</Text>
                     </View>
-                    <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>{t('OurPurpose')}</Text>
-                        <View style={styles.sectionDivider}></View>
+                    <View className="mb-5">
+                        <Text className="text-black font-bold text-2xl">{t('OurPurpose')}</Text>
+                        <View className="w-[50px] h-[5px] bg-red-500 my-2"></View>
                         <RenderHTML
                             contentWidth={width}
                             source={{ html: description }}
@@ -98,56 +98,9 @@ const Aboutus = () => {
 export default Aboutus;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    headerText: {
-        fontWeight: 'bold',
-        fontSize: 24,
-        textAlign: 'center',
-        padding: 20,
-    },
     image: {
         width,
         height: IMG_HEIGHT,
-    },
-    contentContainer: {
-        backgroundColor: '#fff',
-        padding: 10,
-    },
-    section: {
-        marginBottom: 20,
-    },
-    sectionTitle: {
-        fontWeight: 'bold',
-        fontSize: 24,
-        color: '#333',
-    },
-    sectionDivider: {
-        width: 50,
-        height: 5,
-        backgroundColor: 'red',
-        marginVertical: 10,
-    },
-    sectionText: {
-        fontSize: 16,
-        color: '#555',
-        textAlign: 'justify',
-    },
-    sectionTextMarginTop: {
-        marginTop: 20,
-    },
-    learnMoreButton: {
-        backgroundColor: 'red',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    learnMoreButtonText: {
-        color: '#fff',
-        fontSize: 16,
     },
 });
 

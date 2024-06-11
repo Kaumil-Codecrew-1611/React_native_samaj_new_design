@@ -108,6 +108,7 @@ const VillageListing = ({ navigation, route }) => {
                         <AnimatedFontistoIcon
                             name="holiday-village"
                             size={38}
+                            color={"black"}
                         />
                     </View>
                     <View>
@@ -126,12 +127,14 @@ const VillageListing = ({ navigation, route }) => {
                                 <AnimatedFontistoIcon
                                     name="close"
                                     size={25}
+                                    color={"black"}
                                 />
 
                             ) : (
                                 <AnimatedFeatherIcon
                                     name="search"
                                     size={25}
+                                    color={"black"}
                                 />
                             )}
                         </View>

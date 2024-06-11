@@ -67,19 +67,19 @@ const Login = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.bannerContainer}>
-                <Svg style={styles.banner}>
+                <Svg className="h-[100%] w-[100%]">
                     <Image href={require("../../../assets/login_banner_bg.png")} width="100%" height="100%" />
                 </Svg>
             </View>
-            <View style={styles.formContainer}>
+            <View className="bg-white h-[60%] p-4 rounded-tr-3xl rounded-tl-3xl shadow-md">
                 <View>
-                    <Text style={styles.label}>{t('emailOrMobileNumber')}</Text>
+                    <Text className="h-[20px] mb-[8px] font-bold text-[16px] text-black mt-2">{t('emailOrMobileNumber')}</Text>
                     <Controller
                         control={control}
                         name="email_or_mobile"
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextInput
-                                style={[styles.input, errors.email_or_mobile && styles.inputError]}
+                                className="border rounded-lg p-2 text-black"
                                 onBlur={onBlur}
                                 placeholder={t("emailOrMobileNumber")}
                                 onChangeText={onChange}
@@ -88,39 +88,40 @@ const Login = ({ navigation }) => {
                             />
                         )}
                     />
-                    {errors.email_or_mobile && <Text style={styles.error}>{errors.email_or_mobile.message}</Text>}
+                    {errors.email_or_mobile && <Text className="text-red-500 mb-[10px]">{errors.email_or_mobile.message}</Text>}
                 </View>
                 <View>
-                    <Text style={styles.label}>{t('password')}</Text>
+                    <Text className="h-[20px] mb-[8px] font-bold text-[16px] text-black mt-2">{t('password')}</Text>
                     <Controller
                         control={control}
                         name="password"
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextInput
-                                style={[styles.input, errors.password && styles.inputError]}
+                                className="border text-black rounded-lg p-2"
                                 onBlur={onBlur}
                                 placeholder={t("password")}
+                                placeholderTextColor="grey"
                                 onChangeText={onChange}
                                 value={value}
                                 secureTextEntry
                             />
                         )}
                     />
-                    {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+                    {errors.password && <Text className="text-red-500 mb-[10px]">{errors.password.message}</Text>}
                 </View>
-                <View style={styles.buttonContainer}>
+                <View className="mt-[24px]">
                     <Button title={t('login')} onPress={handleSubmit(onSubmit)} />
                 </View>
-                <View style={styles.registerContainer}>
-                    <Text style={styles.registerText}>{t('donthaveaccount')}</Text>
+                <View className="flex flex-row justify-center mt-3" style={styles.registerContainer}>
+                    <Text className="text-[16px] text-black">{t('donthaveaccount')}</Text>
                     <Pressable onPress={() => navigation.navigate("Register")}>
-                        <Text style={styles.registerLink}>{t('register')}</Text>
+                        <Text className="text-base text-black font-bold ml-2">{t('register')}</Text>
                     </Pressable>
                 </View>
-                <View style={styles.registerContainer}>
-                    <Text style={styles.registerText}>Go to</Text>
+                <View className="flex flex-row justify-center mt-3" style={styles.registerContainer}>
+                    <Text className="text-[16px] text-black">Go to</Text>
                     <Pressable onPress={() => navigation.navigate("Home")}>
-                        <Text style={styles.registerLink}>Home Page</Text>
+                        <Text className="text-base text-black font-bold ml-2">Home Page</Text>
                     </Pressable>
                 </View>
 
@@ -136,69 +137,6 @@ const styles = StyleSheet.create({
     },
     bannerContainer: {
         height: '40%',
-    },
-    banner: {
-        width: '100%',
-        height: '100%',
-    },
-    formContainer: {
-        backgroundColor: 'white',
-        height: '60%',
-        width: '100%',
-        padding: 16,
-        borderTopLeftRadius: 24,
-        borderTopRightRadius: 24,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    label: {
-        height: 20,
-        marginBottom: 8,
-        fontWeight: 'bold',
-        fontSize: 16,
-        color: "black"
-    },
-    input: {
-        backgroundColor: '#F3F5F7',
-        color: '#333',
-        borderRadius: 10,
-        paddingLeft: 10,
-        marginBottom: 7,
-        shadowColor: '#423f40',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 0.2,
-        marginHorizontal: 4,
-        elevation: 4,
-    },
-    inputError: {
-        borderWidth: 1,
-        borderColor: 'red',
-    },
-    error: {
-        color: 'red',
-        marginBottom: 10,
-    },
-    buttonContainer: {
-        marginTop: 24,
-    },
-    registerContainer: {
-        flexDirection: 'row',
-        marginTop: 12,
-        justifyContent: 'center',
-    },
-    registerText: {
-        fontSize: 16,
-        color: COLORS.black,
-    },
-    registerLink: {
-        fontSize: 16,
-        color: COLORS.black,
-        fontWeight: 'bold',
-        marginLeft: 4,
     },
 });
 

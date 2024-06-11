@@ -100,7 +100,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 />
                                             )}
                                         />
-                                        {errors.firstname && <Text style={styles.error}>{errors.firstname.message}</Text>}
+                                        {errors.firstname && <Text className="text-red-500 mb-3 mx-1">{errors.firstname.message}</Text>}
                                     </View>
                                 </View>
 
@@ -123,7 +123,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 />
                                             )}
                                         />
-                                        {errors.lastname && <Text style={styles.error}>{errors.lastname.message}</Text>}
+                                        {errors.lastname && <Text className="text-red-500 mb-3 mx-1">{errors.lastname.message}</Text>}
                                     </View>
                                 </View>
 
@@ -150,7 +150,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 )}
                                             />
                                         </View>
-                                        {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
+                                        {errors.gender && <Text className="text-red-500 mb-3 mx-1">{errors.gender.message}</Text>}
                                     </View>
                                 </View>
 
@@ -173,7 +173,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 />
                                             )}
                                         />
-                                        {errors.education && <Text style={styles.error}>{errors.education.message}</Text>}
+                                        {errors.education && <Text className="text-red-500 mb-3 mx-1">{errors.education.message}</Text>}
                                     </View>
                                 </View>
 
@@ -196,7 +196,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 />
                                             )}
                                         />
-                                        {errors.address && <Text style={styles.error}>{errors.address.message}</Text>}
+                                        {errors.address && <Text className="text-red-500 mb-3 mx-1">{errors.address.message}</Text>}
                                     </View>
                                 </View>
 
@@ -219,7 +219,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 />
                                             )}
                                         />
-                                        {errors.job && <Text style={styles.error}>{errors.job.message}</Text>}
+                                        {errors.job && <Text className="text-red-500 mb-3 mx-1">{errors.job.message}</Text>}
                                     </View>
                                 </View>
 
@@ -264,7 +264,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             onChange={onDateChange}
                                         />
                                     )}
-                                    {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
+                                    {errors.dob && <Text className="text-red-500 mb-3 mx-1">{errors.dob.message}</Text>}
                                 </View>
 
                                 <View>
@@ -296,7 +296,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 )}
                                             />
                                         </View>
-                                        {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
+                                        {errors.marital_status && <Text className="text-red-500 mb-3 mx-1">{errors.marital_status.message}</Text>}
                                     </View>
                                 </View>
 
@@ -330,7 +330,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             )}
                                         />
                                     </View>
-                                    {errors.relationship && <Text style={styles.error}>{errors.relationship.message}</Text>}
+                                    {errors.relationship && <Text className="text-red-500 mb-3 mx-1">{errors.relationship.message}</Text>}
                                 </View>
 
                                 <View>
@@ -388,11 +388,6 @@ const styles = StyleSheet.create({
         shadowRadius: 0.2,
         marginHorizontal: 4,
         elevation: 4,
-    },
-    error: {
-        color: 'red',
-        marginBottom: 12,
-        marginHorizontal: 4,
     },
     scrollViewContent: {
         flexGrow: 1,

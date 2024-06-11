@@ -13,21 +13,21 @@ import { useTranslation } from 'react-i18next';
 
 
 const ChangePassword = ({ navigation }) => {
-const { t } = useTranslation();
+    const { t } = useTranslation();
 
-const schema = yup.object().shape({
-    
-    old_password: yup.string().required('Current password is required'),
-    password: yup.string()
-        .required(t('newpasswordisrequired'))
-        .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-            t('passwordmusthaveatleastoneletteronenumberandonespecialcharacter')
-        ),
-    cpassword: yup.string()
-        .oneOf([yup.ref('password'), null], 'Passwords must match')
-        .required(t('confirmpasswordisrequired')),
-});
+    const schema = yup.object().shape({
+
+        old_password: yup.string().required('Current password is required'),
+        password: yup.string()
+            .required(t('newpasswordisrequired'))
+            .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                t('passwordmusthaveatleastoneletteronenumberandonespecialcharacter')
+            ),
+        cpassword: yup.string()
+            .oneOf([yup.ref('password'), null], 'Passwords must match')
+            .required(t('confirmpasswordisrequired')),
+    });
 
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const { allUserInfo } = useContext(GlobalContext);
@@ -91,18 +91,18 @@ const schema = yup.object().shape({
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('changePassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
+                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation">
                                             <Controller
                                                 control={control}
                                                 name="old_password"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        style={styles.input}
+                                                        placeholderTextColor={"gray"}
+                                                        className="basis-[85%] text-black pl-[10px]"
                                                         placeholder={t('currentpassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
-                                                        className="basis-[85%]"
                                                         secureTextEntry={isCurrentPasswordHidden}
                                                     />
                                                 )}
@@ -117,25 +117,25 @@ const schema = yup.object().shape({
                                                 </Pressable>
                                             </View>
                                         </View>
-                                        {errors.old_password && <Text style={styles.error}>{errors.old_password.message}</Text>}
+                                        {errors.old_password && <Text className="text-red-500">{errors.old_password.message}</Text>}
                                     </View>
 
                                     <View className="my-5">
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('newPassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
+                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation">
                                             <Controller
                                                 control={control}
                                                 name="password"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        style={styles.input}
+                                                        placeholderTextColor={"gray"}
+                                                        className="basis-[85%] text-black pl-[10px]"
                                                         placeholder={t('newPassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
-                                                        className="basis-[85%]"
                                                         secureTextEntry={isNewPasswordHidden}
                                                     />
                                                 )}
@@ -150,25 +150,25 @@ const schema = yup.object().shape({
                                                 </Pressable>
                                             </View>
                                         </View>
-                                        {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+                                        {errors.password && <Text className="text-red-500">{errors.password.message}</Text>}
                                     </View>
 
                                     <View>
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('confirmpassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
+                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation" >
                                             <Controller
                                                 control={control}
                                                 name="cpassword"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
-                                                        style={styles.input}
                                                         placeholder={t('confirmpassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
-                                                        className="basis-[85%]"
+                                                        placeholderTextColor={"gray"}
+                                                        className="basis-[85%] text-black pl-[10px]"
                                                         secureTextEntry={isConfirmPasswordHidden}
                                                     />
                                                 )}
@@ -183,7 +183,7 @@ const schema = yup.object().shape({
                                                 </Pressable>
                                             </View>
                                         </View>
-                                        {errors.cpassword && <Text style={styles.error}>{errors.cpassword.message}</Text>}
+                                        {errors.cpassword && <Text className="text-red-500">{errors.cpassword.message}</Text>}
                                     </View>
                                 </View>
                             </ScrollView>
@@ -201,25 +201,6 @@ const schema = yup.object().shape({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    input: {
-        color: '#333',
-        paddingLeft: 10,
-    },
-    inputView: {
-        shadowColor: '#423f40',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-        marginHorizontal: 2,
-        elevation: 4,
-    },
-    inputError: {
-        borderColor: 'red',
-    },
-    error: {
-        color: 'red',
-        marginBottom: 10,
     },
     scrollViewContent: {
         flexGrow: 1,

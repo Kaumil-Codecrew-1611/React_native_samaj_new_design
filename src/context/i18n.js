@@ -61,7 +61,7 @@ const resources = {
       maritalstatus: 'Marital Status',
       relationship: 'Relationship',
       gender: 'Gender',
-      job: 'Gender',
+      job: 'Job',
       male: 'Male',
       female: 'Female',
       other: 'Other',
@@ -210,7 +210,12 @@ const resources = {
       EditFamilyDetails: "Edit Family Details",
       Members: "Members",
       Contactus: "Contact us",
-      okay: "Okay"
+      okay: "Okay",
+      Subjectisrequired: "Subject is required",
+      Messageisrequired: "Message is required",
+      Invalidemailformat: "Invalid email format",
+      Emailisrequired: "Email is required",
+      Description: "Description",
     },
   },
   gu: {
@@ -417,7 +422,12 @@ const resources = {
       EditFamilyDetails: "કૌટુંબિક વિગતો બદલો",
       Members: "સભ્યો",
       Contactus: "સંપર્ક",
-      okay: "થીક છે."
+      okay: "થીક છે.",
+      Subjectisrequired: "વિષય જરૂરી છે.",
+      Messageisrequired: "સંદેશ જરૂરી છે.",
+      Invalidemailformat: "અમાન્ય ઇમેઇલ ફોર્મેટ",
+      Emailisrequired: "ઇમેઇલ આવશ્યક છે",
+      Description: "વર્ણન",
     },
   },
 };

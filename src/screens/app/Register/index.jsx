@@ -3,15 +3,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
-import { useTranslation } from 'react-i18next';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
 
 const Register = ({ navigation }) => {
     const { t } = useTranslation();
@@ -72,10 +70,8 @@ const Register = ({ navigation }) => {
     };
 
     const onDateChange = (event, selectedDate) => {
-        // Check if the user canceled the date selection
         if (selectedDate !== undefined) {
             setShowPicker(false);
-            // Ensure currentDate is a Date object
             const currentDate = new Date(selectedDate);
             setValue('dob', currentDate);
         }
@@ -147,7 +143,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.firstname && <Text style={styles.error}>{errors.firstname.message}</Text>}
+                                            {errors.firstname && <Text className="text-red-500 mb-[16px] mx-1">{errors.firstname.message}</Text>}
                                         </View>
                                     </View>
 
@@ -170,7 +166,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.lastname && <Text style={styles.error}>{errors.lastname.message}</Text>}
+                                            {errors.lastname && <Text className="text-red-500 mb-[16px] mx-1">{errors.lastname.message}</Text>}
                                         </View>
                                     </View>
 
@@ -193,7 +189,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.middlename && <Text style={styles.error}>{errors.middlename.message}</Text>}
+                                            {errors.middlename && <Text className="text-red-500 mb-[16px] mx-1">{errors.middlename.message}</Text>}
                                         </View>
                                     </View>
 
@@ -216,7 +212,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+                                            {errors.email && <Text className="text-red-500 mb-[16px] mx-1">{errors.email.message}</Text>}
                                         </View>
                                     </View>
 
@@ -239,7 +235,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+                                            {errors.password && <Text className="text-red-500 mb-[16px] mx-1">{errors.password.message}</Text>}
                                         </View>
                                     </View>
 
@@ -284,7 +280,7 @@ const Register = ({ navigation }) => {
                                                 onChange={onDateChange}
                                             />
                                         )}
-                                        {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
+                                        {errors.dob && <Text className="text-red-500 mb-[16px] mx-1">{errors.dob.message}</Text>}
                                     </View>
 
                                     <View className="my-1">
@@ -307,7 +303,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.mobile_number && <Text style={styles.error}>{errors.mobile_number.message}</Text>}
+                                            {errors.mobile_number && <Text className="text-red-500 mb-[16px] mx-1">{errors.mobile_number.message}</Text>}
                                         </View>
                                     </View>
 
@@ -330,7 +326,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.address && <Text style={styles.error}>{errors.address.message}</Text>}
+                                            {errors.address && <Text className="text-red-500 mb-[16px] mx-1">{errors.address.message}</Text>}
                                         </View>
                                     </View>
 
@@ -353,7 +349,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.city && <Text style={styles.error}>{errors.city.message}</Text>}
+                                            {errors.city && <Text className="text-red-500 mb-[16px] mx-1">{errors.city.message}</Text>}
                                         </View>
                                     </View>
 
@@ -376,7 +372,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.state && <Text style={styles.error}>{errors.state.message}</Text>}
+                                            {errors.state && <Text className="text-red-500 mb-[16px] mx-1">{errors.state.message}</Text>}
                                         </View>
                                     </View>
 
@@ -400,7 +396,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.pincode && <Text style={styles.error}>{errors.pincode.message}</Text>}
+                                            {errors.pincode && <Text className="text-red-500 mb-[16px] mx-1">{errors.pincode.message}</Text>}
                                         </View>
                                     </View>
 
@@ -423,7 +419,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.education && <Text style={styles.error}>{errors.education.message}</Text>}
+                                            {errors.education && <Text className="text-red-500 mb-[16px] mx-1">{errors.education.message}</Text>}
                                         </View>
                                     </View>
 
@@ -446,7 +442,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.job && <Text style={styles.error}>{errors.job.message}</Text>}
+                                            {errors.job && <Text className="text-red-500 mb-[16px] mx-1">{errors.job.message}</Text>}
                                         </View>
                                     </View>
 
@@ -479,7 +475,7 @@ const Register = ({ navigation }) => {
                                                     )}
                                                 />
                                             </View>
-                                            {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
+                                            {errors.marital_status && <Text className="text-red-500 mb-[16px] mx-1">{errors.marital_status.message}</Text>}
                                         </View>
                                     </View>
 
@@ -507,7 +503,7 @@ const Register = ({ navigation }) => {
                                                     )}
                                                 />
                                             </View>
-                                            {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
+                                            {errors.gender && <Text className="text-red-500 mb-[16px] mx-1">{errors.gender.message}</Text>}
                                         </View>
                                     </View>
 
@@ -520,14 +516,11 @@ const Register = ({ navigation }) => {
                         </TouchableWithoutFeedback>
                     </KeyboardAvoidingView>
                 </View>
-
             ) : null
             }
-
         </View >
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -548,11 +541,6 @@ const styles = StyleSheet.create({
     },
     inputError: {
         borderColor: 'red',
-    },
-    error: {
-        color: 'red',
-        marginBottom: 16,
-        marginHorizontal: 4,
     },
     scrollViewContent: {
         flexGrow: 1,

@@ -11,23 +11,16 @@ import { GlobalContext } from "../../../context/globalState";
 import { useTranslation } from 'react-i18next';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-
-
 const EditUserProfile = ({ navigation }) => {
     const { t } = useTranslation();
-
     const { getLocation, updateUserProfileUser, updateUserPostProfile } = useContext(ApiContext);
+    const { allUserInfo, setuserDataInStorage } = useContext(GlobalContext);
+    const [userData, setUserData] = useState({});
     const [showPicker, setShowPicker] = useState(false);
-    const { allUserInfo, setuserDataInStorage, removeUserDataFromStorage } = useContext(GlobalContext);
-    const [userData, setUserData] = useState({})
-    const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            dob: new Date(),
-            gender: '',
-            marital_status: '',
-        }
-    });
+
+    useEffect(() => {
+        getLocation();
+    }, []);
 
     const schema = yup.object().shape({
         firstname: yup.string().required(t('pleaseenterfirstname')),
@@ -46,12 +39,16 @@ const EditUserProfile = ({ navigation }) => {
         gender: yup.string().required(t('pleaseentergender')),
     });
 
+    const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            dob: new Date(),
+            gender: '',
+            marital_status: '',
+        }
+    });
 
     const dob = watch('dob') || new Date();
-
-    useEffect(() => {
-        getLocation()
-    }, []);
 
     const onSubmit = async (data) => {
         const payload = {
@@ -91,7 +88,6 @@ const EditUserProfile = ({ navigation }) => {
             setValue('mobile_number', editUserProfile?.mobile_number ? editUserProfile?.mobile_number?.toString() : "");
         })();
     }, [setValue, allUserInfo._id]);
-
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 rounded-md p-3">
@@ -125,7 +121,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.firstname && <Text style={styles.error}>{errors.firstname.message}</Text>}
+                                        {errors.firstname && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.firstname.message}</Text>}
                                     </View>
                                 </View>
 
@@ -148,7 +144,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.lastname && <Text style={styles.error}>{errors.lastname.message}</Text>}
+                                        {errors.lastname && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.lastname.message}</Text>}
                                     </View>
                                 </View>
 
@@ -171,7 +167,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.middlename && <Text style={styles.error}>{errors.middlename.message}</Text>}
+                                        {errors.middlename && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.middlename.message}</Text>}
                                     </View>
                                 </View>
 
@@ -194,7 +190,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+                                        {errors.email && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.email.message}</Text>}
                                     </View>
                                 </View>
 
@@ -218,7 +214,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.mobile_number && <Text style={styles.error}>{errors.mobile_number.message}</Text>}
+                                        {errors.mobile_number && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.mobile_number.message}</Text>}
                                     </View>
                                 </View>
 
@@ -247,7 +243,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 )}
                                             />
                                         </View>
-                                        {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
+                                        {errors.gender && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.gender.message}</Text>}
                                     </View>
                                 </View>
 
@@ -279,7 +275,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 )}
                                             />
                                         </View>
-                                        {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
+                                        {errors.marital_status && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.marital_status.message}</Text>}
                                     </View>
                                 </View>
 
@@ -316,7 +312,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 onChange={onDateChange}
                                             />
                                         )}
-                                        {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
+                                        {errors.dob && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.dob.message}</Text>}
                                     </View>
                                 </View>
 
@@ -339,7 +335,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.education && <Text style={styles.error}>{errors.education.message}</Text>}
+                                        {errors.education && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.education.message}</Text>}
                                     </View>
                                 </View>
 
@@ -362,7 +358,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.job && <Text style={styles.error}>{errors.job.message}</Text>}
+                                        {errors.job && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.job.message}</Text>}
                                     </View>
                                 </View>
 
@@ -385,7 +381,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.address && <Text style={styles.error}>{errors.address.message}</Text>}
+                                        {errors.address && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.address.message}</Text>}
                                     </View>
                                 </View>
 
@@ -408,7 +404,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.city && <Text style={styles.error}>{errors.city.message}</Text>}
+                                        {errors.city && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.city.message}</Text>}
                                     </View>
                                 </View>
 
@@ -431,7 +427,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.state && <Text style={styles.error}>{errors.state.message}</Text>}
+                                        {errors.state && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.state.message}</Text>}
                                     </View>
                                 </View>
 
@@ -455,7 +451,7 @@ const EditUserProfile = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.pincode && <Text style={styles.error}>{errors.pincode.message}</Text>}
+                                        {errors.pincode && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.pincode.message}</Text>}
                                     </View>
                                 </View>
 
@@ -488,14 +484,6 @@ const styles = StyleSheet.create({
         shadowRadius: 0.2,
         marginHorizontal: 4,
         elevation: 4,
-    },
-    inputError: {
-        borderColor: 'red',
-    },
-    error: {
-        color: 'red',
-        marginBottom: 16,
-        marginHorizontal: 4,
     },
     scrollViewContent: {
         flexGrow: 1,

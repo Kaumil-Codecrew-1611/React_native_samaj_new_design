@@ -7,16 +7,13 @@ import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { useTranslation } from 'react-i18next';
 
-
-
-
 function EmailSupport({ navigation }) {
     const { t } = useTranslation();
 
     const schema = yup.object().shape({
-        subject: yup.string().required('Subject is required'),
-        message: yup.string().required('Message is required'),
-        email: yup.string().email('Invalid email format').required('Email is required'),
+        subject: yup.string().required(t("Subjectisrequired")),
+        message: yup.string().required(t("Messageisrequired")),
+        email: yup.string().email(t("Invalidemailformat")).required(t("Emailisrequired")),
     });
     const { supportMailSend } = useContext(ApiContext);
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -63,7 +60,7 @@ function EmailSupport({ navigation }) {
                             <View className="w-full p-3">
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2"> {t('email')}:</Text>
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700"> {t('email')}:</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <Controller
@@ -80,11 +77,11 @@ function EmailSupport({ navigation }) {
                                                 />
                                             )}
                                         />
-                                        {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+                                        {errors.email && <Text className="text-red-500 mb-[10px]">{errors.email.message}</Text>}
                                     </View>
                                 </View>
                                 <View className="w-full">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">{t('subject')}:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('subject')}:</Text>
                                 </View>
                                 <Controller
                                     control={control}
@@ -93,28 +90,16 @@ function EmailSupport({ navigation }) {
                                         <TextInput
                                             placeholder={t('pleaseentersubject')}
                                             placeholderTextColor="grey"
-                                            style={{
-                                                width: '100%',
-                                                backgroundColor: 'white',
-                                                color: '#333',
-                                                borderRadius: 10,
-                                                paddingLeft: 10,
-                                                marginBottom: 15,
-                                                shadowColor: '#000',
-                                                shadowOffset: { width: 0, height: 2 },
-                                                shadowOpacity: 0.3,
-                                                shadowRadius: 4,
-                                                elevation: 5,
-                                            }}
+                                            style={styles.input}
                                             value={value}
                                             onBlur={onBlur}
                                             onChangeText={onChange}
                                         />
                                     )}
                                 />
-                                {errors.subject && <Text style={styles.error}>{errors.subject.message}</Text>}
+                                {errors.subject && <Text className="text-red-500 mb-[10px]">{errors.subject.message}</Text>}
                                 <View className="w-full">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700 mb-2">{t('message')}:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('message')}:</Text>
                                 </View>
                                 <Controller
                                     control={control}
@@ -124,27 +109,14 @@ function EmailSupport({ navigation }) {
                                             placeholder={t('pleaseentermessage')}
                                             placeholderTextColor="grey"
                                             multiline
-                                            style={{
-                                                width: '100%',
-                                                backgroundColor: 'white',
-                                                color: '#333',
-                                                borderRadius: 10,
-                                                paddingLeft: 10,
-                                                height: 150,
-                                                marginBottom: 15,
-                                                shadowOffset: { width: 0, height: 2 },
-                                                shadowOpacity: 0.3,
-                                                shadowRadius: 4,
-                                                elevation: 5,
-                                                textAlignVertical: 'top',
-                                            }}
+                                            style={styles.input}
                                             value={value}
                                             onBlur={onBlur}
                                             onChangeText={onChange}
                                         />
                                     )}
                                 />
-                                {errors.message && <Text style={styles.error}>{errors.message.message}</Text>}
+                                {errors.message && <Text className="text-red-500">{errors.message.message}</Text>}
                             </View>
                             <View className="w-full p-3">
                                 <Button className="bg-blue-500 py-3 rounded-lg" title="Send Email" onPress={handleSubmit(onSubmit)} />
@@ -164,10 +136,6 @@ const styles = StyleSheet.create({
     },
     inputError: {
         borderColor: 'red',
-    },
-    error: {
-        color: 'red',
-        marginBottom: 16,
     },
     scrollViewContent: {
         flexGrow: 1,

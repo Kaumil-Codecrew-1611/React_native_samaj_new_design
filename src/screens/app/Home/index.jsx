@@ -142,7 +142,7 @@ const Home = ({ navigation }) => {
                 visible={isVisible}
                 onRequestClose={() => setIsVisible(false)}
             />
-              <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
+            <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
         </>
     );
 };

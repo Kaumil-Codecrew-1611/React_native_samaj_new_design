@@ -1,26 +1,25 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from "@react-navigation/native";
-import React, { useCallback, useContext, useState, useEffect } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
-import VillageByName from "../../../components/VillageByName";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import VillageByName from "../../../components/VillageByName";
 import ApiContext from "../../../context/ApiContext";
-import { useTranslation } from 'react-i18next';
 import { GlobalContext } from "../../../context/globalState";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../../../context/i18n';
 
-
-const VillageWisePersons = ({ navigation, route }) => {
-    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
+const VillageWisePersons = ({ navigation }) => {
 
     const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [language, setLanguage] = useState("");
     const { resetData } = useContext(ApiContext);
     const { SelectedVillage } = useContext(GlobalContext);
+    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
     useFocusEffect(
         useCallback(() => {
@@ -45,7 +44,6 @@ const VillageWisePersons = ({ navigation, route }) => {
                 console.error('Error retrieving language:', error);
             }
         };
-
         getSelectedLanguage();
     }, []);
 
@@ -61,17 +59,19 @@ const VillageWisePersons = ({ navigation, route }) => {
                         setSearch("");
                     }}>
                         <View className="flex flex-row items-center relative overflow-hidden" >
-                            <TextInput placeholder={t("searchPersonVillage")} className="w-full" placeholderTextColor="grey" value={search} onChangeText={text => setSearch(text)} />
+                            <TextInput placeholder={t("searchPersonVillage")} className="w-full text-black" placeholderTextColor="grey" value={search} onChangeText={text => setSearch(text)} />
                             <View className="h-full flex justify-center absolute right-[6px]">
                                 {search !== "" ? (
                                     <AnimatedFontistoIcon
                                         name="close"
                                         size={25}
+                                        color={"black"}
                                     />
                                 ) : (
                                     <AnimatedFeatherIcon
                                         name="search"
                                         size={25}
+                                        color={"black"}
                                     />
                                 )}
                             </View>

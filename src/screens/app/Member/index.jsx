@@ -51,24 +51,24 @@ export default function Member() {
                 )}
             >
                 {committeeMembers.map((member) => (
-                    <View style={styles.card} key={member._id}>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>{t('fullName')}: </Text>
-                            <Text style={styles.cardText}>{member.fullname}</Text>
+                    <View className="bg-white rounded-xl p-5 mx-5 mb-5 shadow-2xl" key={member._id}>
+                        <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
+                            <Text className="text-base font-bold text-black mr-2">{t('fullName')}: </Text>
+                            <Text className="text-base text-black">{member.fullname}</Text>
                         </View>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>{t('position')}: </Text>
-                            <Text style={styles.cardText}>{member.role}</Text>
+                        <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
+                            <Text className="text-base font-bold text-black mr-2">{t('position')}: </Text>
+                            <Text className="text-base text-black">{member.role}</Text>
                         </View>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>{t('mobile')}: </Text>
+                        <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
+                            <Text className="text-base font-bold text-black mr-2">{t('mobile')}: </Text>
                             <TouchableOpacity onPress={() => handleCallOpenLink("+91" + member.mobile_number)}>
-                                <Text className="text-blue-700" style={styles.cardText}>+91 {member.mobile_number}</Text>
+                                <Text className="text-blue-700 text-base">+91 {member.mobile_number}</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.cardTitle}>{t('village')}: </Text>
-                            <Text style={styles.cardText}>{member.village}</Text>
+                        <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
+                            <Text className="text-base font-bold text-black mr-2">{t('village')}: </Text>
+                            <Text className="text-base text-black">{member.village}</Text>
                         </View>
                     </View>
                 ))}
@@ -93,34 +93,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#333',
-    },
-    card: {
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        padding: 20,
-        marginHorizontal: 20,
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
-        elevation: 5,
-    },
-    cardContent: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom: 10,
-        flexWrap: 'wrap',
-    },
-    cardTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#333',
-        marginRight: 10,
-        flexShrink: 1,
-    },
-    cardText: {
-        fontSize: 16,
-        flexShrink: 1,
     },
     bar: {
         height: 10,

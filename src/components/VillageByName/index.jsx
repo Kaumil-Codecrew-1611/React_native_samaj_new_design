@@ -39,7 +39,7 @@ const VillageByName = ({ searchValue, navigation }) => {
     return (
         <>
             <FlatList
-                style={styles.container}
+                className="py-2 mb-2"
                 data={filteredContacts}
                 onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
                     useNativeDriver: false,
@@ -69,8 +69,8 @@ const VillageByName = ({ searchValue, navigation }) => {
                                     <Image style={styles.image} source={{ uri: item.image }} />
                                 </Pressable>
                                 <View style={styles.textContainer}>
-                                    <Text style={styles.name}>{item.name}</Text>
-                                    <Text style={styles.village}>{item.village}</Text>
+                                    <Text className="text-lg text-black font-bold">{item.name}</Text>
+                                    <Text className="text-black text-base">{item.village}</Text>
                                 </View>
                             </Animated.View>
                         </Pressable>
@@ -90,11 +90,6 @@ const VillageByName = ({ searchValue, navigation }) => {
 export default VillageByName;
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '',
-        paddingVertical: padding / 2,
-        marginBottom: 10,
-    },
     card: {
         display: 'flex',
         flexDirection: "row",
@@ -115,17 +110,5 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 30,
         objectCover: 'cover',
-    },
-    textContainer: {
-        flexBasis: '75%',
-        paddingRight: 10,
-    },
-    name: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    village: {
-        fontSize: 15,
-        fontWeight: '500',
     },
 });

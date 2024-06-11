@@ -235,36 +235,36 @@ const ProfilePage = ({ navigation }) => {
                         </View>
                     </View>
                     <SafeAreaView className="flex-1 h-[2000px] bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7">
-                        <ScrollView scrollEnabled={true} nestedScrollEnabled={true} style={styles.scrollView} contentContainerStyle={{ flexGrow: 1 }} className="p-10">
+                        <ScrollView scrollEnabled={true} nestedScrollEnabled={true} marginHorizontal={1} contentContainerStyle={{ flexGrow: 1 }} className="p-10">
                             <View className="flex flex-col gap-4">
                                 <Pressable onPress={openAddFamilyDetails} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
-                                        <AnimatedFeatherIcon name="users" size={30} />
+                                        <AnimatedFeatherIcon name="users" size={30} color={"black"} />
                                         <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("AddFamilyDetails")}</Text>
                                     </View>
-                                    <AnimatedFontistoIcon name="angle-right" size={15} />
+                                    <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
                                 <Pressable onPress={openSettings} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
-                                        <AnimatedFontistoIcon name="player-settings" size={30} />
+                                        <AnimatedFontistoIcon name="player-settings" size={30} color={"black"} />
                                         <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("settings")}</Text>
                                     </View>
-                                    <AnimatedFontistoIcon name="angle-right" size={15} />
+                                    <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
                                 <Pressable onPress={openChangePassword} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
-                                        <AnimatedFontistoIcon name="locked" size={30} />
+                                        <AnimatedFontistoIcon name="locked" size={30} color={"black"} />
                                         <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("changePassword")}</Text>
                                     </View>
-                                    <AnimatedFontistoIcon name="angle-right" size={15} />
+                                    <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
                                 <Pressable onPress={handleShare}>
                                     <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                         <View className="flex-row justify-between gap-2 items-center">
-                                            <AnimatedFontistoIcon name="share" size={30} />
+                                            <AnimatedFontistoIcon name="share" size={30} color={"black"} />
                                             <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("ShareApp")}</Text>
                                         </View>
-                                        <AnimatedFontistoIcon name="angle-right" size={15} />
+                                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </View>
                                 </Pressable>
                             </View>
@@ -290,16 +290,16 @@ const ProfilePage = ({ navigation }) => {
                 visible={isPopupVisible}
                 onRequestClose={closePopup}
             >
-                <View style={styles.modalBackground}>
-                    <View style={styles.popup}>
+                <View className="flex flex-1 flex-row justify-center items-center  bg-[#00000080]">
+                    <View className="bg-white w-auto px-10 py-2 rounded-lg items-center">
                         <TouchableOpacity onPress={viewProfileImage}>
-                            <Text style={styles.popupText}>{t('ViewProfileImage')}</Text>
+                            <Text className="text-black text-lg p-2">{t('ViewProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectImage}>
-                            <Text style={styles.popupText}>{t('EditProfileImage')}</Text>
+                            <Text className="text-black text-lg p-1">{t('EditProfileImage')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closePopup}>
-                            <Text style={styles.popupText}>{t('Close')}</Text>
+                            <Text className="text-black text-lg p-1">{t('Close')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -315,13 +315,13 @@ const ProfilePage = ({ navigation }) => {
                         <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-[90%]">
-                        <Text className="font-bold text-lg mb-4">{t("confirmlogout")}</Text>
+                        <Text className="text-lg text-black mb-4">{t("confirmlogout")}</Text>
                         <View className="flex-row justify-between items-center">
-                            <Pressable onPress={closeLogoutModal} className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2">
+                            <Pressable onPress={closeLogoutModal} className="px-6 py-2 bg-gray-400 rounded-[15px] mr-2">
                                 <Text>{t('cancel')}</Text>
                             </Pressable>
                             <Pressable onPress={() => handleLogout()} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white">{t('logout')}</Text>
+                                <Text className="text-white ">{t('logout')}</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -332,16 +332,16 @@ const ProfilePage = ({ navigation }) => {
                 visible={isBannerPopupVisible}
                 onRequestClose={closeBannerPopup}
             >
-                <View style={styles.modalBackground}>
-                    <View style={styles.popup}>
+                <View className="flex flex-1 flex-row justify-center items-center bg-[#00000080]">
+                    <View className="bg-white w-auto px-10 py-2 rounded-lg items-center">
                         <TouchableOpacity onPress={viewBannerImage}>
-                            <Text style={styles.popupText}>{t("viewbanner")}</Text>
+                            <Text className="text-black text-lg p-1">{t("viewbanner")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={selectBannerImage}>
-                            <Text style={styles.popupText}>{t("editbanner")}</Text>
+                            <Text className="text-black text-lg p-1">{t("editbanner")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closeBannerPopup}>
-                            <Text style={styles.popupText}>{t('Close')}</Text>
+                            <Text className="text-black text-lg p-1">{t('Close')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -349,32 +349,5 @@ const ProfilePage = ({ navigation }) => {
         </>
     );
 };
-
-const styles = StyleSheet.create({
-    scrollView: {
-        marginHorizontal: 2,
-    },
-    text: {
-        fontSize: 42,
-    },
-    modalBackground: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    popup: {
-        width: 250,
-        backgroundColor: 'white',
-        padding: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    popupText: {
-        color: "black",
-        fontSize: 18,
-        padding: 10,
-    },
-});
 
 export default ProfilePage;

@@ -1,13 +1,14 @@
+import { ScrollView } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
-import { ScrollView } from 'native-base';
-import { useTranslation } from 'react-i18next';
 
 const NewsDetailsPage = ({ route }) => {
-const { t } = useTranslation();
+
+    const { t } = useTranslation();
     const { newsId } = route.params;
     const { newsDataById } = useContext(ApiContext);
     const [isVisible, setIsVisible] = useState(false);
@@ -16,9 +17,7 @@ const { t } = useTranslation();
     const [newsDetailsDescription, setNewsDetailsDescription] = useState("");
     const [newsDetailsCreateDate, setNewsDetailsCreateDate] = useState("");
     const [newsAddPerson, setNewsAddPerson] = useState("");
-
     const { width } = Dimensions.get('window');
-
     const images = [
         {
             uri: `${process.env.IMAGE_URL}${newsDetailsImage}`,
@@ -63,53 +62,54 @@ const { t } = useTranslation();
     }, [newsId]);
 
     return (
-        <View className="bg-gray-300" style={styles.container}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-            >
+        <>
+            <View className="bg-gray-300 flex flex-1 flex-row p-2">
                 <View>
-                    <Text style={styles.title}>{t('newsDetails')}</Text>
-                </View>
-                <View>
-                    <View>
-                        <View style={styles.imageContainer}>
-                            <View className="relative">
-                                <TouchableOpacity onPress={openModal}>
-                                    <Image
-                                        source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
-                                        style={styles.image}
-                                    />
-                                </TouchableOpacity>
-                                {newsAddPerson && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
-                                    <View className="flex flex-row items-center gap-2">
-                                        <Text className="font-bold text-base">
-                                            Create By
-                                        </Text>
-                                        <Text className="text-base font-medium">
-                                            {newsAddPerson}
-                                        </Text>
-                                    </View>
-                                </View>}
+                    <View className="w-[100%] bg-white p-2 rounded-2xl">
+                        <View className="flex-row justify-between items-center flex-wrap">
+                            <View>
+                                <Text className="font-bold text-xl text-justify my-3 text-black">{newsDetailsTitle}</Text>
                             </View>
-
-                            <View style={styles.textContainer}>
-                                <View>
-                                    <Text style={styles.author}>{newsDetailsTitle}</Text>
-                                </View>
-                                <View>
-                                    <Text style={styles.date}>{formatDate(newsDetailsCreateDate)}</Text>
-                                </View>
+                            <View>
+                                <Text className="text-sm text-black font-bold mb-2">{formatDate(newsDetailsCreateDate)}</Text>
                             </View>
                         </View>
-                        <View style={styles.descriptionContainer}>
-                            <RenderHTML
-                                contentWidth={width}
-                                source={{ html: newsDetailsDescription }}
-                                tagsStyles={htmlStyles}
-                            />
+                        <View className="relative" style={styles.shadow}>
+                            <TouchableOpacity onPress={openModal}>
+                                <Image
+                                    source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
+                                    className="h-[180px] w-[100%] rounded-3xl"
+                                />
+                            </TouchableOpacity>
+                            {newsAddPerson && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
+                                <View className="flex flex-row items-center gap-2">
+                                    <Text className="font-bold text-black text-base">
+                                        Create By
+                                    </Text>
+                                    <Text className="text-base text-black font-medium">
+                                        {newsAddPerson}
+                                    </Text>
+                                </View>
+                            </View>}
                         </View>
                     </View>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        <View className="bg-white rounded-2xl mt-2 p-2" style={styles.shadow}>
+                            <View>
+                                <Text className="text-black text-2xl font-bold">{t("Description")}</Text>
+                            </View>
+                            <View className="text-justify mb-5 text-black">
+                                <RenderHTML
+                                    contentWidth={width}
+                                    source={{ html: newsDetailsDescription }}
+                                    tagsStyles={{ body: { color: 'black' } }}
+                                />
+                            </View>
+                        </View>
+                    </ScrollView>
                 </View>
                 <ImageViewing
                     images={images}
@@ -117,66 +117,22 @@ const { t } = useTranslation();
                     visible={isVisible}
                     onRequestClose={closeModal}
                 />
-            </ScrollView>
-        </View>
+            </View>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 24,
-        color: '#4a4a4a',
-        marginTop: 7,
-        marginBottom: 15
-    },
-    imageContainer: {
-        width: '100%',
-    },
-    image: {
-        height: 180,
-        width: '100%',
-        borderRadius: 20,
-    },
-    textContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-    },
-    author: {
-        fontWeight: 'bold',
-        fontSize: 20,
-        textAlign: 'justify',
-        marginVertical: 12,
-    },
-    date: {
-        fontSize: 13,
-        color: '#4a4a4a',
-        fontWeight: 'bold',
-    },
-    descriptionContainer: {
-        marginTop: 12,
-        marginBottom: 20,
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 5,
+        elevation: 10,
     },
 });
-
-const htmlStyles = {
-    p: {
-        fontSize: 16,
-        textAlign: 'justify',
-        color: '#555',
-    },
-    strong: {
-        fontWeight: 'bold',
-    },
-    i: {
-        fontStyle: 'italic',
-    },
-};
 
 export default NewsDetailsPage;
