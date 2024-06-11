@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-function NewsList({ navigation, news }) {
+function NewsList({ navigation, news, loading }) {
     var a = null;
     let IMAGE_URL = process.env.IMAGE_URL;
 
@@ -43,9 +44,9 @@ function NewsList({ navigation, news }) {
 
         return (
             <TouchableOpacity onPress={() => { openNewsDetailsPage(item._id) }}>
-                <View className='w-full mb-4'>
-                    <View className="w-full overflow-hidden object-cover">
-                        <View className="relative">
+                <View className="bg-white shadow-2xl p-2 mb-5 rounded-3xl w-[100%]">
+                    <View className="overflow-hidden object-cover shadow-xl shadow-black">
+                        <View className="relative ">
                             <Image
                                 className="object-cover"
                                 source={{ uri: IMAGE_URL + item.image }}
@@ -53,10 +54,10 @@ function NewsList({ navigation, news }) {
                             />
                             {item.createdBy && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
                                 <View className="flex flex-row items-center gap-2">
-                                    <Text className="font-bold text-base">
-                                        Create By
+                                    <Text className="font-bold text-black text-base">
+                                        Created By
                                     </Text>
-                                    <Text className="text-base font-medium">
+                                    <Text className="text-base text-black font-medium">
                                         {item.createdBy}
                                     </Text>
                                 </View>
@@ -64,7 +65,7 @@ function NewsList({ navigation, news }) {
                         </View>
                         <View className="flex flex-row justify-between flex-wrap items-center">
                             <View>
-                                <Text className='font-bold text-[19px] tracking-tighter text-justify my-2'>
+                                <Text className='font-bold text-[19px] text-black tracking-tighter text-justify my-2'>
                                     {item?.title}
                                 </Text>
                             </View>
@@ -72,11 +73,11 @@ function NewsList({ navigation, news }) {
                                 <Text className="text-[13px] tracking-wider text-neutral-700 font-bold mb-2">{formatDate(item?.created_at)}</Text>
                             </View>
                         </View>
-                    </View>
-                    <View>
-                        <Text className="text-[15px] tracking-wider mb-5 text-neutral-700 text-justify">
-                            {truncateText(item?.description, 20)}
-                        </Text>
+                        <View>
+                            <Text className="text-[15px] tracking-wider mb-5 text-neutral-700 text-justify font-semibold">
+                                {truncateText(item?.description, 20)}
+                            </Text>
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -84,18 +85,39 @@ function NewsList({ navigation, news }) {
     };
 
     return (
-        <View className="w-full flex flex-row justify-between flex-wrap px-3 mb-14">
+        <View className="w-full flex flex-row justify-between flex-wrap mb-20">
             <SafeAreaView style={{ flex: 1 }}>
-                <FlatList
-                    ListHeaderComponent={() => news[0] && renderItems({ item: news[0], index: 0 })}
-                    data={news.slice(1)}
-                    renderItem={renderItems}
-                    keyExtractor={item => item._id}
-                    numColumns={1}
-                    contentContainerStyle={{ paddingHorizontal: 12 }}
-                    showsHorizontalScrollIndicator={false}
-                    showsVerticalScrollIndicator={false}
-                />
+                {loading ? (
+                    <FlatList
+                        data={[1, 2, 3]}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                            <View style={{ padding: 10, borderWidth: 1, marginHorizontal: 10, marginBottom: 20, borderRadius: 20, borderColor: "#f3f3f3" }}>
+                                <SkeletonPlaceholder>
+                                    <SkeletonPlaceholder.Item flexDirection="column" alignItems="center">
+                                        <SkeletonPlaceholder.Item width={'100%'} marginBottom={20} height={180} borderRadius={20} />
+                                        <SkeletonPlaceholder.Item width={'100%'} marginLeft={5}>
+                                            <SkeletonPlaceholder.Item width={320} height={22} borderRadius={4} marginBottom={10} />
+                                            <SkeletonPlaceholder.Item width={280} height={22} borderRadius={4} marginBottom={10} />
+                                            <SkeletonPlaceholder.Item width={250} height={22} borderRadius={4} marginBottom={10} />
+                                            <SkeletonPlaceholder.Item width={180} height={22} borderRadius={4} marginBottom={10} />
+                                        </SkeletonPlaceholder.Item>
+                                    </SkeletonPlaceholder.Item>
+                                </SkeletonPlaceholder>
+                            </View>
+                        )}
+                    />
+                ) : (
+                    <FlatList
+                        ListHeaderComponent={() => news[0] && renderItems({ item: news[0], index: 0 })}
+                        data={news.slice(1)}
+                        renderItem={renderItems}
+                        keyExtractor={(item) => item._id}
+                        contentContainerStyle={{ paddingHorizontal: 12 }}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
+                    />
+                )}
             </SafeAreaView>
         </View>
     );

@@ -35,12 +35,12 @@ const Home = ({ navigation }) => {
         openBottomSheet(<SettingBottomSheet />);
     };
     const cards = [
-        { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutus.png'), thumbnail: "" },
-        { id: 3, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageImg.png'), thumbnail: "" },
-        { id: 4, name: t('news'), redirectTo: "News", image: require('../../../assets/NewsImg.png'), thumbnail: "" },
-        ...[allUserInfo ?
-            { id: 5, name: "", redirectTo: "", image: "", thumbnail: "" } :
-            { id: 5, name: t('settings'), functionality: openSettings, image: require('../../../assets/setting.jpg'), thumbnail: "" }]
+        { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutus.png') },
+        { id: 3, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageImg.png') },
+        { id: 4, name: t('news'), redirectTo: "News", image: require('../../../assets/NewsImg.png') },
+        ...[allUserInfo && Object.entries(allUserInfo).length > 0 ?
+            { id: 5, name: "", redirectTo: "", image: "" } :
+            { id: 5, name: t('settings'), functionality: openSettings, image: require('../../../assets/setting.jpg') }]
     ];
 
     useEffect(() => {

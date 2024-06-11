@@ -86,6 +86,8 @@ export const GlobalProvider = (props) => {
             console.error('Failed to fetch data from storage', error);
         }
     };
+    const [allVillagesListing, setAllVillagesListing] = useState([]);
+    const [defaultLanguage, setDefaultLanguage] = useState('gu');
 
     const value = {
         progress,
@@ -116,7 +118,11 @@ export const GlobalProvider = (props) => {
         setIsLoggedIn,
         isLoggedIn,
         allUserInfo,
-        setAllUserInfo
+        setAllUserInfo,
+        allVillagesListing,
+        setAllVillagesListing,
+        setDefaultLanguage,
+        defaultLanguage
     };
 
     return (

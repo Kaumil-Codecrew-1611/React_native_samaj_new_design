@@ -17,11 +17,18 @@ const VillageListing = ({ navigation, route }) => {
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const [listingStyle, setListingStyle] = useState(route.params.listingStyle);
-    const [allVillagesListing, setAllVillagesListing] = useState([]);
     const [search, setSearch] = useState("");
     const [language, setLanguage] = useState("");
-    const { villagesListing, allUserByVillageId } = useContext(ApiContext);
-    const { setSelectedVillage, SelectedVillage } = useContext(GlobalContext);
+    const { villagesListing, allUserByVillageId, resetData } = useContext(ApiContext);
+    const { setSelectedVillage, SelectedVillage, allVillagesListing, setAllVillagesListing } = useContext(GlobalContext);
+
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                resetData('allUserByVillage');
+            };
+        }, [])
+    );
 
     useEffect(() => {
         (async function () {
@@ -61,10 +68,7 @@ const VillageListing = ({ navigation, route }) => {
         }
     }, [route.params.listingStyle]);
 
-    const handleVillageSelect = (item) => {
-        setSelectedVillage(item);
-        navigation.navigate('VillageWisePersons', { villageId: item._id, village: item });
-    };
+
 
     useEffect(() => {
         const getSelectedLanguage = async () => {
@@ -86,15 +90,22 @@ const VillageListing = ({ navigation, route }) => {
     }, []);
 
     const renderItem = ({ item }) => {
+        const handleVillageSelect = async (item1) => {
+            console.log(item1, "item")
+            await setSelectedVillage(item1);
+            navigation.navigate('VillageWisePersons', { villageId: item._id });
+        };
+        const villageImage = process.env.IMAGE_URL + item.image;
+        console.log(villageImage, "villageImage")
         return (
-            <View className="items-center flex-1">
+            <View className={`${listingStyle === 'grid' ? 'flex-1 m-2' : 'w-full my-2'} items-center`}>
                 <CardDetails
                     size={listingStyle === 'grid' ? 'lg' : 'full'}
-                    image="https://img.freepik.com/free-photo/eiffel-tower-paris-with-gorgeous-colors-autumn_268835-828.jpg"
+                    image={villageImage}
                     content={language == 'en' ? item.villageE : item.villageG}
                     navigation={navigation}
-                    setSelectedVillage={() => handleVillageSelect(item)}
-                    redirectTo="VillageWisePersons"
+                    villageListing={true}
+                    handleSetSelectedVillage={() => handleVillageSelect(item)}
                 />
             </View>
         );
@@ -145,13 +156,20 @@ const VillageListing = ({ navigation, route }) => {
                 data={allVillagesListing}
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}
-                numColumns={(listingStyle === 'grid') ? 2 : 1}
+                numColumns={listingStyle === 'grid' ? 2 : 1}
+                key={listingStyle} // Ensures the list re-renders when the style changes
+                contentContainerStyle={{
+                    display: 'flex',
+                    overflow: 'hidden',
+                    width: '100%',
+                    paddingHorizontal: 2,
+                    ...(listingStyle === 'grid' && { gap: 2 }), // Conditionally add gap only for grid layout
+                }}
+                horizontal={false}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
-                key={listingStyle}
-                contentContainerStyle={{ display: 'flex', overflow: 'hidden', gap: 2, width: '100%', paddingHorizontal: 2 }}
-                horizontal={false}
             />
+
         </View>
     );
 };

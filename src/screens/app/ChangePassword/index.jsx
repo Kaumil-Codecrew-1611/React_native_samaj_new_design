@@ -48,15 +48,18 @@ const ChangePassword = ({ navigation }) => {
             id: userId,
         };
         try {
-            await userChangePassword(requestData);
-            navigateToUserProfile()
+            const reponse = await userChangePassword(requestData);
+            console.log(reponse, "reponse")
+            if (reponse.changePassStatus) {
+                navigateToUserProfile()
+            }
         } catch (error) {
             console.error('Error changing password:', error);
         }
     };
 
     const navigateToUserProfile = () => {
-        navigation.navigate('userProfilePage');
+        navigation.navigate('Profile');
     };
 
     const onPressCurrentPassword = () => {

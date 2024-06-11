@@ -58,7 +58,7 @@ const EditUserProfile = ({ navigation }) => {
         const response = await updateUserPostProfile(payload)
         if (response.status) {
             await setuserDataInStorage('user', response.newsave);
-            navigation.navigate('userProfilePage');
+            navigation.navigate('Profile');
         }
     };
 

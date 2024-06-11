@@ -4,9 +4,9 @@ import NewsList from "./NewsList";
 import ApiContext from "../../../context/ApiContext";
 import { useTranslation } from 'react-i18next';
 
-const Favourites = ({navigation}) => {
-const { t } = useTranslation();
-
+const Favourites = ({ navigation }) => {
+    const { t } = useTranslation();
+    const [loading, setLoading] = useState(true);
     const { newsListing } = useContext(ApiContext);
     const [news, setNews] = useState([]);
 
@@ -14,6 +14,7 @@ const { t } = useTranslation();
         (async function () {
             const result = await newsListing();
             setNews(result);
+            setLoading(false)
         })();
     }, []);
 
@@ -22,7 +23,7 @@ const { t } = useTranslation();
             <View>
                 <Text className="font-bold text-3xl tracking-wider text-neutral-700 mt-4 mb-4 ml-6">{t('news')}</Text>
             </View>
-            <NewsList navigation={navigation} news={news} />
+            <NewsList navigation={navigation} news={news} loading={loading} />
         </View>
     );
 };

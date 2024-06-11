@@ -11,16 +11,24 @@ import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
 import i18n from '../../../context/i18n';
 
-const VillageWisePersons = ({ navigation }) => {
 
+const VillageWisePersons = ({ navigation, route }) => {
+    const villageId = route.params?.villageId;
     const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [language, setLanguage] = useState("");
-    const { resetData } = useContext(ApiContext);
+    const { resetData, allUserByVillageId } = useContext(ApiContext);
     const { SelectedVillage } = useContext(GlobalContext);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
+    useEffect(() => {
+        if (SelectedVillage || villageId) {
+            (async function () {
+                await allUserByVillageId(villageId || SelectedVillage._id);
+            })();
+        }
+    }, [SelectedVillage, villageId]);
     useFocusEffect(
         useCallback(() => {
             return () => {
