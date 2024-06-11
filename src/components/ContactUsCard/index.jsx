@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -141,7 +141,7 @@ function ContactUsCard() {
                             />
                             <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('email')}</Text>
                         </View>
-                        <View className="h-7">
+                        <View className="h-12">
                             <Text className="tracking-wider text-base text-neutral-700">{t('contactusemailheading')}</Text>
                         </View>
                         <TouchableOpacity onPress={() => handleClickOnMail(email)}>

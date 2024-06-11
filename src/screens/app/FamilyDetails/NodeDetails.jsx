@@ -8,6 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import toastMessage from '../../../utils/toastMessage';
 
 const NodeDetails = ({ navigation, route }) => {
     const { t } = useTranslation();
@@ -133,6 +134,7 @@ const NodeDetails = ({ navigation, route }) => {
                 navigation.navigate('NodeDetails', { userId: userId });
             }
         }).catch((error) => {
+            toastMessage("Please select image again!")
             console.log(error, "errorChangingImage")
         });
     };

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { PanResponder, ScrollView, View } from 'react-native';
+import { PanResponder, ScrollView, View, useColorScheme } from 'react-native';
 import Svg, { G, Line, Rect, Text } from 'react-native-svg';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
@@ -20,7 +20,7 @@ const calculateHorizontalSpacing = (node) => {
     return nodeWidth + (maxChildren > 1 ? maxChildren * baseHorizontalSpacing : baseHorizontalSpacing);
 };
 
-const TreeNode = ({ node, x, y, children, onPress }) => (
+const TreeNode = ({ node, x, y, children, onPress, lineColor }) => (
     <>
         <Rect x={x} y={y} width={nodeWidth} onPress={() => onPress(node)} height={nodeHeight} fill="white" stroke="black" />
         <Text x={x + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
@@ -32,7 +32,7 @@ const TreeNode = ({ node, x, y, children, onPress }) => (
                 <Text x={x + nodeWidth + baseHorizontalSpacing / 2 + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
                     {node.wife.firstname}
                 </Text>
-                <Line x1={x + nodeWidth} y1={y + nodeHeight / 2} x2={x + nodeWidth + baseHorizontalSpacing / 2} y2={y + nodeHeight / 2} stroke="black" />
+                <Line x1={x + nodeWidth} y1={y + nodeHeight / 2} x2={x + nodeWidth + baseHorizontalSpacing / 2} y2={y + nodeHeight / 2} stroke={lineColor} />
             </>
         )}
         {children}
@@ -70,6 +70,9 @@ const FamilyTree = ({ data, navigation, paramsId }) => {
     const svgWidth = maxX - minX + nodeWidth + horizontalSpacing;
     const svgHeight = maxY - minY + nodeHeight + verticalSpacing;
 
+    const colorScheme = useColorScheme();
+    const lineColor = colorScheme === 'dark' ? 'white' : 'black';
+
     return (
         <View style={{ flex: 1 }}>
             <ScrollView
@@ -92,6 +95,7 @@ const FamilyTree = ({ data, navigation, paramsId }) => {
                                         x={x}
                                         y={y}
                                         onPress={handleNodePress}
+                                        lineColor={lineColor}
                                         children={
                                             d.children && d.children.map((child, j) => {
                                                 const childX = child.x - minX;
@@ -104,7 +108,7 @@ const FamilyTree = ({ data, navigation, paramsId }) => {
                                                         y1={y + nodeHeight}
                                                         x2={childX + nodeWidth / 2}
                                                         y2={childY}
-                                                        stroke="black"
+                                                        stroke={lineColor}
                                                     />
                                                 );
                                             })
