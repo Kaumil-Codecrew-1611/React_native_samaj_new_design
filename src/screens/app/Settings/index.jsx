@@ -1,14 +1,14 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Alert, Modal, Pressable } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { Radio, Box } from 'native-base';
-import i18n from '../../../context/i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Box, Radio } from 'native-base';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../../../context/globalState';
+import i18n from '../../../context/i18n';
 import toastMessage from '../../../utils/toastMessage';
 
-const SettingBottomSheet = ({ navigation, route }) => {
+const SettingBottomSheet = () => {
+
     const { defaultLanguage, setDefaultLanguage } = useContext(GlobalContext);
     const [language, setLanguage] = useState('');
     const [alertOpen, setAlertOpen] = useState(false)
@@ -18,15 +18,6 @@ const SettingBottomSheet = ({ navigation, route }) => {
     const { t } = useTranslation();
     const successMessages = t('successchangeLanguage');
 
-    // const changeLanguage = async (selectedLanguage) => {
-    //     setLanguage(selectedLanguage);
-    //     await AsyncStorage.setItem('selectedLanguage', selectedLanguage);
-    //     i18n.changeLanguage(selectedLanguage)
-    //         .then(() => { setAlertMessage(successMessages); setAlertOpen(true); })
-    //         .catch((error) => {
-    //             console.error('Error changing language:', error);
-    //         });
-    // };
     const changeLanguage = async (selectedLanguage) => {
         setLanguage(selectedLanguage);
         setAlertOpen(true);
@@ -108,7 +99,7 @@ const SettingBottomSheet = ({ navigation, route }) => {
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-[90%]">
                         <Text className="font-bold text-lg text-black mb-4">{successMessages}</Text>
-                        <View className="flex-row justify-end gap-2 items-center">
+                        <View className="flex flex-row justify-between items-center">
                             <Pressable onPress={closeAlertModal} className="px-6 py-2 bg-red-500 rounded-[15px]">
                                 <Text className="text-white">{t('cancel')}</Text>
                             </Pressable>

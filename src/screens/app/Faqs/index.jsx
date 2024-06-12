@@ -7,6 +7,7 @@ import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ApiContext from '../../../context/ApiContext';
 import { useTranslation } from 'react-i18next';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 
 
 const Faqs = () => {
@@ -87,6 +88,7 @@ const Faqs = () => {
                         keyExtractor={item => item._id.toString()}
                     />
                 </SafeAreaView>
+                {!faqs.length && <NoDataFound message={"There are no FAQs in this village."} />}
             </View>
         </View>
     )

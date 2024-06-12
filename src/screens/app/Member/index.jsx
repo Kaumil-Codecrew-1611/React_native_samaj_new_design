@@ -91,7 +91,7 @@ export default function Member() {
     return (
         <View className="bg-gray-300" style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>{t('committeeMember')}</Text>
+                <Text className="text-2xl font-bold text-black">{t('committeeMember')}</Text>
             </View>
             {loading ? (
                 <FlatList
@@ -128,11 +128,6 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingTop: 20,
         marginBottom: 20,
-    },
-    headerText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
     },
     bar: {
         height: 10,

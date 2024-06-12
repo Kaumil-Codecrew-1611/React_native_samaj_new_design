@@ -3,6 +3,7 @@ import { Animated, FlatList, Image, StyleSheet, Text, View, Pressable } from 're
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ApiContext from '../../context/ApiContext';
 import ImageViewing from 'react-native-image-viewing';
+import NoDataFound from '../NoDataFound/NoDataFound';
 
 const cardHeight = 85;
 const padding = 10;
@@ -98,6 +99,7 @@ const VillageByName = ({ searchValue, navigation }) => {
                     }}
                 />
             )}
+            {!filteredContacts.length && <NoDataFound message={"There are no person details in this village screen."} />}
             <ImageViewing
                 images={[{ uri: image }]}
                 imageIndex={0}

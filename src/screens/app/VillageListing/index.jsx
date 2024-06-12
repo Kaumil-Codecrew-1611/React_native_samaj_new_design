@@ -11,8 +11,10 @@ import { GlobalContext } from '../../../context/globalState';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../../../context/i18n';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 
 const VillageListing = ({ navigation, route }) => {
+
     const { t } = useTranslation();
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
@@ -67,8 +69,6 @@ const VillageListing = ({ navigation, route }) => {
             setListingStyle(params.listingStyle);
         }
     }, [route.params.listingStyle]);
-
-
 
     useEffect(() => {
         const getSelectedLanguage = async () => {
@@ -157,19 +157,19 @@ const VillageListing = ({ navigation, route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item._id}
                 numColumns={listingStyle === 'grid' ? 2 : 1}
-                key={listingStyle} // Ensures the list re-renders when the style changes
+                key={listingStyle}
                 contentContainerStyle={{
                     display: 'flex',
                     overflow: 'hidden',
                     width: '100%',
                     paddingHorizontal: 2,
-                    ...(listingStyle === 'grid' && { gap: 2 }), // Conditionally add gap only for grid layout
+                    ...(listingStyle === 'grid' && { gap: 2 }),
                 }}
                 horizontal={false}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             />
-
+            {!allVillagesListing.length && <NoDataFound message={"No villages found. Please try again later."} />}
         </View>
     );
 };
