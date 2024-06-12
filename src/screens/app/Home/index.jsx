@@ -22,7 +22,7 @@ const Home = ({ navigation }) => {
     const { homePageAllSlider } = useContext(ApiContext);
     const [firstName, setFirstName] = useState(allUserInfo?.firstname ? allUserInfo?.firstname : "Panchal");
     const [lastName, setLastName] = useState(allUserInfo?.lastname ? allUserInfo?.lastname : "Samaj");
-    const [profileImage, setProfileImage] = useState(`${process.env.IMAGE_URL}${allUserInfo?.photo}`);
+    const [profileImage, setProfileImage] = useState(`${process.env.IMAGE_URL}${allUserInfo.photo}`);
     const [sliderImages, setSliderImages] = useState([]);
     const [language, setLanguage] = useState('');
     const [isVisible, setIsVisible] = useState(false);
@@ -66,7 +66,7 @@ const Home = ({ navigation }) => {
         (async function () {
             setFirstName(allUserInfo?.firstname);
             setLastName(allUserInfo?.lastname);
-            setProfileImage(`${process.env.IMAGE_URL}${allUserInfo?.photo}`);
+            setProfileImage(`${process.env.IMAGE_URL}${allUserInfo.photo}`);
             const result = await homePageAllSlider();
             setSliderImages(result);
         })();
@@ -101,7 +101,7 @@ const Home = ({ navigation }) => {
         e.stopPropagation();
         setIsVisible(true);
     }
-
+    console.log(allUserInfo, "::::allUserInfo")
     return (
         <>
             <View className="flex-1 bg-gray-300 space-y-5 w-full pb-20" edges={['top']}>
@@ -114,9 +114,10 @@ const Home = ({ navigation }) => {
                             <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
                                 {!firstName ? "Panchal Samaj" : `${firstName} ${lastName}`}
                             </Text>
+
                         </View>
                         <Pressable onPress={openProfileImage} className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
-                            {allUserInfo ? (
+                            {Object.entries(allUserInfo).length > 0 ? (
                                 <Image source={{ uri: profileImage }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
                             ) : (
                                 <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />

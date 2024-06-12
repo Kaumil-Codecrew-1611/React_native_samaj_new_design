@@ -111,6 +111,7 @@ export const updateUserProfile = async (payload) => {
             baseURL: axiosInstance.defaults.baseURL,
             headers: {
                 'Content-Type': 'multipart/form-data',
+                'ngrok-skip-browser-warning': 'true'
             },
         });
         const response = await axiosWithHeaders.post(`/profile_image/${id}`, userData);

@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   baseURL: process.env.API_URL,
   // You can add common headers here if needed
   // headers: { 'Authorization': 'Bearer YOUR_TOKEN' }
-  headers: { "x-api-key": process.env.API_KEY }
+  headers: { "x-api-key": process.env.API_KEY, "ngrok-skip-browser-warning": "true" }
 });
 
 // Add a response interceptor

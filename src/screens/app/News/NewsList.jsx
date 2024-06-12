@@ -43,7 +43,7 @@ function NewsList({ navigation, news, loading }) {
         };
 
         return (
-            <TouchableOpacity onPress={() => { openNewsDetailsPage(item._id) }}>
+            <TouchableOpacity onPress={() => { openNewsDetailsPage(item?._id) }}>
                 <View className="bg-white shadow-2xl p-2 mb-5 rounded-3xl w-[100%]">
                     <View className="overflow-hidden object-cover shadow-xl shadow-black">
                         <View className="relative ">
@@ -54,11 +54,12 @@ function NewsList({ navigation, news, loading }) {
                             />
                             {item.createdBy && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
                                 <View className="flex flex-row items-center gap-2">
+
                                     <Text className="font-bold text-black text-base">
                                         Created By
                                     </Text>
                                     <Text className="text-base text-black font-medium">
-                                        {item.createdBy}
+                                        {item?.createdBy}
                                     </Text>
                                 </View>
                             </View>}
@@ -110,9 +111,9 @@ function NewsList({ navigation, news, loading }) {
                 ) : (
                     <FlatList
                         ListHeaderComponent={() => news[0] && renderItems({ item: news[0], index: 0 })}
-                        data={news.slice(1)}
+                        data={news && news?.slice(1)}
                         renderItem={renderItems}
-                        keyExtractor={(item) => item._id}
+                        keyExtractor={(item) => item?._id}
                         contentContainerStyle={{ paddingHorizontal: 12 }}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
