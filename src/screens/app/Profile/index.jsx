@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -10,19 +10,20 @@ import CustomBottomSheet from '../../../components/CustomBottomSheet';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import SettingBottomSheet from '../Settings';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const ProfilePage = ({ navigation }) => {
     const { t } = useTranslation();
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo, progress } = useContext(GlobalContext);
+    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo, progress, setIsBottomSheetVisible, setAllUserInfo } = useContext(GlobalContext);
     const [isVisible, setIsVisible] = useState(false);
     const [isBannerVisible, setBannerIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [isBannerPopupVisible, setIsBannerPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const { updateUserProfileImage, updateUserBannerProfileImage } = useContext(ApiContext);
+    const { updateUserProfileImage, updateUserBannerProfileImage, resetAllData } = useContext(ApiContext);
 
     const profileImage = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}`, },
@@ -53,8 +54,10 @@ const ProfilePage = ({ navigation }) => {
     };
 
     const handleLogout = async () => {
-        progress.value = withTiming("1");
         await setuserDataInStorage('user', null);
+        await resetAllData();
+        setAllUserInfo({})
+        progress.value = withTiming("1");
         navigation.navigate("Home");
     };
 
@@ -185,6 +188,12 @@ const ProfilePage = ({ navigation }) => {
             console.error('Error sharing:', error.message);
         }
     };
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                setIsBottomSheetVisible(false);
+            };
+        }, []))
 
     return (
         <>

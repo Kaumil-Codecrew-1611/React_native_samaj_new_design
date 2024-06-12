@@ -47,7 +47,7 @@ export const GlobalProvider = (props) => {
         if (index === -1) {
             setIsBottomSheetVisible(false);
         }
-    }, []);
+    }, [bottomSheetContent]);
 
     const openBottomSheet = (content) => {
         setBottomSheetContent(content);
@@ -87,7 +87,7 @@ export const GlobalProvider = (props) => {
         }
     };
     const [allVillagesListing, setAllVillagesListing] = useState([]);
-    const [defaultLanguage, setDefaultLanguage] = useState('gu');
+    const [defaultLanguage, setDefaultLanguage] = useState('en');
 
     const value = {
         progress,

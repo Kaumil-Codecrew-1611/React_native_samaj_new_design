@@ -121,7 +121,6 @@ function EmailSupport({ navigation }) {
                             <View className="w-full p-3">
                                 <Button className="bg-blue-500 py-3 rounded-lg" title="Send Email" onPress={handleSubmit(onSubmit)} />
                             </View>
-
                         </View>
                     </View>
                 </ScrollView>

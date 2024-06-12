@@ -35,12 +35,29 @@ import { apiRequest } from './apiHelper';
 
 const ApiContext = createContext();
 
+/* const apiReducer = (state, action) => {
+    switch (action.type) {
+        case 'SET_DATA':
+            return { ...state, [action.payload.key]: action.payload.data };
+        case 'RESET_DATA':
+            return { ...state, [action.payload.key]: null };
+        default:
+            return state;
+    }
+}; */
 const apiReducer = (state, action) => {
     switch (action.type) {
         case 'SET_DATA':
             return { ...state, [action.payload.key]: action.payload.data };
         case 'RESET_DATA':
             return { ...state, [action.payload.key]: null };
+        case 'RESET_ALL_DATA':
+            // This will create a new state object with all keys set to null
+            const resetState = Object.keys(state).reduce((acc, key) => {
+                acc[key] = null;
+                return acc;
+            }, {});
+            return resetState;
         default:
             return state;
     }
@@ -56,7 +73,9 @@ export const ApiProvider = ({ children }) => {
     const resetData = (key) => {
         dispatch({ type: 'RESET_DATA', payload: { key } });
     };
-
+    const resetAllData = () => {
+        dispatch({ type: 'RESET_ALL_DATA' });
+    };
     const register = (userData) => apiRequest(registerUser, userData, setData, 'registerResponse');
     // const viewUserDetails = () => apiRequest(viewDetails, null, setData, 'detailsResponse');
     const changeUserPassword = (passwordData) => apiRequest(changePassword, passwordData, setData, 'changePasswordResponse');
@@ -95,6 +114,7 @@ export const ApiProvider = ({ children }) => {
             // addNewDetails,
             changeUserPassword,
             resetData,
+            resetAllData,
             getLocation,
             getAmount,
             PayOrder,
