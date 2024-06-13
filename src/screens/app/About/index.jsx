@@ -75,12 +75,12 @@ const Aboutus = () => {
                         style={[styles.image, imageAnimatedStyle]} />
                 </View>
                 <View className="bg-white p-2">
-                    <View className="mb-5">
+                    <View className="mb-5 px-2">
                         <Text className="text-black font-bold text-2xl">{t('aboutUs')}</Text>
                         <View className="w-[50px] h-[5px] bg-red-500 my-2"></View>
-                        <Text className="text-base text-black items-center">{title}</Text>
+                        <Text className="text-lg text-black items-center">{title}</Text>
                     </View>
-                    <View className="mb-5">
+                    <View className="mb-5 px-2">
                         <Text className="text-black font-bold text-2xl">{t('OurPurpose')}</Text>
                         <View className="w-[50px] h-[5px] bg-red-500 my-2"></View>
                         <RenderHTML
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
 
 const htmlStyles = {
     p: {
-        fontSize: 16,
+        fontSize: 18,
         textAlign: 'justify',
         color: '#555',
     },

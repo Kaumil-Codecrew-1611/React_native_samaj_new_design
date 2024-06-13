@@ -87,7 +87,7 @@ const VillageWisePersons = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <VillageByName searchValue={search} navigation={navigation} />
+            <VillageByName searchValue={search} navigation={navigation} SelectedVillage={SelectedVillage} />
         </View >
     );
 };

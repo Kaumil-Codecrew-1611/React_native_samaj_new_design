@@ -91,12 +91,11 @@ const VillageListing = ({ navigation, route }) => {
 
     const renderItem = ({ item }) => {
         const handleVillageSelect = async (item1) => {
-            console.log(item1, "item")
             await setSelectedVillage(item1);
             navigation.navigate('VillageWisePersons', { villageId: item._id });
         };
         const villageImage = process.env.IMAGE_URL + item.image;
-        console.log(villageImage, "villageImage")
+
         return (
             <View className={`${listingStyle === 'grid' ? 'flex-1 m-2' : 'w-full my-2'} items-center`}>
                 <CardDetails

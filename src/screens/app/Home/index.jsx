@@ -101,31 +101,25 @@ const Home = ({ navigation }) => {
         e.stopPropagation();
         setIsVisible(true);
     }
-    allUserInfo && Object.entries(allUserInfo).length > 0 && !allUserInfo.photo ? console.log("if") : console.log("else")
     return (
         <>
             <View className="flex-1 bg-gray-300 space-y-5 w-full pb-20" edges={['top']}>
-                <Pressable onPress={profileNavigate} className="bg-white mt-3 mx-1 h-fit rounded-2xl flex items-center" style={{ alignSelf: 'stretch' }}>
-                    <View className="flex-row justify-around my-4 w-full items-center mx-1">
+                <Pressable onPress={profileNavigate} className="bg-white h-fit flex items-center" style={{ alignSelf: 'stretch' }}>
+                    <View className="flex-row justify-around my-3 w-full items-center ">
                         <View className="space-y-1 basis-2/3 justify-center px-5">
-                            <Text style={{ fontSize: hp(4.5) }} className="font-semibold tracking-wider text-neutral-700">
+                            <Text className="font-semibold tracking-wider text-neutral-700 text-2xl">
                                 {t("welcome")}
                             </Text>
-                            <Text style={{ fontSize: hp(3.5) }} className="font-semibold tracking-wider text-rose-700">
+                            <Text className="font-semibold tracking-wider text-rose-700 text-xl">
                                 {!firstName ? "Panchal Samaj" : `${firstName} ${lastName}`}
                             </Text>
-
                         </View>
                         <Pressable onPress={openProfileImage} className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
-
-
                             {allUserInfo && Object.entries(allUserInfo).length > 0 && allUserInfo.photo ? (
                                 <Image source={{ uri: process.env.IMAGE_URL + allUserInfo.photo }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
                             ) : (
                                 <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
                             )}
-
-
                         </Pressable>
                     </View>
                 </Pressable>

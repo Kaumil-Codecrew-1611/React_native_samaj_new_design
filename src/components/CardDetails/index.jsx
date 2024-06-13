@@ -28,9 +28,7 @@ const CardDetails = ({ content, size, image, redirectTo, functionality, navigati
     }, [imageURL]);
 
     const redirect = () => {
-        console.log(route.name == "Home", "route.name")
         if (villageListing) {
-            console.log(content, ":::::::::content")
             handleSetSelectedVillage(content);
         }
         if (redirectTo) {

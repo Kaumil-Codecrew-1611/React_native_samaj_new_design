@@ -5,18 +5,18 @@ import ApiContext from '../../context/ApiContext';
 import ImageViewing from 'react-native-image-viewing';
 import NoDataFound from '../NoDataFound/NoDataFound';
 
-const cardHeight = 85;
+const cardHeight = 100;
 const padding = 10;
 const offset = cardHeight + padding;
 
-const VillageByName = ({ searchValue, navigation }) => {
+const VillageByName = ({ searchValue, navigation, SelectedVillage }) => {
+
     const scrollY = useRef(new Animated.Value(0)).current;
     const { state } = useContext(ApiContext);
     const [userByVillageId, setUserVillageId] = useState([]);
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState('');
     const [isVisible, setIsVisible] = useState(false);
-
     const viewImage = (img) => {
         setImage(img);
         setIsVisible(true);
@@ -25,15 +25,15 @@ const VillageByName = ({ searchValue, navigation }) => {
     useEffect(() => {
         if (state.allUserByVillage) {
             setUserVillageId(state.allUserByVillage);
-            setLoading(false); // Set loading to false after data is fetched
+            setLoading(false);
         }
     }, [state.allUserByVillage]);
-
     const formattedContacts = userByVillageId.map(user => ({
         id: user._id,
         image: process.env.IMAGE_URL + user?.photo,
         name: `${user.firstname} ${user.middlename} ${user.lastname}`,
-        village: user.city,
+        city: user.city,
+        village: SelectedVillage.villageE,
     }));
 
     const filteredContacts = formattedContacts.filter((item) =>
@@ -90,8 +90,8 @@ const VillageByName = ({ searchValue, navigation }) => {
                                         <Image style={styles.image} source={{ uri: item.image }} />
                                     </Pressable>
                                     <View style={styles.textContainer}>
-                                        <Text style={styles.name}>{item.name}</Text>
-                                        <Text style={styles.village}>{item.village}</Text>
+                                        <Text className="text-lg font-bold">{item.name}</Text>
+                                        <Text className="capitalize text-base font-semibold">{item.city} - {item.village}</Text>
                                     </View>
                                 </Animated.View>
                             </Pressable>
@@ -134,7 +134,4 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         objectCover: 'cover',
     },
-    village: {
-        textTransform: 'capitalize',
-    }
 });

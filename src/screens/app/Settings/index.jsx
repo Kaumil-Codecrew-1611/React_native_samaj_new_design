@@ -28,7 +28,6 @@ const SettingBottomSheet = () => {
     }
 
     const AlertActionModal = async () => {
-        console.log(language, "language")
         await AsyncStorage.setItem('selectedLanguage', language);
         i18n.changeLanguage(language)
             .then(() => { setAlertOpen(false); setDefaultLanguage(language); })

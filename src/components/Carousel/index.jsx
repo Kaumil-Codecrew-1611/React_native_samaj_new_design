@@ -22,13 +22,12 @@ function Parallax({ sliderImages }) {
             <Carousel
                 style={{ alignSelf: 'stretch', display: "flex", gap: 8 }}
                 width={PAGE_WIDTH}
-                height={PAGE_WIDTH * 0.6}
+                height={PAGE_WIDTH * 0.8}
                 vertical={false}
                 loop
                 snapEnabled={snapEnabled}
                 autoPlay={autoPlay}
                 autoPlayInterval={1500}
-                mode="parallax"
                 modeConfig={{
                     parallaxScrollingScale: 0.9,
                     parallaxScrollingOffset: 50,
@@ -56,7 +55,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignSelf: "center",
         overflow: "hidden",
-        borderRadius: 15
     },
     gradient: {
         flex: 1,
@@ -72,8 +70,4 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 20
     },
-    title: {
-        fontSize: 20,
-        color: "#fff"
-    }
 });

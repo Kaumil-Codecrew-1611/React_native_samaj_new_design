@@ -49,7 +49,6 @@ const ChangePassword = ({ navigation }) => {
         };
         try {
             const reponse = await userChangePassword(requestData);
-            console.log(reponse, "reponse")
             if (reponse.changePassStatus) {
                 navigateToUserProfile()
             }

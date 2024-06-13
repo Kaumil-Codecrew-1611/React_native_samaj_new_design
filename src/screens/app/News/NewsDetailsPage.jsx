@@ -1,12 +1,12 @@
+import { ScrollView } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
-import RenderHTML from 'react-native-render-html';
-import ApiContext from '../../../context/ApiContext';
-import { ScrollView } from 'native-base';
-import { useTranslation } from 'react-i18next';
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
+import RenderHTML from 'react-native-render-html';
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import ApiContext from '../../../context/ApiContext';
 
 const NewsDetailsPage = ({ route }) => {
     const { t } = useTranslation();
@@ -64,11 +64,10 @@ const NewsDetailsPage = ({ route }) => {
         })();
     }, [newsId]);
 
-    // Animation setup
     const scrollRef = useAnimatedRef();
     const scrolloffset = useScrollViewOffset(scrollRef);
 
-    const IMG_HEIGHT = 180; // Adjust to your image height
+    const IMG_HEIGHT = 180;
 
     const imageAnimatedStyle = useAnimatedStyle(() => {
         return {
@@ -111,23 +110,19 @@ const NewsDetailsPage = ({ route }) => {
                     <View>
                         <View>
                             <Animated.View style={imageAnimatedStyle} className="relative">
-                                <View>
-                                    <Text className="font-bold text-2xl text-black mt-2 mb-4">{t('newsDetails')}</Text>
-                                </View>
                                 <TouchableOpacity onPress={openModal}>
                                     <Image
                                         source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
                                         style={styles.image}
-                                        className="rounded-[20px]"
                                     />
                                 </TouchableOpacity>
                                 {newsAddPerson &&
-                                    <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
+                                    <View className=" bg-white absolute bottom-0 px-3">
                                         <View className="flex flex-row items-center gap-2">
                                             <Text className="font-bold text-base text-black">
-                                                {t('createdBy')}
+                                                Create By
                                             </Text>
-                                            <Text className="text-base font-medium text-black">
+                                            <Text className="text-base font-medium text-black capitalize">
                                                 {newsAddPerson}
                                             </Text>
                                         </View>
@@ -136,18 +131,18 @@ const NewsDetailsPage = ({ route }) => {
                             </Animated.View>
                             <View className="bg-gray-300">
                                 <View className="flex flex-1 flex-row justify-between items-center flex-wrap">
-                                    <View>
+                                    <View className="mx-[20px]">
                                         <Text className="font-bold text-xl text-justify my-3 text-black">{newsDetailsTitle}</Text>
                                     </View>
                                     <View>
-                                        <Text className="text-sm text-black font-bold">{formatDate(newsDetailsCreateDate)}</Text>
+                                        <Text className="text-sm text-black font-bold mx-[20px]">{formatDate(newsDetailsCreateDate)}</Text>
                                     </View>
                                 </View>
                                 <View className="mt-3 mb-5">
                                     <RenderHTML
                                         contentWidth={width}
                                         source={{ html: newsDetailsDescription }}
-                                        tagsStyles={{ body: { color: 'black', textAlign: "justify" } }}
+                                        tagsStyles={{ body: { color: 'black', textAlign: "justify", marginLeft: "20px", marginRight: "20px" } }}
                                     />
                                 </View>
                             </View>
@@ -168,11 +163,11 @@ const NewsDetailsPage = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
     },
     image: {
         width: '100%',
-        height: 180, // Same as IMG_HEIGHT
+        height: 300,
+        objectFit: "cover"
     },
     skeletonContainer: {
         padding: 10,
