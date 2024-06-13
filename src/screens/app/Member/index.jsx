@@ -1,25 +1,26 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, StyleSheet, Text, View, TouchableOpacity, Linking, FlatList } from 'react-native';
-import ApiContext from '../../../context/ApiContext';
 import { useTranslation } from 'react-i18next';
+import { Animated, Dimensions, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
+import ApiContext from '../../../context/ApiContext';
 
 const { width } = Dimensions.get('screen');
 
 export default function Member() {
+
     const scrollY = useRef(new Animated.Value(0)).current;
     const [height1, setHeight1] = useState(100);
     const [height2, setHeight2] = useState(0);
     const [loading, setLoading] = useState(true);
     const [committeeMembers, setCommitteeMembers] = useState([]);
+    const { allcommitteeMembersListing } = useContext(ApiContext);
     const { t } = useTranslation();
 
     const translateX = scrollY.interpolate({
         inputRange: [0, Math.max(height1 - height2, 1)],
         outputRange: [-width, 0]
     });
-
-    const { allcommitteeMembersListing } = useContext(ApiContext);
 
     useEffect(() => {
         const fetchCommitteeMembers = async () => {
@@ -100,6 +101,8 @@ export default function Member() {
                     renderItem={renderSkeletonItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
+            ) : committeeMembers.length === 0 ? (
+                <NoDataFound message={"No commitee members found."} />
             ) : (
                 <Animated.FlatList
                     data={committeeMembers}
@@ -115,8 +118,6 @@ export default function Member() {
         </View>
     );
 }
-
-
 
 const styles = StyleSheet.create({
     container: {

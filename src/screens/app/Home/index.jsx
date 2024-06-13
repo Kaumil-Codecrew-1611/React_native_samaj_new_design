@@ -3,44 +3,35 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Pressable, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import ImageViewing from 'react-native-image-viewing';
 import { withTiming } from 'react-native-reanimated';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DefaultImage from '../../../assets/profile_img.png';
 import CardDetails from '../../../components/CardDetails';
 import Carousel from '../../../components/Carousel';
+import CustomBottomSheet from '../../../components/CustomBottomSheet';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
 
-
-import ImageViewing from 'react-native-image-viewing';
-import SettingBottomSheet from '../Settings';
-import CustomBottomSheet from '../../../components/CustomBottomSheet';
 const Home = ({ navigation }) => {
-    const { t } = useTranslation();
-    const { progress, allUserInfo, setScreenpercentage, openBottomSheet } = useContext(GlobalContext);
-    const { homePageAllSlider } = useContext(ApiContext);
-    const [firstName, setFirstName] = useState(allUserInfo?.firstname ? allUserInfo?.firstname : "Panchal");
-    const [lastName, setLastName] = useState(allUserInfo?.lastname ? allUserInfo?.lastname : "Samaj");
 
+    const { t } = useTranslation();
+    const { progress, allUserInfo } = useContext(GlobalContext);
+    const { homePageAllSlider } = useContext(ApiContext);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [sliderImages, setSliderImages] = useState([]);
-    const [language, setLanguage] = useState('');
     const [isVisible, setIsVisible] = useState(false);
 
     const images = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}` },
     ];
-    const openSettings = () => {
-        setScreenpercentage({ first: "30%", second: "34%" });
-        openBottomSheet(<SettingBottomSheet />);
-    };
+
     const cards = [
         { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutus.png') },
         { id: 3, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageImg.png') },
         { id: 4, name: t('news'), redirectTo: "News", image: require('../../../assets/NewsImg.png') },
-        ...[allUserInfo && Object.entries(allUserInfo).length > 0 ?
-            { id: 5, name: "", redirectTo: "", image: "" } :
-            { id: 5, name: t('settings'), functionality: openSettings, image: require('../../../assets/setting.jpg') }]
     ];
 
     useEffect(() => {
@@ -51,14 +42,12 @@ const Home = ({ navigation }) => {
                     i18n.changeLanguage(storedLanguage).catch((error) => {
                         console.error('Error changing language:', error);
                     });
-                    console.log(storedLanguage, "storedLanguage")
-                    setLanguage(storedLanguage);
+                    console.log(storedLanguage, "stored Language")
                 }
             } catch (error) {
                 console.error('Error retrieving language:', error);
             }
         };
-
         getSelectedLanguage();
     }, []);
 
@@ -96,22 +85,26 @@ const Home = ({ navigation }) => {
         }
     };
 
-
     const openProfileImage = (e) => {
         e.stopPropagation();
         setIsVisible(true);
     }
+
     return (
         <>
-            <View className="flex-1 bg-gray-300 space-y-5 w-full pb-20" edges={['top']}>
+            <View className="flex-1 bg-gray-300 space-y-3 w-full pb-20" edges={['top']}>
                 <Pressable onPress={profileNavigate} className="bg-white h-fit flex items-center" style={{ alignSelf: 'stretch' }}>
                     <View className="flex-row justify-around my-3 w-full items-center ">
                         <View className="space-y-1 basis-2/3 justify-center px-5">
-                            <Text className="font-semibold tracking-wider text-neutral-700 text-2xl">
-                                {t("welcome")}
-                            </Text>
+                            {firstName && lastName && (
+                                <Text className="font-semibold tracking-wider text-neutral-700 text-2xl">
+                                    {t("welcome")}
+                                </Text>
+                            )}
                             <Text className="font-semibold tracking-wider text-rose-700 text-xl">
-                                {!firstName ? "Panchal Samaj" : `${firstName} ${lastName}`}
+                                {firstName && lastName
+                                    ? `${firstName} ${lastName}`
+                                    : 'સવાસો ગોડ પંચાલ સમાજમાં તમારું સ્વાગત છે'}
                             </Text>
                         </View>
                         <Pressable onPress={openProfileImage} className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
@@ -141,7 +134,12 @@ const Home = ({ navigation }) => {
                 visible={isVisible}
                 onRequestClose={() => setIsVisible(false)}
             />
-            {allUserInfo && Object.entries(allUserInfo).length === 0 && !allUserInfo.photo ? <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" /> : <></>}
+            {allUserInfo && Object.entries(allUserInfo).length === 0 && !allUserInfo.photo ?
+                <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
+                :
+                <>
+                </>
+            }
 
         </>
     );

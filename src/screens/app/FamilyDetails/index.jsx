@@ -74,7 +74,7 @@ const FamilyTree = ({ data, navigation, paramsId }) => {
     const lineColor = colorScheme === 'dark' ? 'white' : 'black';
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginLeft: 10, marginTop: 30 }}>
             <ScrollView
                 style={styles.parentScrollViewStyle}
                 horizontal

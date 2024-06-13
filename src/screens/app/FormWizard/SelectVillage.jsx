@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
-import { Button, MD3Colors, ProgressBar, TextInput } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-import { useWizard } from "../../../context/WizardProvider"; // Adjust the import path as necessary
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, MD3Colors, ProgressBar, TextInput } from "react-native-paper";
+import { useWizard } from "../../../context/WizardProvider";
 
 export default function SelectVillage({ navigation }) {
 
@@ -85,7 +85,7 @@ export default function SelectVillage({ navigation }) {
                 <Button
                     onPress={handleSubmit(onSubmit)}
                     mode="outlined"
-                    style={styles.button}
+                // className="m-2"
                 >
                     GOTO STEP TWO
                 </Button>
@@ -95,9 +95,6 @@ export default function SelectVillage({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    button: {
-        margin: 8,
-    },
     formEntry: {
         margin: 8,
     },

@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import Animated, {
     useAnimatedProps,
     useAnimatedStyle,
@@ -7,9 +7,9 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
-import { getPathXCenterByIndex } from '../../../utils/path';
-import usePath from '../../../hooks/usePath';
 import { SCREEN_WIDTH } from '../../../constants/Screen';
+import usePath from '../../../hooks/usePath';
+import { getPathXCenterByIndex } from '../../../utils/path';
 
 const ICON_SIZE = 25;
 const LABEL_WIDTH = SCREEN_WIDTH / 4;

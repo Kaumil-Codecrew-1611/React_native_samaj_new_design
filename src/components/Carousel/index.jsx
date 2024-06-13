@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Animated, Dimensions, StyleSheet, Text, View } from "react-native";
+import { Animated, Dimensions, StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Carousel from "react-native-reanimated-carousel";
 
@@ -50,11 +50,12 @@ export default Parallax;
 
 const styles = StyleSheet.create({
     slide: {
-        flex: 1,
         flexDirection: "row",
-        justifyContent: "space-between",
         alignSelf: "center",
         overflow: "hidden",
+        borderRadius: 20,
+        marginHorizontal: 5,
+        marginRight: 12
     },
     gradient: {
         flex: 1,
@@ -64,10 +65,10 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         position: 'relative',
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
     },
     container: {
         position: "absolute",
-        bottom: 20
+        bottom: 20,
     },
 });

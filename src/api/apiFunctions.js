@@ -1,4 +1,3 @@
-// src/api/apiFunctions.js
 import axios from 'axios';
 import axiosInstance from '../utils/axiosInstance';
 
@@ -11,11 +10,6 @@ export const payOrderData = async (orderData) => {
     const response = await axiosInstance.post('/order', orderData);
     return response.data;
 };
-
-// export const viewDetails = async () => {
-//     const response = await axiosInstance.get('/details');
-//     return response.data;
-// };
 
 export const changePassword = async (passwordData) => {
     const response = await axiosInstance.post('/changePassword', passwordData);
@@ -170,4 +164,9 @@ export const updateUserFamilyMembers = async (updatedData) => {
 export const sendMailSupport = async (emailPayload) => {
     const response = await axiosInstance.post('/email_support', emailPayload);
     return response.data;
+};
+
+export const joinPageData = async () => {
+    const response = await axiosInstance.get('/joinpage');
+    return response.data
 };

@@ -1,147 +1,83 @@
-import { View, Text, Pressable, Image, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { COLORS } from '../../../utils/colors';
 import Button from '../../../components/Button';
+import { SCREEN_HEIGHT } from '../../../constants/Screen';
+import ApiContext from '../../../context/ApiContext';
+import { COLORS } from '../../../utils/colors';
 
 const Welcome = ({ navigation }) => {
+
+    const { joinPageContent } = useContext(ApiContext);
+    const [imageOfJoinPage, setImageOfJoinPage] = useState("")
+    const [contentTitle, setContentTitle] = useState("")
+    const [description, setDescription] = useState("")
+
+    useEffect(() => {
+        (async function () {
+            const contentJoinPage = await joinPageContent();
+            setContentTitle(contentJoinPage.title)
+            setDescription(contentJoinPage.description)
+            setImageOfJoinPage(contentJoinPage.image)
+        })();
+    }, []);
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <LinearGradient
-                style={{ flex: 1 }}
                 colors={[COLORS.secondary, COLORS.primary]}
+                className="h-full"
             >
-                <View style={{ flex: 1 }}>
-                    <View>
-                        <Image
-                            source={require("../../../assets/hero1.jpg")}
-                            style={{
-                                height: 100,
-                                width: 100,
-                                borderRadius: 20,
-                                position: "absolute",
-                                top: 10,
-                                transform: [
-                                    { translateX: 20 },
-                                    { translateY: 50 },
-                                    { rotate: "-15deg" }
-                                ]
-                            }}
-                        />
-
-                        <Image
-                            source={require("../../../assets/hero3.jpg")}
-                            style={{
-                                height: 100,
-                                width: 100,
-                                borderRadius: 20,
-                                position: "absolute",
-                                top: -30,
-                                left: 100,
-                                transform: [
-                                    { translateX: 50 },
-                                    { translateY: 50 },
-                                    { rotate: "-5deg" }
-                                ]
-                            }}
-                        />
-
-                        <Image
-                            source={require("../../../assets/hero3.jpg")}
-                            style={{
-                                width: 100,
-                                height: 100,
-                                borderRadius: 20,
-                                position: "absolute",
-                                top: 130,
-                                left: -50,
-                                transform: [
-                                    { translateX: 50 },
-                                    { translateY: 50 },
-                                    { rotate: "15deg" }
-                                ]
-                            }}
-                        />
-
-                        <Image
-                            source={require("../../../assets/hero2.jpg")}
-                            style={{
-                                height: 200,
-                                width: 200,
-                                borderRadius: 20,
-                                position: "absolute",
-                                top: 110,
-                                left: 100,
-                                transform: [
-                                    { translateX: 50 },
-                                    { translateY: 50 },
-                                    { rotate: "-15deg" }
-                                ]
-                            }}
-                        />
-                    </View>
-
-                    {/* content */}
-
-                    <View style={{
-                        paddingHorizontal: 22,
-                        marginTop: 400,
-                        width: "100%"
-                    }}>
-                        <Text style={{
-                            fontSize: 50,
-                            fontWeight: "800",
-                            color: COLORS.white
-                        }}>Let's Get</Text>
-                        <Text style={{
-                            fontSize: 46,
-                            fontWeight: "800",
-                            color: COLORS.white
-                        }}>Started</Text>
-
-                        <View style={{ marginVertical: 22 }}>
-                            <Text style={{
-                                fontSize: 16,
-                                color: COLORS.white,
-                                marginVertical: 4
-                            }}>Explore profiles and details of fellow members</Text>
-                            <Text style={{
-                                fontSize: 16,
-                                color: COLORS.white,
-                            }}>in the Panchal Samaj community.</Text>
+                <View className="flex items-center w-full" style={{ height: SCREEN_HEIGHT / 2 }}>
+                    <Image
+                        source={{ uri: `${process.env.IMAGE_URL}${imageOfJoinPage}` }}
+                        className="rounded-3xl w-full h-full"
+                    />
+                </View>
+                <View className="relative h-1/2">
+                    <View className="flex items-center pt-5">
+                        <Text className="text-3xl text-white font-extrabold">{contentTitle}</Text>
+                        <View className="my-5 px-3">
+                            <Text className="text-lg text-white">{description}</Text>
                         </View>
-
+                    </View>
+                    <View className="absolute bottom-3 w-full px-4">
                         <Button
                             title="Join Now"
+                            className="rounded-2xl bg-lime-600"
                             onPress={() => navigation.navigate("Register")}
-                            style={{
-                                marginTop: 22,
-                                width: "100%"
-                            }}
                         />
-
-                        <View style={{
-                            flexDirection: "row",
-                            marginTop: 12,
-                            marginBottom: 12,
-                            justifyContent: "center"
-                        }}>
-                            <Text style={{
-                                fontSize: 16,
-                                color: COLORS.white
-                            }}>Already have an account?</Text>
+                        <View className="flex flex-row justify-center items-center my-3">
+                            <Text className="text-base text-white">Already have an account?</Text>
                             <Pressable
                                 onPress={() => navigation.navigate("Login")}
                             >
-                                <Text style={{
-                                    fontSize: 16,
-                                    color: COLORS.white,
-                                    fontWeight: "bold",
-                                    marginLeft: 4
-                                }}>Login</Text>
+                                <Text className="text-base font-bold ml-1 text-white">Login</Text>
                             </Pressable>
                         </View>
-
+                    </View>
+                </View>
+                <View className="relative h-1/2">
+                    <View className="flex items-center pt-5">
+                        <Text className="text-3xl text-white font-extrabold">{contentTitle}</Text>
+                        <View className="my-5 px-3">
+                            <Text className="text-lg text-white">{description}</Text>
+                        </View>
+                    </View>
+                    <View className="absolute bottom-3 w-full px-4">
+                        <Button
+                            title="Join Now"
+                            className="rounded-2xl bg-lime-600"
+                            onPress={() => navigation.navigate("Register")}
+                        />
+                        <View className="flex flex-row justify-center items-center my-3">
+                            <Text className="text-base text-white">Already have an account?</Text>
+                            <Pressable
+                                onPress={() => navigation.navigate("Login")}
+                            >
+                                <Text className="text-base font-bold ml-1 text-white">Login</Text>
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
             </LinearGradient>

@@ -1,24 +1,15 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
     Pressable,
-    Text,
-    StyleProp,
-    ViewStyle,
-    StyleSheet,
-    PressableProps,
+    StyleSheet
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
-
 const ICON_LIBRARIES = {
     Feather: () => Feather,
     MaterialCommunityIcons: () => MaterialCommunityIcons,
-    // add more libraries as needed
 };
-
-
 
 const IconButton = ({
     icon,

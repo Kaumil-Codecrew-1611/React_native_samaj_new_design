@@ -7,6 +7,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import ApiContext from '../../context/ApiContext';
 
 function ContactUsCard() {
+
     const { t } = useTranslation();
     const { contactUsPageDetails } = useContext(ApiContext);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
@@ -76,11 +77,10 @@ function ContactUsCard() {
             Linking.openURL(`mailto:${mail}`);
         }
     };
-
     return (
         <View className="mb-20">
             <View className="p-5">
-                <View className="bg-white rounded-[20px] p-3">
+                <View className="bg-white rounded-[20px] p-5">
                     <View className="flex flex-row items-center gap-3">
                         <AnimatedFontistoIcon
                             name="mobile"
@@ -92,10 +92,10 @@ function ContactUsCard() {
                     <View className="mt-4">
                         <Text className="tracking-wider text-neutral-700 text-base">{t('contactusphoneheading')}</Text>
                     </View>
-                    <View className="mb-2">
+                    <View className="my-3">
                         <View className="flex flex-row justify-between">
                             <View>
-                                <Text className="font-bold text-sm text-black">
+                                <Text className="font-bold text-sm text-black my-1">
                                     {contact1}
                                 </Text>
                             </View>
@@ -110,7 +110,7 @@ function ContactUsCard() {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View className="flex flex-row items-center justify-between">
+                    <View className="flex flex-row items-center justify-between my-1">
                         <View>
                             <Text className="font-bold text-black text-sm">
                                 {contact2}
@@ -128,68 +128,80 @@ function ContactUsCard() {
                     </View>
                 </View>
             </View>
-            <View className="p-5">
-                <View className="bg-white rounded-[20px] p-3">
-                    <View className="flex flex-row items-center gap-3">
-                        <AnimatedFontistoIcon
-                            name="email"
-                            size={25}
-                            color="black"
-                        />
-                        <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('email')}</Text>
-                    </View>
-                    <View className="mt-2">
-                        <View>
-                            <Text className="tracking-wider text-base text-neutral-700">{t('contactusemailheading')}</Text>
+            {email && email ?
+                <View className="p-5">
+                    <View className="bg-white rounded-[20px] p-5">
+                        <View className="flex flex-row items-center gap-3">
+                            <AnimatedFontistoIcon
+                                name="email"
+                                size={25}
+                                color="black"
+                            />
+                            <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('email')}</Text>
                         </View>
-                        <TouchableOpacity onPress={() => handleClickOnMail(email)}>
-                            <View className="mt-2">
-                                <Text className="text-[#5176df] tracking-wider text-sm font-semibold">{email}</Text>
+                        <View className="mt-2">
+                            <View>
+                                <Text className="tracking-wider text-base text-neutral-700">{t('contactusemailheading')}</Text>
                             </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-            <View className="p-5">
-                <View className="bg-white rounded-[20px] p-3">
-                    <View className="flex flex-row items-center gap-3">
-                        <AnimatedFeatherIcon
-                            name="users"
-                            size={25}
-                            color="black"
-                        />
-                        <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('socials')}</Text>
-                    </View>
-                    <View className="mt-2">
-                        <View className="mb-5">
-                            <Text className="tracking-wider text-base text-neutral-700">{t('contactussocialheading')}</Text>
-                        </View>
-                        <View className="flex flex-row justify-around">
-                            <TouchableOpacity onPress={() => openLink(twitterLink)}>
-                                <AnimatedFontistoIcon
-                                    name="twitter"
-                                    size={40}
-                                    color="#1da1f2"
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => openLink(instagramLink)}>
-                                <AnimatedFontistoIcon
-                                    name="instagram"
-                                    size={40}
-                                    color="#f700b2"
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => openLink(faceBookLink)}>
-                                <AnimatedFontistoIcon
-                                    name="facebook"
-                                    size={40}
-                                    color="#0866ff"
-                                />
+                            <TouchableOpacity onPress={() => handleClickOnMail(email)}>
+                                <View className="mt-2">
+                                    <Text className="text-[#5176df] tracking-wider text-sm font-semibold">{email}</Text>
+                                </View>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-            </View>
+                :
+                <></>
+            }
+            {(faceBookLink || instagramLink || twitterLink) ? (
+                <View className="p-5">
+                    <View className="bg-white rounded-[20px] p-5">
+                        <View className="flex flex-row items-center gap-3">
+                            <AnimatedFeatherIcon
+                                name="users"
+                                size={25}
+                                color="black"
+                            />
+                            <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('socials')}</Text>
+                        </View>
+                        <View className="mt-2">
+                            <View className="mb-5">
+                                <Text className="tracking-wider text-base text-neutral-700">{t('contactussocialheading')}</Text>
+                            </View>
+                            <View className="flex flex-row justify-around">
+                                {twitterLink && (
+                                    <TouchableOpacity onPress={() => openLink(twitterLink)}>
+                                        <AnimatedFontistoIcon
+                                            name="twitter"
+                                            size={40}
+                                            color="#1da1f2"
+                                        />
+                                    </TouchableOpacity>
+                                )}
+                                {instagramLink && (
+                                    <TouchableOpacity onPress={() => openLink(instagramLink)}>
+                                        <AnimatedFontistoIcon
+                                            name="instagram"
+                                            size={40}
+                                            color="#f700b2"
+                                        />
+                                    </TouchableOpacity>
+                                )}
+                                {faceBookLink && (
+                                    <TouchableOpacity onPress={() => openLink(faceBookLink)}>
+                                        <AnimatedFontistoIcon
+                                            name="facebook"
+                                            size={40}
+                                            color="#0866ff"
+                                        />
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            ) : null}
         </View>
     );
 }

@@ -1,22 +1,26 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-import { useTranslation } from 'react-i18next';
-
-
 
 const ChangePassword = ({ navigation }) => {
     const { t } = useTranslation();
+    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const { allUserInfo } = useContext(GlobalContext);
+    const { userChangePassword } = useContext(ApiContext);
+    const [isCurrentPasswordHidden, setCurrentPasswordHidden] = useState(true);
+    const [isNewPasswordHidden, setNewPasswordHidden] = useState(true);
+    const [isConfirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
+    const [userId] = useState(allUserInfo._id)
 
     const schema = yup.object().shape({
-
         old_password: yup.string().required('Current password is required'),
         password: yup.string()
             .required(t('newpasswordisrequired'))
@@ -29,13 +33,6 @@ const ChangePassword = ({ navigation }) => {
             .required(t('confirmpasswordisrequired')),
     });
 
-    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const { allUserInfo } = useContext(GlobalContext);
-    const { userChangePassword } = useContext(ApiContext);
-    const [isCurrentPasswordHidden, setCurrentPasswordHidden] = useState(true);
-    const [isNewPasswordHidden, setNewPasswordHidden] = useState(true);
-    const [isConfirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
-    const [userId] = useState(allUserInfo._id)
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
@@ -84,7 +81,7 @@ const ChangePassword = ({ navigation }) => {
                 <View className="flex-1 px-8">
                     <KeyboardAvoidingView
                         behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.container}
+                        className="flex flex-1"
                     >
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -93,7 +90,7 @@ const ChangePassword = ({ navigation }) => {
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('changePassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation">
+                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
                                             <Controller
                                                 control={control}
                                                 name="old_password"
@@ -121,12 +118,11 @@ const ChangePassword = ({ navigation }) => {
                                         </View>
                                         {errors.old_password && <Text className="text-red-500">{errors.old_password.message}</Text>}
                                     </View>
-
                                     <View className="my-5">
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('newPassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation">
+                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
                                             <Controller
                                                 control={control}
                                                 name="password"
@@ -154,12 +150,11 @@ const ChangePassword = ({ navigation }) => {
                                         </View>
                                         {errors.password && <Text className="text-red-500">{errors.password.message}</Text>}
                                     </View>
-
                                     <View>
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('confirmpassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation" >
+                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black" >
                                             <Controller
                                                 control={control}
                                                 name="cpassword"
@@ -199,14 +194,5 @@ const ChangePassword = ({ navigation }) => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    scrollViewContent: {
-        flexGrow: 1,
-    },
-});
 
 export default ChangePassword;

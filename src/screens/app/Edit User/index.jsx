@@ -3,12 +3,12 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
-import { useTranslation } from 'react-i18next';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const EditUserProfile = ({ navigation }) => {
@@ -88,11 +88,12 @@ const EditUserProfile = ({ navigation }) => {
             setValue('mobile_number', editUserProfile?.mobile_number ? editUserProfile?.mobile_number?.toString() : "");
         })();
     }, [setValue, allUserInfo._id]);
+
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 rounded-md p-3">
                 <Text className="font-extrabold tracking-wider ml-1 text-2xl text-rose-700">
-                    Edit Profile
+                    {t("EditProfile")}
                 </Text>
                 <View className="w-full ml-1 my-2 bg-neutral-700 h-[2px]"></View>
                 <KeyboardAvoidingView

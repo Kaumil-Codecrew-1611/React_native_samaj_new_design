@@ -1,6 +1,5 @@
 import { ScrollView } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
@@ -9,7 +8,7 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import ApiContext from '../../../context/ApiContext';
 
 const NewsDetailsPage = ({ route }) => {
-    const { t } = useTranslation();
+
     const { newsId } = route.params;
     const { newsDataById } = useContext(ApiContext);
     const [isVisible, setIsVisible] = useState(false);
@@ -19,7 +18,11 @@ const NewsDetailsPage = ({ route }) => {
     const [newsDetailsCreateDate, setNewsDetailsCreateDate] = useState("");
     const [newsAddPerson, setNewsAddPerson] = useState("");
     const [loading, setLoading] = useState(true);
+    const scrollRef = useAnimatedRef();
+    const scrolloffset = useScrollViewOffset(scrollRef);
+    const IMG_HEIGHT = 180;
     const { width } = Dimensions.get('window');
+
     const images = [
         {
             uri: `${process.env.IMAGE_URL}${newsDetailsImage}`,
@@ -64,11 +67,6 @@ const NewsDetailsPage = ({ route }) => {
         })();
     }, [newsId]);
 
-    const scrollRef = useAnimatedRef();
-    const scrolloffset = useScrollViewOffset(scrollRef);
-
-    const IMG_HEIGHT = 180;
-
     const imageAnimatedStyle = useAnimatedStyle(() => {
         return {
             transform: [
@@ -91,7 +89,7 @@ const NewsDetailsPage = ({ route }) => {
     });
 
     return (
-        <View className="bg-gray-300" style={styles.container}>
+        <View className="bg-gray-300 flex flex-1">
             <ScrollView
                 ref={scrollRef}
                 showsVerticalScrollIndicator={false}
@@ -99,7 +97,7 @@ const NewsDetailsPage = ({ route }) => {
             >
                 {loading ? (
                     <SkeletonPlaceholder>
-                        <View style={styles.skeletonContainer}>
+                        <View className="p-3">
                             <View style={styles.skeletonImage} />
                             <View style={styles.skeletonTextLarge} />
                             <View style={styles.skeletonTextMedium} />
@@ -161,16 +159,10 @@ const NewsDetailsPage = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     image: {
         width: '100%',
         height: 300,
         objectFit: "cover"
-    },
-    skeletonContainer: {
-        padding: 10,
     },
     skeletonImage: {
         width: '100%',

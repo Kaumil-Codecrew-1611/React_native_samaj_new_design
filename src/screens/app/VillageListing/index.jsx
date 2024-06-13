@@ -1,17 +1,17 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import CardDetails from '../../../components/CardDetails';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../../../context/i18n';
-import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 
 const VillageListing = ({ navigation, route }) => {
 
@@ -85,7 +85,6 @@ const VillageListing = ({ navigation, route }) => {
                 console.error('Error retrieving language:', error);
             }
         };
-
         getSelectedLanguage();
     }, []);
 

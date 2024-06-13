@@ -1,50 +1,39 @@
-// src/context/ApiContext.js
 import React, { createContext, useReducer } from 'react';
 import {
-    registerUser,
-    // viewDetails,
-    changePassword,
-    getLocationData,
-    getAmountData,
-    payOrderData,
-    loginUser,
-    homePageSlider,
     aboutUsContent,
-    allVillageListing,
-    villagesByUser,
-    allNewsListing,
     addFamilyMember,
-    userPasswordChange,
-    contactUsDetails,
+    allNewsListing,
+    allVillageListing,
+    changePassword,
     committeeMembers,
-    relationshipDataList,
+    contactUsDetails,
+    editUserFamilyMembers,
+    editUserPostProfile,
+    editUserProfile,
     familyDataById,
     familyDataByUserParentId,
-    newsDetailsById,
-    updateUserProfile,
-    editUserProfile,
-    editUserPostProfile,
-    handleFamilyUserProfile,
     faqs,
-    editUserFamilyMembers,
-    updateUserFamilyMembers,
+    getAmountData,
+    getLocationData,
+    handleFamilyUserProfile,
+    homePageSlider,
+    joinPageData,
+    loginUser,
+    newsDetailsById,
+    payOrderData,
     profileBannerImageUpdate,
+    registerUser,
+    relationshipDataList,
     sendMailSupport,
+    updateUserFamilyMembers,
+    updateUserProfile,
+    userPasswordChange,
+    villagesByUser,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
 const ApiContext = createContext();
 
-/* const apiReducer = (state, action) => {
-    switch (action.type) {
-        case 'SET_DATA':
-            return { ...state, [action.payload.key]: action.payload.data };
-        case 'RESET_DATA':
-            return { ...state, [action.payload.key]: null };
-        default:
-            return state;
-    }
-}; */
 const apiReducer = (state, action) => {
     switch (action.type) {
         case 'SET_DATA':
@@ -52,7 +41,6 @@ const apiReducer = (state, action) => {
         case 'RESET_DATA':
             return { ...state, [action.payload.key]: null };
         case 'RESET_ALL_DATA':
-            // This will create a new state object with all keys set to null
             const resetState = Object.keys(state).reduce((acc, key) => {
                 acc[key] = null;
                 return acc;
@@ -76,8 +64,8 @@ export const ApiProvider = ({ children }) => {
     const resetAllData = () => {
         dispatch({ type: 'RESET_ALL_DATA' });
     };
+
     const register = (userData) => apiRequest(registerUser, userData, setData, 'registerResponse');
-    // const viewUserDetails = () => apiRequest(viewDetails, null, setData, 'detailsResponse');
     const changeUserPassword = (passwordData) => apiRequest(changePassword, passwordData, setData, 'changePasswordResponse');
     const getLocation = () => apiRequest(getLocationData, null, setData, 'locationData');
     const getAmount = () => apiRequest(getAmountData, null, setData, 'amountData');
@@ -85,7 +73,7 @@ export const ApiProvider = ({ children }) => {
     const loginAPICall = (userData) => apiRequest(loginUser, userData, setData, 'loginDataResponse');
     const homePageAllSlider = () => apiRequest(homePageSlider, null, setData, 'homesliderimage');
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
-    const villagesListing = (search) => apiRequest(allVillageListing, search, setData, 'villagesListing'); //village listing
+    const villagesListing = (search) => apiRequest(allVillageListing, search, setData, 'villagesListing');
     const allUserByVillageId = (villageId) => apiRequest(villagesByUser, villageId, setData, 'allUserByVillage');
     const newsListing = () => apiRequest(allNewsListing, null, setData, 'allNewsListing');
     const addFamilyMemberDetails = (familyData) => apiRequest(addFamilyMember, familyData, setData, 'addFamilyMemberDetails');
@@ -105,13 +93,12 @@ export const ApiProvider = ({ children }) => {
     const updateFamilyDetailsUser = (updatedData) => apiRequest(updateUserFamilyMembers, updatedData, setData, 'updateFamilyDetailsUser');
     const updateUserBannerProfileImage = (payload) => apiRequest(profileBannerImageUpdate, payload, setData, 'updateUserBannerProfileImage');
     const supportMailSend = (emailPayload) => apiRequest(sendMailSupport, emailPayload, setData, 'supportMailSend');
+    const joinPageContent = () => apiRequest(joinPageData, null, setData, 'joinPageDetails');
 
     return (
         <ApiContext.Provider value={{
             state,
             register,
-            // viewUserDetails,
-            // addNewDetails,
             changeUserPassword,
             resetData,
             resetAllData,
@@ -141,6 +128,7 @@ export const ApiProvider = ({ children }) => {
             updateFamilyDetailsUser,
             updateUserBannerProfileImage,
             supportMailSend,
+            joinPageContent,
         }}>
             {children}
         </ApiContext.Provider>

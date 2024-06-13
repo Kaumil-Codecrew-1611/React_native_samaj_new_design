@@ -1,23 +1,35 @@
-
-
-import React from 'react'
-import { View, Text, Pressable, Image } from 'react-native'
-import ContactUsCard from '../../../components/ContactUsCard';
-import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'native-base';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import ContactUsCard from '../../../components/ContactUsCard';
 
 function ContactUs({ navigation }) {
     const { t } = useTranslation();
+    const [highlight, setHighlight] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setHighlight(prev => !prev);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <View className=" flex-1 bg-[#E9EDF7] space-y-5 w-full">
             <View className="bg-white p-3">
                 <View className="flex flex-row justify-between items-center">
-                    <Text className=" text-2xl tracking-wider text-neutral-700  font-extrabold">{t('contactUs')}</Text>
-                    <Pressable className=" mr-6" onPress={() => navigation.navigate("Support")}>
-                        <View className=" w-[50px] h-[50px] rounded-full bg-[#E9EDF7] flex-row justify-center items-center">
-                            <Image className="w-[37px] h-[37px]" source={require('../../../assets/support.png')} />
+                    <Text className="text-2xl tracking-wider text-neutral-700 font-extrabold">
+                        {t('contactUs')}
+                    </Text>
+                    <Pressable className="mr-6" style={styles.shadow} onPress={() => navigation.navigate("Support")}>
+                        <View className={`p-[4px] rounded-full ${highlight ? 'bg-red-400' : 'bg-black'}`} style={styles.shadow}>
+                            <View className={`w-[50px] h-[50px] rounded-full flex-row justify-center items-center ${highlight ? 'bg-blue-200' : 'bg-[#E9EDF7]'}`} style={styles.shadow}>
+                                <Image className="w-[37px] h-[37px]" source={require('../../../assets/support.png')} />
+                            </View>
                         </View>
+                        <Text className="text-sm text-blue-500 font-medium tracking-widest" style={styles.textShadow} >Support</Text>
                     </Pressable>
                 </View>
             </View>
@@ -32,5 +44,15 @@ function ContactUs({ navigation }) {
 
     )
 }
+
+const styles = StyleSheet.create({
+    shadow: {
+        shadowColor: "black",
+        shadowOffset: { width: 2, height: 3 },
+        shadowOpacity: 1,
+        shadowRadius: 3,
+        elevation: 3,
+    },
+});
 
 export default ContactUs;

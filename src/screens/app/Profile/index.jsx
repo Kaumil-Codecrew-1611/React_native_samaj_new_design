@@ -1,6 +1,7 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import Animated, { withTiming } from 'react-native-reanimated';
@@ -10,8 +11,6 @@ import CustomBottomSheet from '../../../components/CustomBottomSheet';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import SettingBottomSheet from '../Settings';
-import { useFocusEffect } from '@react-navigation/native';
-
 
 const ProfilePage = ({ navigation }) => {
     const { t } = useTranslation();
@@ -28,9 +27,11 @@ const ProfilePage = ({ navigation }) => {
     const profileImage = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}`, },
     ];
+
     const bannerImages = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}`, },
     ];
+
     const openSettings = () => {
         setScreenpercentage({ first: "30%", second: "34%" });
         openBottomSheet(<SettingBottomSheet />);
@@ -85,6 +86,7 @@ const ProfilePage = ({ navigation }) => {
     const closePopup = () => {
         setIsPopupVisible(false);
     };
+
     const closeBannerPopup = () => {
         setIsBannerPopupVisible(false);
     };
@@ -93,6 +95,7 @@ const ProfilePage = ({ navigation }) => {
         closePopup();
         setIsVisible(true);
     };
+
     const viewBannerImage = () => {
         closeBannerPopup();
         setBannerIsVisible(true);
@@ -137,6 +140,7 @@ const ProfilePage = ({ navigation }) => {
             console.log(error, "errorChangingImage")
         });
     }
+
     const selectBannerImage = async () => {
         ImagePicker.openPicker({
             width: 1600,
@@ -170,20 +174,12 @@ const ProfilePage = ({ navigation }) => {
     };
 
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
+
     const handleShare = async () => {
         try {
-            const result = await Share.share({
+            await Share.share({
                 message: `Check out this awesome app: ${appUrl}`,
             });
-            if (result.action === Share.sharedAction) {
-                if (result.activityType) {
-                    // Shared with activity type of result.activityType
-                } else {
-                    // Shared
-                }
-            } else if (result.action === Share.dismissedAction) {
-                // Dismissed
-            }
         } catch (error) {
             console.error('Error sharing:', error.message);
         }
@@ -206,13 +202,8 @@ const ProfilePage = ({ navigation }) => {
                             </ImageBackground>
                         </View>
                     </Pressable>
-                    <Pressable onPress={openLogoutModal} className="absolute right-2 top-2 flex w-12 h-12 shadow-lg shadow-white items-center justify-center rounded-full bg-gray-600">
-                        <AnimatedFeatherIcon
-                            name="log-out"
-                            size={25}
-                            color="white"
-                            className="m-2"
-                        />
+                    <Pressable className="absolute right-2 top-2 flex w-12 h-12 shadow-lg items-center justify-center rounded-full bg-white" onPress={handleShare}>
+                        <AnimatedFontistoIcon name="share" size={30} color={"black"} />
                     </Pressable>
                     <View className="absolute p-6 flex h-36 top-20 w-full items-center justify-center -space-x-2 overflow-visible">
                         <Pressable onPress={openModal}>
@@ -267,11 +258,15 @@ const ProfilePage = ({ navigation }) => {
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
-                                <Pressable onPress={handleShare}>
+                                <Pressable onPress={openLogoutModal}>
                                     <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                         <View className="flex-row justify-between gap-2 items-center">
-                                            <AnimatedFontistoIcon name="share" size={30} color={"black"} />
-                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("ShareApp")}</Text>
+                                            <AnimatedFeatherIcon
+                                                name="log-out"
+                                                size={25}
+                                                color="black"
+                                            />
+                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">Logout</Text>
                                         </View>
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </View>

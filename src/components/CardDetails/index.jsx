@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import {
     BackdropBlur,
     Canvas,
@@ -5,21 +6,25 @@ import {
     Image,
     useImage
 } from "@shopify/react-native-skia";
-import React, { useContext, useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { GlobalContext } from "../../context/globalState";
-import { useRoute } from '@react-navigation/native';
-const CardDetails = ({ content, size, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing }) => {
-    const route = useRoute();
 
+const CardDetails = ({ content, size, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing }) => {
+
+    const route = useRoute();
     const small = (size === 'sm');
     const large = (size === 'lg');
     const full = (size === 'full');
-
     const [loading, setLoading] = useState(true);
     const imageURL = useImage(image);
+    const canvasWidth = small ? 256 : large ? 300 : full ? 330 : 156;
+    const canvasHeight = small ? 150 : large ? 230 : full ? 500 : 180;
+    const imageWidth = small ? 112 : large ? 160 : full ? 330 : 130;
+    const imageHeight = small ? 170 : large ? 250 : full ? 500 : 190;
+    const blurClipY = small ? 90 : large ? 180 : full ? 380 : 120;
+    const blurClipWidth = full ? 350 : 256;
 
     useEffect(() => {
         if (imageURL) {
@@ -39,13 +44,6 @@ const CardDetails = ({ content, size, image, redirectTo, functionality, navigati
             }
         }
     };
-
-    const canvasWidth = small ? 256 : large ? 300 : full ? 330 : 156;
-    const canvasHeight = small ? 150 : large ? 230 : full ? 500 : 180;
-    const imageWidth = small ? 112 : large ? 160 : full ? 330 : 130;
-    const imageHeight = small ? 170 : large ? 250 : full ? 500 : 190;
-    const blurClipY = small ? 90 : large ? 180 : full ? 380 : 120;
-    const blurClipWidth = full ? 350 : 256;
 
     return (
         <>
@@ -94,13 +92,5 @@ const CardDetails = ({ content, size, image, redirectTo, functionality, navigati
     );
 };
 
-const styles = StyleSheet.create({
-    stretch: {
-        display: "flex",
-        justifyContent: "flex-end",
-        width: "100%",
-        height: 200,
-    },
-});
 
 export default CardDetails;
