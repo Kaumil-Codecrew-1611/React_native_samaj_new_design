@@ -11,7 +11,7 @@ import { Text, View } from 'react-native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-const CardDetails = ({ content, size, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing }) => {
+const CardDetails = ({ content, size, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing, allVillagesListing }) => {
 
     const route = useRoute();
     const small = (size === 'sm');
@@ -88,6 +88,7 @@ const CardDetails = ({ content, size, image, redirectTo, functionality, navigati
                     </View>
                 </TouchableOpacity>
             )}
+            {!allVillagesListing?.length && <NoDataFound message={"No villages found. Please try again later."} />}
         </>
     );
 };

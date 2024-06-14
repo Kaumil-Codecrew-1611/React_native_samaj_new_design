@@ -27,6 +27,7 @@ import SettingBottomSheet from '../screens/app/Settings';
 import Support from '../screens/app/Support';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
+import Welcome from '../screens/app/WelcomeScreen';
 
 const RootStack = createNativeStackNavigator()
 const RootNavigator = () => {
@@ -63,6 +64,7 @@ const RootNavigator = () => {
             <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: t('NewsList') }} />
             <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: t("newsDetails") }} />
             <RootStack.Screen name="News" component={News} options={{ headerTitle: t("news") }} />
+            <RootStack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
             <RootStack.Screen name="Support" options={{ headerTitle: t("SupportPage") }} component={Support} />
             <RootStack.Screen name="Seetings" component={SettingBottomSheet} options={{ headerTitle: t("settings") }} />
             <RootStack.Screen name="EmailSupport" component={EmailSupport} options={{ headerTitle: t("EmailSupport") }} />

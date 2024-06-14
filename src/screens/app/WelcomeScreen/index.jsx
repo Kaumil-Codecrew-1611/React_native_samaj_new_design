@@ -31,7 +31,7 @@ const Welcome = ({ navigation }) => {
                 <View className="flex items-center w-full" style={{ height: SCREEN_HEIGHT / 2 }}>
                     <Image
                         source={{ uri: `${process.env.IMAGE_URL}${imageOfJoinPage}` }}
-                        className="rounded-3xl w-full h-full"
+                        className="rounded-bl-3xl rounded-br-3xl w-full h-full"
                     />
                 </View>
                 <View className="relative h-1/2">

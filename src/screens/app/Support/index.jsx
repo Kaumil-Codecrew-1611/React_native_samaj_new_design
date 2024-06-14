@@ -1,33 +1,46 @@
-import React from 'react'
-import { Image, Text, View, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
-const banner_img = require("../../../assets/support_header_bg.png")
-
-import { useTranslation } from 'react-i18next';
+import ApiContext from '../../../context/ApiContext';
 
 function Support({ navigation }) {
+
     const { t } = useTranslation();
-
-
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-
+    const { contactUsPageDetails } = useContext(ApiContext);
+    const [supportImage, setSupportImage] = useState("")
     const redirect = (redirectPath) => {
         if (redirectPath) {
             navigation.navigate(redirectPath)
         }
     }
 
+    useEffect(() => {
+        (async function () {
+            const contentContactUs = await contactUsPageDetails();
+            const desiredKeys = ["supportedImage"];
+            contentContactUs.forEach((item) => {
+                if (desiredKeys.includes(item.key)) {
+                    switch (item.key) {
+                        case 'supportedImage':
+                            setSupportImage(item.value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        })();
+    }, []);
+
     return (
         <View className="flex-1 bg-white space-y-5 w-full p-3" edges={['top']}>
             <View className="w-full h-full bg-[#f7f7fa] rounded-[10px] overflow-hidden">
                 <View className="w-full h-52 bg-[#E9EDF7] flex flex-row justify-center items-end object-cover">
-                    <Image
-                        source={banner_img}
-                        className="w-[80%] h-[100%]"
-                    />
+                    <Image className="w-full h-full object-cover" source={{ uri: `${process.env.IMAGE_URL}${supportImage}` }} />
                 </View>
-
                 <View className="w-full mt-6 mb-3 flex flex-row justify-center">
                     <View className="w-[90%]">
                         <Text className="font-extrabold tracking-wider mb-3 text-2xl text-rose-700 text-center">{t('tellmehowcan')}</Text>

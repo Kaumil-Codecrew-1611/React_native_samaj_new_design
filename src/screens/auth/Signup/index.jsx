@@ -4,10 +4,8 @@ import AuthHeader from '../../../components/AuthHeader';
 import Button from '../../../components/Button';
 import Checkbox from '../../../components/Checkbox';
 import Input from '../../../components/Input';
-import Separator from '../../../components/Separator';
-
-import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from './styles';
 
 const Signup = ({ navigation }) => {
     const [checked, setChecked] = useState(false);

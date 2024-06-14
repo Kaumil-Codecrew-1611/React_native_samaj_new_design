@@ -1,18 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { withTiming } from 'react-native-reanimated';
-import Svg, { Image } from 'react-native-svg';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-import { COLORS } from '../../../utils/colors';
-import { useTranslation } from 'react-i18next';
 
 const Login = ({ navigation }) => {
+
     const { t } = useTranslation();
+    const { loginAPICall, contactUsPageDetails } = useContext(ApiContext);
+    const { setuserDataInStorage, progress, setIsLoggedIn, getUserDataFromStorage, setAllUserInfo } = useContext(GlobalContext);
+    const [loginImage, setLoginImage] = useState()
 
     const schema = yup.object().shape({
         email_or_mobile: yup.string().required(t('emailOrMobileRequired')).test(
@@ -33,12 +35,10 @@ const Login = ({ navigation }) => {
             t('passwordmusthaveatleastoneletteronenumberandonespecialcharacter')
         ),
     });
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
-
-    const { loginAPICall } = useContext(ApiContext);
-    const { setuserDataInStorage, progress, setIsLoggedIn, getUserDataFromStorage, setAllUserInfo } = useContext(GlobalContext);
 
     const onSubmit = async (data) => {
         try {
@@ -64,12 +64,34 @@ const Login = ({ navigation }) => {
         }
     };
 
+    useEffect(() => {
+        (async function () {
+            const contentContactUs = await contactUsPageDetails();
+            const desiredKeys = ["login"];
+            contentContactUs.forEach((item) => {
+                if (desiredKeys.includes(item.key)) {
+                    switch (item.key) {
+                        case 'login':
+                            setLoginImage(item.value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        })();
+    }, []);
+
+    const imageUrl = `${process.env.IMAGE_URL}${loginImage}`
+
     return (
         <View style={styles.container}>
-            <View style={styles.bannerContainer}>
-                <Svg className="h-[100%] w-[100%]">
-                    <Image href={require("../../../assets/login_banner_bg.png")} width="100%" height="100%" />
-                </Svg>
+            <View className="h-[100%] w-[100%]" style={styles.bannerContainer}>
+                <Image
+                    source={{ uri: imageUrl }}
+                    style={styles.image}
+                    onError={(error) => console.error('Image load error:', error)}
+                />
             </View>
             <View className="bg-white h-[60%] p-4 rounded-tr-3xl rounded-tl-3xl shadow-md">
                 <View>
@@ -138,6 +160,10 @@ const styles = StyleSheet.create({
     bannerContainer: {
         height: '40%',
     },
+    image: {
+        height: "100%",
+        width: "100%"
+    }
 });
 
 export default Login;

@@ -4,6 +4,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
+import { processRect } from '@shopify/react-native-skia';
 const { width } = Dimensions.get('window');
 const IMG_HEIGHT = 300;
 
@@ -14,12 +15,14 @@ const Aboutus = () => {
     const { aboutUsContentApi } = useContext(ApiContext);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [aboutUsImage, setAboutUsImage] = useState("");
 
     useEffect(() => {
         (async function () {
             const contentAboutUs = await aboutUsContentApi();
             setTitle(contentAboutUs?.AboutusData?.title);
             setDescription(contentAboutUs?.AboutusData?.description);
+            setAboutUsImage(contentAboutUs?.AboutusData?.image);
         })();
     }, []);
 
@@ -71,7 +74,7 @@ const Aboutus = () => {
                 showsHorizontalScrollIndicator={false}
             >
                 <View>
-                    <Animated.Image source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGsmGhSaJcQOzDWEwYB31PkUQZTsCsW4YZmQYh6B2c7Q&s' }}
+                    <Animated.Image source={{ uri: `${process.env.IMAGE_URL}${aboutUsImage}` }}
                         style={[styles.image, imageAnimatedStyle]} />
                 </View>
                 <View className="bg-white p-2">

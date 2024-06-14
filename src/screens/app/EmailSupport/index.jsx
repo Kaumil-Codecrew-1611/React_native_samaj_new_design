@@ -1,11 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Image, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View, Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
-import { useTranslation } from 'react-i18next';
 
 function EmailSupport({ navigation }) {
     const { t } = useTranslation();
@@ -15,7 +15,8 @@ function EmailSupport({ navigation }) {
         message: yup.string().required(t("Messageisrequired")),
         email: yup.string().email(t("Invalidemailformat")).required(t("Emailisrequired")),
     });
-    const { supportMailSend } = useContext(ApiContext);
+    const { supportMailSend, contactUsPageDetails } = useContext(ApiContext);
+    const [emailSupportImage, setEmailSupportImage] = useState("")
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
@@ -29,6 +30,24 @@ function EmailSupport({ navigation }) {
         }
     };
 
+    useEffect(() => {
+        (async function () {
+            const contentContactUs = await contactUsPageDetails();
+            const desiredKeys = ["emailSupport"];
+            contentContactUs.forEach((item) => {
+                if (desiredKeys.includes(item.key)) {
+                    switch (item.key) {
+                        case 'emailSupport':
+                            setEmailSupportImage(item.value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        })();
+    }, []);
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -40,10 +59,7 @@ function EmailSupport({ navigation }) {
                         <View className="w-full flex-1 h-full bg-[#F7F7FA] rounded-[10px] overflow-hidden">
                             <View className="w-full h-36 bg-[#E9EDF7] flex flex-row ">
                                 <View className="basis-[35%] flex flex-row justify-center items-center">
-                                    <Image
-                                        source={require("../../../assets/send_email_bg.png")}
-                                        className="w-[80px] h-[80px] object-cover"
-                                    />
+                                    <Image className="w-[80px] h-[80px] object-cover" source={{ uri: `${process.env.IMAGE_URL}${emailSupportImage}` }} />
                                 </View>
                                 <View className="basis-[65%] flex flex-row justify-center items-center">
                                     <Text className="font-extrabold tracking-wider text-2xl text-rose-700 ">

@@ -35,7 +35,7 @@ const VillageListing = ({ navigation, route }) => {
     useEffect(() => {
         (async function () {
             const allVillages = await villagesListing();
-            setAllVillagesListing(allVillages.village);
+            setAllVillagesListing(allVillages?.village);
         })();
     }, []);
 
@@ -94,7 +94,6 @@ const VillageListing = ({ navigation, route }) => {
             navigation.navigate('VillageWisePersons', { villageId: item._id });
         };
         const villageImage = process.env.IMAGE_URL + item.image;
-
         return (
             <View className={`${listingStyle === 'grid' ? 'flex-1 m-2' : 'w-full my-2'} items-center`}>
                 <CardDetails
@@ -103,6 +102,7 @@ const VillageListing = ({ navigation, route }) => {
                     content={language == 'en' ? item.villageE : item.villageG}
                     navigation={navigation}
                     villageListing={true}
+                    allVillagesListing={allVillagesListing}
                     handleSetSelectedVillage={() => handleVillageSelect(item)}
                 />
             </View>
@@ -131,7 +131,7 @@ const VillageListing = ({ navigation, route }) => {
                     <TouchableOpacity onPress={() => {
                         setSearch("");
                     }}>
-                        <View className="">
+                        <View>
                             {search !== "" ? (
                                 <AnimatedFontistoIcon
                                     name="close"

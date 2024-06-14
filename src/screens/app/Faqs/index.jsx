@@ -1,19 +1,18 @@
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
-import Animated from 'react-native-reanimated';
-import Feather from 'react-native-vector-icons/Feather';
-
-import { FlatList } from 'react-native-gesture-handler'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import ApiContext from '../../../context/ApiContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Feather from 'react-native-vector-icons/Feather';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
-
+import ApiContext from '../../../context/ApiContext';
 
 const Faqs = () => {
     const { t } = useTranslation();
     const [visibleAnswers, setVisibleAnswers] = useState({});
-    const { allfaqListing } = useContext(ApiContext);
+    const [faqsImage, setFaqsImage] = useState("");
+    const { allfaqListing, contactUsPageDetails } = useContext(ApiContext);
     const [faqs, setFaq] = useState([]);
 
     useEffect(() => {
@@ -34,6 +33,24 @@ const Faqs = () => {
             [id]: !prev[id],
         }));
     };
+
+    useEffect(() => {
+        (async function () {
+            const contentContactUs = await contactUsPageDetails();
+            const desiredKeys = ["faqSupport"];
+            contentContactUs.forEach((item) => {
+                if (desiredKeys.includes(item.key)) {
+                    switch (item.key) {
+                        case 'faqSupport':
+                            setFaqsImage(item.value);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        })();
+    }, []);
 
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
 
@@ -70,10 +87,7 @@ const Faqs = () => {
             <View className="w-full h-full bg-[#F7F7FA] rounded-[10px] overflow-hidden">
                 <View className="w-full h-40 bg-[#E9EDF7] flex flex-row ">
                     <View className="basis-[35%] flex flex-row justify-center items-center">
-                        <Image
-                            source={require("../../../assets/faqs_header_bg.png")}
-                            className="w-[60px] h-[100px] object-cover"
-                        />
+                        <Image className="w-[60px] h-[100px] object-cover" source={{ uri: `${process.env.IMAGE_URL}${faqsImage}` }} />
                     </View>
                     <View className="basis-[65%] flex flex-row justify-center items-center">
                         <Text className="font-extrabold tracking-wider text-2xl text-rose-700">
