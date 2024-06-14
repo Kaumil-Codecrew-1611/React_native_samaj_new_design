@@ -115,7 +115,7 @@ const NewsDetailsPage = ({ route }) => {
                                     />
                                 </TouchableOpacity>
                                 {newsAddPerson &&
-                                    <View className=" bg-white absolute bottom-0 px-3">
+                                    <View className=" bg-gray-300 absolute bottom-0 px-3">
                                         <View className="flex flex-row items-center gap-2">
                                             <Text className="font-bold text-base text-black">
                                                 Create By
@@ -127,7 +127,7 @@ const NewsDetailsPage = ({ route }) => {
                                     </View>
                                 }
                             </Animated.View>
-                            <View className="bg-gray-300">
+                            <View className="bg-white">
                                 <View className="flex flex-1 flex-row justify-between items-center flex-wrap">
                                     <View className="mx-[20px]">
                                         <Text className="font-bold text-xl text-justify my-3 text-black">{newsDetailsTitle}</Text>

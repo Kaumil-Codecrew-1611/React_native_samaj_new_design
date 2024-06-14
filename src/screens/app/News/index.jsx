@@ -19,10 +19,7 @@ const Favourites = ({ navigation }) => {
     }, []);
 
     return (
-        <View className="flex-1 bg-gray-300 space-y-5 w-full">
-            <View>
-                <Text className="font-bold text-3xl tracking-wider text-neutral-700 mt-4 mb-4 ml-6">{t('news')}</Text>
-            </View>
+        <View className="flex-1 bg-white w-full font-bold text-3xl tracking-wider text-neutral-700">
             <NewsList navigation={navigation} news={news} loading={loading} />
         </View>
     );

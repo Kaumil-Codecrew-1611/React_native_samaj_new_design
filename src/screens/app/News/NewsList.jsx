@@ -44,17 +44,16 @@ function NewsList({ navigation, news, loading }) {
 
         return (
             <TouchableOpacity onPress={() => { openNewsDetailsPage(item?._id) }}>
-                <View className="bg-white shadow-2xl p-2 mb-5 rounded-3xl w-[100%]">
+                <View className="bg-gray-200 shadow-2xl p-2 mb-5 rounded-3xl w-[100%] mt-5">
                     <View className="overflow-hidden object-cover shadow-xl shadow-black">
-                        <View className="relative ">
+                        <View className="relative">
                             <Image
                                 className="object-cover"
                                 source={{ uri: IMAGE_URL + item.image }}
                                 style={{ height: 180, width: '100%', borderRadius: 20 }}
                             />
-                            {item.createdBy && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-3">
+                            {item.createdBy && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-2">
                                 <View className="flex flex-row items-center gap-2">
-
                                     <Text className="font-bold text-black text-base">
                                         Created By
                                     </Text>
@@ -64,7 +63,7 @@ function NewsList({ navigation, news, loading }) {
                                 </View>
                             </View>}
                         </View>
-                        <View className="flex flex-row justify-between flex-wrap items-center">
+                        <View className="flex flex-row justify-between flex-wrap items-center p-2">
                             <View>
                                 <Text className='font-bold text-[19px] text-black tracking-tighter text-justify my-2'>
                                     {item?.title}
@@ -74,7 +73,7 @@ function NewsList({ navigation, news, loading }) {
                                 <Text className="text-[13px] tracking-wider text-neutral-700 font-bold mb-2">{formatDate(item?.created_at)}</Text>
                             </View>
                         </View>
-                        <View>
+                        <View className="p-2">
                             <Text className="text-[15px] tracking-wider mb-5 text-neutral-700 text-justify font-semibold">
                                 {truncateText(item?.description, 20)}
                             </Text>
@@ -86,7 +85,7 @@ function NewsList({ navigation, news, loading }) {
     };
 
     return (
-        <View className="w-full flex flex-row justify-between flex-wrap mb-20">
+        <View className="w-full flex flex-row justify-between flex-wrap">
             <SafeAreaView style={{ flex: 1 }}>
                 {loading ? (
                     <FlatList
