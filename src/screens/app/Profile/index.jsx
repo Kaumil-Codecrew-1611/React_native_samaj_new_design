@@ -253,13 +253,13 @@ const ProfilePage = ({ navigation }) => {
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
-                                <Pressable onPress={openSettings} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
+                                {/* <Pressable onPress={openSettings} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFontistoIcon name="player-settings" size={30} color={"black"} />
                                         <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("settings")}</Text>
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                                </Pressable>
+                                </Pressable> */}
                                 <Pressable onPress={openChangePassword} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFontistoIcon name="locked" size={30} color={"black"} />
@@ -292,7 +292,7 @@ const ProfilePage = ({ navigation }) => {
                     visible={isBannerVisible}
                     onRequestClose={() => setBannerIsVisible(false)}
                 />
-                <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
+                {/* <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" /> */}
             </View>
             <Modal
                 transparent={true}

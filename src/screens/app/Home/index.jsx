@@ -147,7 +147,7 @@ const Home = ({ navigation }) => {
                 visible={isVisible}
                 onRequestClose={() => setIsVisible(false)}
             />
-            {allUserInfo && Object.entries(allUserInfo).length === 0 && !allUserInfo.photo ? <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" /> : <></>}
+            {/* {allUserInfo && Object.entries(allUserInfo).length === 0 && !allUserInfo.photo ? <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" /> : <></>} */}
 
         </>
     );

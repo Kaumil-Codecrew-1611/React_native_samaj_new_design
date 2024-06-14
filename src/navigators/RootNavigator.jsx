@@ -16,7 +16,6 @@ import Faqs from '../screens/app/Faqs';
 import SelectVillage from '../screens/app/FormWizard/SelectVillage';
 import HomeScreen from '../screens/app/Home';
 import Login from '../screens/app/Login';
-import News from '../screens/app/News';
 import NewsDetailsPage from '../screens/app/News/NewsDetailsPage';
 import NewsList from '../screens/app/News/NewsList';
 import Payment from '../screens/app/Payment';
@@ -27,8 +26,12 @@ import SettingBottomSheet from '../screens/app/Settings';
 import Support from '../screens/app/Support';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
+import ChangeLanguage from '../components/FloatingButton';
+import CustomBottomSheet from '../components/CustomBottomSheet';
+import ProfilePage from '../screens/app/Profile';
 
 const RootStack = createNativeStackNavigator()
+console.log(process.env.API_URL, "API_URL")
 const RootNavigator = () => {
     const { t } = useTranslation();
     const [listingStyle, setListingStyle] = useState('grid')
@@ -39,53 +42,58 @@ const RootNavigator = () => {
     const { width } = Dimensions.get('window')
 
     return (
-        <RootStack.Navigator screenOptions={{
-            headerTitleAlign: 'center',
-        }}>
-            <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false }} />
-            <RootStack.Screen name='HomeScreen' component={HomeScreen} />
+        <>
+            <RootStack.Navigator screenOptions={{
+                headerTitleAlign: 'center',
+            }}>
+                <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false }} />
+                <RootStack.Screen name='HomeScreen' component={HomeScreen} />
+                <RootStack.Screen name='Profile' component={ProfilePage} />
 
-            <RootStack.Screen name="VillageListing" component={VillageListing} initialParams={{ listingStyle }} options={({ navigation }) => ({
-                headerTitle: () => (
-                    <View style={{ marginLeft: width - 220 }}>
-                        <View className="flex-row p-1 rounded-full bg-slate-300 items-center">
-                            <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'grid' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('grid', navigation)}><Text className={`text-xl font-semibold text-black`}>Grid</Text></TouchableOpacity>
+                <RootStack.Screen name="VillageListing" component={VillageListing} initialParams={{ listingStyle }} options={({ navigation }) => ({
+                    headerTitle: () => (
+                        <View style={{ marginLeft: width - 220 }}>
+                            <View className="flex-row p-1 rounded-full bg-slate-300 items-center">
+                                <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'grid' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('grid', navigation)}><Text className={`text-xl font-semibold text-black`}>Grid</Text></TouchableOpacity>
 
-                            <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'view' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('view', navigation)}><Text className={`text-xl font-semibold text-black `}>View</Text></TouchableOpacity>
+                                <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'view' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('view', navigation)}><Text className={`text-xl font-semibold text-black `}>View</Text></TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
 
-                )
-            }
-            )} />
-            <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: t("Villagewisepeople") }} />
-            <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: t("aboutUs") }} />
-            <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: t('NewsList') }} />
-            <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: t("newsDetails") }} />
-            <RootStack.Screen name="News" component={News} options={{ headerTitle: t("news") }} />
-            <RootStack.Screen name="Support" options={{ headerTitle: t("SupportPage") }} component={Support} />
-            <RootStack.Screen name="Seetings" component={SettingBottomSheet} options={{ headerTitle: t("settings") }} />
-            <RootStack.Screen name="EmailSupport" component={EmailSupport} options={{ headerTitle: t("EmailSupport") }} />
-            <RootStack.Screen name="Faqs" component={Faqs} options={{ headerTitle: 'Faqs' }} />
-            <RootStack.Screen name="ChangePassword" component={ChangePassword} options={{ headerTitle: t("changePassword") }} />
-            <RootStack.Screen
-                name="Login"
-                component={Login}
-                options={{
-                    headerShown: false
-                }}
-            />
-            <RootStack.Screen name="Register" component={Register} options={{ headerTitle: t("RegisterPage") }} />
-            <RootStack.Screen name="EditUserProfile" component={EditUserProfile} options={{ headerTitle: t("EditUserProfile") }} />
-            <RootStack.Screen name="Payment" component={Payment} options={{ headerTitle: t("PaymentPage") }} />
-            <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} options={{ headerTitle: t("PaymentPage") }} />
-            <RootStack.Screen name="PaymentFailed" component={PaymentFailed} options={{ headerTitle: t("PaymentPage") }} />
-            <RootStack.Screen name="select_village" options={{ headerTitle: t("RegisterPage") }} component={SelectVillage} />
-            <RootStack.Screen name="ViewFamilyDetails" options={{ headerTitle: t("familyDetailsPage") }} component={ViewFamilyTree} />
-            <RootStack.Screen name="NodeDetails" component={NodeDetails} options={{ headerTitle: t("familyDetailsPage") }} />
-            <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: t("AddFamilyDetails") }} />
-            <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: t("EditFamilyDetails") }} />
-        </RootStack.Navigator>
+                    )
+                }
+                )} />
+                <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: t("Villagewisepeople") }} />
+                <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: t("aboutUs") }} />
+                <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: t('NewsList') }} />
+                <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: t("newsDetails") }} />
+                {/* <RootStack.Screen name="News" component={News} options={{ headerTitle: t("news") }} /> */}
+                <RootStack.Screen name="Support" options={{ headerTitle: t("SupportPage") }} component={Support} />
+                <RootStack.Screen name="Seetings" component={SettingBottomSheet} options={{ headerTitle: t("settings") }} />
+                <RootStack.Screen name="EmailSupport" component={EmailSupport} options={{ headerTitle: t("EmailSupport") }} />
+                <RootStack.Screen name="Faqs" component={Faqs} options={{ headerTitle: 'Faqs' }} />
+                <RootStack.Screen name="ChangePassword" component={ChangePassword} options={{ headerTitle: t("changePassword") }} />
+                <RootStack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{
+                        headerShown: false
+                    }}
+                />
+                <RootStack.Screen name="Register" component={Register} options={{ headerTitle: t("RegisterPage") }} />
+                <RootStack.Screen name="EditUserProfile" component={EditUserProfile} options={{ headerTitle: t("EditUserProfile") }} />
+                <RootStack.Screen name="Payment" component={Payment} options={{ headerTitle: t("PaymentPage") }} />
+                <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} options={{ headerTitle: t("PaymentPage") }} />
+                <RootStack.Screen name="PaymentFailed" component={PaymentFailed} options={{ headerTitle: t("PaymentPage") }} />
+                <RootStack.Screen name="select_village" options={{ headerTitle: t("RegisterPage") }} component={SelectVillage} />
+                <RootStack.Screen name="ViewFamilyDetails" options={{ headerTitle: t("familyDetailsPage") }} component={ViewFamilyTree} />
+                <RootStack.Screen name="NodeDetails" component={NodeDetails} options={{ headerTitle: t("familyDetailsPage") }} />
+                <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: t("AddFamilyDetails") }} />
+                <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: t("EditFamilyDetails") }} />
+            </RootStack.Navigator>
+            <ChangeLanguage onPress={() => console.warn("Clicked")} />
+            <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
+        </>
     )
 }
 

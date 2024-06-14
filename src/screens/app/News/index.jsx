@@ -7,12 +7,12 @@ import { useTranslation } from 'react-i18next';
 const Favourites = ({ navigation }) => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
-    const { newsListing } = useContext(ApiContext);
+    const newsData = useContext(ApiContext);
     const [news, setNews] = useState([]);
 
     useEffect(() => {
         (async function () {
-            const result = await newsListing();
+            const result = await newsData?.newsListing();
             setNews(result);
             setLoading(false)
         })();
