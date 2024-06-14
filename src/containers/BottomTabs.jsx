@@ -9,6 +9,7 @@ import Member from '../screens/app/Member';
 import ProfilePage from '../screens/app/Profile';
 import Welcome from '../screens/app/WelcomeScreen';
 import { useTranslation } from 'react-i18next';
+import News from '../screens/app/News';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,15 +44,11 @@ const BottomTabs = () => {
                     name="Member"
                     component={Member}
                 />
-                {!!isLoggedIn && <Tab.Screen
-                    options={{ tabBarLabel: t("profile") }}
-                    name="Profile"
-                    component={ProfilePage}
-                />}
-                {!isLoggedIn && <Tab.Screen options={{ tabBarLabel: 'Auth', tabBarStyle: { display: 'none' } }}
-                    name="Auth"
-                    component={Welcome}
-                />}
+                <Tab.Screen
+                    options={{ tabBarLabel: t("news") }}
+                    name="News"
+                    component={News}
+                />
                 < Tab.Screen
                     options={{ tabBarLabel: t("Contactus") }}
                     name="Contactus"
