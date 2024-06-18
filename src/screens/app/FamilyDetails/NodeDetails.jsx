@@ -4,13 +4,14 @@ import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import Animated from 'react-native-reanimated';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import toastMessage from '../../../utils/toastMessage';
 
 const NodeDetails = ({ navigation, route }) => {
+
     const { t } = useTranslation();
     var { userId } = route.params;
     const paramsData = route.params;
@@ -22,16 +23,16 @@ const NodeDetails = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
-    const [loading, setLoading] = useState(true); // New state for loading
+    const [loading, setLoading] = useState(true);
     const AnimatedFontAwesomeIcon = Animated.createAnimatedComponent(FontAwesome);
     const images = userData?.photo ? [{ uri: `${process.env.IMAGE_URL}${userData.photo}` }] : [];
 
     useEffect(() => {
         (async function () {
-            setLoading(true); // Start loading
+            setLoading(true);
             const contentUserDataById = await userDataByParentId(userId);
             setUserData(contentUserDataById);
-            setLoading(false); // Stop loading
+            setLoading(false);
         })();
     }, [userId]);
 

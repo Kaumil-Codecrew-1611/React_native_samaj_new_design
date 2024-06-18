@@ -7,22 +7,22 @@ import ImageViewing from 'react-native-image-viewing';
 import Animated, { withTiming } from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import CustomBottomSheet from '../../../components/CustomBottomSheet';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-import SettingBottomSheet from '../Settings';
 
 const ProfilePage = ({ navigation }) => {
+
     const { t } = useTranslation();
+    const { setuserDataInStorage, allUserInfo, progress, setIsBottomSheetVisible, setAllUserInfo } = useContext(GlobalContext);
+    const { updateUserProfileImage, updateUserBannerProfileImage, resetAllData } = useContext(ApiContext);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const { openBottomSheet, setScreenpercentage, setuserDataInStorage, allUserInfo, progress, setIsBottomSheetVisible, setAllUserInfo } = useContext(GlobalContext);
     const [isVisible, setIsVisible] = useState(false);
     const [isBannerVisible, setBannerIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [isBannerPopupVisible, setIsBannerPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const { updateUserProfileImage, updateUserBannerProfileImage, resetAllData } = useContext(ApiContext);
+
 
     const profileImage = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}`, },
@@ -31,11 +31,6 @@ const ProfilePage = ({ navigation }) => {
     const bannerImages = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}`, },
     ];
-
-    const openSettings = () => {
-        setScreenpercentage({ first: "30%", second: "34%" });
-        openBottomSheet(<SettingBottomSheet />);
-    };
 
     const openAddFamilyDetails = () => {
         navigation.navigate('ViewFamilyDetails');
@@ -137,7 +132,7 @@ const ProfilePage = ({ navigation }) => {
             await setuserDataInStorage('user', response.userData);
             navigation.navigate('Profile');
         }).catch((error) => {
-            console.log(error, "errorChangingImage")
+            console.log(error, "error Changing Image")
         });
     }
 
@@ -244,13 +239,6 @@ const ProfilePage = ({ navigation }) => {
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
-                                {/* <Pressable onPress={openSettings} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
-                                    <View className="flex-row justify-between gap-2 items-center">
-                                        <AnimatedFontistoIcon name="player-settings" size={30} color={"black"} />
-                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("settings")}</Text>
-                                    </View>
-                                    <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                                </Pressable> */}
                                 <Pressable onPress={openChangePassword} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFontistoIcon name="locked" size={30} color={"black"} />
@@ -287,7 +275,6 @@ const ProfilePage = ({ navigation }) => {
                     visible={isBannerVisible}
                     onRequestClose={() => setBannerIsVisible(false)}
                 />
-                {/* <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" /> */}
             </View>
             <Modal
                 transparent={true}

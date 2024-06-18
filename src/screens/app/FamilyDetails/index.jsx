@@ -5,10 +5,10 @@ import Svg, { G, Line, Rect, Text } from 'react-native-svg';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 
-const nodeWidth = 100;
-const nodeHeight = 40;
+const nodeWidth = 90;
+const nodeHeight = 100;
 const baseHorizontalSpacing = 60;
-const verticalSpacing = 100;
+const verticalSpacing = 200;
 
 const calculateHorizontalSpacing = (node) => {
     let maxChildren = 0;
@@ -76,7 +76,8 @@ const FamilyTree = ({ data, navigation, paramsId }) => {
     return (
         <View style={{ flex: 1, marginLeft: 10, marginTop: 30 }}>
             <ScrollView
-                style={styles.parentScrollViewStyle}
+                classname="flex flex-1"
+                // style={styles.parentScrollViewStyle}
                 horizontal
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}

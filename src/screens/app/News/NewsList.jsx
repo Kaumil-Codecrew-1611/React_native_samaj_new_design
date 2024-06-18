@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 function NewsList({ navigation, news, loading }) {
+
     var a = null;
     let IMAGE_URL = process.env.IMAGE_URL;
 
@@ -27,6 +28,7 @@ function NewsList({ navigation, news, loading }) {
     };
 
     const renderItems = ({ item, index }) => {
+
         if (a == 0) {
             a++;
         } else {
@@ -85,6 +87,7 @@ function NewsList({ navigation, news, loading }) {
     };
 
     return (
+
         <View className="w-full flex flex-row justify-between flex-wrap">
             <SafeAreaView style={{ flex: 1 }}>
                 {loading ? (

@@ -1,16 +1,18 @@
-import React, { useContext } from 'react'
-import { Text, View } from 'react-native'
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Button from '../../../../components/Button';
-import { GlobalContext } from '../../../../context/globalState';
-import { useTranslation } from 'react-i18next';
 
 function PaymentSuccess({ navigation, route }) {
+
     const { t } = useTranslation();
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const data = route.params;
+
     return (
+
         <View className="bg-[#fafafa] flex-1">
             <View className="flex-row mt-10 mb-5 items-center justify-center">
                 <View className="w-[130px] h-[130px] rounded-[130px] bg-green-500 flex-row items-center justify-center">

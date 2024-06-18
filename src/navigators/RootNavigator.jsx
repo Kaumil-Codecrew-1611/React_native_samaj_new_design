@@ -27,12 +27,10 @@ import Support from '../screens/app/Support';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
-import ChangeLanguage from '../components/FloatingButton';
-import CustomBottomSheet from '../components/CustomBottomSheet';
 import ProfilePage from '../screens/app/Profile';
+import ForgotPassword from '../screens/app/ForgotPassword';
 
 const RootStack = createNativeStackNavigator()
-console.log(process.env.API_URL, "API_URL")
 const RootNavigator = () => {
     const { t } = useTranslation();
     const [listingStyle, setListingStyle] = useState('grid')
@@ -57,12 +55,12 @@ const RootNavigator = () => {
                             <View className="flex-row p-1 rounded-full bg-slate-300 items-center">
                                 <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'grid' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('grid', navigation)}><Text className={`text-xl font-semibold text-black`}>Grid</Text></TouchableOpacity>
 
-                            <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'view' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('view', navigation)}><Text className={`text-xl font-semibold text-black `}>List</Text></TouchableOpacity>
-                        </View>
+                                <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'view' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('view', navigation)}><Text className={`text-xl font-semibold text-black `}>List</Text></TouchableOpacity>
+                            </View>
                         </View>
 
                     )
-                })}/>
+                })} />
                 <RootStack.Screen name="VillageWisePersons" component={VillageWisePersons} options={{ headerTitle: t("Villagewisepeople") }} />
                 <RootStack.Screen name="Aboutus" component={Aboutus} options={{ headerTitle: t("aboutUs") }} />
                 <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: t('NewsList') }} />
@@ -72,6 +70,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="EmailSupport" component={EmailSupport} options={{ headerTitle: t("EmailSupport") }} />
                 <RootStack.Screen name="Faqs" component={Faqs} options={{ headerTitle: 'Faqs' }} />
                 <RootStack.Screen name="ChangePassword" component={ChangePassword} options={{ headerTitle: t("changePassword") }} />
+                <RootStack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerTitle: "Forgot password" }} />
                 <RootStack.Screen
                     name="Login"
                     component={Login}
@@ -79,7 +78,7 @@ const RootNavigator = () => {
                         headerShown: false
                     }}
                 />
-                <RootStack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
+                <RootStack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
                 <RootStack.Screen name="Register" component={Register} options={{ headerTitle: t("RegisterPage") }} />
                 <RootStack.Screen name="EditUserProfile" component={EditUserProfile} options={{ headerTitle: t("EditUserProfile") }} />
                 <RootStack.Screen name="Payment" component={Payment} options={{ headerTitle: t("PaymentPage") }} />
@@ -91,8 +90,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: t("AddFamilyDetails") }} />
                 <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: t("EditFamilyDetails") }} />
             </RootStack.Navigator>
-            <ChangeLanguage onPress={() => console.warn("Clicked")} />
-            <CustomBottomSheet screenFirstPercentage="30%" screenSecondPercentage="34%" />
+
         </>
     )
 }

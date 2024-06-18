@@ -33,10 +33,13 @@ const Register = ({ navigation }) => {
         job: yup.string().required('Job is required'),
         gender: yup.string().required('Gender is required'),
     });
-    const { state, getLocation } = useContext(ApiContext);
+
+    const { state, getLocation, numberCheckForRegisterUser } = useContext(ApiContext);
     const { setRegisterData } = useContext(GlobalContext);
     const [locations, setLocations] = useState('');
     const [options, setOptions] = useState([]);
+    const [emailError, setEmailError] = useState("");
+    const [mobileError, setMobileError] = useState("");
     const [showPicker, setShowPicker] = useState(false);
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema),
@@ -64,8 +67,20 @@ const Register = ({ navigation }) => {
         setValue('locations_id', locations);
     }
 
-    const onSubmit = (data) => {
-        setRegisterData(data);
+    const onSubmit = async (data) => {
+        const emailForCheck = data.email;
+        const numberForCheck = data.mobile_number;
+        const payloadForChecking = {
+            email: emailForCheck,
+            mobile_number: numberForCheck,
+        };
+        const responseOfCheckNumber = await numberCheckForRegisterUser(payloadForChecking);
+        setEmailError(responseOfCheckNumber.emailError);
+        setMobileError(responseOfCheckNumber.mobileError);
+        if (responseOfCheckNumber.emailError || responseOfCheckNumber.mobileError) {
+            return;
+        }
+        await setRegisterData(data);
         navigation.navigate('Payment');
     };
 
@@ -197,7 +212,7 @@ const Register = ({ navigation }) => {
                                         <View className="w-full">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
                                         </View>
-                                        <View className=" w-full mt-2">
+                                        <View className="w-full mt-2">
                                             <Controller
                                                 control={control}
                                                 name="email"
@@ -213,6 +228,7 @@ const Register = ({ navigation }) => {
                                                 )}
                                             />
                                             {errors.email && <Text className="text-red-500 mb-[16px] mx-1">{errors.email.message}</Text>}
+                                            {emailError && <Text className="text-red-500 mb-[16px] mx-1">{emailError}</Text>}
                                         </View>
                                     </View>
 
@@ -287,7 +303,7 @@ const Register = ({ navigation }) => {
                                         <View className="w-full">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
                                         </View>
-                                        <View className=" w-full mt-2">
+                                        <View className="w-full mt-2">
                                             <Controller
                                                 control={control}
                                                 name="mobile_number"
@@ -304,213 +320,213 @@ const Register = ({ navigation }) => {
                                                 )}
                                             />
                                             {errors.mobile_number && <Text className="text-red-500 mb-[16px] mx-1">{errors.mobile_number.message}</Text>}
+                                            {mobileError && <Text className="text-red-500 mb-[16px] mx-1">{mobileError}</Text>}
                                         </View>
-                                    </View>
 
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('address')}:</Text>
-                                        </View>
-                                        <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="address"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <TextInput
-                                                        placeholder={t('address')}
-                                                        placeholderTextColor="grey"
-                                                        style={styles.input}
-                                                        value={value}
-                                                        onBlur={onBlur}
-                                                        onChangeText={(text) => onChange(text)}
-                                                    />
-                                                )}
-                                            />
-                                            {errors.address && <Text className="text-red-500 mb-[16px] mx-1">{errors.address.message}</Text>}
-                                        </View>
-                                    </View>
-
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('city')}:</Text>
-                                        </View>
-                                        <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="city"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <TextInput
-                                                        placeholder={t('city')}
-                                                        placeholderTextColor="grey"
-                                                        style={styles.input}
-                                                        value={value}
-                                                        onBlur={onBlur}
-                                                        onChangeText={(text) => onChange(text)}
-                                                    />
-                                                )}
-                                            />
-                                            {errors.city && <Text className="text-red-500 mb-[16px] mx-1">{errors.city.message}</Text>}
-                                        </View>
-                                    </View>
-
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('state')}:</Text>
-                                        </View>
-                                        <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="state"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <TextInput
-                                                        placeholder={t('state')}
-                                                        placeholderTextColor="grey"
-                                                        style={styles.input}
-                                                        value={value}
-                                                        onBlur={onBlur}
-                                                        onChangeText={(text) => onChange(text)}
-                                                    />
-                                                )}
-                                            />
-                                            {errors.state && <Text className="text-red-500 mb-[16px] mx-1">{errors.state.message}</Text>}
-                                        </View>
-                                    </View>
-
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('pincode')}:</Text>
-                                        </View>
-                                        <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="pincode"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <TextInput
-                                                        placeholder={t('pincode')}
-                                                        placeholderTextColor="grey"
-                                                        style={styles.input}
-                                                        value={value}
-                                                        onBlur={onBlur}
-                                                        onChangeText={(text) => onChange(text)}
-                                                        keyboardType="numeric"
-                                                    />
-                                                )}
-                                            />
-                                            {errors.pincode && <Text className="text-red-500 mb-[16px] mx-1">{errors.pincode.message}</Text>}
-                                        </View>
-                                    </View>
-
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('education')}:</Text>
-                                        </View>
-                                        <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="education"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <TextInput
-                                                        placeholder={t('education')}
-                                                        placeholderTextColor="grey"
-                                                        style={styles.input}
-                                                        value={value}
-                                                        onBlur={onBlur}
-                                                        onChangeText={(text) => onChange(text)}
-                                                    />
-                                                )}
-                                            />
-                                            {errors.education && <Text className="text-red-500 mb-[16px] mx-1">{errors.education.message}</Text>}
-                                        </View>
-                                    </View>
-
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('job')}:</Text>
-                                        </View>
-                                        <View className=" w-full mt-2">
-                                            <Controller
-                                                control={control}
-                                                name="job"
-                                                render={({ field: { onChange, onBlur, value } }) => (
-                                                    <TextInput
-                                                        placeholder={t('job')}
-                                                        placeholderTextColor="grey"
-                                                        style={styles.input}
-                                                        value={value}
-                                                        onBlur={onBlur}
-                                                        onChangeText={(text) => onChange(text)}
-                                                    />
-                                                )}
-                                            />
-                                            {errors.job && <Text className="text-red-500 mb-[16px] mx-1">{errors.job.message}</Text>}
-                                        </View>
-                                    </View>
-
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
-                                        </View>
-                                        <View className=" w-full mt-2">
-                                            <View className="mx-1">
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('address')}:</Text>
+                                            </View>
+                                            <View className=" w-full mt-2">
                                                 <Controller
                                                     control={control}
-                                                    name="marital_status"
+                                                    name="address"
                                                     render={({ field: { onChange, onBlur, value } }) => (
-                                                        <Select
-                                                            placeholder={t('selectmaritalstatus')}
-                                                            selectedValue={value}
-                                                            onValueChange={(itemValue) => onChange(itemValue)}
-                                                            _selectedItem={{
-                                                                bg: "blue.300",
-                                                                endIcon: <CheckIcon size="5" />,
-                                                            }}
-
-                                                        >
-                                                            <Select.Item label={t('married')} value="married" />
-                                                            <Select.Item label={t('unmarried')} value="unmarried" />
-                                                            <Select.Item label={t('widower')} value="Widower" />
-                                                            <Select.Item label={t('widow')} value="Widow" />
-                                                            <Select.Item label={t('divorcee')} value="divorcee" />
-                                                        </Select>
+                                                        <TextInput
+                                                            placeholder={t('address')}
+                                                            placeholderTextColor="grey"
+                                                            style={styles.input}
+                                                            value={value}
+                                                            onBlur={onBlur}
+                                                            onChangeText={(text) => onChange(text)}
+                                                        />
                                                     )}
                                                 />
+                                                {errors.address && <Text className="text-red-500 mb-[16px] mx-1">{errors.address.message}</Text>}
                                             </View>
-                                            {errors.marital_status && <Text className="text-red-500 mb-[16px] mx-1">{errors.marital_status.message}</Text>}
                                         </View>
-                                    </View>
 
-                                    <View className="my-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
-                                        </View>
-                                        <View className="w-full mt-2">
-                                            <View className="mb-[10px] ml-1">
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('city')}:</Text>
+                                            </View>
+                                            <View className=" w-full mt-2">
                                                 <Controller
                                                     control={control}
-
-                                                    name="gender"
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <Radio.Group
-                                                            name="genderGroup"
+                                                    name="city"
+                                                    render={({ field: { onChange, onBlur, value } }) => (
+                                                        <TextInput
+                                                            placeholder={t('city')}
+                                                            placeholderTextColor="grey"
+                                                            style={styles.input}
                                                             value={value}
-                                                            className="flex flex-row"
-                                                            onChange={(nextValue) => onChange(nextValue)}
-                                                        >
-                                                            <Radio value="male" >{t('male')}</Radio>
-                                                            <Radio value="female" ml={2}>{t('female')}</Radio>
-                                                            <Radio value="other" ml={2}>{t('other')}</Radio>
-                                                        </Radio.Group>
+                                                            onBlur={onBlur}
+                                                            onChangeText={(text) => onChange(text)}
+                                                        />
                                                     )}
                                                 />
+                                                {errors.city && <Text className="text-red-500 mb-[16px] mx-1">{errors.city.message}</Text>}
                                             </View>
-                                            {errors.gender && <Text className="text-red-500 mb-[16px] mx-1">{errors.gender.message}</Text>}
                                         </View>
-                                    </View>
 
-                                    <View className="mt-3 mb-6">
-                                        <Button className="bg-blue-500 py-3 rounded-lg" title={t('register')} onPress={handleSubmit(onSubmit)} />
-                                    </View>
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('state')}:</Text>
+                                            </View>
+                                            <View className=" w-full mt-2">
+                                                <Controller
+                                                    control={control}
+                                                    name="state"
+                                                    render={({ field: { onChange, onBlur, value } }) => (
+                                                        <TextInput
+                                                            placeholder={t('state')}
+                                                            placeholderTextColor="grey"
+                                                            style={styles.input}
+                                                            value={value}
+                                                            onBlur={onBlur}
+                                                            onChangeText={(text) => onChange(text)}
+                                                        />
+                                                    )}
+                                                />
+                                                {errors.state && <Text className="text-red-500 mb-[16px] mx-1">{errors.state.message}</Text>}
+                                            </View>
+                                        </View>
 
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('pincode')}:</Text>
+                                            </View>
+                                            <View className=" w-full mt-2">
+                                                <Controller
+                                                    control={control}
+                                                    name="pincode"
+                                                    render={({ field: { onChange, onBlur, value } }) => (
+                                                        <TextInput
+                                                            placeholder={t('pincode')}
+                                                            placeholderTextColor="grey"
+                                                            style={styles.input}
+                                                            value={value}
+                                                            onBlur={onBlur}
+                                                            onChangeText={(text) => onChange(text)}
+                                                            keyboardType="numeric"
+                                                        />
+                                                    )}
+                                                />
+                                                {errors.pincode && <Text className="text-red-500 mb-[16px] mx-1">{errors.pincode.message}</Text>}
+                                            </View>
+                                        </View>
+
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('education')}:</Text>
+                                            </View>
+                                            <View className=" w-full mt-2">
+                                                <Controller
+                                                    control={control}
+                                                    name="education"
+                                                    render={({ field: { onChange, onBlur, value } }) => (
+                                                        <TextInput
+                                                            placeholder={t('education')}
+                                                            placeholderTextColor="grey"
+                                                            style={styles.input}
+                                                            value={value}
+                                                            onBlur={onBlur}
+                                                            onChangeText={(text) => onChange(text)}
+                                                        />
+                                                    )}
+                                                />
+                                                {errors.education && <Text className="text-red-500 mb-[16px] mx-1">{errors.education.message}</Text>}
+                                            </View>
+                                        </View>
+
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('job')}:</Text>
+                                            </View>
+                                            <View className=" w-full mt-2">
+                                                <Controller
+                                                    control={control}
+                                                    name="job"
+                                                    render={({ field: { onChange, onBlur, value } }) => (
+                                                        <TextInput
+                                                            placeholder={t('job')}
+                                                            placeholderTextColor="grey"
+                                                            style={styles.input}
+                                                            value={value}
+                                                            onBlur={onBlur}
+                                                            onChangeText={(text) => onChange(text)}
+                                                        />
+                                                    )}
+                                                />
+                                                {errors.job && <Text className="text-red-500 mb-[16px] mx-1">{errors.job.message}</Text>}
+                                            </View>
+                                        </View>
+
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
+                                            </View>
+                                            <View className=" w-full mt-2">
+                                                <View className="mx-1">
+                                                    <Controller
+                                                        control={control}
+                                                        name="marital_status"
+                                                        render={({ field: { onChange, onBlur, value } }) => (
+                                                            <Select
+                                                                placeholder={t('selectmaritalstatus')}
+                                                                selectedValue={value}
+                                                                onValueChange={(itemValue) => onChange(itemValue)}
+                                                                _selectedItem={{
+                                                                    bg: "blue.300",
+                                                                    endIcon: <CheckIcon size="5" />,
+                                                                }}
+                                                            >
+                                                                <Select.Item label={t('married')} value="married" />
+                                                                <Select.Item label={t('unmarried')} value="unmarried" />
+                                                                <Select.Item label={t('widower')} value="Widower" />
+                                                                <Select.Item label={t('widow')} value="Widow" />
+                                                                <Select.Item label={t('divorcee')} value="divorcee" />
+                                                            </Select>
+                                                        )}
+                                                    />
+                                                </View>
+                                                {errors.marital_status && <Text className="text-red-500 mb-[16px] mx-1">{errors.marital_status.message}</Text>}
+                                            </View>
+                                        </View>
+
+                                        <View className="my-1">
+                                            <View className="w-full">
+                                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
+                                            </View>
+                                            <View className="w-full mt-2">
+                                                <View className="mb-[10px] ml-1">
+                                                    <Controller
+                                                        control={control}
+
+                                                        name="gender"
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <Radio.Group
+                                                                name="genderGroup"
+                                                                value={value}
+                                                                className="flex flex-row"
+                                                                onChange={(nextValue) => onChange(nextValue)}
+                                                            >
+                                                                <Radio value="male" >{t('male')}</Radio>
+                                                                <Radio value="female" ml={2}>{t('female')}</Radio>
+                                                                <Radio value="other" ml={2}>{t('other')}</Radio>
+                                                            </Radio.Group>
+                                                        )}
+                                                    />
+                                                </View>
+                                                {errors.gender && <Text className="text-red-500 mb-[16px] mx-1">{errors.gender.message}</Text>}
+                                            </View>
+                                        </View>
+
+                                        <View className="mt-3 mb-6">
+                                            <Button className="bg-blue-500 py-3 rounded-lg" title={t('register')} onPress={handleSubmit(onSubmit)} />
+                                        </View>
+
+                                    </View>
                                 </View>
                             </ScrollView>
                         </TouchableWithoutFeedback>

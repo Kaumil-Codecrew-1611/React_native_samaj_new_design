@@ -8,7 +8,6 @@ import { withTiming } from 'react-native-reanimated';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DefaultImage from '../../../assets/profile_img.png';
 import Carousel from '../../../components/Carousel';
-import CustomBottomSheet from '../../../components/CustomBottomSheet';
 import HomePageCardContents from '../../../components/HomePageCardsIcons/HomePageCardContents';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
@@ -17,14 +16,13 @@ import i18n from '../../../context/i18n';
 const Home = ({ navigation }) => {
 
     const { t } = useTranslation();
-    const { progress, allUserInfo } = useContext(GlobalContext);
+    const { isLoggedIn, progress, allUserInfo } = useContext(GlobalContext);
     const { homePageAllSlider, contactUsPageDetails } = useContext(ApiContext);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [sliderImages, setSliderImages] = useState([]);
     const [titleOfHeader, setTitleOfHeader] = useState("");
     const [isVisible, setIsVisible] = useState(false);
-
     const images = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}` },
     ];
@@ -32,10 +30,9 @@ const Home = ({ navigation }) => {
     const cards = [
         { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutusicons.png') },
         { id: 2, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageIcon.png') },
-        { id: 3, name: t('news'), redirectTo: "News", image: require('../../../assets/newsReportIcons.png') },
-        { id: 4, name: "join now", redirectTo: "Welcome", image: require('../../../assets/join.png') },
-        { id: 5, name: "", redirectTo: "", image: "" },
-        { id: 6, name: "", redirectTo: "", image: "" },
+        isLoggedIn ?
+            { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } :
+            { id: 4, name: "join now", redirectTo: "Welcome", image: require('../../../assets/join.png') },
     ];
 
     useEffect(() => {
@@ -65,7 +62,6 @@ const Home = ({ navigation }) => {
                     i18n.changeLanguage(storedLanguage).catch((error) => {
                         console.error('Error changing language:', error);
                     });
-                    console.log(storedLanguage, "stored Language")
                 }
             } catch (error) {
                 console.error('Error retrieving language:', error);
@@ -104,7 +100,7 @@ const Home = ({ navigation }) => {
             progress.value = withTiming("3");
             navigation.navigate("Profile");
         } else {
-            console.log("allUserInfo is null, navigation is not performed");
+            console.log("all User Info is null, navigation is not performed");
         }
     };
 

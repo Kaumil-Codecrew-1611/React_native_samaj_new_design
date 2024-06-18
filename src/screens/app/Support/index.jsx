@@ -16,7 +16,7 @@ function Support({ navigation }) {
             navigation.navigate(redirectPath)
         }
     }
-
+    
     useEffect(() => {
         (async function () {
             const contentContactUs = await contactUsPageDetails();

@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import NewsList from "./NewsList";
+import { View } from "react-native";
 import ApiContext from "../../../context/ApiContext";
-import { useTranslation } from 'react-i18next';
+import NewsList from "./NewsList";
 
 const Favourites = ({ navigation }) => {
-    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const newsData = useContext(ApiContext);
     const [news, setNews] = useState([]);

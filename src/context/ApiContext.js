@@ -29,6 +29,7 @@ import {
     updateUserProfile,
     userPasswordChange,
     villagesByUser,
+    numberCheckForRegister,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -94,6 +95,7 @@ export const ApiProvider = ({ children }) => {
     const updateUserBannerProfileImage = (payload) => apiRequest(profileBannerImageUpdate, payload, setData, 'updateUserBannerProfileImage');
     const supportMailSend = (emailPayload) => apiRequest(sendMailSupport, emailPayload, setData, 'supportMailSend');
     const joinPageContent = () => apiRequest(joinPageData, null, setData, 'joinPageDetails');
+    const numberCheckForRegisterUser = (numberData) => apiRequest(numberCheckForRegister, numberData, setData, 'numberCheckForRegisterUser');
 
     return (
         <ApiContext.Provider value={{
@@ -129,6 +131,7 @@ export const ApiProvider = ({ children }) => {
             updateUserBannerProfileImage,
             supportMailSend,
             joinPageContent,
+            numberCheckForRegisterUser,
         }}>
             {children}
         </ApiContext.Provider>

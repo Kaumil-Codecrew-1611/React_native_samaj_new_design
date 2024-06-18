@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
-import { useTranslation } from 'react-i18next';
-
-
-
 
 const ForgotPassword = () => {
-    const { t } = useTranslation();
-    const schema = yup.object().shape({
 
+    const { t } = useTranslation();
+    const [isEmailOrPnoneValid, setEmailOrPhoneValid] = useState(false)
+
+    const schema = yup.object().shape({
         emailOrPhone: yup.string().required(t('EmailorPhonenumberisrequired')).test(
             'is-email-or-phone',
             'Invalid email or phone number',
@@ -25,14 +24,11 @@ const ForgotPassword = () => {
                 return false;
             }
         ),
-    
         otp: yup.string().when('isEmailOrPnoneValid', {
             is: true,
             then: yup.string().required(t('OTPisrequired'))
         }),
-    
     });
-    const [isEmailOrPnoneValid, setEmailOrPhoneValid] = useState(false)
 
     const { control, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -51,7 +47,6 @@ const ForgotPassword = () => {
             //otp check api
         }
     };
-
 
     return (
         <View className="flex-1 bg-green-200 px-2 selection: relative">

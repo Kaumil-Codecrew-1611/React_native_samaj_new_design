@@ -170,3 +170,8 @@ export const joinPageData = async () => {
     const response = await axiosInstance.get('/joinpage');
     return response.data
 };
+
+export const numberCheckForRegister = async (numberData) => {
+    const response = await axiosInstance.post('/check_mobile', numberData);
+    return response.data;
+};

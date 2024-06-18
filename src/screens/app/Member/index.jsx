@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Dimensions, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, FlatList, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ImageViewing from 'react-native-image-viewing';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
-
 const { width } = Dimensions.get('screen');
 
 export default function Member() {
@@ -14,6 +14,8 @@ export default function Member() {
     const [height2, setHeight2] = useState(0);
     const [loading, setLoading] = useState(true);
     const [committeeMembers, setCommitteeMembers] = useState([]);
+    const [isVisible, setIsVisible] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
     const { allcommitteeMembersListing } = useContext(ApiContext);
     const { t } = useTranslation();
 
@@ -21,6 +23,17 @@ export default function Member() {
         inputRange: [0, Math.max(height1 - height2, 1)],
         outputRange: [-width, 0]
     });
+
+    const handleCallOpenLink = (phoneNumber) => {
+        if (phoneNumber) {
+            Linking.openURL(`tel:${phoneNumber}`);
+        }
+    };
+
+    const openProfileImage = (image) => {
+        setSelectedImage([{ uri: `${process.env.IMAGE_URL}${image}` }]);
+        setIsVisible(true);
+    };
 
     useEffect(() => {
         const fetchCommitteeMembers = async () => {
@@ -35,13 +48,8 @@ export default function Member() {
         fetchCommitteeMembers();
     }, []);
 
-    const handleCallOpenLink = (phoneNumber) => {
-        if (phoneNumber) {
-            Linking.openURL(`tel:${phoneNumber}`);
-        }
-    };
-
     const renderSkeletonItem = () => {
+
         return (
             <SkeletonPlaceholder>
                 {[1, 2, 3].map((_, index) => (
@@ -65,8 +73,12 @@ export default function Member() {
     };
 
     const renderActualItem = ({ item }) => {
+
         return (
             <View className="bg-white rounded-xl p-5 mx-5 mb-5 shadow-2xl" key={item._id}>
+                <TouchableOpacity onPress={() => openProfileImage(item.image)}>
+                    <Image source={{ uri: `${process.env.IMAGE_URL}${item.image}` }} style={styles.image} />
+                </TouchableOpacity>
                 <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
                     <Text className="text-base font-bold text-black mr-2">{t('fullName')}: </Text>
                     <Text className="text-base text-black">{item.fullname}</Text>
@@ -90,6 +102,7 @@ export default function Member() {
     };
 
     return (
+
         <View className="bg-gray-300" style={styles.container}>
             <View style={styles.header}>
                 <Text className="text-2xl font-bold text-black">{t('committeeMember')}</Text>
@@ -115,6 +128,14 @@ export default function Member() {
                 />
             )}
             <Animated.View style={[styles.bar, { transform: [{ translateX }] }]} />
+            {selectedImage && (
+                <ImageViewing
+                    images={selectedImage}
+                    imageIndex={0}
+                    visible={isVisible}
+                    onRequestClose={() => setIsVisible(false)}
+                />
+            )}
         </View>
     );
 }
@@ -148,5 +169,11 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         borderRadius: 10,
         overflow: 'hidden',
+    },
+    image: {
+        width: '100%',
+        height: 200,
+        borderRadius: 10,
+        marginBottom: 15,
     },
 });

@@ -3,7 +3,7 @@ import React from 'react';
 import { Image, Text, View } from 'react-native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const HomePageCardContents = ({ content, size, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing }) => {
+const HomePageCardContents = ({ content, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing }) => {
 
     const route = useRoute();
     const redirect = () => {
@@ -30,7 +30,7 @@ const HomePageCardContents = ({ content, size, image, redirectTo, functionality,
                         <View>
                             <Image className="w-24 h-24" source={image} />
                         </View>
-                        <Text className="text-lg font-semibold text-center">
+                        <Text className="text-base text-black font-semibold text-center">
                             {content}
                         </Text>
                     </TouchableOpacity>

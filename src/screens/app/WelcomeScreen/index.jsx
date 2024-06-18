@@ -36,9 +36,9 @@ const Welcome = ({ navigation }) => {
                 </View>
                 <View className="relative h-1/2">
                     <View className="flex items-center pt-5">
-                        <Text className="text-3xl text-white font-extrabold">{contentTitle}</Text>
-                        <View className="my-5 px-3">
-                            <Text className="text-lg text-white">{description}</Text>
+                        <View className="px-3">
+                            <Text className="text-2xl text-white font-extrabold mt-3">{contentTitle}</Text>
+                            <Text className="text-lg text-white mt-3">{description}</Text>
                         </View>
                     </View>
                     <View className="absolute bottom-3 w-full px-4">

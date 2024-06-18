@@ -16,7 +16,6 @@ export const CustomBottomTab = ({
     descriptors,
     navigation,
 }) => {
-
     const { progress, tHeight, animatedProps, setIsAuthScreenActive, isAuthScreenActive } = useContext(GlobalContext)
     const navigationRef = useNavigation();
 
@@ -40,6 +39,8 @@ export const CustomBottomTab = ({
                 return 'user';
             case 'Contactus':
                 return 'phone';
+            case 'News':
+                return 'book-open';
             default:
                 return 'home';
         }

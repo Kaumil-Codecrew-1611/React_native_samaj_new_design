@@ -4,11 +4,12 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset, useSharedValue } from 'react-native-reanimated';
 import RenderHTML from 'react-native-render-html';
 import ApiContext from '../../../context/ApiContext';
-import { processRect } from '@shopify/react-native-skia';
+
 const { width } = Dimensions.get('window');
 const IMG_HEIGHT = 300;
 
 const Aboutus = () => {
+
     const { t } = useTranslation();
     const scrollRef = useAnimatedRef();
     const scrolloffset = useScrollViewOffset(scrollRef);
