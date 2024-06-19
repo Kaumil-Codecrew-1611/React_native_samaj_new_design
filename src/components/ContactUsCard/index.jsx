@@ -81,7 +81,7 @@ function ContactUsCard() {
         }
     };
 
-    if (!loading) {
+    if (loading) {
         return (
             <>
                 <View className="mb-20" style={{ borderColor: "#f3f3f3" }}>
