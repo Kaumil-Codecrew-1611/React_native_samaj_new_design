@@ -13,6 +13,7 @@ import AddFamilyDetails from '../screens/app/FamilyDetails/AddFamilyDetails';
 import EditUserFamilyDetails from '../screens/app/FamilyDetails/EditUserFamilyDetails/EditUserFamilyDetails';
 import NodeDetails from '../screens/app/FamilyDetails/NodeDetails';
 import Faqs from '../screens/app/Faqs';
+import ForgotPassword from '../screens/app/ForgotPassword';
 import SelectVillage from '../screens/app/FormWizard/SelectVillage';
 import HomeScreen from '../screens/app/Home';
 import Login from '../screens/app/Login';
@@ -21,24 +22,25 @@ import NewsList from '../screens/app/News/NewsList';
 import Payment from '../screens/app/Payment';
 import PaymentFailed from '../screens/app/Payment/PaymentFailed';
 import PaymentSuccess from '../screens/app/Payment/PaymentSuccess';
+import ProfilePage from '../screens/app/Profile';
 import Register from '../screens/app/Register';
 import SettingBottomSheet from '../screens/app/Settings';
 import Support from '../screens/app/Support';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
-import ProfilePage from '../screens/app/Profile';
-import ForgotPassword from '../screens/app/ForgotPassword';
 
 const RootStack = createNativeStackNavigator()
+
 const RootNavigator = () => {
+
     const { t } = useTranslation();
     const [listingStyle, setListingStyle] = useState('grid')
+    const { width } = Dimensions.get('window')
     const headerListStyle = (newListingStyle, navigation) => {
         setListingStyle(newListingStyle);
         navigation.navigate('VillageListing', { listingStyle: newListingStyle });
     };
-    const { width } = Dimensions.get('window')
 
     return (
         <>
@@ -48,14 +50,12 @@ const RootNavigator = () => {
                 <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false }} />
                 <RootStack.Screen name='HomeScreen' component={HomeScreen} />
                 <RootStack.Screen name='Profile' component={ProfilePage} />
-
                 <RootStack.Screen name="VillageListing" component={VillageListing} initialParams={{ listingStyle }} options={({ navigation }) => ({
                     headerTitle: () => (
                         <View style={{ marginLeft: width - 220 }}>
                             <View className="flex-row p-1 rounded-full bg-slate-300 items-center">
                                 <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'grid' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('grid', navigation)}><Text className={`text-xl font-semibold text-black`}>Grid</Text></TouchableOpacity>
-
-                                <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'view' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('view', navigation)}><Text className={`text-xl font-semibold text-black `}>List</Text></TouchableOpacity>
+                                <TouchableOpacity className={`text-center px-3 transition-all ${listingStyle == 'List' ? 'bg-white rounded-full' : ''}`} onPress={() => headerListStyle('List', navigation)}><Text className={`text-xl font-semibold text-black `}>List</Text></TouchableOpacity>
                             </View>
                         </View>
 
@@ -71,13 +71,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="Faqs" component={Faqs} options={{ headerTitle: 'Faqs' }} />
                 <RootStack.Screen name="ChangePassword" component={ChangePassword} options={{ headerTitle: t("changePassword") }} />
                 <RootStack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerTitle: "Forgot password" }} />
-                <RootStack.Screen
-                    name="Login"
-                    component={Login}
-                    options={{
-                        headerShown: false
-                    }}
-                />
+                <RootStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <RootStack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
                 <RootStack.Screen name="Register" component={Register} options={{ headerTitle: t("RegisterPage") }} />
                 <RootStack.Screen name="EditUserProfile" component={EditUserProfile} options={{ headerTitle: t("EditUserProfile") }} />
@@ -90,7 +84,6 @@ const RootNavigator = () => {
                 <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: t("AddFamilyDetails") }} />
                 <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: t("EditFamilyDetails") }} />
             </RootStack.Navigator>
-
         </>
     )
 }

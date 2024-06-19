@@ -2,18 +2,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, TouchableOpacity, View, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import CardDetails from '../../../components/CardDetails';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
-import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 
 const VillageListing = ({ navigation, route }) => {
+
     const { t } = useTranslation();
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
@@ -46,7 +47,8 @@ const VillageListing = ({ navigation, route }) => {
             return () => {
                 setSearch("");
             };
-        }, []))
+        }, [])
+    )
 
     useEffect(() => {
         if (SelectedVillage) {
@@ -93,33 +95,44 @@ const VillageListing = ({ navigation, route }) => {
     }, []);
 
     const renderItem = ({ item }) => {
+
         const handleVillageSelect = async (item1) => {
             await setSelectedVillage(item1);
             navigation.navigate('VillageWisePersons', { villageId: item._id });
         };
+
         const villageImage = process.env.IMAGE_URL + item.image;
+
         return (
-            <View className={`${listingStyle === 'grid' ? 'flex-1 m-2' : 'w-full my-2'} items-center`}>
+            <View className={`${listingStyle === 'grid' ? 'flex-1 m-2' : 'flex flex-row w-full'}`}>
                 <CardDetails
-                    size={listingStyle === 'grid' ? 'lg' : 'full'}
+                    size={listingStyle === 'grid' ? 'lg' : ""}
                     image={villageImage}
                     content={language == 'en' ? item.villageE : item.villageG}
                     navigation={navigation}
                     villageListing={true}
                     allVillagesListing={allVillagesListing}
                     search={search}
+                    listingStyle={listingStyle}
                     handleSetSelectedVillage={() => handleVillageSelect(item)}
                 />
+                {listingStyle === 'list' && (
+                    <View className="flex-1 ml-3 justify-center">
+                        <Text className="text-lg font-semibold">{language == 'en' ? item.villageE : item.villageG}</Text>
+                    </View>
+                )}
             </View>
         );
     };
 
     return (
+
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
             <View className="flex-1 bg-gray-300">
+
                 <View className="bg-white m-3 h-20 p-2 px-4 rounded-2xl flex items-center">
                     <View className="flex flex-row h-full items-center justify-between w-full">
                         <View>
@@ -134,6 +147,7 @@ const VillageListing = ({ navigation, route }) => {
                         </View>
                     </View>
                 </View>
+
                 <View className="w-full px-4 mb-2">
                     <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                         <TextInput placeholder={t("searchVillage")} placeholderTextColor="grey" className="basis-[90%] tracking-wider  text-neutral-700  pl-2 " value={search} onChangeText={text => setSearch(text)} />
@@ -157,7 +171,9 @@ const VillageListing = ({ navigation, route }) => {
                             </View>
                         </TouchableOpacity>
                     </View>
+
                 </View>
+
                 {loading ? (
                     <ActivityIndicator size="large" color="#0000ff" className="flex flex-1 justify-center items-center text-center" />
                 ) : allVillagesListing.length === 0 ? (
@@ -181,6 +197,7 @@ const VillageListing = ({ navigation, route }) => {
                         showsHorizontalScrollIndicator={false}
                     />
                 )}
+
             </View>
         </KeyboardAvoidingView>
     );

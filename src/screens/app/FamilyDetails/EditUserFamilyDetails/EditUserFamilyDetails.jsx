@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Keyboard, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
@@ -28,6 +28,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
     const { userId } = route.params;
     const [showPicker, setShowPicker] = useState(false);
     const [dob, setDob] = useState(null);
+    const [loading, setLoading] = useState(false);
     const { control, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -47,7 +48,9 @@ export default function EditUserFamilyDetails({ navigation, route }) {
             id: userId,
             data: data
         }
-        updateFamilyDetailsUser(payload);
+        setLoading(true)
+        const response = await updateFamilyDetailsUser(payload);
+        setLoading(false)
         navigation.navigate('ViewFamilyDetails');
     };
 
@@ -358,6 +361,18 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                 <View className="mt-3 mb-6">
                                     <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} onPress={handleSubmit(onSubmit)} />
                                 </View>
+
+                                <View className="mt-3 mb-6">
+                                    {loading ? (
+                                        <View className="flex flex-row items-center justify-center bg-blue-500 cursor-pointer p-2 rounded-lg">
+                                            <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
+                                            <ActivityIndicator size="large" color="white" />
+                                        </View>
+                                    ) : (
+                                        <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} disabled={loading} onPress={handleSubmit(onSubmit)} />
+                                    )}
+                                </View>
+                                
                             </View>
                         </ScrollView>
                     </TouchableWithoutFeedback>

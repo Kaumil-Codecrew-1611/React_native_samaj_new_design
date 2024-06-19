@@ -4,7 +4,7 @@ import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
@@ -16,6 +16,7 @@ const EditUserProfile = ({ navigation }) => {
     const { getLocation, updateUserProfileUser, updateUserPostProfile } = useContext(ApiContext);
     const { allUserInfo, setuserDataInStorage } = useContext(GlobalContext);
     const [userData, setUserData] = useState({});
+    const [loading, setLoading] = useState(false);
     const [showPicker, setShowPicker] = useState(false);
 
     useEffect(() => {
@@ -55,11 +56,13 @@ const EditUserProfile = ({ navigation }) => {
             id: allUserInfo._id,
             data: data
         }
+        setLoading(true)
         const response = await updateUserPostProfile(payload)
         if (response.status) {
             await setuserDataInStorage('user', response.newsave);
             navigation.navigate('Profile');
         }
+        setLoading(false)
     };
 
     const onDateChange = (event, selectedDate) => {
@@ -457,7 +460,14 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="mt-3 mb-6">
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} onPress={handleSubmit(onSubmit)} />
+                                    {loading ? (
+                                        <View className="flex flex-row items-center justify-center bg-blue-500 cursor-pointer p-2 rounded-lg">
+                                            <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
+                                            <ActivityIndicator size="large" color="white" />
+                                        </View>
+                                    ) : (
+                                        <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} disabled={loading} onPress={handleSubmit(onSubmit)} />
+                                    )}
                                 </View>
 
                             </View>

@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import Animated, { withTiming } from 'react-native-reanimated';
@@ -20,9 +20,10 @@ const ProfilePage = ({ navigation }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [isBannerVisible, setBannerIsVisible] = useState(false);
     const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [isBannerPopupVisible, setIsBannerPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-
+    const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
 
     const profileImage = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}`, },
@@ -50,8 +51,10 @@ const ProfilePage = ({ navigation }) => {
     };
 
     const handleLogout = async () => {
+        setLoading(true)
         await setuserDataInStorage('user', null);
         await resetAllData();
+        setLoading(false)
         setAllUserInfo({})
         progress.value = withTiming("1");
         navigation.navigate("Home");
@@ -168,8 +171,6 @@ const ProfilePage = ({ navigation }) => {
         });
     };
 
-    const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
-
     const handleShare = async () => {
         try {
             await Share.share({
@@ -179,6 +180,7 @@ const ProfilePage = ({ navigation }) => {
             console.error('Error sharing:', error.message);
         }
     };
+
     useFocusEffect(
         useCallback(() => {
             return () => {
@@ -190,6 +192,7 @@ const ProfilePage = ({ navigation }) => {
         <>
             <View className="flex-1 bg-white space-y-5 w-full pb-20" edges={['top']}>
                 <View className="relative basis-[25%] mb-12">
+
                     <Pressable onPress={openBannerModal}>
                         <View className="overflow-hidden bg-slate-300">
                             <ImageBackground className="h-full w-full transition-all duration-300 overflow-hidden" source={{ uri: `${process.env.IMAGE_URL}${allUserInfo?.profile_banner}` }} alt="bg-image">
@@ -197,9 +200,11 @@ const ProfilePage = ({ navigation }) => {
                             </ImageBackground>
                         </View>
                     </Pressable>
+
                     <Pressable className="absolute right-2 top-2 flex w-12 h-12 shadow-lg items-center justify-center rounded-full bg-white" onPress={handleShare}>
                         <AnimatedFontistoIcon name="share" size={30} color={"black"} />
                     </Pressable>
+
                     <View className="absolute p-6 flex h-36 top-20 w-full items-center justify-center -space-x-2 overflow-visible">
                         <Pressable onPress={openModal}>
                             <View className="h-40 w-40 p-2 rounded-full bg-white">
@@ -207,31 +212,37 @@ const ProfilePage = ({ navigation }) => {
                             </View>
                         </Pressable>
                     </View>
+
                 </View>
                 <View className="basis-[75%]">
                     <View className="flex items-center">
+
                         <Text className="text-rose-700 font-bold text-2xl">{allUserInfo?.firstname} {allUserInfo?.lastname}</Text>
                         <View className="flex flex-row items-center justify-center">
                             <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("MemberId")}:</Text>
                             <Text className="text-rose-700 text-xl font-bold tracking-wider">{allUserInfo?.personal_id}</Text>
                         </View>
+
                         <View className="flex flex-row items-center justify-center">
                             <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t('StartDate')}: </Text>
                             <Text className="text-rose-700 text-xl font-bold tracking-wider">{formatDate(allUserInfo?.created_at)}</Text>
                         </View>
+
                         <View className="flex-row gap-1">
-                            <Pressable hitSlop={20} onPress={navigateToEditProfile}>
-                                <Text className="text-blue-600 font-medium text-base">{t('EditProfile')}</Text>
-                            </Pressable>
-                            <Text className="text-blue-600 font-medium text-base">/</Text>
                             <Pressable hitSlop={20} onPress={navigateToAddProfile}>
                                 <Text className="text-blue-600 font-medium text-base">{t('AddProfile')}</Text>
                             </Pressable>
+                            <Text className="text-blue-600 font-medium text-base">/</Text>
+                            <Pressable hitSlop={20} onPress={navigateToEditProfile}>
+                                <Text className="text-blue-600 font-medium text-base">{t('EditProfile')}</Text>
+                            </Pressable>
                         </View>
+
                     </View>
                     <SafeAreaView className="flex-1 h-[2000px] bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7">
                         <ScrollView scrollEnabled={true} nestedScrollEnabled={true} marginHorizontal={1} contentContainerStyle={{ flexGrow: 1 }} className="p-10">
                             <View className="flex flex-col gap-4">
+
                                 <Pressable onPress={openAddFamilyDetails} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFeatherIcon name="users" size={30} color={"black"} />
@@ -239,6 +250,7 @@ const ProfilePage = ({ navigation }) => {
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
+
                                 <Pressable onPress={openChangePassword} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                     <View className="flex-row justify-between gap-2 items-center">
                                         <AnimatedFontistoIcon name="locked" size={30} color={"black"} />
@@ -246,6 +258,7 @@ const ProfilePage = ({ navigation }) => {
                                     </View>
                                     <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                 </Pressable>
+
                                 <Pressable onPress={openLogoutModal}>
                                     <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
                                         <View className="flex-row justify-between gap-2 items-center">
@@ -259,22 +272,26 @@ const ProfilePage = ({ navigation }) => {
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </View>
                                 </Pressable>
+
                             </View>
                         </ScrollView>
                     </SafeAreaView>
                 </View>
+
                 <ImageViewing
                     images={profileImage}
                     imageIndex={0}
                     visible={isVisible}
                     onRequestClose={() => setIsVisible(false)}
                 />
+
                 <ImageViewing
                     images={bannerImages}
                     imageIndex={0}
                     visible={isBannerVisible}
                     onRequestClose={() => setBannerIsVisible(false)}
                 />
+
             </View>
             <Modal
                 transparent={true}
@@ -283,15 +300,19 @@ const ProfilePage = ({ navigation }) => {
             >
                 <View className="flex flex-1 flex-row justify-center items-center  bg-[#00000080]">
                     <View className="bg-white w-auto px-10 py-2 rounded-lg items-center">
+
                         <TouchableOpacity onPress={viewProfileImage}>
                             <Text className="text-black text-lg p-2">{t('ViewProfileImage')}</Text>
                         </TouchableOpacity>
+
                         <TouchableOpacity onPress={selectImage}>
                             <Text className="text-black text-lg p-1">{t('EditProfileImage')}</Text>
                         </TouchableOpacity>
+
                         <TouchableOpacity onPress={closePopup}>
                             <Text className="text-black text-lg p-1">{t('Close')}</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
             </Modal>
@@ -305,15 +326,27 @@ const ProfilePage = ({ navigation }) => {
                     {modalVisible && (
                         <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     )}
-                    <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-[90%]">
+                    <View className="w-4/5 bg-white rounded-[15px] px-3 py-4 shadow-lg mt-[90%]">
                         <Text className="text-lg text-black mb-4">{t("confirmlogout")}</Text>
-                        <View className="flex-row justify-between items-center">
-                            <Pressable onPress={closeLogoutModal} className="px-6 py-2 bg-gray-400 rounded-[15px] mr-2">
-                                <Text>{t('cancel')}</Text>
+                        <View className="flex-row justify-between">
+
+                            <Pressable onPress={closeLogoutModal} className="px-6 py-3 bg-gray-400 rounded-[15px] mr-2">
+                                <Text className="text-white">{t('cancel')}</Text>
                             </Pressable>
-                            <Pressable onPress={() => handleLogout()} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white ">{t('logout')}</Text>
-                            </Pressable>
+
+                            <View>
+                                {loading ? (
+                                    <View className="px-6 py-3 bg-red-500 rounded-[15px] flex flex-row">
+                                        <Text className="text-white mr-4">{t("Loading")}</Text>
+                                        <ActivityIndicator size="small" color="white" />
+                                    </View>
+                                ) : (
+                                    <Pressable onPress={() => handleLogout()} disabled={loading} className="px-6 py-3 bg-red-500 rounded-[15px]">
+                                        <Text className="text-white ">{t('logout')}</Text>
+                                    </Pressable>
+                                )}
+                            </View>
+
                         </View>
                     </View>
                 </View>
@@ -325,15 +358,19 @@ const ProfilePage = ({ navigation }) => {
             >
                 <View className="flex flex-1 flex-row justify-center items-center bg-[#00000080]">
                     <View className="bg-white w-auto px-10 py-2 rounded-lg items-center">
+
                         <TouchableOpacity onPress={viewBannerImage}>
                             <Text className="text-black text-lg p-1">{t("viewbanner")}</Text>
                         </TouchableOpacity>
+
                         <TouchableOpacity onPress={selectBannerImage}>
                             <Text className="text-black text-lg p-1">{t("editbanner")}</Text>
                         </TouchableOpacity>
+
                         <TouchableOpacity onPress={closeBannerPopup}>
                             <Text className="text-black text-lg p-1">{t('Close')}</Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
             </Modal>

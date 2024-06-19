@@ -46,7 +46,7 @@ function NewsList({ navigation, news, loading }) {
 
         return (
             <TouchableOpacity onPress={() => { openNewsDetailsPage(item?._id) }}>
-                <View className="bg-gray-200 shadow-2xl p-2 mb-5 rounded-3xl w-[100%] mt-5">
+                <View className="bg-gray-200 shadow-2xl p-2 mb-5 rounded-3xl w-[100%] mt-7">
                     <View className="overflow-hidden object-cover shadow-xl shadow-black">
                         <View className="relative">
                             <Image
@@ -94,7 +94,7 @@ function NewsList({ navigation, news, loading }) {
                     <FlatList
                         data={[1, 2, 3]}
                         keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => (
+                        renderItem={() => (
                             <View style={{ padding: 10, borderWidth: 1, marginHorizontal: 10, marginBottom: 20, borderRadius: 20, borderColor: "#f3f3f3" }}>
                                 <SkeletonPlaceholder>
                                     <SkeletonPlaceholder.Item flexDirection="column" alignItems="center">

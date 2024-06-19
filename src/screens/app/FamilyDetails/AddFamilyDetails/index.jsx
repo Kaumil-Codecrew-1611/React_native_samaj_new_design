@@ -3,7 +3,7 @@ import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Keyboard, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
@@ -29,6 +29,7 @@ export default function AddFamilyDetails({ navigation, route }) {
     const { allUserInfo } = useContext(GlobalContext);
     const [relationData, setRelationData] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { parent_id } = route.params;
 
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
@@ -43,7 +44,9 @@ export default function AddFamilyDetails({ navigation, route }) {
     const dob = watch('dob') || new Date();
 
     const onSubmit = async (data) => {
-        addFamilyMemberDetails(data);
+        setLoading(true);
+        const response = await addFamilyMemberDetails(data);
+        setLoading(false);
         navigation.navigate('ViewFamilyDetails');
     };
 
@@ -360,7 +363,18 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View className="mt-3 mb-6">
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title="Add Family Member" onPress={handleSubmit(onSubmit)} />
+
+                                </View>
+
+                                <View className="mt-3 mb-6">
+                                    {loading ? (
+                                        <View className="flex flex-row items-center justify-center bg-blue-500 cursor-pointer p-2 rounded-lg">
+                                            <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
+                                            <ActivityIndicator size="large" color="white" />
+                                        </View>
+                                    ) : (
+                                        <Button className="bg-blue-500 py-3 rounded-lg" title="Add Family Member" disabled={loading} onPress={handleSubmit(onSubmit)} />
+                                    )}
                                 </View>
 
                             </View>

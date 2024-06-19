@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Box, Radio } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
 import toastMessage from '../../../utils/toastMessage';
@@ -12,11 +12,12 @@ const SettingBottomSheet = () => {
     const { defaultLanguage, setDefaultLanguage } = useContext(GlobalContext);
     const [language, setLanguage] = useState('');
     const [alertOpen, setAlertOpen] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
+    const successMessages = t('successchangeLanguage');
     useEffect(() => {
         setLanguage(defaultLanguage)
     }, [])
-    const { t } = useTranslation();
-    const successMessages = t('successchangeLanguage');
 
     const changeLanguage = async (selectedLanguage) => {
         setLanguage(selectedLanguage);
@@ -28,7 +29,9 @@ const SettingBottomSheet = () => {
     }
 
     const AlertActionModal = async () => {
+        setLoading(true)
         await AsyncStorage.setItem('selectedLanguage', language);
+        setLoading(false)
         i18n.changeLanguage(language)
             .then(() => { setAlertOpen(false); setDefaultLanguage(language); })
             .catch((error) => {
@@ -37,6 +40,7 @@ const SettingBottomSheet = () => {
             });
 
     }
+
     useEffect(() => {
         const getSelectedLanguage = async () => {
             try {
@@ -49,11 +53,11 @@ const SettingBottomSheet = () => {
                 console.error('Error retrieving language:', error);
             }
         };
-
         getSelectedLanguage();
     }, []);
 
     return (
+
         <View style={styles.container} className="flex-1 p-6 bg-indigo-50">
             <Radio.Group
                 name="language"
@@ -102,9 +106,19 @@ const SettingBottomSheet = () => {
                             <Pressable onPress={closeAlertModal} className="px-6 py-2 bg-red-500 rounded-[15px]">
                                 <Text className="text-white">{t('cancel')}</Text>
                             </Pressable>
-                            <Pressable onPress={AlertActionModal} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white">{t('okay')}</Text>
-                            </Pressable>
+
+                            <View>
+                                {loading ? (
+                                    <View className="px-4 py-2 bg-red-500 flex flex-row items-center rounded-[15px]">
+                                        <Text className="text-white text-xs mr-2">{t("Loading")}</Text>
+                                        <ActivityIndicator size="small" color="white" />
+                                    </View>
+                                ) : (
+                                    <Pressable disabled={loading} onPress={AlertActionModal} className="px-6 py-2 bg-red-500 rounded-[15px]">
+                                        <Text className="text-white">{t('okay')}</Text>
+                                    </Pressable>
+                                )}
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -118,8 +132,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
-    container: {
-    }
 });
 
 export default SettingBottomSheet;

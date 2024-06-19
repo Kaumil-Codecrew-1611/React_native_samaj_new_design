@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import * as yup from 'yup';
@@ -18,6 +18,7 @@ const ChangePassword = ({ navigation }) => {
     const [isCurrentPasswordHidden, setCurrentPasswordHidden] = useState(true);
     const [isNewPasswordHidden, setNewPasswordHidden] = useState(true);
     const [isConfirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [userId] = useState(allUserInfo._id)
 
     const schema = yup.object().shape({
@@ -45,10 +46,12 @@ const ChangePassword = ({ navigation }) => {
             id: userId,
         };
         try {
+            setLoading(true);
             const reponse = await userChangePassword(requestData);
             if (reponse.changePassStatus) {
                 navigateToUserProfile()
             }
+            setLoading(false);
         } catch (error) {
             console.error('Error changing password:', error);
         }
@@ -187,7 +190,16 @@ const ChangePassword = ({ navigation }) => {
                         </TouchableWithoutFeedback>
                     </KeyboardAvoidingView>
                     <View className="mb-16">
-                        <Button className="bg-green-600 py-4 rounded-lg" title={t('changePassword')} onPress={handleSubmit(onSubmit)} />
+
+                        {loading ? (
+                            <View className="flex flex-row items-center justify-center bg-green-600 py-4 cursor-pointer p-4 rounded-lg">
+                                <Text className="mr-4 text-lg font-bold text-white ">{t("Loading")}</Text>
+                                <ActivityIndicator size="small" color="white" />
+                            </View>
+                        ) : (
+                            <Button className="bg-green-600 py-4 rounded-lg" title={t('changePassword')} disabled={loading} onPress={handleSubmit(onSubmit)} />
+                        )}
+
                     </View>
                 </View>
             </View>

@@ -110,8 +110,8 @@ export const updateUserProfile = async (payload) => {
         });
         const response = await axiosWithHeaders.post(`/profile_image/${id}`, userData);
         return response.data
-    } catch (err) {
-        console.log(err, "Errors")
+    } catch (error) {
+        console.log(error, "error")
     }
 };
 
@@ -126,8 +126,8 @@ export const profileBannerImageUpdate = async (payload) => {
         });
         const response = await axiosWithHeaders.post(`/profile_banner/${id}`, userData);
         return response.data
-    } catch (err) {
-        console.log(err, "Errors")
+    } catch (error) {
+        console.log(error, "error")
     }
 };
 
@@ -174,4 +174,19 @@ export const joinPageData = async () => {
 export const numberCheckForRegister = async (numberData) => {
     const response = await axiosInstance.post('/check_mobile', numberData);
     return response.data;
+};
+
+export const sendOtpForForgotPassword = async (userEmailDataForForgotPassword) => {
+    const response = await axiosInstance.post('/send-otp', userEmailDataForForgotPassword);
+    return response.data;
+};
+
+export const otpCheckForForgotPassword = async (checkotpForForgotPassword) => {
+    const response = await axiosInstance.post('/check-otp', checkotpForForgotPassword);
+    return response.data;
+};
+
+export const setNewForgotPassword = async (newSetForgotPassword) => {
+    const response = await axiosInstance.post(`/forgetpassword/${newSetForgotPassword.userId}`, newSetForgotPassword);
+    return response.data
 };

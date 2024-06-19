@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import ApiContext from '../../context/ApiContext';
@@ -9,17 +10,18 @@ import ApiContext from '../../context/ApiContext';
 function ContactUsCard() {
 
     const { t } = useTranslation();
-    const { contactUsPageDetails } = useContext(ApiContext);
-    const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
-    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const [contact1, setContact1] = useState('');
-    const [contactno1, setContactno1] = useState('');
-    const [contact2, setContact2] = useState('');
-    const [contactno2, setContactno2] = useState('');
     const [email, setEmail] = useState('');
-    const [instagramLink, setInstagramLink] = useState('');
-    const [faceBookLink, setFaceBookLink] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [contact1, setContact1] = useState('');
+    const [contact2, setContact2] = useState('');
+    const [contactno1, setContactno1] = useState('');
+    const [contactno2, setContactno2] = useState('');
     const [twitterLink, setTwitterLink] = useState('');
+    const [faceBookLink, setFaceBookLink] = useState('');
+    const [instagramLink, setInstagramLink] = useState('');
+    const { contactUsPageDetails } = useContext(ApiContext);
+    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
     useEffect(() => {
         (async function () {
@@ -57,6 +59,7 @@ function ContactUsCard() {
                     }
                 }
             });
+            setLoading(false);
         })();
     }, []);
 
@@ -77,6 +80,35 @@ function ContactUsCard() {
             Linking.openURL(`mailto:${mail}`);
         }
     };
+
+    if (!loading) {
+        return (
+            <>
+                <View className="mb-20" style={{ borderColor: "#f3f3f3" }}>
+                    <SkeletonPlaceholder>
+                        <SkeletonPlaceholder.Item flexDirection="column" alignItems="center" padding={20}>
+                            <SkeletonPlaceholder.Item width={'80%'} height={20} borderRadius={4} marginBottom={10} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'80%'} height={20} borderRadius={4} marginBottom={10} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'80%'} height={20} borderRadius={4} marginBottom={10} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'80%'} height={20} borderRadius={4} marginBottom={10} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'80%'} height={20} borderRadius={4} marginBottom={10} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                            <SkeletonPlaceholder.Item width={'80%'} height={20} borderRadius={4} marginBottom={10} />
+                            <SkeletonPlaceholder.Item width={'60%'} height={20} borderRadius={4} marginBottom={20} />
+                        </SkeletonPlaceholder.Item>
+                    </SkeletonPlaceholder>
+                </View>
+            </>
+        );
+    }
+
     return (
         <View className="mb-20">
             <View className="p-5">
@@ -128,7 +160,7 @@ function ContactUsCard() {
                     </View>
                 </View>
             </View>
-            {email && email ?
+            {email && (
                 <View className="p-5">
                     <View className="bg-white rounded-[20px] p-5">
                         <View className="flex flex-row items-center gap-3">
@@ -140,9 +172,7 @@ function ContactUsCard() {
                             <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('email')}</Text>
                         </View>
                         <View className="mt-2">
-                            <View>
-                                <Text className="tracking-wider text-base text-neutral-700">{t('contactusemailheading')}</Text>
-                            </View>
+                            <Text className="tracking-wider text-base text-neutral-700">{t('contactusemailheading')}</Text>
                             <TouchableOpacity onPress={() => handleClickOnMail(email)}>
                                 <View className="mt-2">
                                     <Text className="text-[#5176df] tracking-wider text-sm font-semibold">{email}</Text>
@@ -151,10 +181,8 @@ function ContactUsCard() {
                         </View>
                     </View>
                 </View>
-                :
-                <></>
-            }
-            {(faceBookLink || instagramLink || twitterLink) ? (
+            )}
+            {(faceBookLink || instagramLink || twitterLink) && (
                 <View className="p-5">
                     <View className="bg-white rounded-[20px] p-5">
                         <View className="flex flex-row items-center gap-3">
@@ -166,9 +194,7 @@ function ContactUsCard() {
                             <Text className="text-xl tracking-wider text-neutral-700 font-extrabold">{t('socials')}</Text>
                         </View>
                         <View className="mt-2">
-                            <View className="mb-5">
-                                <Text className="tracking-wider text-base text-neutral-700">{t('contactussocialheading')}</Text>
-                            </View>
+                            <Text className="tracking-wider text-base text-neutral-700">{t('contactussocialheading')}</Text>
                             <View className="flex flex-row justify-around">
                                 {twitterLink && (
                                     <TouchableOpacity onPress={() => openLink(twitterLink)}>
@@ -201,7 +227,7 @@ function ContactUsCard() {
                         </View>
                     </View>
                 </View>
-            ) : null}
+            )}
         </View>
     );
 }
