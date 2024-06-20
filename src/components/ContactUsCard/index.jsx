@@ -195,7 +195,7 @@ function ContactUsCard() {
                         </View>
                         <View className="mt-2">
                             <Text className="tracking-wider text-base text-neutral-700">{t('contactussocialheading')}</Text>
-                            <View className="flex flex-row justify-around">
+                            <View className="flex flex-row justify-around mt-3">
                                 {twitterLink && (
                                     <TouchableOpacity onPress={() => openLink(twitterLink)}>
                                         <AnimatedFontistoIcon
