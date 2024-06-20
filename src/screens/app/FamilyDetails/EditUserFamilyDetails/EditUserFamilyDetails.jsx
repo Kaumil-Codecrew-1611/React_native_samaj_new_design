@@ -1,16 +1,27 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import {
+    ActivityIndicator,
+    Keyboard,
+    KeyboardAvoidingView,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useTranslation } from 'react-i18next';
-
 
 export default function EditUserFamilyDetails({ navigation, route }) {
+
     const { t } = useTranslation();
 
     const schema = yup.object().shape({
@@ -18,17 +29,20 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         lastname: yup.string().required(t('pleaseenterlastname')),
         education: yup.string().required(t('pleaseentereducation')),
         address: yup.string().required(t('pleaseenteraddress')),
+        mobile_number: yup.string().matches(/^[0-9]{10}$/, t('pleaseenteravalidmobilenumber')),
         job: yup.string().required(t('pleaseenterjob')),
         relationship: yup.string().required(t('pleasechooserelation')),
         marital_status: yup.string().required(t('pleasechoosemaritalstatus')),
         gender: yup.string().required(t('pleaseentergender')),
     });
+
     const { editFamilyDetailsUser, allRelationshipDataList, updateFamilyDetailsUser } = useContext(ApiContext);
     const [relationData, setRelationData] = useState([]);
     const { userId } = route.params;
     const [showPicker, setShowPicker] = useState(false);
     const [dob, setDob] = useState(null);
     const [loading, setLoading] = useState(false);
+
     const { control, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -40,6 +54,8 @@ export default function EditUserFamilyDetails({ navigation, route }) {
             relationship: '',
             marital_status: '',
             gender: '',
+            email: "",
+            mobile_number: "",
         }
     });
 
@@ -49,7 +65,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
             data: data
         }
         setLoading(true)
-        const response = await updateFamilyDetailsUser(payload);
+        await updateFamilyDetailsUser(payload);
         setLoading(false)
         navigation.navigate('ViewFamilyDetails');
     };
@@ -66,6 +82,8 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                 setValue('relationship', response.relationship);
                 setValue('marital_status', response.marital_status);
                 setValue('gender', response.gender);
+                setValue('mobile_number', response?.mobile_number ? response?.mobile_number?.toString() : "");
+                setValue('email', response.email);
 
                 if (response.dob) {
                     setDob(new Date(response.dob));
@@ -79,7 +97,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         (async function () {
             try {
                 const allRelationData = await allRelationshipDataList();
-                setRelationData(allRelationData.relationship || []);
+                setRelationData(allRelationData || []);
             } catch (error) {
                 console.error("Error fetching relation data:", error);
             }
@@ -89,9 +107,11 @@ export default function EditUserFamilyDetails({ navigation, route }) {
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
+
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     {t('filldetails')}
                 </Text>
+
                 <View className="w-full mx-1 my-3 bg-neutral-700 h-[2px]"></View>
 
                 <KeyboardAvoidingView
@@ -101,6 +121,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             <View>
+
                                 <View>
                                     <View className="w-full mx-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
@@ -145,6 +166,48 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                         />
                                         {errors.lastname && <Text style={styles.error}>{errors.lastname.message}</Text>}
                                     </View>
+                                </View>
+
+                                <View className="my-1">
+                                    <View className="w-full">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="email"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder={t('email')}
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    value={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                    </View>
+                                </View>
+                                <View className="w-full">
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
+                                </View>
+                                <View className="w-full mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="mobile_number"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextInput
+                                                placeholder="Phone Number"
+                                                placeholderTextColor="grey"
+                                                style={styles.input}
+                                                value={value}
+                                                onBlur={onBlur}
+                                                onChangeText={(text) => onChange(text)}
+                                                keyboardType="numeric"
+                                            />
+                                        )}
+                                    />
                                 </View>
 
                                 <View>
@@ -325,6 +388,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                         {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
                                     </View>
                                 </View>
+
                                 <View className=" w-full mt-2">
                                     <View className="w-full mx-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('relationship')}:</Text>
@@ -346,7 +410,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                 >
                                                     {relationData.length > 0 ? (
                                                         relationData.map((relation) => (
-                                                            <Select.Item key={relation.value} label={relation.keyE} value={relation.value} />
+                                                            <Select.Item key={relation.value} label={relation.value} value={relation.key} />
                                                         ))
                                                     ) : (
                                                         <Select.Item label="Loading..." value="" isDisabled />
@@ -359,10 +423,6 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View className="mt-3 mb-6">
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} onPress={handleSubmit(onSubmit)} />
-                                </View>
-
-                                <View className="mt-3 mb-6">
                                     {loading ? (
                                         <View className="flex flex-row items-center justify-center bg-blue-500 cursor-pointer p-2 rounded-lg">
                                             <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
@@ -372,7 +432,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                         <Button className="bg-blue-500 py-3 rounded-lg" title={t('update')} disabled={loading} onPress={handleSubmit(onSubmit)} />
                                     )}
                                 </View>
-                                
+
                             </View>
                         </ScrollView>
                     </TouchableWithoutFeedback>

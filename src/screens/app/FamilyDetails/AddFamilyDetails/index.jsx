@@ -10,8 +10,6 @@ import ApiContext from '../../../../context/ApiContext';
 import { GlobalContext } from '../../../../context/globalState';
 import { useTranslation } from 'react-i18next';
 
-
-
 export default function AddFamilyDetails({ navigation, route }) {
     const { t } = useTranslation();
     const schema = yup.object().shape({
@@ -20,6 +18,7 @@ export default function AddFamilyDetails({ navigation, route }) {
         education: yup.string().required(t('pleaseentereducation')),
         address: yup.string().required(t('pleaseenteraddress')),
         job: yup.string().required(t('pleaseenterjob')),
+        mobile_number: yup.string().matches(/^[0-9]{10}$/, 'Phone Number must be exactly 10 digits'),
         relationship: yup.string().required(t('pleasechooserelation')),
         marital_status: yup.string().required(t('pleasechoosemaritalstatus')),
         gender: yup.string().required(t('pleaseentergender')),
@@ -62,7 +61,7 @@ export default function AddFamilyDetails({ navigation, route }) {
         (async function () {
             try {
                 const allRelationData = await allRelationshipDataList();
-                setRelationData(allRelationData.relationship || []);
+                setRelationData(allRelationData || []);
             } catch (error) {
                 console.error("Error fetching relation data:", error);
             }
@@ -128,6 +127,48 @@ export default function AddFamilyDetails({ navigation, route }) {
                                         />
                                         {errors.lastname && <Text className="text-red-500 mb-3 mx-1">{errors.lastname.message}</Text>}
                                     </View>
+                                </View>
+
+                                <View className="my-1">
+                                    <View className="w-full">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="email"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder={t('email')}
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    value={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                    </View>
+                                </View>
+                                <View className="w-full">
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
+                                </View>
+                                <View className="w-full mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="mobile_number"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextInput
+                                                placeholder="Phone Number"
+                                                placeholderTextColor="grey"
+                                                style={styles.input}
+                                                value={value}
+                                                onBlur={onBlur}
+                                                onChangeText={(text) => onChange(text)}
+                                                keyboardType="numeric"
+                                            />
+                                        )}
+                                    />
                                 </View>
 
                                 <View>
@@ -323,11 +364,18 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                     style={styles.select}
                                                 >
                                                     {relationData.length > 0 ? (
-                                                        relationData.map((relation) => (
-                                                            <Select.Item key={relation.value} label={relation.keyE} value={relation.value} />
-                                                        ))
+                                                        relationData.map((relation) => {
+                                                            return (
+                                                                <Select.Item
+                                                                    key={relation.value}
+                                                                    label={relation.value}
+                                                                    value={relation.key}
+                                                                    _text={{ color: 'black' }}
+                                                                />
+                                                            );
+                                                        })
                                                     ) : (
-                                                        <Select.Item label="Loading..." value="" isDisabled />
+                                                        <Select.Item label="Loading..." value="" isDisabled _text={{ color: 'black' }} />
                                                     )}
                                                 </Select>
                                             )}

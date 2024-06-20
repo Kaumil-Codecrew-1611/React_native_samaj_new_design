@@ -4,7 +4,19 @@ import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
@@ -69,19 +81,21 @@ const Register = ({ navigation }) => {
     }
 
     const onSubmit = async (data) => {
-        setLoading(true);
         const emailForCheck = data.email;
         const numberForCheck = data.mobile_number;
         const payloadForChecking = {
             email: emailForCheck,
             mobile_number: numberForCheck,
         };
+        setLoading(true);
         const responseOfCheckNumber = await numberCheckForRegisterUser(payloadForChecking);
+        setLoading(false);
         setEmailError(responseOfCheckNumber.emailError);
         setMobileError(responseOfCheckNumber.mobileError);
         if (responseOfCheckNumber.emailError || responseOfCheckNumber.mobileError) {
             return;
         }
+        setLoading(true);
         await setRegisterData(data);
         setLoading(false);
         navigation.navigate('Payment');

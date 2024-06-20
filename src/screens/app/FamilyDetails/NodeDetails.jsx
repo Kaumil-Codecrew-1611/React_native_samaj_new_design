@@ -26,6 +26,7 @@ const NodeDetails = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
     const AnimatedFontAwesomeIcon = Animated.createAnimatedComponent(FontAwesome);
     const images = userData?.photo ? [{ uri: `${process.env.IMAGE_URL}${userData.photo}` }] : [];
+    console.log("this is for image", images)
 
     useEffect(() => {
         (async function () {
@@ -37,7 +38,26 @@ const NodeDetails = ({ navigation, route }) => {
     }, [userId]);
 
     const filteredUserData = userData ? Object.keys(userData)
-        .filter(key => key !== '_id' && key !== 'firstname' && key !== 'lastname' && key !== '__v' && key !== 'created_at' && key !== 'deleted_at' && key !== 'updated_at' && key !== 'device_token' && key !== 'payment_id' && key !== 'email' && key !== 'photo' && key !== 'address' && key !== 'relationship' && key !== 'parent_id' && key !== "password" && key !== "locations_id" && key !== "personal_id" && key !== "" && key !== "profile_banner")
+        .filter(
+            key =>
+                key !== '_id' &&
+                key !== 'firstname' &&
+                key !== 'lastname' &&
+                key !== '__v' &&
+                key !== 'created_at' &&
+                key !== 'deleted_at' &&
+                key !== 'updated_at' &&
+                key !== 'device_token' &&
+                key !== 'payment_id' &&
+                key !== 'photo' && key !== 'address' &&
+                key !== 'relationship' &&
+                key !== 'parent_id' &&
+                key !== "password" &&
+                key !== "locations_id" &&
+                key !== "personal_id" &&
+                key !== "" &&
+                key !== "profile_banner"
+        )
         .reduce((obj, key) => {
             obj[key] = userData[key];
             return obj;
@@ -103,6 +123,7 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     const selectImage = async () => {
+
         ImagePicker.openPicker({
             width: 400,
             height: 300,
@@ -141,10 +162,11 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     function visibleEditDetail() {
+
         const id = paramsData?.paramsId;
         const userId = allUserInfo?._id;
-
         function renderPressable() {
+
             return (
                 <>
                     {allUserInfo?._id == userData?._id ? null :

@@ -79,7 +79,7 @@ export const committeeMembers = async () => {
 };
 
 export const relationshipDataList = async () => {
-    const response = await axiosInstance.get('/relationaship');
+    const response = await axiosInstance.get('/relationship-data');
     return response.data
 };
 

@@ -62,6 +62,7 @@ const EditUserProfile = ({ navigation }) => {
             await setuserDataInStorage('user', response.newsave);
             navigation.navigate('Profile');
         }
+        navigation.navigate('Profile');
         setLoading(false)
     };
 
