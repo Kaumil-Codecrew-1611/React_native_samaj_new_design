@@ -5,6 +5,7 @@ import ImageViewing from 'react-native-image-viewing';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
+
 const { width } = Dimensions.get('screen');
 
 export default function Member() {
@@ -49,7 +50,6 @@ export default function Member() {
     }, []);
 
     const renderSkeletonItem = () => {
-
         return (
             <SkeletonPlaceholder>
                 {[1, 2, 3].map((_, index) => (
@@ -75,28 +75,39 @@ export default function Member() {
     const renderActualItem = ({ item }) => {
 
         return (
+
             <View className="bg-white rounded-xl p-5 mx-5 mb-5 shadow-2xl" key={item._id}>
+
                 <TouchableOpacity onPress={() => openProfileImage(item.image)}>
-                    <Image source={{ uri: `${process.env.IMAGE_URL}${item.image}` }} style={styles.image} />
+                    <Image
+                        source={{ uri: `${process.env.IMAGE_URL}${item.image}` }}
+                        style={styles.image}
+                        resizeMode="stretch"
+                    />
                 </TouchableOpacity>
+
                 <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
                     <Text className="text-base font-bold text-black mr-2">{t('fullName')}: </Text>
                     <Text className="text-base text-black">{item.fullname}</Text>
                 </View>
+
                 <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
                     <Text className="text-base font-bold text-black mr-2">{t('position')}: </Text>
                     <Text className="text-base text-black">{item.role}</Text>
                 </View>
+
                 <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
                     <Text className="text-base font-bold text-black mr-2">{t('mobile')}: </Text>
                     <TouchableOpacity onPress={() => handleCallOpenLink("+91" + item.mobile_number)}>
                         <Text className="text-blue-700 text-base">+91 {item.mobile_number}</Text>
                     </TouchableOpacity>
                 </View>
+
                 <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
                     <Text className="text-base font-bold text-black mr-2">{t('village')}: </Text>
                     <Text className="text-base text-black">{item.village}</Text>
                 </View>
+
             </View>
         );
     };
@@ -115,7 +126,7 @@ export default function Member() {
                     keyExtractor={(item, index) => index.toString()}
                 />
             ) : committeeMembers.length === 0 ? (
-                <NoDataFound message={"No commitee members found."} />
+                <NoDataFound message={"No committee members found."} />
             ) : (
                 <Animated.FlatList
                     data={committeeMembers}
