@@ -1,128 +1,118 @@
-import * as d3 from 'd3';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { PanResponder, ScrollView, View, useColorScheme } from 'react-native';
-import Svg, { G, Line, Rect, Text } from 'react-native-svg';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Image, TouchableOpacity, View, Text, Modal, useColorScheme } from 'react-native';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import AppIcon from '../../../components/AppIcon';
+import { useFocusEffect } from '@react-navigation/native';
 
-const nodeWidth = 90;
-const nodeHeight = 100;
-const baseHorizontalSpacing = 60;
-const verticalSpacing = 200;
+const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
+    const [userProfileDetail, setUserProfileDetail] = useState(null);
+    const colorScheme = useColorScheme();
 
-const calculateHorizontalSpacing = (node) => {
-    let maxChildren = 0;
-    node.each(d => {
-        if (d.children) {
-            maxChildren = Math.max(maxChildren, d.children?.length);
-        }
-    });
-    return nodeWidth + (maxChildren > 1 ? maxChildren * baseHorizontalSpacing : baseHorizontalSpacing);
-};
-
-const TreeNode = ({ node, x, y, children, onPress, lineColor }) => (
-    <>
-        <Rect x={x} y={y} width={nodeWidth} onPress={() => onPress(node)} height={nodeHeight} fill="white" stroke="black" />
-        <Text x={x + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
-            {node.firstname}
-        </Text>
-        {node.wife && (
-            <>
-                <Rect x={x + nodeWidth + baseHorizontalSpacing / 2} y={y} width={nodeWidth} height={nodeHeight} fill="white" stroke="black" onPress={() => onPress(node.wife)} />
-                <Text x={x + nodeWidth + baseHorizontalSpacing / 2 + nodeWidth / 2} y={y + nodeHeight / 2} textAnchor="middle" alignmentBaseline="middle">
-                    {node.wife.firstname}
-                </Text>
-                <Line x1={x + nodeWidth} y1={y + nodeHeight / 2} x2={x + nodeWidth + baseHorizontalSpacing / 2} y2={y + nodeHeight / 2} stroke={lineColor} />
-            </>
-        )}
-        {children}
-    </>
-);
-
-const FamilyTree = ({ data, navigation, paramsId }) => {
-    const root = d3.hierarchy(data);
-    const horizontalSpacing = calculateHorizontalSpacing(root);
-    const treeLayout = d3.tree().nodeSize([horizontalSpacing, verticalSpacing]);
-
-    treeLayout(root);
-
-    const [pan, setPan] = useState({ x: 0, y: 0 });
-    const panResponder = useRef(
-        PanResponder.create({
-            onPanResponderMove: (evt, gestureState) => {
-                setPan(prevPan => ({
-                    x: prevPan.x + gestureState.dx,
-                    y: prevPan.y + gestureState.dy
-                }));
-            },
-        })
-    ).current;
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                setIsProfilePopupVisible(false);
+            };
+        }, []))
+    const handlePress = () => {
+        setIsExpanded(!isExpanded);
+    };
+    const openProfilePopup = (node) => {
+        setUserProfileDetail(node)
+        setIsProfilePopupVisible(true);
+    };
 
     const handleNodePress = (node) => {
-        const userId = node._id
-        navigation.navigate('NodeDetails', { userId, node, paramsId });
+        if (node?.wife) {
+            const nodeProfile = { _id: node._id, firstname: node.firstname, wife: node.wife }
+            openProfilePopup(nodeProfile)
+        } else {
+            const userId = node._id
+            navigation.navigate('NodeDetails', { userId, node, paramsId });
+        }
     };
-    const nodes = root.descendants();
-    const minX = Math.min(...nodes.map(d => d.x));
-    const maxX = Math.max(...nodes.map(d => d.x));
-    const minY = Math.min(...nodes.map(d => d.y));
-    const maxY = Math.max(...nodes.map(d => d.y));
-    const svgWidth = maxX - minX + nodeWidth + horizontalSpacing;
-    const svgHeight = maxY - minY + nodeHeight + verticalSpacing;
-
-    const colorScheme = useColorScheme();
-    const lineColor = colorScheme === 'dark' ? 'white' : 'black';
-
-    return (
-        <View style={{ flex: 1, marginLeft: 10, marginTop: 30 }}>
-            <ScrollView
-                classname="flex flex-1"
-                // style={styles.parentScrollViewStyle}
-                horizontal
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-            >
-                <ScrollView style={styles.childScrollViewStyle}>
-                    <Svg width={svgWidth} height={svgHeight} {...panResponder.panHandlers}>
-                        <G transform={`translate(${pan.x},${pan.y})`}>
-                            {root.descendants().map((d, i) => {
-                                const x = d.x - minX;
-                                const y = d.y - minY;
-
-                                return (
-                                    <TreeNode
-                                        key={i}
-                                        node={d.data}
-                                        x={x}
-                                        y={y}
-                                        onPress={handleNodePress}
-                                        lineColor={lineColor}
-                                        children={
-                                            d.children && d.children.map((child, j) => {
-                                                const childX = child.x - minX;
-                                                const childY = child.y - minY;
-
-                                                return (
-                                                    <Line
-                                                        key={j}
-                                                        x1={x + nodeWidth / 2}
-                                                        y1={y + nodeHeight}
-                                                        x2={childX + nodeWidth / 2}
-                                                        y2={childY}
-                                                        stroke={lineColor}
-                                                    />
-                                                );
-                                            })
-                                        }
-                                    />
-                                );
-                            })}
-                        </G>
-                    </Svg>
-                </ScrollView>
-            </ScrollView>
-        </View>
-    );
+    const closeProfilePopup = () => {
+        setUserProfileDetail(null)
+        setIsProfilePopupVisible(false);
+    };
+    const viewUserProfile = () => {
+        const userId = userProfileDetail._id
+        navigation.navigate('NodeDetails', { userId, node: userProfileDetail, paramsId });
+    };
+    const viewUserWifeProfile = () => {
+        const userId = userProfileDetail.wife._id
+        navigation.navigate('NodeDetails', { userId, node: userProfileDetail, paramsId });
+    };
+    return (<>
+        <TouchableOpacity
+            style={styles.node}
+            onPress={() => handleNodePress(person)}
+            activeOpacity={0.9}
+            className={`bg-white rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white`}
+        >
+            <View className="flex flex-row justify-between items-center">
+                <View className="flex flex-row items-center gap-3">
+                    <AppIcon type="Feather" name="user" size={26} />
+                    <View>
+                        <View className="flex flex-row items-center gap-1 w-auto">
+                            <Text className="text-base font-bold capitalize basis-auto">{person.firstname}</Text>
+                        </View>
+                        <View>
+                            {person.wife && (
+                                <Text className="italic font-semibold mb-1.25 capitalize">
+                                    Spouse: {person.wife.firstname}
+                                </Text>
+                            )}
+                            {person.relationship && <Text className="italic font-semibold mb-1.25 capitalize">
+                                Father: {parent.firstname}
+                            </Text>}
+                        </View>
+                    </View>
+                </View>
+                <View className="flex flex-row items-center gap-1.25">
+                    {person.children && person.children.length > 0 && (
+                        <TouchableOpacity onPress={handlePress} activeOpacity={0.8} className="p-1">
+                            {/* { ? */}
+                            <AppIcon type="Feather" size={30} name={isExpanded ? 'chevron-up' : 'chevron-down'} />
+                            {/* <AppIcon type="Feather" size={30} name="" />} */}
+                        </TouchableOpacity>
+                    )}
+                </View>
+            </View>
+        </TouchableOpacity>
+        {isExpanded &&
+            person.children &&
+            person.children.map((child) => (
+                <View
+                    key={child._id}
+                    className="pl-5 mt-2.5 w-full"
+                >
+                    <FamilyTree data={child} navigation={navigation} paramsId={paramsId} parent={person} />
+                </View>
+            ))}
+        <Modal
+            transparent={true}
+            visible={isProfilePopupVisible}
+            onRequestClose={closeProfilePopup}
+        >
+            <View className="flex flex-1 flex-row justify-center items-center bg-[#00000080]">
+                <View className="bg-white w-auto px-10 py-2 rounded-lg items-center">
+                    <TouchableOpacity onPress={viewUserProfile}>
+                        <Text className="text-black text-lg p-1">View {userProfileDetail && userProfileDetail?.firstname}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={viewUserWifeProfile}>
+                        <Text className="text-black text-lg p-1">View {userProfileDetail && userProfileDetail?.wife?.firstname}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={closeProfilePopup}>
+                        <Text className="text-black text-lg p-1">Close</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    </>)
 };
 
 const ViewFamilyTree = ({ navigation, route }) => {
@@ -130,6 +120,7 @@ const ViewFamilyTree = ({ navigation, route }) => {
     const { allUserInfo } = useContext(GlobalContext);
     const paramsData = route.params;
     const [userData, setUserData] = useState("");
+
 
     useEffect(() => {
         (async function () {
@@ -149,9 +140,11 @@ const ViewFamilyTree = ({ navigation, route }) => {
     }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser, state.updateFamilyDetailsUser, paramsData]);
 
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <FamilyTree data={userData} paramsId={paramsData?.id} navigation={navigation} />
-        </View>
+        <>
+            <View style={{ flex: 1, backgroundColor: 'white', padding: 10 }}>
+                <FamilyTree data={userData} paramsId={paramsData?.id} navigation={navigation} />
+            </View>
+        </>
     );
 };
 
