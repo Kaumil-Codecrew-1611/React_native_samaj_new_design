@@ -369,7 +369,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                                 <Select.Item
                                                                     key={relation.value}
                                                                     label={relation.value}
-                                                                    value={relation.key}
+                                                                    value={relation.value}
                                                                     _text={{ color: 'black' }}
                                                                 />
                                                             );

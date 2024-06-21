@@ -102,7 +102,6 @@ const ForgotPassword = ({ navigation }) => {
                 setLoading(true)
                 const response = await checkOtpForForgotPassword(payload);
                 setLoading(false)
-                console.log("this is for otp checking", response)
                 setNewPasswordValid(response.status);
             } catch (error) {
                 console.error('Error verifying OTP', error);

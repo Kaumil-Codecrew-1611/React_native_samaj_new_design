@@ -11,8 +11,8 @@ import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
 import i18n from '../../../context/i18n';
 
-
 const VillageWisePersons = ({ navigation, route }) => {
+
     const villageId = route.params?.villageId;
     const { t } = useTranslation();
     const [search, setSearch] = useState("");
@@ -29,6 +29,7 @@ const VillageWisePersons = ({ navigation, route }) => {
             })();
         }
     }, [SelectedVillage, villageId]);
+
     useFocusEffect(
         useCallback(() => {
             return () => {

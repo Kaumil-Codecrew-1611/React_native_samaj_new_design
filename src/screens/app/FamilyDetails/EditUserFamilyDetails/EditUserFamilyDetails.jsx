@@ -84,7 +84,6 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                 setValue('gender', response.gender);
                 setValue('mobile_number', response?.mobile_number ? response?.mobile_number?.toString() : "");
                 setValue('email', response.email);
-
                 if (response.dob) {
                     setDob(new Date(response.dob));
                     setValue('dob', response.dob);
@@ -121,7 +120,6 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             <View>
-
                                 <View>
                                     <View className="w-full mx-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
@@ -410,7 +408,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                 >
                                                     {relationData.length > 0 ? (
                                                         relationData.map((relation) => (
-                                                            <Select.Item key={relation.value} label={relation.value} value={relation.key} />
+                                                            <Select.Item key={relation.value} label={relation.value} value={relation.value} />
                                                         ))
                                                     ) : (
                                                         <Select.Item label="Loading..." value="" isDisabled />
