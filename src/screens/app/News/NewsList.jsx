@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -82,7 +82,7 @@ function NewsList({ navigation, news, loading }) {
                         </View>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity >
         );
     };
 

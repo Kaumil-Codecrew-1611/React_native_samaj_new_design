@@ -26,7 +26,6 @@ const NodeDetails = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
     const AnimatedFontAwesomeIcon = Animated.createAnimatedComponent(FontAwesome);
     const images = userData?.photo ? [{ uri: `${process.env.IMAGE_URL}${userData.photo}` }] : [];
-    console.log("this is for image", images)
 
     useEffect(() => {
         (async function () {
@@ -57,8 +56,7 @@ const NodeDetails = ({ navigation, route }) => {
                 key !== "personal_id" &&
                 key !== "" &&
                 key !== "profile_banner"
-        )
-        .reduce((obj, key) => {
+        ).reduce((obj, key) => {
             obj[key] = userData[key];
             return obj;
         }, {}) : {};

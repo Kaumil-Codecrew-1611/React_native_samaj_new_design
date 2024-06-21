@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,11 +9,13 @@ import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 
 const Faqs = () => {
+
     const { t } = useTranslation();
     const [visibleAnswers, setVisibleAnswers] = useState({});
     const [faqsImage, setFaqsImage] = useState("");
     const { allfaqListing, contactUsPageDetails } = useContext(ApiContext);
     const [faqs, setFaq] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchCommitteeMembers = async () => {
@@ -22,6 +24,8 @@ const Faqs = () => {
                 setFaq(faqDetails);
             } catch (error) {
                 console.error("Failed to fetch committee members", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchCommitteeMembers();
@@ -96,18 +100,22 @@ const Faqs = () => {
                     </View>
                 </View>
                 <SafeAreaView style={{ flex: 1 }}>
-                    <FlatList
-                        data={faqs}
-                        renderItem={renderItems}
-                        keyExtractor={item => item._id.toString()}
-                    />
+                    {loading ? (
+                        <View className="flex-1 justify-center items-center">
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        </View>
+                    ) : (
+                        <FlatList
+                            data={faqs}
+                            renderItem={renderItems}
+                            keyExtractor={item => item._id.toString()}
+                        />
+                    )}
                 </SafeAreaView>
-                {!faqs.length && <NoDataFound message={"There are no FAQs in this village."} />}
+                {!loading && !faqs.length && <NoDataFound message={"There are no FAQs in this village."} />}
             </View>
         </View>
     )
 }
 
-export default Faqs
-
-
+export default Faqs;

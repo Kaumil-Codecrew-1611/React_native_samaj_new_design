@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, Image, StyleSheet, Text, View, Pressable } from 'react-native';
+import { Animated, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import ImageViewing from 'react-native-image-viewing';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ApiContext from '../../context/ApiContext';
-import ImageViewing from 'react-native-image-viewing';
 import NoDataFound from '../NoDataFound/NoDataFound';
 
 const cardHeight = 100;
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginHorizontal: 12,
         marginVertical: padding / 2,
-        height: cardHeight,
+        padding: 10,
         backgroundColor: '#fff',
         borderRadius: 20,
         alignItems: 'center',

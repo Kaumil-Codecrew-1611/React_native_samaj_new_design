@@ -1,13 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Keyboard, Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import AppIcon from '../../../components/AppIcon';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
 
+    const [loading, setLoading] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
     const [userProfileDetail, setUserProfileDetail] = useState(null);
     const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
@@ -19,6 +19,16 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
             };
         }, [])
     )
+
+    useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
+        };
+        loadData();
+    }, []);
 
     const handlePress = () => {
         setIsExpanded(!isExpanded);
@@ -54,52 +64,86 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
         navigation.navigate('NodeDetails', { userId, node: userProfileDetail, paramsId });
     };
 
-    return (
-        <>
-            <TouchableOpacity
-                style={styles.node}
-                onPress={() => handleNodePress(person)}
-                activeOpacity={0.9}
-                className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white`}
-            >
-                <View className="flex flex-row justify-between items-center">
-                    <View className="flex flex-row items-center gap-3">
-                        <AppIcon type="Feather" color={"black"} name="user" size={26} />
-                        <View>
-                            <View className="flex flex-row items-center gap-1 w-auto">
-                                <Text className="text-base text-black font-bold capitalize basis-auto">{person.firstname}</Text>
-                            </View>
-                            <View>
-                                {person.wife && (
-                                    <Text className="italic text-black font-semibold mb-1.25 capitalize">
-                                        Spouse: {person.wife.firstname}
-                                    </Text>
-                                )}
-                                {person.relationship && <Text className="italic text-black font-semibold mb-1.25 capitalize">
-                                    Father: {parent.firstname}
-                                </Text>}
-                            </View>
-                        </View>
-                    </View>
-                    <View className="flex flex-row items-center gap-1.25">
-                        {person.children && person.children.length > 0 && (
-                            <TouchableOpacity onPress={handlePress} activeOpacity={0.8} className="p-1">
-                                <AppIcon type="Feather" size={30} color={"black"} name={isExpanded ? 'chevron-up' : 'chevron-down'} />
-                            </TouchableOpacity>
-                        )}
+    const renderSkeleton = () => (
+        <View className="bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white">
+            <View className="flex flex-row justify-between items-center">
+                <View className="flex flex-row items-center gap-3">
+                    <View className="w-6 h-6 bg-gray-300 rounded-full" />
+                    <View>
+                        <View className="w-32 h-4 bg-gray-300 rounded" />
+                        <View className="mt-1 w-24 h-3 bg-gray-300 rounded" />
                     </View>
                 </View>
-            </TouchableOpacity>
-            {isExpanded &&
-                person.children &&
-                person.children.map((child) => (
-                    <View
-                        key={child._id}
-                        className="pl-5 mt-2.5 w-full"
-                    >
-                        <FamilyTree data={child} navigation={navigation} paramsId={paramsId} parent={person} />
-                    </View>
-                ))}
+                <View className="w-6 h-6 bg-gray-300 rounded" />
+            </View>
+        </View>
+    );
+
+    return (
+        <>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <TouchableOpacity
+                    style={styles.node}
+                    onPress={() => handleNodePress(person)}
+                    activeOpacity={0.9}
+                    className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white`}
+                >
+                    <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+                        {loading ? renderSkeleton() : (
+                            <View className="flex flex-row justify-between items-center">
+                                <View className="flex flex-row items-center gap-3">
+                                    <AppIcon type="Feather" color={"black"} name="user" size={26} />
+                                    <View>
+
+                                        <View className="flex flex-row items-center gap-1 w-auto">
+                                            <Text className="text-base text-black font-bold capitalize basis-auto">{person?.firstname}</Text>
+                                        </View>
+
+                                        <View>
+                                            {person?.wife && (
+                                                <Text className="italic text-black font-semibold mb-1.25 capitalize">
+                                                    Spouse: {person?.wife?.firstname}
+                                                </Text>
+                                            )}
+                                            {person?.relationship && (
+                                                <Text className="italic text-black font-semibold mb-1.25 capitalize">
+                                                    Father: {parent?.firstname}
+                                                </Text>
+                                            )}
+                                        </View>
+
+                                    </View>
+                                </View>
+
+                                <View className="flex flex-row items-center gap-1.25">
+                                    {person?.children && person?.children.length > 0 && (
+                                        <TouchableOpacity onPress={handlePress} activeOpacity={0.8} className="p-1">
+                                            <AppIcon type="Feather" size={30} color={"black"} name={isExpanded ? 'chevron-up' : 'chevron-down'} />
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
+
+                            </View>
+                        )}
+                    </ScrollView>
+                </TouchableOpacity>
+            </TouchableWithoutFeedback>
+            {isExpanded && person?.children && (
+                <FlatList
+                    data={person.children}
+                    keyExtractor={(item, index) => index.toString() + "childKey"}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item, index }) => (
+                        <View
+                            key={index + "childKey"}
+                            className="pl-5 mt-2.5 w-full"
+                        >
+                            <FamilyTree data={item} navigation={navigation} paramsId={paramsId} parent={person} />
+                        </View>
+                    )}
+                />
+            )}
             <Modal
                 transparent={true}
                 visible={isProfilePopupVisible}
@@ -137,10 +181,9 @@ const ViewFamilyTree = ({ navigation, route }) => {
                     const contentOfAllFamilyMembers = await allDataOfFamilyById(paramsData?.id);
                     setUserData(contentOfAllFamilyMembers);
                 } else {
-                    const contentOfAllFamilyMembers = await allDataOfFamilyById(allUserInfo._id);
+                    const contentOfAllFamilyMembers = await allDataOfFamilyById(allUserInfo?._id);
                     setUserData(contentOfAllFamilyMembers);
                 }
-
             } catch (error) {
                 console.log("error", error);
             }
@@ -148,14 +191,12 @@ const ViewFamilyTree = ({ navigation, route }) => {
     }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser, state.updateFamilyDetailsUser, paramsData]);
 
     return (
-
         <>
             <View style={{ flex: 1, backgroundColor: 'white', padding: 10 }}>
                 <FamilyTree data={userData} paramsId={paramsData?.id} navigation={navigation} />
             </View>
         </>
     );
-
 };
 
 const styles = {
@@ -164,6 +205,9 @@ const styles = {
     },
     childScrollViewStyle: {
         flex: 1,
+    },
+    scrollViewContent: {
+        flexGrow: 1,
     },
 };
 
