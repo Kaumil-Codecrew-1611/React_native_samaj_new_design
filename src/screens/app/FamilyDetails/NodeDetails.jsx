@@ -178,15 +178,17 @@ const NodeDetails = ({ navigation, route }) => {
                             </Pressable>
                         )
                     }
-                    <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
-                        <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">
-                            <AnimatedFontAwesomeIcon
-                                name="user-plus"
-                                size={27}
-                                color="green"
-                            />
-                        </Text>
-                    </Pressable>
+                    {userData?.marital_status !== "unmarried" &&
+                        <Pressable onPress={handleAddFamilyDetail} className="p-1 bg-white absolute top-2 rounded-[15px] left-2 shadow-green-600" style={{ elevation: 7 }}>
+                            <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">
+                                <AnimatedFontAwesomeIcon
+                                    name="user-plus"
+                                    size={27}
+                                    color="green"
+                                />
+                            </Text>
+                        </Pressable>
+                    }
                 </>
             )
         };

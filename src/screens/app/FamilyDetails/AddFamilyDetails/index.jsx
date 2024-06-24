@@ -18,7 +18,6 @@ export default function AddFamilyDetails({ navigation, route }) {
         education: yup.string().required(t('pleaseentereducation')),
         address: yup.string().required(t('pleaseenteraddress')),
         job: yup.string().required(t('pleaseenterjob')),
-        mobile_number: yup.string().matches(/^[0-9]{10}$/, 'Phone Number must be exactly 10 digits'),
         relationship: yup.string().required(t('pleasechooserelation')),
         marital_status: yup.string().required(t('pleasechoosemaritalstatus')),
         gender: yup.string().required(t('pleaseentergender')),
