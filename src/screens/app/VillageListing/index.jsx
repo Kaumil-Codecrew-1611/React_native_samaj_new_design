@@ -21,9 +21,12 @@ const VillageListing = ({ navigation, route }) => {
     const [listingStyle, setListingStyle] = useState(route.params.listingStyle);
     const [search, setSearch] = useState("");
     const [language, setLanguage] = useState("");
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(1);
     const [loading, setLoading] = useState(true);
-    const { villagesListing, allUserByVillageId, resetData } = useContext(ApiContext);
-    const { setSelectedVillage, SelectedVillage, allVillagesListing, setAllVillagesListing } = useContext(GlobalContext);
+    const [loadingScroll, setLoadingScroll] = useState(false);
+    const { villagesListing, allUserByVillageId, resetData, state } = useContext(ApiContext);
+    const { setSelectedVillage, SelectedVillage, allVillagesListing, setAllVillagesListing, } = useContext(GlobalContext);
 
     useFocusEffect(
         useCallback(() => {
@@ -32,15 +35,29 @@ const VillageListing = ({ navigation, route }) => {
             };
         }, [])
     );
-
+    const handleLoadMore = async () => {
+        if (page !== totalPage) {
+            setLoadingScroll(true)
+            const allVillages = await villagesListing({ page: page + 1, search: "" });
+            console.log(allVillages.currentPage, "allVillages.currentPage")
+            setPage(allVillages.currentPage || 1)
+            setTotalPage(allVillages?.totalPages || 1)
+            setAllVillagesListing(prev => [...prev, ...allVillages?.village]);
+            setLoadingScroll(false)
+        }
+    }
     useEffect(() => {
         (async function () {
             setLoading(true);
             const allVillages = await villagesListing();
             setAllVillagesListing(allVillages?.village);
+            console.log(allVillages.currentPage, "allVillages.currentPage")
+            setPage(allVillages.currentPage || 1)
+            setTotalPage(allVillages?.totalPages || 1)
             setLoading(false);
         })();
     }, []);
+    console.log(state.villagesListing, "villagesListing")
 
     useFocusEffect(
         useCallback(() => {
@@ -62,8 +79,10 @@ const VillageListing = ({ navigation, route }) => {
         setLoading(true);
         setTimeout(() => {
             (async function () {
-                const allVillages = await villagesListing(search ? search : "");
+                const allVillages = await villagesListing({ search: search || "" });
                 setAllVillagesListing(allVillages.village);
+                setPage(allVillages.currentPage || 1)
+                setTotalPage(allVillages?.totalPages || 1)
                 setLoading(false);
             })();
         }, 100)
@@ -124,7 +143,14 @@ const VillageListing = ({ navigation, route }) => {
             </View>
         );
     };
-
+    const renderFooter = () => {
+        if (!loadingScroll) return null;
+        return (
+            <View style={{ paddingVertical: 20 }}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    };
     return (
 
         <KeyboardAvoidingView
@@ -192,9 +218,12 @@ const VillageListing = ({ navigation, route }) => {
                             paddingHorizontal: 2,
                             ...(listingStyle === 'grid' && { gap: 2 }),
                         }}
+                        onEndReached={handleLoadMore}
+                        onEndReachedThreshold={0.9}
                         horizontal={false}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
+                        ListFooterComponent={renderFooter}
                     />
                 )}
 

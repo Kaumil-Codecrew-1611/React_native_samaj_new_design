@@ -16,7 +16,6 @@ function Parallax({ sliderImages }) {
             title: imageName
         };
     });
-
     return (
         <View>
             <Carousel

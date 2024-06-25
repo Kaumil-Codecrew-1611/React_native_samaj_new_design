@@ -1,8 +1,8 @@
 // src/context/apiHelper.js
-export const apiRequest = async (apiFunction, params, setData, contextKey) => {
+export const apiRequest = async (apiFunction, params, callBack, contextKey) => {
     try {
         const data = await apiFunction(params);
-        setData(contextKey, data);
+        callBack(contextKey, data);
         return data;
     } catch (error) {
         console.log(error)

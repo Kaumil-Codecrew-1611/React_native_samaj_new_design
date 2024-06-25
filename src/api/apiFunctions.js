@@ -43,10 +43,12 @@ export const aboutUsContent = async () => {
     return response.data
 };
 
-export const allVillageListing = async (search) => {
-    const response = await axiosInstance.get(`/location?searchValue=${search ? search : ''}`);
-    return response.data
+export const allVillageListing = async ({ search, page }) => {
+    const response = await axiosInstance.get(`/location?searchValue=${search ? search : ''}&page=${page ? page : 1}`);
+    console.log(response.data, "response.data")
+    return response.data;
 };
+
 
 export const villagesByUser = async (villageId) => {
     const response = await axiosInstance.post('/villagebyuser', { searchValue: villageId });

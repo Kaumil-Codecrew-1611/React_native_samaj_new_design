@@ -42,6 +42,11 @@ const apiReducer = (state, action) => {
     switch (action.type) {
         case 'SET_DATA':
             return { ...state, [action.payload.key]: action.payload.data };
+        case 'APPEND_DATA':
+            return {
+                ...state,
+                [action.payload.key]: [...(state[action.payload.key] || []), ...action.payload.data]
+            };
         case 'RESET_DATA':
             return { ...state, [action.payload.key]: null };
         case 'RESET_ALL_DATA':
@@ -54,6 +59,7 @@ const apiReducer = (state, action) => {
             return state;
     }
 };
+
 
 export const ApiProvider = ({ children }) => {
 
@@ -81,7 +87,7 @@ export const ApiProvider = ({ children }) => {
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
     const loginAPICall = (userData) => apiRequest(loginUser, userData, setData, 'loginDataResponse');
     const PayOrder = (orderData) => apiRequest(payOrderData, orderData, setData, 'orderDataResponse');
-    const villagesListing = (search) => apiRequest(allVillageListing, search, setData, 'villagesListing');
+    const villagesListing = ({ search = "", page = 1, perPage = 10 }) => apiRequest(allVillageListing, { search, page, perPage }, setData, 'villagesListing');
     const contactUsPageDetails = () => apiRequest(contactUsDetails, null, setData, 'contactUsPageDetails');
     const allUserByVillageId = (villageId) => apiRequest(villagesByUser, villageId, setData, 'allUserByVillage');
     const allDataOfFamilyById = (parentId) => apiRequest(familyDataById, parentId, setData, 'allDataOfFamilyById');

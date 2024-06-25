@@ -32,7 +32,7 @@ const Home = ({ navigation }) => {
         { id: 2, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageIcon.png') },
         isLoggedIn ?
             { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } :
-            { id: 4, name: "join now", redirectTo: "Welcome", image: require('../../../assets/join.png') },
+            { id: 4, name: "Join now", redirectTo: "Welcome", image: require('../../../assets/join.png') },
     ];
 
     useEffect(() => {
