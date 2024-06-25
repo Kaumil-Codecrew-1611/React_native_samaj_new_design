@@ -10,6 +10,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { GlobalContext } from './src/context/globalState';
 import RootNavigator from './src/navigators/RootNavigator';
+import messaging from '@react-native-firebase/messaging';
 
 const App = () => {
   const { setIsAuthScreenActive, getUserDataFromStorage } = useContext(GlobalContext);
@@ -17,6 +18,20 @@ const App = () => {
     SplashScreen.hide();
     getDataFromStorage();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onTokenRefresh(token => {
+        console.log('New token:', token);
+    });
+
+    messaging()
+        .getToken()
+        .then(token => {
+            console.log('Device token:', token);
+        });
+
+    return unsubscribe;
+}, []);
 
   async function getDataFromStorage() {
     await getUserDataFromStorage('user');

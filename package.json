@@ -1,5 +1,5 @@
 {
-  "name": "samaj_app_v2",
+  "name": "panchal_application",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -14,6 +14,8 @@
     "@hookform/resolvers": "^3.4.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "^8.0.1",
+    "@react-native-firebase/app": "^20.1.0",
+    "@react-native-firebase/messaging": "^20.1.0",
     "@react-native-masked-view/masked-view": "^0.3.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
@@ -40,6 +42,7 @@
     "react-native-linear-gradient": "^2.8.3",
     "react-native-navigation-bar-color": "^2.0.2",
     "react-native-paper": "^5.12.3",
+    "react-native-push-notification": "^8.1.1",
     "react-native-razorpay": "^2.3.0",
     "react-native-reanimated": "latest",
     "react-native-reanimated-carousel": "^3.5.1",

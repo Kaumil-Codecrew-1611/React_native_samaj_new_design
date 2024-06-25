@@ -1,4 +1,4 @@
-package com.samaj_app_v2
+package com.panchal_application
 
 import android.app.Application
 import com.facebook.react.PackageList

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "samaj_app_v2.app"
-               BlueprintName = "samaj_app_v2"
-               ReferencedContainer = "container:samaj_app_v2.xcodeproj">
+               BuildableName = "panchal_application.app"
+               BlueprintName = "panchal_application"
+               ReferencedContainer = "container:panchal_application.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "samaj_app_v2Tests.xctest"
-               BlueprintName = "samaj_app_v2Tests"
-               ReferencedContainer = "container:samaj_app_v2.xcodeproj">
+               BuildableName = "panchal_applicationTests.xctest"
+               BlueprintName = "panchal_applicationTests"
+               ReferencedContainer = "container:panchal_application.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "samaj_app_v2.app"
-            BlueprintName = "samaj_app_v2"
-            ReferencedContainer = "container:samaj_app_v2.xcodeproj">
+            BuildableName = "panchal_application.app"
+            BlueprintName = "panchal_application"
+            ReferencedContainer = "container:panchal_application.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "samaj_app_v2.app"
-            BlueprintName = "samaj_app_v2"
-            ReferencedContainer = "container:samaj_app_v2.xcodeproj">
+            BuildableName = "panchal_application.app"
+            BlueprintName = "panchal_application"
+            ReferencedContainer = "container:panchal_application.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
