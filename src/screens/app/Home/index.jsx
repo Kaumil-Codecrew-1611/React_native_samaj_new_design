@@ -88,7 +88,6 @@ const Home = ({ navigation }) => {
                 navigation={navigation}
                 thumbnail={item.thumbnail}
                 functionality={item.functionality}
-                size="sm"
                 image={item.image}
                 idx={item.id}
             />
