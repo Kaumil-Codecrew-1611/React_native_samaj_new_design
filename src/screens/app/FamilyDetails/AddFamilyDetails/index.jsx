@@ -1,14 +1,25 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { CheckIcon, Radio, Select } from "native-base";
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import {
+    ActivityIndicator,
+    Keyboard,
+    KeyboardAvoidingView,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
 import { GlobalContext } from '../../../../context/globalState';
-import { useTranslation } from 'react-i18next';
 
 export default function AddFamilyDetails({ navigation, route }) {
     const { t } = useTranslation();
@@ -43,7 +54,7 @@ export default function AddFamilyDetails({ navigation, route }) {
 
     const onSubmit = async (data) => {
         setLoading(true);
-        const response = await addFamilyMemberDetails(data);
+        await addFamilyMemberDetails(data, allUserInfo._id);
         setLoading(false);
         navigation.navigate('ViewFamilyDetails');
     };
@@ -60,7 +71,7 @@ export default function AddFamilyDetails({ navigation, route }) {
         (async function () {
             try {
                 const allRelationData = await allRelationshipDataList();
-                setRelationData(allRelationData || []);
+                setRelationData(allRelationData.relationship || []);
             } catch (error) {
                 console.error("Error fetching relation data:", error);
             }

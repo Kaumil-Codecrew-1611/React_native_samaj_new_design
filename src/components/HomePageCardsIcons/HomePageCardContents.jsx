@@ -6,7 +6,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const HomePageCardContents = ({ content, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing }) => {
 
     const route = useRoute();
-    const [windowWidth, setWindowWidth] = useState(Dimensions.get('window').width);
+    const [windowWidth] = useState(Dimensions.get('window').width);
 
     const redirect = () => {
         if (villageListing) {

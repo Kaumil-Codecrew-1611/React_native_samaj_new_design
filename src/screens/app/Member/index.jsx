@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Dimensions, FlatList, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, FlatList, Image, Linking, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
@@ -74,18 +74,30 @@ export default function Member() {
 
     const renderActualItem = ({ item }) => {
 
+        const ImageOfMember = `${process.env.IMAGE_URL}${item.image}`
+
+
         return (
 
             <View className="bg-white rounded-xl p-5 mx-5 mb-5 shadow-2xl" key={item._id}>
-
-                <TouchableOpacity onPress={() => openProfileImage(item.image)}>
-                    <Image
-                        source={{ uri: `${process.env.IMAGE_URL}${item.image}` }}
-                        style={styles.image}
-                        resizeMode="stretch"
-                    />
-                </TouchableOpacity>
-
+                {ImageOfMember ?
+                    <TouchableOpacity onPress={() => openProfileImage(item.image)}>
+                        <Image
+                            source={{ uri: ImageOfMember }}
+                            style={styles.image}
+                            resizeMode="stretch"
+                        />
+                    </TouchableOpacity> :
+                    <View style={styles.skeleton}>
+                        <SkeletonPlaceholder>
+                            <SkeletonPlaceholder.Item
+                                width={styles.image.width}
+                                height={styles.image.height}
+                                borderRadius={10}
+                            />
+                        </SkeletonPlaceholder>
+                    </View>
+                }
                 <View className="flex flex-1 flex-row items-start mb-3 flex-wrap">
                     <Text className="text-base font-bold text-black mr-2">{t('fullName')}: </Text>
                     <Text className="text-base text-black">{item.fullname}</Text>
@@ -182,6 +194,12 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     image: {
+        width: '100%',
+        height: 200,
+        borderRadius: 10,
+        marginBottom: 15,
+    },
+    skeleton: {
         width: '100%',
         height: 200,
         borderRadius: 10,

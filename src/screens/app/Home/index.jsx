@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Pressable, Text, View } from 'react-native';
+import { Dimensions, Image, Keyboard, Pressable, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ImageViewing from 'react-native-image-viewing';
 import { withTiming } from 'react-native-reanimated';
@@ -12,6 +13,7 @@ import HomePageCardContents from '../../../components/HomePageCardsIcons/HomePag
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
+import NewsHomePageContent from '../../../components/HomePageCardsIcons/NewsHomePageContent';
 
 const Home = ({ navigation }) => {
 
@@ -23,6 +25,7 @@ const Home = ({ navigation }) => {
     const [sliderImages, setSliderImages] = useState([]);
     const [titleOfHeader, setTitleOfHeader] = useState("");
     const [isVisible, setIsVisible] = useState(false);
+    const [windowWidth] = useState(Dimensions.get('window').width);
     const images = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}` },
     ];
@@ -81,7 +84,7 @@ const Home = ({ navigation }) => {
     }, [allUserInfo]);
 
     const renderItem = ({ item }) => (
-        <View className="flex-1 flex-row justify-around">
+        <View className="flex-1 flex-row justify-around mt-3">
             <HomePageCardContents
                 content={item.name}
                 redirectTo={item.redirectTo}
@@ -121,7 +124,7 @@ const Home = ({ navigation }) => {
                                 </Text>
                             )}
 
-                            <Text className="font-semibold tracking-wider text-rose-700 text-xl">
+                            <Text className={`${windowWidth < 321 ? "text-base" : "text-xl"} font-semibold tracking-wider text-rose-700`}>
                                 {firstName && lastName
                                     ? `${firstName} ${lastName}`
                                     : titleOfHeader}
@@ -139,20 +142,23 @@ const Home = ({ navigation }) => {
 
                     </View>
                 </Pressable>
-
-                <FlatList
-                    data={cards}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    numColumns={3}
-                    key={cards[0].id}
-                    horizontal={false}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ display: 'flex', gap: 2, width: '100%', paddingHorizontal: 3 }}
-                    ListHeaderComponent={<Carousel sliderImages={sliderImages} />}
-                />
-
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <FlatList
+                            data={cards}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id.toString()}
+                            numColumns={3}
+                            key={cards[0].id}
+                            horizontal={false}
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{ display: 'flex', gap: 2, width: '100%', paddingHorizontal: 3 }}
+                            ListHeaderComponent={<Carousel sliderImages={sliderImages} />}
+                        />
+                        <NewsHomePageContent sliderImages={sliderImages} />
+                    </ScrollView>
+                </TouchableWithoutFeedback>
             </View>
             <ImageViewing
                 images={allUserInfo ? images : [DefaultImage]}

@@ -88,6 +88,7 @@ export const GlobalProvider = (props) => {
     };
     const [allVillagesListing, setAllVillagesListing] = useState([]);
     const [defaultLanguage, setDefaultLanguage] = useState('en');
+    const [pushNotificationToken, setPushNotificationToken] = useState("")
 
     const value = {
         progress,
@@ -122,7 +123,9 @@ export const GlobalProvider = (props) => {
         allVillagesListing,
         setAllVillagesListing,
         setDefaultLanguage,
-        defaultLanguage
+        defaultLanguage,
+        pushNotificationToken,
+        setPushNotificationToken,
     };
 
     return (
