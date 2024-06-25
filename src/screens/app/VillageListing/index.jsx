@@ -206,7 +206,7 @@ const VillageListing = ({ navigation, route }) => {
                     <NoDataFound message="No Village Found" />
                 ) : (
                     <FlatList
-                        data={allVillagesListing}
+                        data={allVillagesListing.sort((a,b)=> language == 'en' ? a.villageE.localeCompare(b.villageE) : a.villageG.localeCompare(b.villageG))}
                         renderItem={renderItem}
                         keyExtractor={(item) => item._id}
                         numColumns={listingStyle === 'grid' ? 2 : 1}
