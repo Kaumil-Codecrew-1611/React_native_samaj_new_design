@@ -4,14 +4,14 @@ import { FlatList, Keyboard, Modal, ScrollView, Text, TouchableOpacity, Touchabl
 import AppIcon from '../../../components/AppIcon';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-
+import { Popup } from 'popup-ui'
 const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
 
     const [loading, setLoading] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
     const [userProfileDetail, setUserProfileDetail] = useState(null);
     const [isProfilePopupVisible, setIsProfilePopupVisible] = useState(false);
-
+    const { isLoggedIn } = useContext(GlobalContext);
     useFocusEffect(
         useCallback(() => {
             return () => {
@@ -40,8 +40,22 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
     };
 
     const handleNodePress = (node) => {
+        if (!isLoggedIn) {
+            Popup.show({
+                type: 'Danger',
+                title: 'Please login',
+                button: true,
+                textBody: `You need to be logged in to view ${node?.firstname ? node?.firstname.toLowerCase() + " " + node.lastname.toLowerCase() : "This user"}'s profile.`,
+                buttonText: 'Register/login',
+                callback: () => {
+                    Popup.hide();
+                    navigation.navigate('Welcome');
+                }
+            })
+            return console.log("Not logged in")
+        }
         if (node?.wife) {
-            const nodeProfile = { _id: node._id, firstname: node.firstname, wife: node.wife }
+            const nodeProfile = { _id: node._id, firstname: node.firstname, lastname: node.lastname, wife: node.wife }
             openProfilePopup(nodeProfile)
         } else {
             const userId = node._id
@@ -96,18 +110,18 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                                     <View>
 
                                         <View className="flex flex-row items-center gap-1 w-auto">
-                                            <Text className="text-base text-black font-bold capitalize basis-auto">{person?.firstname}</Text>
+                                            <Text className="text-base text-black font-bold capitalize basis-auto">{person?.firstname} {person?.lastname}</Text>
                                         </View>
 
                                         <View>
                                             {person?.wife && (
                                                 <Text className="italic text-black font-semibold mb-1.25 capitalize">
-                                                    Spouse: {person?.wife?.firstname}
+                                                    Spouse: {person?.wife?.firstname} {person?.wife?.lastname}
                                                 </Text>
                                             )}
                                             {person?.relationship && (
                                                 <Text className="italic text-black font-semibold mb-1.25 capitalize">
-                                                    Father: {parent?.firstname}
+                                                    Father: {parent?.firstname} {parent?.lastname}
                                                 </Text>
                                             )}
                                         </View>
@@ -152,10 +166,10 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                 <View className="flex flex-1 flex-row justify-center items-center bg-[#00000080]">
                     <View className="bg-white w-auto px-10 py-2 rounded-lg items-center">
                         <TouchableOpacity onPress={viewUserProfile}>
-                            <Text className="text-black text-lg p-1">View {userProfileDetail && userProfileDetail?.firstname}</Text>
+                            <Text className="text-black text-lg p-1">View {userProfileDetail && userProfileDetail?.firstname} {userProfileDetail && userProfileDetail?.lastname}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={viewUserWifeProfile}>
-                            <Text className="text-black text-lg p-1">View {userProfileDetail && userProfileDetail?.wife?.firstname}</Text>
+                            <Text className="text-black text-lg p-1">View {userProfileDetail && userProfileDetail?.wife?.firstname} {userProfileDetail?.wife?.lastname}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={closeProfilePopup}>
                             <Text className="text-black text-lg p-1">Close</Text>

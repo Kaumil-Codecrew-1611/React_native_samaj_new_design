@@ -95,7 +95,7 @@ const Home = ({ navigation }) => {
     );
 
     const profileNavigate = () => {
-        if (allUserInfo) {
+        if (isLoggedIn) {
             progress.value = withTiming("3");
             navigation.navigate("Profile");
         } else {

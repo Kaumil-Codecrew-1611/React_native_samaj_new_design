@@ -11,7 +11,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { GlobalContext } from './src/context/globalState';
 import RootNavigator from './src/navigators/RootNavigator';
 import messaging from '@react-native-firebase/messaging';
-
+import { Root } from 'popup-ui'
 const App = () => {
   const { setIsAuthScreenActive, getUserDataFromStorage } = useContext(GlobalContext);
   useEffect(() => {
@@ -21,17 +21,17 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = messaging().onTokenRefresh(token => {
-        console.log('New token:', token);
+      console.log('New token:', token);
     });
 
     messaging()
-        .getToken()
-        .then(token => {
-            console.log('Device token:', token);
-        });
+      .getToken()
+      .then(token => {
+        console.log('Device token:', token);
+      });
 
     return unsubscribe;
-}, []);
+  }, []);
 
   async function getDataFromStorage() {
     await getUserDataFromStorage('user');
@@ -55,19 +55,21 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <PaperProvider>
-          <NativeBaseProvider>
-            <NavigationContainer
-              onReady={() => changeNavigationBarColor('white')}
-              onStateChange={handleStateChange}
-            >
-              <RootNavigator />
-            </NavigationContainer>
-          </NativeBaseProvider>
-        </PaperProvider>
-        <StatusBar barStyle={'dark-content'} />
-      </SafeAreaProvider>
+      <Root>
+        <SafeAreaProvider>
+          <PaperProvider>
+            <NativeBaseProvider>
+              <NavigationContainer
+                onReady={() => changeNavigationBarColor('white')}
+                onStateChange={handleStateChange}
+              >
+                <RootNavigator />
+              </NavigationContainer>
+            </NativeBaseProvider>
+          </PaperProvider>
+          <StatusBar barStyle={'dark-content'} />
+        </SafeAreaProvider>
+      </Root>
     </GestureHandlerRootView>
   );
 };
