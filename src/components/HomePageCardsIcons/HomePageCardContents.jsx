@@ -35,7 +35,7 @@ const HomePageCardContents = ({ content, image, redirectTo, functionality, navig
                                 source={image}
                             />
                         </View>
-                        <Text className={`${windowWidth < 321 ? "text-base" : windowWidth < 361 ? "text-xl" : "text-2xl"} text-black font-semibold text-center`}>
+                        <Text className={`${windowWidth < 321 ? "text-base" : windowWidth < 361 ? "text-xl" : "text-xl"} text-black font-semibold text-center`}>
                             {content}
                         </Text>
                     </TouchableOpacity>

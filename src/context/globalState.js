@@ -7,6 +7,7 @@ import { getPathXCenter } from "../utils/path";
 export const GlobalContext = createContext({});
 
 export const GlobalProvider = (props) => {
+
     const progress = useSharedValue(1);
     const { containerPath, curvedPaths, tHeight } = usePath();
     const circleXCoordinate = useSharedValue(0);
@@ -25,6 +26,7 @@ export const GlobalProvider = (props) => {
             d: `${containerPath} ${currentPath}`,
         };
     });
+
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [SelectedVillage, setSelectedVillage] = useState("");
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
@@ -73,7 +75,6 @@ export const GlobalProvider = (props) => {
                 setIsLoggedIn(!!(user?._id))
                 setAllUserInfo(user)
                 return user
-                // Use the user data as needed
             }
         } catch (error) {
             console.error('Failed to fetch data from storage', error);
@@ -89,8 +90,10 @@ export const GlobalProvider = (props) => {
     const [allVillagesListing, setAllVillagesListing] = useState([]);
     const [defaultLanguage, setDefaultLanguage] = useState('en');
     const [pushNotificationToken, setPushNotificationToken] = useState("")
-
+    const [currentPathNamestate, setCurrentPathNamestate] = useState("")
     const value = {
+        setCurrentPathNamestate,
+        currentPathNamestate,
         progress,
         animatedProps,
         containerPath,

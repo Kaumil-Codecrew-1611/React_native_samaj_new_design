@@ -5,20 +5,19 @@ import { useTranslation } from 'react-i18next';
 import { Dimensions, Image, Keyboard, Pressable, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ImageViewing from 'react-native-image-viewing';
-import { withTiming } from 'react-native-reanimated';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DefaultImage from '../../../assets/profile_img.png';
 import Carousel from '../../../components/Carousel';
 import HomePageCardContents from '../../../components/HomePageCardsIcons/HomePageCardContents';
+import NewsHomePageContent from '../../../components/HomePageCardsIcons/NewsHomePageContent';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
-import NewsHomePageContent from '../../../components/HomePageCardsIcons/NewsHomePageContent';
 
 const Home = ({ navigation }) => {
 
     const { t } = useTranslation();
-    const { isLoggedIn, progress, allUserInfo } = useContext(GlobalContext);
+    const { isLoggedIn, allUserInfo } = useContext(GlobalContext);
     const { homePageAllSlider, contactUsPageDetails } = useContext(ApiContext);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -36,6 +35,9 @@ const Home = ({ navigation }) => {
         isLoggedIn ?
             { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } :
             { id: 4, name: "join now", redirectTo: "Welcome", image: require('../../../assets/join.png') },
+        { id: 5, name: "Directory", redirectTo: "AllUserDirectory", image: require('../../../assets/villageIcon.png') },
+        { id: "", name: "", redirectTo: "", image: "" },
+        { id: "", name: "", redirectTo: "", image: "" },
     ];
 
     useEffect(() => {
@@ -55,7 +57,6 @@ const Home = ({ navigation }) => {
             });
         })();
     }, []);
-
 
     useEffect(() => {
         const getSelectedLanguage = async () => {
@@ -84,7 +85,7 @@ const Home = ({ navigation }) => {
     }, [allUserInfo]);
 
     const renderItem = ({ item }) => (
-        <View className="flex-1 flex-row justify-around mt-3">
+        <View className="flex-1 flex-row justify-around mt-5">
             <HomePageCardContents
                 content={item.name}
                 redirectTo={item.redirectTo}
@@ -99,10 +100,7 @@ const Home = ({ navigation }) => {
 
     const profileNavigate = () => {
         if (allUserInfo) {
-            progress.value = withTiming("3");
             navigation.navigate("Profile");
-        } else {
-            console.log("all User Info is null, navigation is not performed");
         }
     };
 
@@ -117,21 +115,17 @@ const Home = ({ navigation }) => {
                 <Pressable onPress={profileNavigate} className="bg-white h-fit flex items-center" style={{ alignSelf: 'stretch' }}>
                     <View className="flex-row justify-around my-3 w-full items-center ">
                         <View className="space-y-1 basis-2/3 justify-center px-5">
-
                             {firstName && lastName && (
                                 <Text className="font-semibold tracking-wider text-neutral-700 text-2xl">
                                     {t("welcome")}
                                 </Text>
                             )}
-
                             <Text className={`${windowWidth < 321 ? "text-base" : "text-xl"} font-semibold tracking-wider text-rose-700`}>
                                 {firstName && lastName
                                     ? `${firstName} ${lastName}`
                                     : titleOfHeader}
                             </Text>
-
                         </View>
-
                         <Pressable onPress={openProfileImage} className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
                             {allUserInfo && Object.entries(allUserInfo).length > 0 && allUserInfo.photo ? (
                                 <Image source={{ uri: process.env.IMAGE_URL + allUserInfo.photo }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
@@ -139,7 +133,6 @@ const Home = ({ navigation }) => {
                                 <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
                             )}
                         </Pressable>
-
                     </View>
                 </Pressable>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -156,7 +149,7 @@ const Home = ({ navigation }) => {
                             contentContainerStyle={{ display: 'flex', gap: 2, width: '100%', paddingHorizontal: 3 }}
                             ListHeaderComponent={<Carousel sliderImages={sliderImages} />}
                         />
-                        <NewsHomePageContent sliderImages={sliderImages} />
+                        <NewsHomePageContent navigation={navigation} />
                     </ScrollView>
                 </TouchableWithoutFeedback>
             </View>

@@ -4,9 +4,9 @@ import ApiContext from '../../context/ApiContext';
 
 const NoDataFound = ({ message }) => {
 
+    const colorScheme = useColorScheme();
     const [noDataFound, setNoDataFound] = useState("");
     const { contactUsPageDetails } = useContext(ApiContext);
-    const colorScheme = useColorScheme();
 
     useEffect(() => {
         (async function () {

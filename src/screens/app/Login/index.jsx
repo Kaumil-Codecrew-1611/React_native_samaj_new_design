@@ -192,7 +192,7 @@ const Login = ({ navigation }) => {
 
                 <View className="flex flex-row justify-center mt-3" style={styles.registerContainer}>
                     <Text className="text-[16px] text-black">Go to</Text>
-                    <Pressable onPress={() => navigation.navigate("Home")}>
+                    <Pressable onPress={() => { progress.value = withTiming("1"); navigation.navigate("Home") }}>
                         <Text className="text-base text-black font-semibold ml-2">Home Page</Text>
                     </Pressable>
                 </View>

@@ -58,7 +58,7 @@ export const allNewsListing = async () => {
     return response.data
 };
 
-export const addFamilyMember = async ({familyData, mainParentId}) => {
+export const addFamilyMember = async ({ familyData, mainParentId }) => {
     const response = await axiosInstance.post(`/addfamily/${mainParentId}`, familyData);
     return response.data;
 };
@@ -188,5 +188,10 @@ export const otpCheckForForgotPassword = async (checkotpForForgotPassword) => {
 
 export const setNewForgotPassword = async (newSetForgotPassword) => {
     const response = await axiosInstance.post(`/forgetpassword/${newSetForgotPassword.userId}`, newSetForgotPassword);
+    return response.data
+};
+
+export const allUserReview = async () => {
+    const response = await axiosInstance.get(`/user-list`);
     return response.data
 };

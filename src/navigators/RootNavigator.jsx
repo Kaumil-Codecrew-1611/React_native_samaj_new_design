@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import NewsHomePageContent from '../components/HomePageCardsIcons/NewsHomePageContent';
 import BottomTabs from '../containers/BottomTabs';
 import Aboutus from '../screens/app/About';
 import ChangePassword from '../screens/app/ChangePassword';
@@ -29,6 +30,7 @@ import Support from '../screens/app/Support';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
+import AllUserDirectory from '../screens/app/Directory/AllUserDirectory';
 
 const RootStack = createNativeStackNavigator()
 
@@ -83,6 +85,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="NodeDetails" component={NodeDetails} options={{ headerTitle: t("familyDetailsPage") }} />
                 <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: t("AddFamilyDetails") }} />
                 <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: t("EditFamilyDetails") }} />
+                <RootStack.Screen name="AllUserDirectory" component={AllUserDirectory} options={{ headerTitle: "Directory" }} />
             </RootStack.Navigator>
         </>
     )

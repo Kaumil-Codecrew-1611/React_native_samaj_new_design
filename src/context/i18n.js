@@ -13,7 +13,7 @@ const resources = {
       contactusheading: 'If you have any inquries, get in touch with us, we will be happy to help you',
       developercontact: 'Website / App Developer Contact',
       developeby: 'Developed by',
-      successchangeLanguage: 'Language changed successfully',
+      successchangeLanguage: 'Do you want to change the language?',
       loginsuccessfully: 'Login successfully.',
       home: 'Home',
       profile: 'Profile',
@@ -217,6 +217,7 @@ const resources = {
       Description: "Description",
       Support: "Support",
       Loading: "Loading",
+      LatestNews: "Latest News",
     },
   },
   gu: {
@@ -228,7 +229,7 @@ const resources = {
       contactusheading: 'જો તમે પંચાલ સમાજ એપમાં કોઈ સમસ્યા અનુભવો છો અથવા વધારાના કાર્યો સૂચવવા ઈચ્છો છો, તો કૃપા કરીને નીચે આપેલા નંબર પર અમારો સંપર્ક કરો.',
       developercontact: 'વેબસાઇટ / એપ બનાવનારનો સંપર્ક',
       developeby: 'બનાવનાર',
-      successchangeLanguage: 'સફળતાપૂર્વક ભાષા બદલી',
+      successchangeLanguage: 'શું તમે ભાષા બદલવા માંગો છો?',
       loginsuccessfully: 'લૉગિન સફળતાપૂર્વક થઈ ગયું.',
       home: 'હોમ',
       profile: 'પ્રોફાઇલ',
@@ -431,6 +432,7 @@ const resources = {
       Description: "વર્ણન",
       Support: "મદદ",
       Loading: "રાહ જુવો",
+      LatestNews: "તાજા સમાચાર",
     },
   },
 };

@@ -28,6 +28,7 @@ const VillageByName = ({ searchValue, navigation, SelectedVillage }) => {
             setLoading(false);
         }
     }, [state.allUserByVillage]);
+
     const formattedContacts = userByVillageId.map(user => ({
         id: user._id,
         image: process.env.IMAGE_URL + user?.photo,

@@ -1,95 +1,80 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Image, Text, View, FlatList, Dimensions } from 'react-native';
-import Carousel from 'react-native-reanimated-carousel';
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-const PAGE_WIDTH = Dimensions.get('window').width;
-const NewsHomePageContent = ({ sliderImages }) => {
-    const flatListRef = useRef(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const data = [
-        {
-            id: 1,
-            image: `${process.env.IMAGE_URL}${sliderImages[1] && sliderImages[1]?.image}`,
-            title: "Sample Title 1",
-            description: "Sample description for item 1",
-        },
-        {
-            id: 2,
-            image: `${process.env.IMAGE_URL}${sliderImages[2] && sliderImages[2]?.image}`,
-            title: "Sample Title 2",
-            description: "Sample description for item 2",
-        },
-        {
-            id: 3,
-            image: `${process.env.IMAGE_URL}${sliderImages[2] && sliderImages[2]?.image}`,
-            title: "Sample Title 3",
-            description: "Sample description for item 3",
-        },
-    ];
-    const infiniteData = useRef([...data, ...data, ...data]);
-    const [autoPlay] = useState(true);
-    const [snapEnabled] = useState(true);
+import ApiContext from '../../context/ApiContext';
+
+const useTruncateText = (text, wordLimit) => {
+    return text.split(' ').slice(0, wordLimit).join(' ') + (text.split(' ').length > wordLimit ? '...' : '');
+};
+
+const NewsHomePageContent = ({ navigation }) => {
+
+    const { t } = useTranslation();
+    const { newsListing } = useContext(ApiContext);
+    const [topNewsListing, setTopNewsListing] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (flatListRef.current) {
-                setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteData.current.length);
-                flatListRef.current.scrollToIndex({
-                    animated: true,
-                    index: currentIndex,
-                });
-            }
-        }, 3000);
+        (async function () {
+            const newsListingContent = await newsListing();
+            setTopNewsListing(newsListingContent);
+            setLoading(false);
+        })();
+    }, []);
 
-        return () => clearInterval(interval);
-    }, [currentIndex]);
+    const handleNewsOpen = (id) => {
+        navigation.navigate('NewsDetailsPage', { newsId: id });
+    }
 
-    const renderItem = ({ item, index }) => (
-        <>
-            <View className="flex flex-1 justify-center items-center">
-                <View key={index} style={{ marginTop: 15 }}>
-                    <View style={{ backgroundColor: '#ddd', borderRadius: 10, overflow: 'hidden', width: 360 }}>
-                        <Image source={{ uri: item.image }} resizeMode='stretch' style={{ height: hp('30%'), width: '100%', borderRadius: 10 }} />
+    const renderSkeleton = () => (
+        <View>
+            {[1, 2, 3].map((_, index) => (
+                <View key={index} style={{ flexDirection: 'row', width: '100%', padding: 15, backgroundColor: '#ffffff', borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5, marginTop: 10 }}>
+                    <View style={{ width: '40%', borderRadius: 10, marginRight: 10 }}>
+                        <View style={{ height: hp('18%'), width: '100%', backgroundColor: '#f0f0f0', borderRadius: 10 }} />
                     </View>
-                    <View style={{ marginTop: 10 }}>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.title}</Text>
-                        <Text style={{ fontSize: 14, color: '#666', marginTop: 5 }}>{item.description}</Text>
+                    <View className="flex-1">
+                        <View className="w-[70%] h-5 bg-gray-100 mb-2 rounded-md" />
+                        <View className="w-[70%] h-5 bg-gray-100 mb-2 rounded-md" />
+                        <View className="w-[70%] h-5 bg-gray-100 mb-2 rounded-md" />
                     </View>
                 </View>
-            </View>
-        </>
+            ))}
+        </View>
     );
 
     return (
-        <Carousel
-            style={{ alignSelf: 'stretch', display: "flex", gap: 8, marginTop: 15 }}
-            width={PAGE_WIDTH}
-            height={PAGE_WIDTH * 0.8}
-            vertical={false}
-            loop
-            snapEnabled={snapEnabled}
-            autoPlay={autoPlay}
-            autoPlayInterval={1500}
-            modeConfig={{
-                parallaxScrollingScale: 0.9,
-                parallaxScrollingOffset: 50,
-            }}
-            data={data}
-            scrollAnimationDuration={1000}
-            renderItem={renderItem} />
-        // <FlatList
-        //     ref={flatListRef}
-        //     data={infiniteData.current}
-        //     horizontal
-        //     showsHorizontalScrollIndicator={false}
-        //     contentContainerStyle={{ paddingHorizontal: 10 }}
-        //     keyExtractor={(item, index) => `${item.id}-${index}`}
-        //     renderItem={renderItem}
-        //     initialScrollIndex={data.length}
-        //     getItemLayout={(data, index) => (
-        //         { length: 320, offset: 320 * index, index }
-        //     )}
-        //     pagingEnabled
-        // />
+        <>
+            <View className="p-3">
+                <View>
+                    <Text className="text-2xl font-semibold tracking-wider text-rose-700 border-b-2 border-red-700 my-2 w-[40%]">
+                        {t("LatestNews")}
+                    </Text>
+                </View>
+                {loading ? (
+                    renderSkeleton()
+                ) : (
+                    topNewsListing.slice(0, 3).map((item, index) => {
+                        const truncatedTitle = useTruncateText(item.title, 7);
+                        const truncatedDescription = useTruncateText(item.description, 12);
+                        return (
+                            <TouchableOpacity key={index} onPress={() => handleNewsOpen(item._id)}>
+                                <View className="flex flex-row items-center w-full p-3 bg-white rounded-lg shadow-md mt-2">
+                                    <View className="w-[40%] rounded-lg mr-2">
+                                        <Image source={{ uri: process.env.IMAGE_URL + item.image }} resizeMode='cover' style={{ height: hp('15%'), width: '100%', borderRadius: 10 }} />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-[18px] font-bold">{truncatedTitle}</Text>
+                                        <Text className="capitalize text-[15px] font-semibold text-justify mt-3">{truncatedDescription}</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    })
+                )}
+            </View>
+        </>
     );
 };
 

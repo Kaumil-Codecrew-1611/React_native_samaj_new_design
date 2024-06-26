@@ -33,6 +33,7 @@ import {
     updateUserProfile,
     userPasswordChange,
     villagesByUser,
+    allUserReview,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -103,6 +104,7 @@ export const ApiProvider = ({ children }) => {
     const numberCheckForRegisterUser = (numberData) => apiRequest(numberCheckForRegister, numberData, setData, 'numberCheckForRegisterUser');
     const checkOtpForForgotPassword = (checkotpForForgotPassword) => apiRequest(otpCheckForForgotPassword, checkotpForForgotPassword, setData, 'checkOtpForForgotPassword');
     const sendOTPForgotPassword = (userEmailDataForForgotPassword) => apiRequest(sendOtpForForgotPassword, userEmailDataForForgotPassword, setData, 'sendOTPForgotPassword');
+    const allUserDirectory = () => apiRequest(allUserReview, null, setData, 'allUserDirectory');
 
     return (
         <ApiContext.Provider value={{
@@ -142,6 +144,7 @@ export const ApiProvider = ({ children }) => {
             sendOTPForgotPassword,
             checkOtpForForgotPassword,
             forgotPasswordApi,
+            allUserDirectory,
         }}>
             {children}
         </ApiContext.Provider>
