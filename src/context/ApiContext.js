@@ -93,7 +93,7 @@ export const ApiProvider = ({ children }) => {
     const editFamilyDetailsUser = (childId) => apiRequest(editUserFamilyMembers, childId, setData, 'editFamilyDetailsUser');
     const changeUserPassword = (passwordData) => apiRequest(changePassword, passwordData, setData, 'changePasswordResponse');
     const userChangePassword = (userPassword) => apiRequest(userPasswordChange, userPassword, setData, 'userChangePassword');
-    const addFamilyMemberDetails = (familyData) => apiRequest(addFamilyMember, familyData, setData, 'addFamilyMemberDetails');
+    const addFamilyMemberDetails = (familyData, mainParentId) => apiRequest(addFamilyMember, { familyData, mainParentId }, setData, 'addFamilyMemberDetails');
     const userDataByParentId = (userDataId) => apiRequest(familyDataByUserParentId, userDataId, setData, 'userDataByParentId');
     const updateFamilyDetailsUser = (updatedData) => apiRequest(updateUserFamilyMembers, updatedData, setData, 'updateFamilyDetailsUser');
     const updateUserPostProfile = (userUpdatedData) => apiRequest(editUserPostProfile, userUpdatedData, setData, 'updateUserPostProfile');

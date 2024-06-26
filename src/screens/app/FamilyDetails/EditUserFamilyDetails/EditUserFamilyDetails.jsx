@@ -96,7 +96,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         (async function () {
             try {
                 const allRelationData = await allRelationshipDataList();
-                setRelationData(allRelationData || []);
+                setRelationData(allRelationData.relationship || []);
             } catch (error) {
                 console.error("Error fetching relation data:", error);
             }

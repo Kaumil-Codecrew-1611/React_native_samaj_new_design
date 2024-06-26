@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
     const imageUrl = `${process.env.IMAGE_URL}${loginImage}`;
     const [isCurrentPasswordHidden, setCurrentPasswordHidden] = useState(true);
     const { loginAPICall, contactUsPageDetails } = useContext(ApiContext);
-    const { setuserDataInStorage, progress, setIsLoggedIn, getUserDataFromStorage, setAllUserInfo } = useContext(GlobalContext);
+    const { setuserDataInStorage, progress, setIsLoggedIn, getUserDataFromStorage, setAllUserInfo, pushNotificationToken } = useContext(GlobalContext);
 
     const schema = yup.object().shape({
 
@@ -65,6 +65,7 @@ const Login = ({ navigation }) => {
             const res = await loginAPICall({
                 email_or_mobile: data?.email_or_mobile,
                 password: data?.password,
+                device_token: pushNotificationToken
             });
             if (res?.status) {
                 if (res.user) {

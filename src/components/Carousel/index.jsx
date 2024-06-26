@@ -20,7 +20,7 @@ function Parallax({ sliderImages }) {
     return (
         <View>
             <Carousel
-                style={{ alignSelf: 'stretch', display: "flex", gap: 8 }}
+                style={{ alignSelf: 'stretch', display: "flex", gap: 8, marginTop: 15 }}
                 width={PAGE_WIDTH}
                 height={PAGE_WIDTH * 0.8}
                 vertical={false}

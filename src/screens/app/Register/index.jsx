@@ -47,7 +47,7 @@ const Register = ({ navigation }) => {
     });
 
     const { state, getLocation, numberCheckForRegisterUser } = useContext(ApiContext);
-    const { setRegisterData } = useContext(GlobalContext);
+    const { setRegisterData, pushNotificationToken } = useContext(GlobalContext);
     const [locations, setLocations] = useState('');
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -86,6 +86,7 @@ const Register = ({ navigation }) => {
         const payloadForChecking = {
             email: emailForCheck,
             mobile_number: numberForCheck,
+            device_token: pushNotificationToken,
         };
         setLoading(true);
         const responseOfCheckNumber = await numberCheckForRegisterUser(payloadForChecking);
