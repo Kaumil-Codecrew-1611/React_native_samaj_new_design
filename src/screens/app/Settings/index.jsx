@@ -100,13 +100,9 @@ const SettingBottomSheet = () => {
                     {alertOpen && (
                         <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     )}
-                    <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-[90%]">
-                        <Text className="font-bold text-[16px] text-black mb-4">{successMessages}</Text>
-                        <View className="flex flex-row justify-between items-center">
-                            <Pressable onPress={closeAlertModal} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white">{t('cancel')}</Text>
-                            </Pressable>
-
+                    <View className="w-4/5 bg-white rounded-[15px] p-5 shadow-lg mt-[90%]">
+                        <Text className="font-bold text-[16px] text-black mb-5">{successMessages}</Text>
+                        <View className="flex flex-row justify-around items-center">
                             <View>
                                 {loading ? (
                                     <View className="px-4 py-2 bg-red-500 flex flex-row items-center rounded-[15px]">
@@ -114,11 +110,15 @@ const SettingBottomSheet = () => {
                                         <ActivityIndicator size="small" color="white" />
                                     </View>
                                 ) : (
-                                    <Pressable disabled={loading} onPress={AlertActionModal} className="px-6 py-2 bg-red-500 rounded-[15px]">
+                                    <Pressable disabled={loading} onPress={AlertActionModal} className="px-6 py-2 bg-blue-500 rounded-[15px]">
                                         <Text className="text-white">{t('okay')}</Text>
                                     </Pressable>
                                 )}
                             </View>
+
+                            <Pressable onPress={closeAlertModal} className="px-6 py-2 bg-red-500 rounded-[15px]">
+                                <Text className="text-white">{t('cancel')}</Text>
+                            </Pressable>
                         </View>
                     </View>
                 </View>

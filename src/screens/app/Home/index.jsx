@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, Image, Keyboard, Pressable, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, Dimensions, Image, Keyboard, Pressable, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ImageViewing from 'react-native-image-viewing';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -25,6 +25,10 @@ const Home = ({ navigation }) => {
     const [titleOfHeader, setTitleOfHeader] = useState("");
     const [isVisible, setIsVisible] = useState(false);
     const [windowWidth] = useState(Dimensions.get('window').width);
+    const animation = new Animated.Value(0);
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
+    const scale = animation.interpolate({ inputRange, outputRange });
     const images = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}` },
     ];
@@ -34,11 +38,24 @@ const Home = ({ navigation }) => {
         { id: 2, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageIcon.png') },
         isLoggedIn ?
             { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } :
-            { id: 4, name: "join now", redirectTo: "Welcome", image: require('../../../assets/join.png') },
-        { id: 5, name: "Directory", redirectTo: "AllUserDirectory", image: require('../../../assets/villageIcon.png') },
+            { id: 4, name: t('joinnow'), redirectTo: "Welcome", image: require('../../../assets/join.png') },
+        { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/villageIcon.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
     ];
+
+    const onPressIn = () => {
+        Animated.spring(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+    const onPressOut = () => {
+        Animated.spring(animation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
 
     useEffect(() => {
         (async function () {
@@ -111,7 +128,7 @@ const Home = ({ navigation }) => {
 
     return (
         <>
-            <View className="flex-1 bg-gray-300 space-y-3 w-full pb-20" edges={['top']}>
+            <View className="flex-1 bg-[#E9EDF7] space-y-3 w-full pb-20" edges={['top']}>
                 <Pressable onPress={profileNavigate} className="bg-white h-fit flex items-center" style={{ alignSelf: 'stretch' }}>
                     <View className="flex-row justify-around my-3 w-full items-center ">
                         <View className="space-y-1 basis-2/3 justify-center px-5">
@@ -126,13 +143,20 @@ const Home = ({ navigation }) => {
                                     : titleOfHeader}
                             </Text>
                         </View>
-                        <Pressable onPress={openProfileImage} className="flex justify-center items-center space-y-2 basis-1/3 cursor-pointer">
-                            {allUserInfo && Object.entries(allUserInfo).length > 0 && allUserInfo.photo ? (
-                                <Image source={{ uri: process.env.IMAGE_URL + allUserInfo.photo }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
-                            ) : (
-                                <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
-                            )}
-                        </Pressable>
+                        <Animated.View style={[{ transform: [{ scale }] }]}>
+                            <Pressable
+                                activeOpacity={1}
+                                onPressIn={onPressIn}
+                                onPressOut={onPressOut}
+                                onPress={openProfileImage}
+                            >
+                                {allUserInfo && Object.entries(allUserInfo).length > 0 && allUserInfo.photo ? (
+                                    <Image source={{ uri: process.env.IMAGE_URL + allUserInfo.photo }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                                ) : (
+                                    <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                                )}
+                            </Pressable>
+                        </Animated.View>
                     </View>
                 </Pressable>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

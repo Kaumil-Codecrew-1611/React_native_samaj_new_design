@@ -1,6 +1,6 @@
 // components/FloatingButton.js
 import React, { useContext } from 'react';
-import { StyleSheet, TouchableOpacity, Text, Image, View } from 'react-native';
+import { Animated, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { GlobalContext } from '../../context/globalState';
 import SettingBottomSheet from '../../screens/app/Settings';
 
@@ -10,12 +10,38 @@ const ChangeLanguage = () => {
         setScreenpercentage({ first: "30%", second: "34%" });
         openBottomSheet(<SettingBottomSheet />);
     };
+    const animation = new Animated.Value(0);
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.9];
+    const scale = animation.interpolate({ inputRange, outputRange });
+
+    const onPressIn = () => {
+        Animated.spring(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOut = () => {
+        Animated.spring(animation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
     return (
-        <TouchableOpacity style={styles.button} onPress={() => openSettings()}>
-            <View className="h-10 w-10">
-                <Image className="h-10 w-full object-cover scale-[1.7]" source={require('../../assets/setting.jpg')} ></Image>
-            </View>
-        </TouchableOpacity>
+        <Animated.View style={[{ transform: [{ scale }] }]}>
+            <TouchableOpacity
+                activeOpacity={1}
+                onPressIn={onPressIn}
+                onPressOut={onPressOut}
+                style={styles.button}
+                onPress={() => openSettings()}
+            >
+                <View className="h-10 w-10">
+                    <Image className="h-10 w-full object-cover scale-[1.7]" source={require('../../assets/setting.jpg')} ></Image>
+                </View>
+            </TouchableOpacity>
+        </Animated.View>
     );
 };
 

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import ApiContext from '../../../context/ApiContext';
 
@@ -10,13 +9,64 @@ function Support({ navigation }) {
     const { t } = useTranslation();
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const { contactUsPageDetails } = useContext(ApiContext);
-    const [supportImage, setSupportImage] = useState("")
+    const [supportImage, setSupportImage] = useState("");
+    const emailAnimation = new Animated.Value(0);
+    const faqAnimation = new Animated.Value(0);
+    const ternConditionAnimation = new Animated.Value(0);
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
+    const emailScale = emailAnimation.interpolate({ inputRange, outputRange });
+    const faqScale = faqAnimation.interpolate({ inputRange, outputRange });
+    const conditionScale = ternConditionAnimation.interpolate({ inputRange, outputRange });
+
+    const onPressInEmail = () => {
+        Animated.spring(emailAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOutEmail = () => {
+        Animated.spring(emailAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressInFaqs = () => {
+        Animated.spring(faqAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOutFaqs = () => {
+        Animated.spring(faqAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressInCondition = () => {
+        Animated.spring(ternConditionAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOutCondition = () => {
+        Animated.spring(ternConditionAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
     const redirect = (redirectPath) => {
         if (redirectPath) {
             navigation.navigate(redirectPath)
         }
     }
-    
+
     useEffect(() => {
         (async function () {
             const contentContactUs = await contactUsPageDetails();
@@ -55,58 +105,105 @@ function Support({ navigation }) {
                     showsHorizontalScrollIndicator={false}
                 >
                     <View className="w-full p-3">
-                        <TouchableOpacity activeOpacity={0.95} onPress={() => redirect('EmailSupport')}>
-                            <View className="bg-white p-3 mb-2 ">
-                                <View className="flex flex-row justify-between items-center">
-                                    <View className="w-[40px] h-[40px] overflow-hidden">
-                                        <Image
-                                            source={require("../../../assets/send_email.png")}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </View>
-                                    <View className="w-[160px]">
+                        <Animated.View style={[{ transform: [{ scale: emailScale }] }]}>
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPressIn={onPressInEmail}
+                                onPressOut={onPressOutEmail}
+                                onPress={() => redirect('EmailSupport')}
+                            >
+                                <View className="bg-white p-3 mb-2 ">
+                                    <View className="flex flex-row justify-between items-center">
+                                        <View className="w-[40px] h-[40px] overflow-hidden">
+                                            <Image
+                                                source={require("../../../assets/send_email.png")}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </View>
+                                        <View className="w-[200px]">
+                                            <View>
+                                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">{t('email')}</Text>
+                                                <Text className="tracking-wider text-sm text-neutral-700">{t('getthesolutionsend')}</Text>
+                                            </View>
+                                        </View>
                                         <View>
-                                            <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">{t('email')}</Text>
-                                            <Text className="tracking-wider text-sm text-neutral-700">{t('getthesolutionsend')}</Text>
+                                            <AnimatedFeatherIcon
+                                                name="arrow-right"
+                                                size={30}
+                                                color="#40A5E5"
+                                                className="m-2"
+                                            />
                                         </View>
                                     </View>
-                                    <View>
-                                        <AnimatedFeatherIcon
-                                            name="arrow-right"
-                                            size={30}
-                                            color="#40A5E5"
-                                            className="m-2"
-                                        />
-                                    </View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.95} onPress={() => redirect('Faqs')}>
-                            <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl">
-                                <View className="flex flex-row justify-between items-center">
-                                    <View className="w-[40px] h-[40px] overflow-hidden">
-                                        <Image
-                                            source={require("../../../assets/faqs_icon.png")}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </View>
-                                    <View className="w-[160px]">
+                            </TouchableOpacity>
+                        </Animated.View>
+                        <Animated.View style={[{ transform: [{ scale: faqScale }] }]}>
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPressIn={onPressInFaqs}
+                                onPressOut={onPressOutFaqs}
+                                onPress={() => redirect('Faqs')}
+                            >
+                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl">
+                                    <View className="flex flex-row justify-between items-center">
+                                        <View className="w-[40px] h-[40px] overflow-hidden">
+                                            <Image
+                                                source={require("../../../assets/faqs_icon.png")}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </View>
+                                        <View className="w-[200px]">
+                                            <View>
+                                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">FAQs</Text>
+                                                <Text className="tracking-wider text-sm text-neutral-700">{t('findintelligentanswersInstantly')}</Text>
+                                            </View>
+                                        </View>
                                         <View>
-                                            <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">FAQs</Text>
-                                            <Text className="tracking-wider text-sm text-neutral-700">{t('findintelligentanswersInstantly')}</Text>
+                                            <AnimatedFeatherIcon
+                                                name="arrow-right"
+                                                size={30}
+                                                color="#40A5E5"
+                                                className="m-2"
+                                            />
                                         </View>
                                     </View>
-                                    <View>
-                                        <AnimatedFeatherIcon
-                                            name="arrow-right"
-                                            size={30}
-                                            color="#40A5E5"
-                                            className="m-2"
-                                        />
+                                </View>
+                            </TouchableOpacity>
+                        </Animated.View>
+                        <Animated.View style={[{ transform: [{ scale: conditionScale }] }]}>
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPressIn={onPressInCondition}
+                                onPressOut={onPressOutCondition}
+                                onPress={() => redirect('TermAndCondition')}
+                            >
+                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl">
+                                    <View className="flex flex-row justify-between items-center">
+                                        <View className="w-[40px] h-[40px] overflow-hidden">
+                                            <Image
+                                                source={require("../../../assets/termAndCondition.png")}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </View>
+                                        <View className="w-[200px]">
+                                            <View>
+                                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">{t("termsAndCondition")}</Text>
+                                                <Text className="tracking-wider text-sm text-neutral-700">{t("termsAndConditionCardContent")}</Text>
+                                            </View>
+                                        </View>
+                                        <View>
+                                            <AnimatedFeatherIcon
+                                                name="arrow-right"
+                                                size={30}
+                                                color="#40A5E5"
+                                                className="m-2"
+                                            />
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </Animated.View>
                     </View>
                 </ScrollView>
             </View>
@@ -114,4 +211,4 @@ function Support({ navigation }) {
     )
 }
 
-export default Support
+export default Support;

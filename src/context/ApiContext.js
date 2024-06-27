@@ -34,6 +34,7 @@ import {
     userPasswordChange,
     villagesByUser,
     allUserReview,
+    termAndCondition,
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -104,7 +105,8 @@ export const ApiProvider = ({ children }) => {
     const numberCheckForRegisterUser = (numberData) => apiRequest(numberCheckForRegister, numberData, setData, 'numberCheckForRegisterUser');
     const checkOtpForForgotPassword = (checkotpForForgotPassword) => apiRequest(otpCheckForForgotPassword, checkotpForForgotPassword, setData, 'checkOtpForForgotPassword');
     const sendOTPForgotPassword = (userEmailDataForForgotPassword) => apiRequest(sendOtpForForgotPassword, userEmailDataForForgotPassword, setData, 'sendOTPForgotPassword');
-    const allUserDirectory = () => apiRequest(allUserReview, null, setData, 'allUserDirectory');
+    const allUserDirectory = (search) => apiRequest(allUserReview, search, setData, 'allUserDirectory');
+    const termsAndConditions = () => apiRequest(termAndCondition, null, setData, 'termsAndConditions');
 
     return (
         <ApiContext.Provider value={{
@@ -145,6 +147,7 @@ export const ApiProvider = ({ children }) => {
             checkOtpForForgotPassword,
             forgotPasswordApi,
             allUserDirectory,
+            termsAndConditions,
         }}>
             {children}
         </ApiContext.Provider>

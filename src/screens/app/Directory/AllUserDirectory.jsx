@@ -9,7 +9,6 @@ import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 
 const { width } = Dimensions.get('screen');
-
 const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
 const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
@@ -32,11 +31,11 @@ export default function AllUserDirectory() {
 
     useEffect(() => {
         (async function () {
-            const contentAboutUs = await allUserDirectory();
+            const contentAboutUs = await allUserDirectory(search ? search : "");
             setLoading(false);
             setUserOfDirectory(contentAboutUs);
         })();
-    }, []);
+    }, [search]);
 
     useFocusEffect(
         useCallback(() => {
@@ -68,11 +67,29 @@ export default function AllUserDirectory() {
     const renderActualItem = ({ item }) => {
 
         const location = item.locationsData && item.locationsData.length > 0 ? item.locationsData[0] : {};
+        const animation = new Animated.Value(0);
+        const inputRange = [0, 1];
+        const outputRange = [1, 0.8];
+        const scale = animation.interpolate({ inputRange, outputRange });
         const defaultImage = require('../../../assets/joinNowImage.png');
 
         const removeTextAfterSlash = (text) => {
             if (!text) return 'N/A';
-            return text.split('/')[0].trim();
+            return text && text.split('/')[0].trim();
+        };
+
+        const onPressIn = () => {
+            Animated.spring(animation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressOut = () => {
+            Animated.spring(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
         };
 
         return (
@@ -80,12 +97,19 @@ export default function AllUserDirectory() {
                 <View className="px-3">
                     <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2">
                         <View className="mr-3">
-                            <TouchableOpacity onPress={() => openProfileImage(item.photo)}>
-                                <Image
-                                    className="w-16 h-16 text-black font-semibold text-center rounded-lg"
-                                    source={item.photo ? { uri: `${process.env.IMAGE_URL}${item.photo}` } : defaultImage}
-                                />
-                            </TouchableOpacity>
+                            <Animated.View style={[{ transform: [{ scale }] }]} key={item?._id}>
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPressIn={onPressIn}
+                                    onPressOut={onPressOut}
+                                    onPress={() => openProfileImage(item.photo)}
+                                >
+                                    <Image
+                                        className="w-16 h-16 text-black font-semibold text-center rounded-lg"
+                                        source={item.photo ? { uri: `${process.env.IMAGE_URL}${item.photo}` } : defaultImage}
+                                    />
+                                </TouchableOpacity>
+                            </Animated.View>
                         </View>
                         <View>
                             <Text className="text-xl font-bold">
@@ -152,12 +176,12 @@ export default function AllUserDirectory() {
             </View>
             {loading ? (
                 <FlatList
-                    data={[1, 2, 3]}
+                    data={Array.from({ length: 10 })}
                     showsVerticalScrollIndicator={false}
                     renderItem={renderSkeletonItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
-            ) : userOfDirectory.length === 0 ? (
+            ) : userOfDirectory && userOfDirectory.length === 0 ? (
                 <NoDataFound message={"No User Found"} />
             ) : (
                 <Animated.FlatList

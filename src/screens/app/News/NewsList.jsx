@@ -1,13 +1,16 @@
-import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { GlobalContext } from '../../../context/globalState';
 
 function NewsList({ navigation, news, loading }) {
 
-    var a = null;
-    let IMAGE_URL = process.env.IMAGE_URL;
+    const IMAGE_URL = process.env.IMAGE_URL;
+    const { t } = useTranslation();
+    const { defaultLanguage } = useContext(GlobalContext);
 
     const formatDate = (timestamp) => {
         if (!timestamp) {
@@ -27,17 +30,30 @@ function NewsList({ navigation, news, loading }) {
         navigation.navigate('NewsDetailsPage', { newsId: id });
     };
 
-    const renderItems = ({ item, index }) => {
+    const renderItems = ({ item }) => {
 
-        if (a == 0) {
-            a++;
-        } else {
-            a = index;
-        }
+        const animation = new Animated.Value(0);
+        const inputRange = [0, 1];
+        const outputRange = [1, 0.8];
+        const scale = animation.interpolate({ inputRange, outputRange });
+
+        const onPressIn = () => {
+            Animated.spring(animation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressOut = () => {
+            Animated.spring(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
 
         const truncateText = (text, wordLimit) => {
-            const plainText = text.replace(/<[^>]*>?/gm, '');
-            const words = plainText.split(' ');
+            const plainText = text && text.replace(/<[^>]*>?/gm, '');
+            const words = plainText && plainText.split(' ');
             if (words?.length > wordLimit) {
                 return words.slice(0, wordLimit).join(' ') + '...';
             }
@@ -45,49 +61,58 @@ function NewsList({ navigation, news, loading }) {
         };
 
         return (
-            <TouchableOpacity onPress={() => { openNewsDetailsPage(item?._id) }}>
-                <View className="bg-gray-200 shadow-2xl p-2 mb-5 rounded-3xl w-[100%] mt-7">
-                    <View className="overflow-hidden object-cover shadow-xl shadow-black">
-                        <View className="relative">
-                            <Image
-                                className="object-cover"
-                                source={{ uri: IMAGE_URL + item.image }}
-                                style={{ height: 180, width: '100%', borderRadius: 20 }}
-                            />
-                            {item.createdBy && <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-2">
-                                <View className="flex flex-row items-center gap-2">
-                                    <Text className="font-bold text-black text-base">
-                                        Created By
-                                    </Text>
-                                    <Text className="text-base text-black font-medium">
-                                        {item?.createdBy}
+            <Animated.View style={[{ transform: [{ scale }] }]} key={item?._id}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPressIn={onPressIn}
+                    onPressOut={onPressOut}
+                    onPress={() => { openNewsDetailsPage(item?._id); }}
+                >
+                    <View className="bg-gray-200 shadow-2xl p-2 rounded-3xl w-[100%] mt-4">
+                        <View className="overflow-hidden object-cover shadow-xl shadow-black">
+                            <View className="relative">
+                                <Image
+                                    className="object-cover"
+                                    source={{ uri: IMAGE_URL + item.image }}
+                                    style={{ height: 180, width: '100%', borderRadius: 20 }}
+                                />
+                                {item.createdBy &&
+                                    <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-2">
+                                        <View className="flex flex-row items-center gap-2">
+                                            <Text className="font-bold text-black text-base">
+                                                Created By
+                                            </Text>
+                                            <Text className="text-base text-black font-medium">
+                                                {item?.createdBy}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                }
+                            </View>
+                            <View className="flex flex-row justify-between flex-wrap items-center p-2">
+                                <View>
+                                    <Text className='font-bold text-[19px] text-black tracking-tighter text-justify my-2'>
+                                        {defaultLanguage == "en" ? item.titleE : item.titleG}
                                     </Text>
                                 </View>
-                            </View>}
-                        </View>
-                        <View className="flex flex-row justify-between flex-wrap items-center p-2">
-                            <View>
-                                <Text className='font-bold text-[19px] text-black tracking-tighter text-justify my-2'>
-                                    {item?.title}
+                                <View>
+                                    <Text className="text-[13px] tracking-wider text-neutral-700 font-bold mb-2">{formatDate(item?.created_at)}</Text>
+                                </View>
+                            </View>
+                            <View className="p-2">
+                                <Text className="text-[15px] tracking-wider mb-5 text-neutral-700 text-justify font-semibold">
+
+                                    {defaultLanguage == "en" ? truncateText(item?.descriptionE, 20) : truncateText(item?.descriptionG, 20)}
                                 </Text>
                             </View>
-                            <View>
-                                <Text className="text-[13px] tracking-wider text-neutral-700 font-bold mb-2">{formatDate(item?.created_at)}</Text>
-                            </View>
-                        </View>
-                        <View className="p-2">
-                            <Text className="text-[15px] tracking-wider mb-5 text-neutral-700 text-justify font-semibold">
-                                {truncateText(item?.description, 20)}
-                            </Text>
                         </View>
                     </View>
-                </View>
-            </TouchableOpacity >
+                </TouchableOpacity>
+            </Animated.View>
         );
     };
 
     return (
-
         <View className="w-full flex flex-row justify-between flex-wrap">
             <SafeAreaView style={{ flex: 1 }}>
                 {loading ? (
@@ -111,15 +136,21 @@ function NewsList({ navigation, news, loading }) {
                         )}
                     />
                 ) : (
-                    <FlatList
-                        ListHeaderComponent={() => news[0] && renderItems({ item: news[0], index: 0 })}
-                        data={news && news?.slice(1)}
-                        renderItem={renderItems}
-                        keyExtractor={(item) => item?._id}
-                        contentContainerStyle={{ paddingHorizontal: 12 }}
-                        showsHorizontalScrollIndicator={false}
-                        showsVerticalScrollIndicator={false}
-                    />
+                    <>
+                        <View className="px-4 mt-5">
+                            <Text className="text-3xl font-bold text-black">{t("news")}</Text>
+                            <View className="border-b-2 w-[20%]"></View>
+                        </View>
+                        <FlatList
+                            ListHeaderComponent={() => news && renderItems({ item: news[0] })}
+                            data={news && news.slice(1)}
+                            renderItem={renderItems}
+                            keyExtractor={(item) => item?._id}
+                            contentContainerStyle={{ paddingHorizontal: 12 }}
+                            showsHorizontalScrollIndicator={false}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    </>
                 )}
             </SafeAreaView>
         </View>

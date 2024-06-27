@@ -1,13 +1,31 @@
 import { ScrollView } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Pressable, Text, View } from 'react-native';
+import { Animated, Image, Pressable, Text, View } from 'react-native';
 import ContactUsCard from '../../../components/ContactUsCard';
 
 function ContactUs({ navigation }) {
 
     const { t } = useTranslation();
     const [highlight, setHighlight] = useState(false);
+    const animation = new Animated.Value(0);
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
+    const scale = animation.interpolate({ inputRange, outputRange });
+
+    const onPressIn = () => {
+        Animated.spring(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOut = () => {
+        Animated.spring(animation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -23,16 +41,24 @@ function ContactUs({ navigation }) {
                     <Text className="text-2xl tracking-wider text-neutral-700 font-extrabold">
                         {t('contactUs')}
                     </Text>
-                    <Pressable className="mr-4" onPress={() => navigation.navigate("Support")}>
-                        <View className={`p-[3px] rounded-full ${highlight ? 'bg-red-400' : 'bg-black'}`} >
-                            <View className={`rounded-full flex-row justify-center items-center ${highlight ? 'bg-blue-200' : 'bg-[#E9EDF7]'}`} >
-                                <View className="m-3">
-                                    <Image className="w-[40px] h-[40px]" source={require('../../../assets/support.png')} />
+                    <Animated.View style={[{ transform: [{ scale }] }]}>
+                        <Pressable
+                            className="mr-4"
+                            activeOpacity={1}
+                            onPressIn={onPressIn}
+                            onPressOut={onPressOut}
+                            onPress={() => navigation.navigate("Support")}
+                        >
+                            <View className={`p-[3px] rounded-full ${highlight ? 'bg-red-400' : 'bg-black'}`} >
+                                <View className={`rounded-full flex-row justify-center items-center ${highlight ? 'bg-blue-200' : 'bg-[#E9EDF7]'}`} >
+                                    <View className="m-3">
+                                        <Image className="w-[40px] h-[40px]" source={require('../../../assets/support.png')} />
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                        <Text className="text-sm text-blue-500 text-center font-medium tracking-widest">{t("Support")}</Text>
-                    </Pressable>
+                            <Text className="text-sm text-blue-500 text-center font-medium tracking-widest">{t("Support")}</Text>
+                        </Pressable>
+                    </Animated.View>
                 </View>
             </View>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}

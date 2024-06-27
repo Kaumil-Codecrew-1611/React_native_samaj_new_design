@@ -6,28 +6,28 @@ import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewO
 import RenderHTML from 'react-native-render-html';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
 
 const NewsDetailsPage = ({ route }) => {
 
+    const IMG_HEIGHT = 180;
     const { newsId } = route.params;
+    const scrollRef = useAnimatedRef();
+    const { width } = Dimensions.get('window');
+    const [loading, setLoading] = useState(true);
     const { newsDataById } = useContext(ApiContext);
     const [isVisible, setIsVisible] = useState(false);
-    const [newsDetailsTitle, setNewsDetailsTitle] = useState("");
-    const [newsDetailsImage, setNewsDetailsImage] = useState("");
-    const [newsDetailsDescription, setNewsDetailsDescription] = useState("");
-    const [newsDetailsCreateDate, setNewsDetailsCreateDate] = useState("");
-    const [newsAddPerson, setNewsAddPerson] = useState("");
-    const [loading, setLoading] = useState(true);
-    const scrollRef = useAnimatedRef();
     const scrolloffset = useScrollViewOffset(scrollRef);
-    const IMG_HEIGHT = 180;
-    const { width } = Dimensions.get('window');
+    const { defaultLanguage } = useContext(GlobalContext);
+    const [newsAddPerson, setNewsAddPerson] = useState("");
+    const [newsDetailsImage, setNewsDetailsImage] = useState("");
+    const [newsDetailsTitleE, setNewsDetailsTitleE] = useState("");
+    const [newsDetailsTitleG, setNewsDetailsTitleG] = useState("");
+    const [newsDetailsCreateDate, setNewsDetailsCreateDate] = useState("");
+    const [newsDetailsDescriptionE, setNewsDetailsDescriptionE] = useState("");
+    const [newsDetailsDescriptionG, setNewsDetailsDescriptionG] = useState("");
 
-    const images = [
-        {
-            uri: `${process.env.IMAGE_URL}${newsDetailsImage}`,
-        },
-    ];
+    const images = [{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }];
 
     const openModal = () => {
         setIsVisible(true);
@@ -55,8 +55,10 @@ const NewsDetailsPage = ({ route }) => {
         (async function () {
             try {
                 const contentNewsDetails = await newsDataById(newsId);
-                setNewsDetailsTitle(contentNewsDetails.title);
-                setNewsDetailsDescription(contentNewsDetails.description);
+                setNewsDetailsTitleE(contentNewsDetails.titleE);
+                setNewsDetailsTitleG(contentNewsDetails.titleG);
+                setNewsDetailsDescriptionE(contentNewsDetails.descriptionE);
+                setNewsDetailsDescriptionG(contentNewsDetails.descriptionG);
                 setNewsDetailsCreateDate(contentNewsDetails.created_at);
                 setNewsDetailsImage(contentNewsDetails.image);
                 setNewsAddPerson(contentNewsDetails.createdBy);
@@ -110,8 +112,9 @@ const NewsDetailsPage = ({ route }) => {
                             <Animated.View style={imageAnimatedStyle} className="relative">
                                 <TouchableOpacity onPress={openModal}>
                                     <Image
+                                        className="object-cover"
                                         source={{ uri: `${process.env.IMAGE_URL}${newsDetailsImage}` }}
-                                        style={styles.image}
+                                        style={{ height: 250, width: '100%' }}
                                     />
                                 </TouchableOpacity>
                                 {newsAddPerson &&
@@ -129,18 +132,18 @@ const NewsDetailsPage = ({ route }) => {
                             </Animated.View>
                             <View className="bg-white">
                                 <View className="flex flex-1 flex-row justify-between items-center flex-wrap">
-                                    <View className="mx-[20px]">
-                                        <Text className="font-bold text-xl text-justify my-3 text-black">{newsDetailsTitle}</Text>
+                                    <View className="mx-[20px] mt-5">
+                                        <Text className="font-bold text-lg text-justify text-black">{defaultLanguage == "en" ? newsDetailsTitleE : newsDetailsTitleG}</Text>
                                     </View>
-                                    <View>
-                                        <Text className="text-sm text-black font-bold mx-[20px]">{formatDate(newsDetailsCreateDate)}</Text>
+                                    <View className="mx-[20px]">
+                                        <Text className="text-sm text-black font-bold">{formatDate(newsDetailsCreateDate)}</Text>
                                     </View>
                                 </View>
-                                <View className="mt-3 mb-5">
+                                <View className="mb-5">
                                     <RenderHTML
                                         contentWidth={width}
-                                        source={{ html: newsDetailsDescription }}
-                                        tagsStyles={{ body: { color: 'black', textAlign: "justify", marginLeft: "20px", marginRight: "20px" } }}
+                                        source={{ html: defaultLanguage == "en" ? newsDetailsDescriptionE : newsDetailsDescriptionG }}
+                                        tagsStyles={{ body: { color: 'black', textAlign: "justify", marginLeft: "20px", marginRight: "20px", fontSize: "15px" } }}
                                     />
                                 </View>
                             </View>

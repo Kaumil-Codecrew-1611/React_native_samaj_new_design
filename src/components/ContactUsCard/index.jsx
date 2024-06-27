@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, Text, TouchableOpacity, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { Animated, Linking, Text, TouchableOpacity, View } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -22,6 +21,58 @@ function ContactUsCard() {
     const { contactUsPageDetails } = useContext(ApiContext);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
+
+    const twitterAnimation = new Animated.Value(0);
+    const instaAnimation = new Animated.Value(0);
+    const faceBookAnimation = new Animated.Value(0);
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
+    const twitterScale = twitterAnimation.interpolate({ inputRange, outputRange });
+    const instaScale = instaAnimation.interpolate({ inputRange, outputRange });
+    const faceBookScale = faceBookAnimation.interpolate({ inputRange, outputRange });
+
+
+    const onPressInTwitter = () => {
+        Animated.spring(twitterAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOutTwitter = () => {
+        Animated.spring(twitterAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressInInsta = () => {
+        Animated.spring(instaAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOutInsta = () => {
+        Animated.spring(instaAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressInFaceBook = () => {
+        Animated.spring(faceBookAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOutFaceBook = () => {
+        Animated.spring(faceBookAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
 
     useEffect(() => {
         (async function () {
@@ -197,31 +248,52 @@ function ContactUsCard() {
                             <Text className="tracking-wider text-base text-neutral-700">{t('contactussocialheading')}</Text>
                             <View className="flex flex-row justify-around mt-3">
                                 {twitterLink && (
-                                    <TouchableOpacity onPress={() => openLink(twitterLink)}>
-                                        <AnimatedFontistoIcon
-                                            name="twitter"
-                                            size={40}
-                                            color="#1da1f2"
-                                        />
-                                    </TouchableOpacity>
+                                    <Animated.View style={[{ transform: [{ scale: twitterScale }] }]}>
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            onPressIn={onPressInTwitter}
+                                            onPressOut={onPressOutTwitter}
+                                            onPress={() => openLink(twitterLink)}
+                                        >
+                                            <AnimatedFontistoIcon
+                                                name="twitter"
+                                                size={40}
+                                                color="#1da1f2"
+                                            />
+                                        </TouchableOpacity>
+                                    </Animated.View>
                                 )}
                                 {instagramLink && (
-                                    <TouchableOpacity onPress={() => openLink(instagramLink)}>
-                                        <AnimatedFontistoIcon
-                                            name="instagram"
-                                            size={40}
-                                            color="#f700b2"
-                                        />
-                                    </TouchableOpacity>
+                                    <Animated.View style={[{ transform: [{ scale: instaScale }] }]}>
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            onPressIn={onPressInInsta}
+                                            onPressOut={onPressOutInsta}
+                                            onPress={() => openLink(instagramLink)}
+                                        >
+                                            <AnimatedFontistoIcon
+                                                name="instagram"
+                                                size={40}
+                                                color="#f700b2"
+                                            />
+                                        </TouchableOpacity>
+                                    </Animated.View>
                                 )}
                                 {faceBookLink && (
-                                    <TouchableOpacity onPress={() => openLink(faceBookLink)}>
-                                        <AnimatedFontistoIcon
-                                            name="facebook"
-                                            size={40}
-                                            color="#0866ff"
-                                        />
-                                    </TouchableOpacity>
+                                    <Animated.View style={[{ transform: [{ scale: faceBookScale }] }]}>
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            onPressIn={onPressInFaceBook}
+                                            onPressOut={onPressOutFaceBook}
+                                            onPress={() => openLink(faceBookLink)}
+                                        >
+                                            <AnimatedFontistoIcon
+                                                name="facebook"
+                                                size={40}
+                                                color="#0866ff"
+                                            />
+                                        </TouchableOpacity>
+                                    </Animated.View>
                                 )}
                             </View>
                         </View>

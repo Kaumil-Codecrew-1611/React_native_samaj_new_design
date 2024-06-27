@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
@@ -16,7 +16,7 @@ function EmailSupport({ navigation }) {
         email: yup.string().email(t("Invalidemailformat")).required(t("Emailisrequired")),
     });
     const { supportMailSend, contactUsPageDetails } = useContext(ApiContext);
-    const [emailSupportImage, setEmailSupportImage] = useState("")
+    const [emailSupportImage, setEmailSupportImage] = useState("");
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
@@ -142,7 +142,7 @@ function EmailSupport({ navigation }) {
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Dimensions, FlatList, Image, Linking, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, } from 'react-native';
+import { Animated, Dimensions, FlatList, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
@@ -19,7 +19,6 @@ export default function Member() {
     const [selectedImage, setSelectedImage] = useState(null);
     const { allcommitteeMembersListing } = useContext(ApiContext);
     const { t } = useTranslation();
-
     const translateX = scrollY.interpolate({
         inputRange: [0, Math.max(height1 - height2, 1)],
         outputRange: [-width, 0]
@@ -75,19 +74,45 @@ export default function Member() {
     const renderActualItem = ({ item }) => {
 
         const ImageOfMember = `${process.env.IMAGE_URL}${item.image}`
+        const animation = new Animated.Value(0);
+        const inputRange = [0, 1];
+        const outputRange = [1, 0.8];
+        const scale = animation.interpolate({ inputRange, outputRange });
+
+        const onPressIn = () => {
+            Animated.spring(animation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressOut = () => {
+            Animated.spring(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
 
 
         return (
 
             <View className="bg-white rounded-xl p-5 mx-5 mb-5 shadow-2xl" key={item._id}>
                 {ImageOfMember ?
-                    <TouchableOpacity onPress={() => openProfileImage(item.image)}>
-                        <Image
-                            source={{ uri: ImageOfMember }}
-                            style={styles.image}
-                            resizeMode="stretch"
-                        />
-                    </TouchableOpacity> :
+                    <Animated.View style={[{ transform: [{ scale }] }]} key={item?._id}>
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPressIn={onPressIn}
+                            onPressOut={onPressOut}
+                            onPress={() => openProfileImage(item.image)}
+                        >
+                            <Image
+                                source={{ uri: ImageOfMember }}
+                                style={styles.image}
+                                resizeMode="stretch"
+                            />
+                        </TouchableOpacity>
+                    </Animated.View>
+                    :
                     <View style={styles.skeleton}>
                         <SkeletonPlaceholder>
                             <SkeletonPlaceholder.Item

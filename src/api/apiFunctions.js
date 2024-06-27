@@ -191,7 +191,12 @@ export const setNewForgotPassword = async (newSetForgotPassword) => {
     return response.data
 };
 
-export const allUserReview = async () => {
-    const response = await axiosInstance.get(`/user-list`);
+export const allUserReview = async (search) => {
+    const response = await axiosInstance.get(`/user-list?search=${search ? search : ''}`);
+    return response.data
+};
+
+export const termAndCondition  = async () => {
+    const response = await axiosInstance.get(`/termsandcondition`);
     return response.data
 };

@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
 
 const Faqs = () => {
 
@@ -14,6 +15,7 @@ const Faqs = () => {
     const [visibleAnswers, setVisibleAnswers] = useState({});
     const [faqsImage, setFaqsImage] = useState("");
     const { allfaqListing, contactUsPageDetails } = useContext(ApiContext);
+    const { defaultLanguage } = useContext(GlobalContext);
     const [faqs, setFaq] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -62,26 +64,28 @@ const Faqs = () => {
         const isAnswerVisible = visibleAnswers[item._id];
 
         return (
-            <View className="w-full p-[10px]">
-                <TouchableOpacity activeOpacity={0.95} onPress={() => toggleAnswerVisibility(item._id)}>
-                    <View className="flex flex-row justify-between items-center bg-white shadow-2xl shadow-black  rounded-[15px] p-[15px]" style={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 2, elevation: 5 }}>
-                        <Text className="font-extrabold tracking-wider text-lg text-neutral-700 basis-[91%]">
-                            {item.question}
-                        </Text>
-                        <AnimatedFeatherIcon
-                            name={isAnswerVisible ? 'chevron-up' : 'chevron-down'}
-                            size={30}
-                            color="#666"
-                        />
-                    </View>
-                </TouchableOpacity>
-                {isAnswerVisible && (
-                    <View className="bg-white rounded-[15px] p-[15px] mt-[10px]" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
-                        <Text style={{ color: '#333' }}>
-                            {item.answer}
-                        </Text>
-                    </View>
-                )}
+            <View className="p-2">
+                <View className="w-full mt-2">
+                    <TouchableOpacity activeOpacity={0.95} onPress={() => toggleAnswerVisibility(item._id)}>
+                        <View className="flex flex-row justify-between items-center bg-white shadow-2xl shadow-black rounded-[15px] p-[15px]" style={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 2, elevation: 5 }}>
+                            <Text className="font-extrabold tracking-wider text-lg text-neutral-700 basis-[93%]">
+                                {defaultLanguage == "en" ? item.questionE : item.questionG}
+                            </Text>
+                            <AnimatedFeatherIcon
+                                name={isAnswerVisible ? 'chevron-up' : 'chevron-down'}
+                                size={30}
+                                color="#666"
+                            />
+                        </View>
+                    </TouchableOpacity>
+                    {isAnswerVisible && (
+                        <View className="bg-white rounded-[15px] p-[15px] mt-[10px]" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
+                            <Text className="text-justify" style={{ color: '#333' }}>
+                                {defaultLanguage == "en" ? item.answerE : item.answerG}
+                            </Text>
+                        </View>
+                    )}
+                </View>
             </View>
         );
     };

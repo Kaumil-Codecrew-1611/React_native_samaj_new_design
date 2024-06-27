@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ApiContext from '../../context/ApiContext';
+import { GlobalContext } from '../../context/globalState';
 
 const useTruncateText = (text, wordLimit) => {
-    return text.split(' ').slice(0, wordLimit).join(' ') + (text.split(' ').length > wordLimit ? '...' : '');
+    return text && text.split(' ').slice(0, wordLimit).join(' ') + (text.split(' ').length > wordLimit ? '...' : '');
 };
 
 const NewsHomePageContent = ({ navigation }) => {
 
     const { t } = useTranslation();
     const { newsListing } = useContext(ApiContext);
+    const { defaultLanguage } = useContext(GlobalContext);
     const [topNewsListing, setTopNewsListing] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -48,28 +50,58 @@ const NewsHomePageContent = ({ navigation }) => {
         <>
             <View className="p-3">
                 <View>
-                    <Text className="text-2xl font-semibold tracking-wider text-rose-700 border-b-2 border-red-700 my-2 w-[40%]">
+                    <Text className="text-xl font-semibold tracking-wider text-rose-700 w-[40%]">
                         {t("LatestNews")}
                     </Text>
+                    <View className="border-b-2 border-red-700 w-[15%] my-2"></View>
                 </View>
                 {loading ? (
                     renderSkeleton()
                 ) : (
-                    topNewsListing.slice(0, 3).map((item, index) => {
-                        const truncatedTitle = useTruncateText(item.title, 7);
-                        const truncatedDescription = useTruncateText(item.description, 12);
+                    topNewsListing && topNewsListing.slice(0, 3).map((item, index) => {
+                        const truncatedTitleE = useTruncateText(item.titleE, 7);
+                        const truncatedTitleG = useTruncateText(item.titleG, 7);
+                        const truncatedDescriptionE = useTruncateText(item.descriptionE, 12);
+                        const truncatedDescriptionG = useTruncateText(item.descriptionG, 12);
+                        const animation = new Animated.Value(0);
+                        const inputRange = [0, 1];
+                        const outputRange = [1, 0.8];
+                        const scale = animation.interpolate({ inputRange, outputRange });
+
+                        const onPressIn = () => {
+                            Animated.spring(animation, {
+                                toValue: 1,
+                                useNativeDriver: true,
+                            }).start();
+                        };
+
+                        const onPressOut = () => {
+                            Animated.spring(animation, {
+                                toValue: 0,
+                                useNativeDriver: true,
+                            }).start();
+                        };
+
                         return (
-                            <TouchableOpacity key={index} onPress={() => handleNewsOpen(item._id)}>
-                                <View className="flex flex-row items-center w-full p-3 bg-white rounded-lg shadow-md mt-2">
-                                    <View className="w-[40%] rounded-lg mr-2">
-                                        <Image source={{ uri: process.env.IMAGE_URL + item.image }} resizeMode='cover' style={{ height: hp('15%'), width: '100%', borderRadius: 10 }} />
+                            <Animated.View style={[{ transform: [{ scale }] }]}>
+                                <TouchableOpacity
+                                    key={index}
+                                    activeOpacity={1}
+                                    onPressIn={onPressIn}
+                                    onPressOut={onPressOut}
+                                    onPress={() => handleNewsOpen(item._id)}
+                                >
+                                    <View className="flex flex-row items-center w-full p-2 bg-white shadow-input shadow-custom-elevation shadow-md shadow-black rounded-lg mt-4">
+                                        <View className="w-[30%]">
+                                            <Image source={{ uri: process.env.IMAGE_URL + item.image }} resizeMode='cover' style={{ height: hp('12%'), width: '100%', borderRadius: 10 }} />
+                                        </View>
+                                        <View className="flex-1">
+                                            <Text className="text-[16px] font-bold text-black text-justify mx-3">{defaultLanguage == "en" ? truncatedTitleE : truncatedTitleG}</Text>
+                                            <Text className="capitalize text-[14px] font-semibold text-justify m-1 mx-3">{defaultLanguage == "en" ? truncatedDescriptionE : truncatedDescriptionG}</Text>
+                                        </View>
                                     </View>
-                                    <View className="flex-1">
-                                        <Text className="text-[18px] font-bold">{truncatedTitle}</Text>
-                                        <Text className="capitalize text-[15px] font-semibold text-justify mt-3">{truncatedDescription}</Text>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </Animated.View>
                         );
                     })
                 )}
