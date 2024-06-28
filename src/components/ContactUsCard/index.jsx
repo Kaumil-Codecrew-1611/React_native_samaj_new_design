@@ -178,7 +178,7 @@ function ContactUsCard() {
                     <View className="my-3">
                         <View className="flex flex-row justify-between">
                             <View>
-                                <Text className="font-bold text-sm text-black my-1">
+                                <Text className="font-bold text-md text-black my-1">
                                     {contact1}
                                 </Text>
                             </View>
@@ -186,7 +186,7 @@ function ContactUsCard() {
                         <View>
                             <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno1)}>
                                 <View>
-                                    <Text className="text-[#5176df] tracking-wider text-sm font-semibold">
+                                    <Text className="text-[#5176df] tracking-wider text-md font-semibold">
                                         +91 {contactno1}
                                     </Text>
                                 </View>
@@ -195,7 +195,7 @@ function ContactUsCard() {
                     </View>
                     <View className="flex flex-row items-center justify-between my-1">
                         <View>
-                            <Text className="font-bold text-black text-sm">
+                            <Text className="font-bold text-black text-md">
                                 {contact2}
                             </Text>
                         </View>
@@ -203,7 +203,7 @@ function ContactUsCard() {
                     <View>
                         <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno2)}>
                             <View>
-                                <Text className="text-[#5176df] tracking-wider text-sm font-semibold">
+                                <Text className="text-[#5176df] tracking-wider text-md font-semibold">
                                     +91 {contactno2}
                                 </Text>
                             </View>
@@ -226,7 +226,7 @@ function ContactUsCard() {
                             <Text className="tracking-wider text-base text-neutral-700">{t('contactusemailheading')}</Text>
                             <TouchableOpacity onPress={() => handleClickOnMail(email)}>
                                 <View className="mt-2">
-                                    <Text className="text-[#5176df] tracking-wider text-sm font-semibold">{email}</Text>
+                                    <Text className="text-[#5176df] tracking-wider text-md font-semibold">{email}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

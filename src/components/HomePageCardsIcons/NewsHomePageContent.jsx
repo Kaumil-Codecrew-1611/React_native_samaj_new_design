@@ -9,8 +9,23 @@ const useTruncateText = (text, wordLimit) => {
     return text && text.split(' ').slice(0, wordLimit).join(' ') + (text.split(' ').length > wordLimit ? '...' : '');
 };
 
-const NewsHomePageContent = ({ navigation }) => {
+const stripHtmlTags = (html) => {
+    html = html.replace(/<\/?(b|strong)>/gi, '**');
+    return html.replace(/<\/?[^>]+(>|$)/g, '');
+};
 
+const parseAndRenderText = (text) => {
+    const parts = text.split('**').map((part, index) =>
+        index % 2 === 1 ? (
+            <Text key={index} style={{ fontWeight: 'bold' }}>{part}</Text>
+        ) : (
+            part
+        )
+    );
+    return parts;
+};
+
+const NewsHomePageContent = ({ navigation }) => {
     const { t } = useTranslation();
     const { newsListing } = useContext(ApiContext);
     const { defaultLanguage } = useContext(GlobalContext);
@@ -27,14 +42,14 @@ const NewsHomePageContent = ({ navigation }) => {
 
     const handleNewsOpen = (id) => {
         navigation.navigate('NewsDetailsPage', { newsId: id });
-    }
+    };
 
     const renderSkeleton = () => (
         <View>
             {[1, 2, 3].map((_, index) => (
                 <View key={index} style={{ flexDirection: 'row', width: '100%', padding: 15, backgroundColor: '#ffffff', borderRadius: 10, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5, marginTop: 10 }}>
-                    <View style={{ width: '40%', borderRadius: 10, marginRight: 10 }}>
-                        <View style={{ height: hp('18%'), width: '100%', backgroundColor: '#f0f0f0', borderRadius: 10 }} />
+                    <View style={{ width: '30%', borderRadius: 10, marginRight: 10 }}>
+                        <View style={{ height: hp('10%'), width: '100%', backgroundColor: '#f0f0f0', borderRadius: 10 }} />
                     </View>
                     <View className="flex-1">
                         <View className="w-[70%] h-5 bg-gray-100 mb-2 rounded-md" />
@@ -59,10 +74,10 @@ const NewsHomePageContent = ({ navigation }) => {
                     renderSkeleton()
                 ) : (
                     topNewsListing && topNewsListing.slice(0, 3).map((item, index) => {
-                        const truncatedTitleE = useTruncateText(item.titleE, 7);
-                        const truncatedTitleG = useTruncateText(item.titleG, 7);
-                        const truncatedDescriptionE = useTruncateText(item.descriptionE, 12);
-                        const truncatedDescriptionG = useTruncateText(item.descriptionG, 12);
+                        const truncatedTitleE = useTruncateText(stripHtmlTags(item.titleE), 7);
+                        const truncatedTitleG = useTruncateText(stripHtmlTags(item.titleG), 7);
+                        const truncatedDescriptionE = useTruncateText(stripHtmlTags(item.descriptionE), 12);
+                        const truncatedDescriptionG = useTruncateText(stripHtmlTags(item.descriptionG), 12);
                         const animation = new Animated.Value(0);
                         const inputRange = [0, 1];
                         const outputRange = [1, 0.8];
@@ -96,8 +111,8 @@ const NewsHomePageContent = ({ navigation }) => {
                                             <Image source={{ uri: process.env.IMAGE_URL + item.image }} resizeMode='cover' style={{ height: hp('12%'), width: '100%', borderRadius: 10 }} />
                                         </View>
                                         <View className="flex-1">
-                                            <Text className="text-[16px] font-bold text-black text-justify mx-3">{defaultLanguage == "en" ? truncatedTitleE : truncatedTitleG}</Text>
-                                            <Text className="capitalize text-[14px] font-semibold text-justify m-1 mx-3">{defaultLanguage == "en" ? truncatedDescriptionE : truncatedDescriptionG}</Text>
+                                            <Text className="text-[16px] font-bold text-black text-justify mx-3">{defaultLanguage && defaultLanguage == "en" ? parseAndRenderText(truncatedTitleE) : parseAndRenderText(truncatedTitleG)}</Text>
+                                            <Text className="capitalize text-[14px] font-semibold text-justify m-1 mx-3">{defaultLanguage && defaultLanguage == "en" ? parseAndRenderText(truncatedDescriptionE) : parseAndRenderText(truncatedDescriptionG)}</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>

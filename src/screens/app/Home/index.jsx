@@ -6,7 +6,6 @@ import { Animated, Dimensions, Image, Keyboard, Pressable, Text, TouchableWithou
 import { FlatList } from 'react-native-gesture-handler';
 import ImageViewing from 'react-native-image-viewing';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import DefaultImage from '../../../assets/profile_img.png';
 import Carousel from '../../../components/Carousel';
 import HomePageCardContents from '../../../components/HomePageCardsIcons/HomePageCardContents';
 import NewsHomePageContent from '../../../components/HomePageCardsIcons/NewsHomePageContent';
@@ -29,9 +28,7 @@ const Home = ({ navigation }) => {
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const scale = animation.interpolate({ inputRange, outputRange });
-    const images = [
-        { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}` },
-    ];
+    const images = [(allUserInfo && allUserInfo?.photo) ? { uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` } : require("../../../assets/profile_img.png")]
 
     const cards = [
         { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutusicons.png') },
@@ -39,7 +36,8 @@ const Home = ({ navigation }) => {
         isLoggedIn ?
             { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } :
             { id: 4, name: t('joinnow'), redirectTo: "Welcome", image: require('../../../assets/join.png') },
-        { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/villageIcon.png') },
+        { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/directory.png') },
+        { id: 6, name: t("Events"), redirectTo: "EventsScreen", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
     ];
@@ -50,6 +48,7 @@ const Home = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
+
     const onPressOut = () => {
         Animated.spring(animation, {
             toValue: 0,
@@ -152,9 +151,9 @@ const Home = ({ navigation }) => {
                                 onPress={openProfileImage}
                             >
                                 {allUserInfo && Object.entries(allUserInfo).length > 0 && allUserInfo.photo ? (
-                                    <Image source={{ uri: process.env.IMAGE_URL + allUserInfo.photo }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                                    <Image source={{ uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
                                 ) : (
-                                    <Image source={DefaultImage} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
+                                    <Image source={require("../../../assets/profile_img.png")} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
                                 )}
                             </Pressable>
                         </Animated.View>
@@ -179,7 +178,7 @@ const Home = ({ navigation }) => {
                 </TouchableWithoutFeedback>
             </View>
             <ImageViewing
-                images={allUserInfo ? images : [DefaultImage]}
+                images={images}
                 imageIndex={0}
                 visible={isVisible}
                 onRequestClose={() => setIsVisible(false)}

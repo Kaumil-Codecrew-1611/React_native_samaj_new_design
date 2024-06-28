@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
-import Animated from 'react-native-reanimated';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ApiContext from '../../../context/ApiContext';
@@ -206,6 +205,41 @@ const NodeDetails = ({ navigation, route }) => {
         return <></>;
     }
 
+    const cancelAnimation = new Animated.Value(0);
+    const DeleteAnimation = new Animated.Value(0);
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
+    const cancelScale = cancelAnimation.interpolate({ inputRange, outputRange });
+    const DeleteScale = DeleteAnimation.interpolate({ inputRange, outputRange });
+
+    const onPressCancelIn = () => {
+        Animated.spring(cancelAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressCancelOut = () => {
+        Animated.spring(cancelAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressDeleteIn = () => {
+        Animated.spring(DeleteAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressDeleteOut = () => {
+        Animated.spring(DeleteAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
     return (
         <View className="w-full p-3 bg-white flex-1">
             <View className="w-full bg-[#E9EDF7] flex-1 rounded-[15px] overflow-hidden">
@@ -309,13 +343,29 @@ const NodeDetails = ({ navigation, route }) => {
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-14">
                         <Text className="font-bold text-lg mb-4">{t('deleteconfirm')}</Text>
-                        <View className="flex-row justify-between items-center">
-                            <Pressable onPress={closeDeleteModal} className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2">
-                                <Text>{t('cancel')}</Text>
-                            </Pressable>
-                            <Pressable onPress={() => handleDelete(userData?._id)} className="px-6 py-2 bg-red-500 rounded-[15px]">
-                                <Text className="text-white">{t('delete')}</Text>
-                            </Pressable>
+                        <View className="flex-row justify-around items-center">
+                            <Animated.View style={[{ transform: [{ scale: cancelScale }] }]}>
+                                <Pressable
+                                    activeOpacity={1}
+                                    onPressIn={onPressCancelIn}
+                                    onPressOut={onPressCancelOut}
+                                    onPress={closeDeleteModal}
+                                    className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2"
+                                >
+                                    <Text>{t('cancel')}</Text>
+                                </Pressable>
+                            </Animated.View>
+                            <Animated.View style={[{ transform: [{ scale: DeleteScale }] }]}>
+                                <Pressable
+                                    activeOpacity={1}
+                                    onPressIn={onPressDeleteIn}
+                                    onPressOut={onPressDeleteOut}
+                                    onPress={() => handleDelete(userData?._id)}
+                                    className="px-6 py-2 bg-red-500 rounded-[15px]"
+                                >
+                                    <Text className="text-white">{t('delete')}</Text>
+                                </Pressable>
+                            </Animated.View>
                         </View>
                     </View>
                 </View>
@@ -357,6 +407,5 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
 });
-
 
 export default NodeDetails;

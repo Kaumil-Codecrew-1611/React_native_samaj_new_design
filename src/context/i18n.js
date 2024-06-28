@@ -222,6 +222,9 @@ const resources = {
       LatestNews: "Latest News",
       joinnow: "join now",
       Directory: "Directory",
+      Events: "Events",
+      AllUser: "All User",
+      PhoneNumber: "Phone Number",
     },
   },
   gu: {
@@ -441,6 +444,9 @@ const resources = {
       LatestNews: "તાજા સમાચાર",
       joinnow: "જોઈન કરો",
       Directory: "સભ્યો ની યાદી",
+      Events: "પ્રસન્ગો",
+      AllUser: "સભ્યો ની યાદી",
+      PhoneNumber: "ફોન નંબર",
     },
   },
 };

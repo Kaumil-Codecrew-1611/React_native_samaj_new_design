@@ -105,7 +105,7 @@ const SettingBottomSheet = () => {
                         <View className="flex flex-row justify-around items-center">
                             <View>
                                 {loading ? (
-                                    <View className="px-4 py-2 bg-red-500 flex flex-row items-center rounded-[15px]">
+                                    <View className="px-4 py-2 bg-blue-500 flex flex-row items-center rounded-[15px]">
                                         <Text className="text-white text-xs mr-2">{t("Loading")}</Text>
                                         <ActivityIndicator size="small" color="white" />
                                     </View>

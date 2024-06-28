@@ -7,6 +7,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
+import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('screen');
 const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
@@ -14,6 +15,7 @@ const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
 export default function AllUserDirectory() {
 
+    const { t } = useTranslation();
     const scrollY = useRef(new Animated.Value(0)).current;
     const [height1, setHeight1] = useState(100);
     const [height2, setHeight2] = useState(0);
@@ -144,18 +146,14 @@ export default function AllUserDirectory() {
                 <View className="bg-white h-20 p-2 rounded-2xl flex items-center">
                     <View className="flex flex-row h-full items-center justify-between w-full">
                         <View>
-                            <AnimatedFontistoIcon
-                                name="holiday-village"
-                                size={38}
-                                color={"black"}
-                            />
+                            <Image className="w-16 h-16" source={require("../../../assets/allUser.png")} />
                         </View>
                         <View>
-                            <Text className="text-3xl text-black font-bold">All User</Text>
+                            <Text className="text-2xl text-black font-bold">{t("AllUser")}</Text>
                         </View>
                     </View>
                 </View>
-                <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center mt-5" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
+                <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center mt-5 mb-3" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                     <TextInput
                         placeholder="search by person"
                         placeholderTextColor="grey"
