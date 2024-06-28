@@ -91,7 +91,7 @@ const Faqs = () => {
     };
 
     return (
-        <View className="flex-1 bg-white space-y-5 w-full p-3" edges={['top']}>
+        <SafeAreaView className="flex-1 bg-white p-3">
             <View className="w-full h-full bg-[#F7F7FA] rounded-[10px] overflow-hidden">
                 <View className="w-full h-40 bg-[#E9EDF7] flex flex-row ">
                     <View className="basis-[35%] flex flex-row justify-center items-center">
@@ -103,7 +103,7 @@ const Faqs = () => {
                         </Text>
                     </View>
                 </View>
-                <SafeAreaView style={{ flex: 1 }}>
+                <View className="flex-1">
                     {loading ? (
                         <View className="flex-1 justify-center items-center">
                             <ActivityIndicator size="large" color="#0000ff" />
@@ -113,12 +113,14 @@ const Faqs = () => {
                             data={faqs}
                             renderItem={renderItems}
                             keyExtractor={item => item._id.toString()}
+                            contentContainerStyle={{ paddingBottom: 20 }}
+                            showsVerticalScrollIndicator={false}
                         />
                     )}
-                </SafeAreaView>
-                {!loading && !faqs.length && <NoDataFound message={"There are no FAQs in this village."} />}
+                    {!loading && !faqs.length && <NoDataFound message={"There are no FAQs in this village."} />}
+                </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

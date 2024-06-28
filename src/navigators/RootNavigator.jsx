@@ -89,7 +89,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="AddFamilyDetail" component={AddFamilyDetails} options={{ headerTitle: t("AddFamilyDetails") }} />
                 <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: t("EditFamilyDetails") }} />
                 <RootStack.Screen name="AllUserDirectory" component={AllUserDirectory} options={{ headerTitle: "Directory" }} />
-                <RootStack.Screen name="EventsScreen" component={EventsScreen} options={{ headerTitle: "All Events" }} />
+                <RootStack.Screen name="EventsScreen" component={EventsScreen} options={{ headerTitle: t("AllEvents") }} />
             </RootStack.Navigator>
         </>
     )

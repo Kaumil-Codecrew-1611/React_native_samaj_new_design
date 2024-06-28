@@ -225,6 +225,7 @@ const resources = {
       Events: "Events",
       AllUser: "All User",
       PhoneNumber: "Phone Number",
+      AllEvents: "All Events",
     },
   },
   gu: {
@@ -447,6 +448,7 @@ const resources = {
       Events: "પ્રસન્ગો",
       AllUser: "સભ્યો ની યાદી",
       PhoneNumber: "ફોન નંબર",
+      AllEvents: "બધા પ્રસંગો",
     },
   },
 };
