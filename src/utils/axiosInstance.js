@@ -15,7 +15,7 @@ axiosInstance.interceptors.response.use(
     if (
       response.data.message && response.data.showMessage && response.status === 200
     ) {
-      toastMessage(response.data.message);
+      toastMessage(response.data.message, 'Success');
     }
     return response
   },
@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(
     } else if (error.message) {
       message = error.message;
     }
-    toastMessage(message);
+    toastMessage(message, 'Danger');
     return Promise.reject(error);
   }
 );

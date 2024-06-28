@@ -17,7 +17,7 @@ import i18n from '../../../context/i18n';
 const Home = ({ navigation }) => {
 
     const { t } = useTranslation();
-    const { isLoggedIn, allUserInfo } = useContext(GlobalContext);
+    const { isLoggedIn, allUserInfo, progress } = useContext(GlobalContext);
     const { homePageAllSlider, contactUsPageDetails } = useContext(ApiContext);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -116,7 +116,8 @@ const Home = ({ navigation }) => {
     );
 
     const profileNavigate = () => {
-        if (allUserInfo) {
+        if (isLoggedIn) {
+            progress.value = withTiming("3");
             navigation.navigate("Profile");
         }
     };
