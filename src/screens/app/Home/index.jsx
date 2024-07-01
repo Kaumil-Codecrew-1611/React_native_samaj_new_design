@@ -12,6 +12,7 @@ import NewsHomePageContent from '../../../components/HomePageCardsIcons/NewsHome
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
+import { withTiming } from 'react-native-reanimated';
 
 const Home = ({ navigation }) => {
 

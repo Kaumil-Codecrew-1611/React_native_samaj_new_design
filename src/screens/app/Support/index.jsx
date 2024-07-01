@@ -112,7 +112,7 @@ function Support({ navigation }) {
                                 onPressOut={onPressOutEmail}
                                 onPress={() => redirect('EmailSupport')}
                             >
-                                <View className="bg-white p-3 mb-2 ">
+                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl">
                                     <View className="flex flex-row justify-between items-center">
                                         <View className="w-[40px] h-[40px] overflow-hidden">
                                             <Image
