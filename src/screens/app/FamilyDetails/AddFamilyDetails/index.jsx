@@ -22,6 +22,7 @@ import ApiContext from '../../../../context/ApiContext';
 import { GlobalContext } from '../../../../context/globalState';
 
 export default function AddFamilyDetails({ navigation, route }) {
+
     const { t } = useTranslation();
     const schema = yup.object().shape({
         firstname: yup.string().required(t('pleaseenterfirstname')),
@@ -35,7 +36,7 @@ export default function AddFamilyDetails({ navigation, route }) {
         parent_id: yup.string().optional(),
     });
     const { addFamilyMemberDetails, allRelationshipDataList } = useContext(ApiContext);
-    const { allUserInfo } = useContext(GlobalContext);
+    const { allUserInfo, defaultLanguage } = useContext(GlobalContext);
     const [relationData, setRelationData] = useState([]);
     const [showPicker, setShowPicker] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -71,7 +72,7 @@ export default function AddFamilyDetails({ navigation, route }) {
         (async function () {
             try {
                 const allRelationData = await allRelationshipDataList();
-                setRelationData(allRelationData.relationship || []);
+                setRelationData(allRelationData || []);
             } catch (error) {
                 console.error("Error fetching relation data:", error);
             }
@@ -169,7 +170,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                         name="mobile_number"
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <TextInput
-                                                placeholder="Phone Number"
+                                                placeholder={t("PhoneNumber")}
                                                 placeholderTextColor="grey"
                                                 style={styles.input}
                                                 value={value}
@@ -378,7 +379,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                             return (
                                                                 <Select.Item
                                                                     key={relation.value}
-                                                                    label={relation.value}
+                                                                    label={defaultLanguage && defaultLanguage == "en" ? relation.keyE : relation.keyG}
                                                                     value={relation.value}
                                                                     _text={{ color: 'black' }}
                                                                 />
@@ -431,7 +432,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             <ActivityIndicator size="large" color="white" />
                                         </View>
                                     ) : (
-                                        <Button className="bg-blue-500 py-3 rounded-lg" title="Add Family Member" disabled={loading} onPress={handleSubmit(onSubmit)} />
+                                        <Button className="bg-blue-500 py-3 rounded-lg" title={t("AddFamilyDetails")} disabled={loading} onPress={handleSubmit(onSubmit)} />
                                     )}
                                 </View>
 

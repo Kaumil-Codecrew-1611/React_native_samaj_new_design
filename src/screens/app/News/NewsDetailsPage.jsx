@@ -91,7 +91,7 @@ const NewsDetailsPage = ({ route }) => {
     });
 
     return (
-        <View className="bg-gray-300 flex flex-1">
+        <View className="bg-white flex flex-1">
             <ScrollView
                 ref={scrollRef}
                 showsVerticalScrollIndicator={false}

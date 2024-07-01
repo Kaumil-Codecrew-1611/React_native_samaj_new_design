@@ -19,11 +19,11 @@ import {
 import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
+import { GlobalContext } from '../../../../context/globalState';
 
 export default function EditUserFamilyDetails({ navigation, route }) {
 
     const { t } = useTranslation();
-
     const schema = yup.object().shape({
         firstname: yup.string().required(t('pleaseenterfirstname')),
         lastname: yup.string().required(t('pleaseenterlastname')),
@@ -35,9 +35,9 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         marital_status: yup.string().required(t('pleasechoosemaritalstatus')),
         gender: yup.string().required(t('pleaseentergender')),
     });
-
     const { editFamilyDetailsUser, allRelationshipDataList, updateFamilyDetailsUser } = useContext(ApiContext);
     const [relationData, setRelationData] = useState([]);
+    const { defaultLanguage } = useContext(GlobalContext);
     const { userId } = route.params;
     const [showPicker, setShowPicker] = useState(false);
     const [dob, setDob] = useState(null);
@@ -96,7 +96,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         (async function () {
             try {
                 const allRelationData = await allRelationshipDataList();
-                setRelationData(allRelationData.relationship || []);
+                setRelationData(allRelationData || []);
             } catch (error) {
                 console.error("Error fetching relation data:", error);
             }
@@ -196,7 +196,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                         name="mobile_number"
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <TextInput
-                                                placeholder="Phone Number"
+                                                placeholder={t("PhoneNumber")}
                                                 placeholderTextColor="grey"
                                                 style={styles.input}
                                                 value={value}
@@ -408,7 +408,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                 >
                                                     {relationData.length > 0 ? (
                                                         relationData.map((relation) => (
-                                                            <Select.Item key={relation.value} label={relation.value} value={relation.value} />
+                                                            <Select.Item key={relation.value} label={defaultLanguage && defaultLanguage == "en" ? relation.keyE : relation.keyG} value={relation.value} />
                                                         ))
                                                     ) : (
                                                         <Select.Item label="Loading..." value="" isDisabled />

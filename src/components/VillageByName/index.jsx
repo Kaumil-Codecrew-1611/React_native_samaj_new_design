@@ -7,7 +7,6 @@ import NoDataFound from '../NoDataFound/NoDataFound';
 
 const cardHeight = 100;
 const padding = 10;
-const offset = cardHeight + padding;
 
 const VillageByName = ({ searchValue, navigation, SelectedVillage }) => {
 
@@ -17,6 +16,7 @@ const VillageByName = ({ searchValue, navigation, SelectedVillage }) => {
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState('');
     const [isVisible, setIsVisible] = useState(false);
+
     const viewImage = (img) => {
         setImage(img);
         setIsVisible(true);
@@ -82,34 +82,70 @@ const VillageByName = ({ searchValue, navigation, SelectedVillage }) => {
                         )}
                         keyExtractor={item => item.id}
                         renderItem={({ item, index }) => {
-                            const inputRange = [offset * index, offset * (index + 1)];
-                            const outputRange1 = [1, 0];
-                            const outputRange2 = [0, offset / 2];
-                            const scale = scrollY.interpolate({
-                                inputRange,
-                                outputRange: outputRange1,
-                                extrapolate: 'clamp',
-                            });
-                            const translateY = scrollY.interpolate({
-                                inputRange,
-                                outputRange: outputRange2,
-                                extrapolate: 'clamp',
-                            });
-                            const opacity = scale;
+
+                            const inputRange = [0, 1];
+                            const outputRange = [1, 0.8];
+                            const animation = new Animated.Value(0);
+                            const viewImageAnimation = new Animated.Value(0);
+                            const scale = animation.interpolate({ inputRange, outputRange });
+                            const viewImageScale = viewImageAnimation.interpolate({ inputRange, outputRange });
+
+                            const onPressIn = () => {
+                                Animated.spring(animation, {
+                                    toValue: 1,
+                                    useNativeDriver: true,
+                                }).start();
+                            };
+
+                            const onPressOut = () => {
+                                Animated.spring(animation, {
+                                    toValue: 0,
+                                    useNativeDriver: true,
+                                }).start();
+                            };
+
+                            const onPressViewImageIn = () => {
+                                Animated.spring(viewImageAnimation, {
+                                    toValue: 1,
+                                    useNativeDriver: true,
+                                }).start();
+                            };
+
+                            const onPressViewImageOut = () => {
+                                Animated.spring(viewImageAnimation, {
+                                    toValue: 0,
+                                    useNativeDriver: true,
+                                }).start();
+                            };
+
+
                             return (
-                                <Pressable onPress={() => navigation.navigate('ViewFamilyDetails', { id: item.id })}>
-                                    <Animated.View
-                                        style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]}
+                                <Animated.View style={[{ transform: [{ scale }] }]} key={index + "animation card"}>
+                                    <Pressable
+                                        activeOpacity={1}
+                                        onPressIn={onPressIn}
+                                        onPressOut={onPressOut}
+                                        onPress={() => navigation.navigate('ViewFamilyDetails', { id: item.id })}
                                     >
-                                        <Pressable onPress={() => viewImage(item.image)} style={styles.imageContainer}>
-                                            <Image style={styles.image} source={{ uri: item.image }} />
-                                        </Pressable>
-                                        <View className="flex flex-1">
-                                            <Text className="text-lg font-bold">{item.name}</Text>
-                                            <Text className="capitalize text-base font-semibold">{item.city} - {item.village}</Text>
+                                        <View style={styles.card}>
+                                            <Animated.View style={[{ transform: [{ scale: viewImageScale }] }]}>
+                                                <Pressable
+                                                    activeOpacity={1}
+                                                    onPressIn={onPressViewImageIn}
+                                                    onPressOut={onPressViewImageOut}
+                                                    onPress={() => viewImage(item.image)}
+                                                    style={styles.imageContainer}
+                                                >
+                                                    <Image style={styles.image} source={{ uri: item.image }} />
+                                                </Pressable>
+                                            </Animated.View>
+                                            <View className="flex flex-1">
+                                                <Text className="text-lg font-bold">{item.name}</Text>
+                                                <Text className="capitalize text-base font-semibold">{item.city} - {item.village}</Text>
+                                            </View>
                                         </View>
-                                    </Animated.View>
-                                </Pressable>
+                                    </Pressable>
+                                </Animated.View>
                             );
                         }}
                     />

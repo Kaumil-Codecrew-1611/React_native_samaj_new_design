@@ -117,7 +117,7 @@ const Login = ({ navigation }) => {
 
             <View className="bg-white h-[60%] p-4 rounded-tr-3xl rounded-tl-3xl shadow-md">
                 <Text className="mb-[8px] font-bold text-[16px] text-black mt-2">{t('emailOrMobileNumber')}</Text>
-                <View className="w-full px-4 bg-[#F3F5F7] rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
+                <View className="w-full px-4 bg-[#F3F5F7] rounded-[15px] shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
                     <Controller
                         control={control}
                         name="email_or_mobile"

@@ -1,10 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
-import Animated, { withTiming } from 'react-native-reanimated';
+import { withTiming } from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import ApiContext from '../../../context/ApiContext';
@@ -24,6 +24,118 @@ const ProfilePage = ({ navigation }) => {
     const [isBannerPopupVisible, setIsBannerPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
+    const cancelAnimation = new Animated.Value(0);
+    const LogoutAnimation = new Animated.Value(0);
+    const addFamilyAnimation = new Animated.Value(0);
+    const changePasswordAnimation = new Animated.Value(0);
+    const logoutCardAnimation = new Animated.Value(0);
+    const openProfileAnimation = new Animated.Value(0);
+    const shareAppAnimation = new Animated.Value(0);
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
+    const cancelScale = cancelAnimation.interpolate({ inputRange, outputRange });
+    const LogoutScale = LogoutAnimation.interpolate({ inputRange, outputRange });
+    const addFamilyScale = addFamilyAnimation.interpolate({ inputRange, outputRange });
+    const changePasswordScale = changePasswordAnimation.interpolate({ inputRange, outputRange });
+    const logoutCardScale = logoutCardAnimation.interpolate({ inputRange, outputRange });
+    const openProfileScale = openProfileAnimation.interpolate({ inputRange, outputRange });
+    const shareAppScale = shareAppAnimation.interpolate({ inputRange, outputRange });
+
+    const onPressCancelIn = () => {
+        Animated.spring(cancelAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressCancelOut = () => {
+        Animated.spring(cancelAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressLogoutIn = () => {
+        Animated.spring(LogoutAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressLogoutOut = () => {
+        Animated.spring(LogoutAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressAddFamilyIn = () => {
+        Animated.spring(addFamilyAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressAddFamilyOut = () => {
+        Animated.spring(addFamilyAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+    const onPressChangePasswordIn = () => {
+        Animated.spring(changePasswordAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressChangePasswordOut = () => {
+        Animated.spring(changePasswordAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+    const onPressLogoutCardIn = () => {
+        Animated.spring(logoutCardAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressLogoutCardOut = () => {
+        Animated.spring(logoutCardAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOpenProfileIn = () => {
+        Animated.spring(openProfileAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressOpenProfileOut = () => {
+        Animated.spring(openProfileAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressShareAppIn = () => {
+        Animated.spring(shareAppAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressShareAppOut = () => {
+        Animated.spring(shareAppAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
 
     const profileImage = [
         { uri: `${process.env.IMAGE_URL}${allUserInfo?.photo}`, },
@@ -201,16 +313,34 @@ const ProfilePage = ({ navigation }) => {
                         </View>
                     </Pressable>
 
-                    <Pressable className="absolute right-2 top-2 flex w-12 h-12 shadow-lg items-center justify-center rounded-full bg-white" onPress={handleShare}>
-                        <AnimatedFontistoIcon name="share" size={30} color={"black"} />
-                    </Pressable>
+                    <Animated.View
+                        className="absolute right-2 top-2 flex w-12 h-12 shadow-lg items-center justify-center rounded-full bg-white"
+                        style={[{ transform: [{ scale: shareAppScale }] }]}
+                    >
+                        <Pressable
+                            activeOpacity={1}
+                            onPressIn={onPressShareAppIn}
+                            onPressOut={onPressShareAppOut}
+                            onPress={handleShare}
+
+                        >
+                            <AnimatedFontistoIcon name="share" size={30} color={"black"} />
+                        </Pressable>
+                    </Animated.View>
 
                     <View className="absolute p-6 flex h-36 top-20 w-full items-center justify-center -space-x-2 overflow-visible">
-                        <Pressable onPress={openModal}>
-                            <View className="h-40 w-40 p-2 rounded-full bg-white">
-                                <Image className="inline-block h-36 w-36 rounded-full ring-2 ring-white" source={{ uri: process.env.IMAGE_URL + allUserInfo?.photo ? process.env.IMAGE_URL + allUserInfo?.photo : 'https://eclatsuperior.com/wp-content/uploads/2021/04/man4.jpg' }} alt='profile-img' />
-                            </View>
-                        </Pressable>
+                        <Animated.View style={[{ transform: [{ scale: openProfileScale }] }]} >
+                            <Pressable
+                                activeOpacity={1}
+                                onPressIn={onPressOpenProfileIn}
+                                onPressOut={onPressOpenProfileOut}
+                                onPress={openModal}
+                            >
+                                <View className="h-40 w-40 p-2 rounded-full bg-white">
+                                    <Image className="inline-block h-36 w-36 rounded-full ring-2 ring-white" source={{ uri: process.env.IMAGE_URL + allUserInfo?.photo ? process.env.IMAGE_URL + allUserInfo?.photo : 'https://eclatsuperior.com/wp-content/uploads/2021/04/man4.jpg' }} alt='profile-img' />
+                                </View>
+                            </Pressable>
+                        </Animated.View>
                     </View>
 
                 </View>
@@ -242,36 +372,58 @@ const ProfilePage = ({ navigation }) => {
                     <SafeAreaView className="flex-1 h-[2000px] bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7">
                         <ScrollView scrollEnabled={true} nestedScrollEnabled={true} marginHorizontal={1} contentContainerStyle={{ flexGrow: 1 }} className="p-10">
                             <View className="flex flex-col gap-4">
-
-                                <Pressable onPress={openAddFamilyDetails} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
-                                    <View className="flex-row justify-between gap-2 items-center">
-                                        <AnimatedFeatherIcon name="users" size={30} color={"black"} />
-                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("AddFamilyDetails")}</Text>
-                                    </View>
-                                    <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                                </Pressable>
-
-                                <Pressable onPress={openChangePassword} className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
-                                    <View className="flex-row justify-between gap-2 items-center">
-                                        <AnimatedFontistoIcon name="locked" size={30} color={"black"} />
-                                        <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("changePassword")}</Text>
-                                    </View>
-                                    <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                                </Pressable>
-
-                                <Pressable onPress={openLogoutModal}>
-                                    <View className="flex flex-row items-center justify-between bg-white p-3 rounded-lg">
+                                <Animated.View style={[{ transform: [{ scale: addFamilyScale }] }]} >
+                                    <Pressable
+                                        activeOpacity={1}
+                                        onPressIn={onPressAddFamilyIn}
+                                        onPressOut={onPressAddFamilyOut}
+                                        onPress={openAddFamilyDetails}
+                                        className="flex flex-row items-center justify-between  bg-white rounded-[15px] shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black p-3"
+                                    >
                                         <View className="flex-row justify-between gap-2 items-center">
-                                            <AnimatedFeatherIcon
-                                                name="log-out"
-                                                size={25}
-                                                color="black"
-                                            />
-                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">Logout</Text>
+                                            <AnimatedFeatherIcon name="users" size={30} color={"black"} />
+                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("AddFamilyDetails")}</Text>
                                         </View>
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                                    </View>
-                                </Pressable>
+                                    </Pressable>
+                                </Animated.View>
+
+                                <Animated.View style={[{ transform: [{ scale: changePasswordScale }] }]} >
+                                    <Pressable
+                                        activeOpacity={1}
+                                        onPressIn={onPressChangePasswordIn}
+                                        onPressOut={onPressChangePasswordOut}
+                                        onPress={openChangePassword}
+                                        className="flex flex-row items-center justify-between bg-white rounded-[15px] shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black p-3"
+                                    >
+                                        <View className="flex-row justify-between gap-2 items-center">
+                                            <AnimatedFontistoIcon name="locked" size={30} color={"black"} />
+                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("changePassword")}</Text>
+                                        </View>
+                                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                                    </Pressable>
+                                </Animated.View>
+
+                                <Animated.View style={[{ transform: [{ scale: logoutCardScale }] }]} >
+                                    <Pressable
+                                        activeOpacity={1}
+                                        onPressIn={onPressLogoutCardIn}
+                                        onPressOut={onPressLogoutCardOut}
+                                        onPress={openLogoutModal}
+                                    >
+                                        <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black p-3 ">
+                                            <View className="flex-row justify-between gap-2 items-center">
+                                                <AnimatedFeatherIcon
+                                                    name="log-out"
+                                                    size={25}
+                                                    color="black"
+                                                />
+                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Logout</Text>
+                                            </View>
+                                            <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                                        </View>
+                                    </Pressable>
+                                </Animated.View>
 
                             </View>
                         </ScrollView>
@@ -328,11 +480,18 @@ const ProfilePage = ({ navigation }) => {
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] px-3 py-4 shadow-lg mt-[90%]">
                         <Text className="text-lg text-black mb-4">{t("confirmlogout")}</Text>
-                        <View className="flex-row justify-between">
-
-                            <Pressable onPress={closeLogoutModal} className="px-6 py-3 bg-gray-400 rounded-[15px] mr-2">
-                                <Text className="text-white">{t('cancel')}</Text>
-                            </Pressable>
+                        <View className="flex-row justify-around">
+                            <Animated.View style={[{ transform: [{ scale: cancelScale }] }]} >
+                                <Pressable
+                                    activeOpacity={1}
+                                    onPressIn={onPressCancelIn}
+                                    onPressOut={onPressCancelOut}
+                                    onPress={closeLogoutModal}
+                                    className="px-6 py-3 bg-gray-400 rounded-[15px] mr-2"
+                                >
+                                    <Text className="text-white">{t('cancel')}</Text>
+                                </Pressable>
+                            </Animated.View>
 
                             <View>
                                 {loading ? (
@@ -341,9 +500,17 @@ const ProfilePage = ({ navigation }) => {
                                         <ActivityIndicator size="small" color="white" />
                                     </View>
                                 ) : (
-                                    <Pressable onPress={() => handleLogout()} disabled={loading} className="px-6 py-3 bg-red-500 rounded-[15px]">
-                                        <Text className="text-white ">{t('logout')}</Text>
-                                    </Pressable>
+                                    <Animated.View style={[{ transform: [{ scale: LogoutScale }] }]} >
+                                        <Pressable
+                                            activeOpacity={1}
+                                            onPressIn={onPressLogoutIn}
+                                            onPressOut={onPressLogoutOut}
+                                            onPress={() => handleLogout()} disabled={loading}
+                                            className="px-6 py-3 bg-red-500 rounded-[15px]"
+                                        >
+                                            <Text className="text-white ">{t('logout')}</Text>
+                                        </Pressable>
+                                    </Animated.View>
                                 )}
                             </View>
 
