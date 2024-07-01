@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -61,14 +61,14 @@ function NewsList({ navigation, news, loading }) {
         };
 
         return (
-            <Animated.View style={[{ transform: [{ scale }] }]} key={item?._id}>
+            <Animated.View style={[{ transform: [{ scale }] }]} className="flex justify-center items-center" key={item?._id}>
                 <TouchableOpacity
                     activeOpacity={1}
                     onPressIn={onPressIn}
                     onPressOut={onPressOut}
                     onPress={() => { openNewsDetailsPage(item?._id); }}
                 >
-                    <View className="bg-gray-200 shadow-2xl p-2 rounded-3xl w-[100%] mt-4">
+                    <View className="bg-white shadow-2xl rounded-3xl w-[100%] mt-4 p-5 mx-5 mb-5" style={styles.shadowOfCard}>
                         <View className="overflow-hidden object-cover shadow-xl shadow-black">
                             <View className="relative">
                                 <Image
@@ -137,24 +137,39 @@ function NewsList({ navigation, news, loading }) {
                     />
                 ) : (
                     <>
-                        <View className="px-4 mt-5">
-                            <Text className="text-3xl font-bold text-black">{t("news")}</Text>
+                        <View className="px-4 pb-3 mt-5">
+                            <Text className="bg-whit text-3xl font-bold text-black">{t("news")}</Text>
                             <View className="border-b-2 w-[20%]"></View>
                         </View>
-                        <FlatList
-                            ListHeaderComponent={() => news && renderItems({ item: news[0] })}
-                            data={news && news.slice(1)}
-                            renderItem={renderItems}
-                            keyExtractor={(item) => item?._id}
-                            contentContainerStyle={{ paddingHorizontal: 12 }}
-                            showsHorizontalScrollIndicator={false}
-                            showsVerticalScrollIndicator={false}
-                        />
+                        <View className="bg-[#E9EDF7] pb-12">
+                            <FlatList
+                                ListHeaderComponent={() => news && renderItems({ item: news[0] })}
+                                data={news && news.slice(1)}
+                                renderItem={renderItems}
+                                keyExtractor={(item) => item?._id}
+                                contentContainerStyle={{ paddingHorizontal: 12 }}
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                            />
+                        </View>
                     </>
                 )}
             </SafeAreaView>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    shadowOfCard: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.17,
+        shadowRadius: 3.05,
+        elevation: 4
+    },
+});
 
 export default NewsList;

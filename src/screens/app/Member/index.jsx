@@ -96,7 +96,7 @@ export default function Member() {
 
         return (
 
-            <View className="bg-white rounded-xl p-5 mx-5 mb-5 shadow-2xl" key={item._id}>
+            <View className="bg-white rounded-3xl p-5 mx-5 mb-5" style={styles.shadowOfCard} key={item._id}>
                 {ImageOfMember ?
                     <Animated.View style={[{ transform: [{ scale }] }]} key={item?._id}>
                         <TouchableOpacity
@@ -151,7 +151,7 @@ export default function Member() {
 
     return (
 
-        <View className="bg-gray-300" style={styles.container}>
+        <View className="bg-[#E9EDF7]" style={styles.container}>
             <View style={styles.header}>
                 <Text className="text-2xl font-bold text-black">{t('committeeMember')}</Text>
             </View>
@@ -230,4 +230,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 15,
     },
+    shadowOfCard: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.17,
+        shadowRadius: 3.05,
+        elevation: 4
+    }
 });

@@ -1,7 +1,7 @@
 import { ScrollView } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Image, Pressable, Text, View } from 'react-native';
+import { Animated, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import ContactUsCard from '../../../components/ContactUsCard';
 
 function ContactUs({ navigation }) {
@@ -63,7 +63,7 @@ function ContactUs({ navigation }) {
             </View>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false} >
-                <View className="bg-white p-2 mr-2 rounded-lg mx-4">
+                <View className="bg-white p-2 mr-2 rounded-lg mx-4" style={styles.shadowOfCard}>
                     <Text className="tracking-wider text-neutral-700 px-3 text-justify">{t('contactusheading')}</Text>
                 </View>
                 <ContactUsCard />
@@ -72,5 +72,18 @@ function ContactUs({ navigation }) {
 
     )
 }
+
+const styles = StyleSheet.create({
+    shadowOfCard: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.17,
+        shadowRadius: 3.05,
+        elevation: 4
+    },
+});
 
 export default ContactUs;

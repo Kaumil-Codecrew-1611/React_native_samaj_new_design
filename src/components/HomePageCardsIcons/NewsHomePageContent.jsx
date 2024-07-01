@@ -65,7 +65,7 @@ const NewsHomePageContent = ({ navigation }) => {
         <>
             <View className="p-3">
                 <View>
-                    <Text className="text-xl font-semibold tracking-wider text-rose-700 w-[40%]">
+                    <Text className="text-xl font-bold text-rose-700 tracking-wider w-[40%]">
                         {t("LatestNews")}
                     </Text>
                     <View className="border-b-2 border-red-700 w-[15%] my-2"></View>

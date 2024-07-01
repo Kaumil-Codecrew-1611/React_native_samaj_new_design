@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
     skeletonImage: {
         width: '100%',
         height: 180,
-        borderRadius: 20,
         marginBottom: 10,
     },
     skeletonTextLarge: {

@@ -22,7 +22,7 @@ function Parallax({ sliderImages }) {
         <>
             <View>
                 <Carousel
-                    style={{ alignSelf: 'stretch', display: "flex", gap: 8, marginTop: 15 }}
+                    style={{ alignSelf: 'stretch', display: "flex", gap: 8, marginTop: 15, marginBottom: 15 }}
                     width={PAGE_WIDTH}
                     height={PAGE_WIDTH * 0.8}
                     vertical={false}
@@ -45,8 +45,8 @@ function Parallax({ sliderImages }) {
                     )}
                 />
             </View>
-            <View className="p-3">
-                <Text className="text-xl font-bold text-rose-700">Browse By</Text>
+            <View className="px-3">
+                <Text className="text-xl font-bold text-rose-700 tracking-wider">Browse By</Text>
                 <View className="border-b-2 border-rose-700 w-[15%]"></View>
             </View>
         </>

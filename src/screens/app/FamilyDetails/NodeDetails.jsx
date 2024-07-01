@@ -267,7 +267,7 @@ const NodeDetails = ({ navigation, route }) => {
                                 </SkeletonPlaceholder>
                             ) : (
                                 userData && (
-                                    <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData?.firstname + ' ' + userData?.lastname}</Text>
+                                    <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData?.firstname + '' + userData?.lastname}</Text>
                                 )
                             )}
                         </View>

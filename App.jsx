@@ -16,7 +16,7 @@ import RootNavigator from './src/navigators/RootNavigator';
 
 const App = () => {
 
-  const { setIsAuthScreenActive, getUserDataFromStorage, setCurrentPathNamestate, progress } = useContext(GlobalContext);
+  const { setIsAuthScreenActive, getUserDataFromStorage, setCurrentPathNamestate, progress, setPushNotificationToken } = useContext(GlobalContext);
 
   useEffect(() => {
     SplashScreen.hide();
@@ -25,13 +25,14 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = messaging().onTokenRefresh(token => {
-      console.log('New token:', token);
+      setPushNotificationToken(token)
     });
 
     messaging()
       .getToken()
       .then(token => {
         console.log('Device token:', token);
+        setPushNotificationToken(token)
       });
 
     return unsubscribe;

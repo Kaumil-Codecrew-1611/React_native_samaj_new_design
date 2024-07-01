@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import ApiContext from '../../../context/ApiContext';
 
@@ -112,7 +112,7 @@ function Support({ navigation }) {
                                 onPressOut={onPressOutEmail}
                                 onPress={() => redirect('EmailSupport')}
                             >
-                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl">
+                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl" style={styles.shadowOfCard}>
                                     <View className="flex flex-row justify-between items-center">
                                         <View className="w-[40px] h-[40px] overflow-hidden">
                                             <Image
@@ -145,7 +145,7 @@ function Support({ navigation }) {
                                 onPressOut={onPressOutFaqs}
                                 onPress={() => redirect('Faqs')}
                             >
-                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl">
+                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl" style={styles.shadowOfCard}>
                                     <View className="flex flex-row justify-between items-center">
                                         <View className="w-[40px] h-[40px] overflow-hidden">
                                             <Image
@@ -178,7 +178,7 @@ function Support({ navigation }) {
                                 onPressOut={onPressOutCondition}
                                 onPress={() => redirect('TermAndCondition')}
                             >
-                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl">
+                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl" style={styles.shadowOfCard}>
                                     <View className="flex flex-row justify-between items-center">
                                         <View className="w-[40px] h-[40px] overflow-hidden">
                                             <Image
@@ -210,5 +210,18 @@ function Support({ navigation }) {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    shadowOfCard: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.17,
+        shadowRadius: 3.05,
+        elevation: 4
+    },
+});
 
 export default Support;

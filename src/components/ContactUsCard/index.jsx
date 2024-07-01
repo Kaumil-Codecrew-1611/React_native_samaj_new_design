@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -163,7 +163,7 @@ function ContactUsCard() {
     return (
         <View className="mb-20">
             <View className="p-5">
-                <View className="bg-white rounded-[20px] p-5">
+                <View className="bg-white rounded-[20px] p-5" style={styles.shadowOfCard}>
                     <View className="flex flex-row items-center gap-3">
                         <AnimatedFontistoIcon
                             name="mobile"
@@ -213,7 +213,7 @@ function ContactUsCard() {
             </View>
             {email && (
                 <View className="p-5">
-                    <View className="bg-white rounded-[20px] p-5">
+                    <View className="bg-white rounded-[20px] p-5" style={styles.shadowOfCard}>
                         <View className="flex flex-row items-center gap-3">
                             <AnimatedFontistoIcon
                                 name="email"
@@ -235,7 +235,7 @@ function ContactUsCard() {
             )}
             {(faceBookLink || instagramLink || twitterLink) && (
                 <View className="p-5">
-                    <View className="bg-white rounded-[20px] p-5">
+                    <View className="bg-white rounded-[20px] p-5" style={styles.shadowOfCard}>
                         <View className="flex flex-row items-center gap-3">
                             <AnimatedFeatherIcon
                                 name="users"
@@ -303,5 +303,18 @@ function ContactUsCard() {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    shadowOfCard: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.17,
+        shadowRadius: 3.05,
+        elevation: 4
+    },
+});
 
 export default ContactUsCard;

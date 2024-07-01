@@ -18,6 +18,7 @@ const HomePageCardContents = ({ content, image, redirectTo, functionality, navig
             useNativeDriver: true,
         }).start();
     };
+
     const onPressOut = () => {
         Animated.spring(animation, {
             toValue: 0,
@@ -61,7 +62,7 @@ const HomePageCardContents = ({ content, image, redirectTo, functionality, navig
                                     source={image}
                                 />
                             </View>
-                            <Text className={`${windowWidth < 321 ? "text-base" : windowWidth < 361 ? "text-xl" : "text-lg"} text-black font-semibold text-center`}>
+                            <Text className={`${windowWidth < 321 ? "text-base" : windowWidth < 361 ? "text-xl" : "text-lg"} text-black font-semibold text-center tracking-wider`}>
                                 {content}
                             </Text>
                         </TouchableOpacity>

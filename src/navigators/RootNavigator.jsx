@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dimensions, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import NewsHomePageContent from '../components/HomePageCardsIcons/NewsHomePageContent';
 import BottomTabs from '../containers/BottomTabs';
 import Aboutus from '../screens/app/About';
 import ChangePassword from '../screens/app/ChangePassword';
-import EditUserProfile from '../screens/app/Edit User';
+import AllUserDirectory from '../screens/app/Directory/AllUserDirectory';
+import EditUserProfile from '../screens/app/EditUser';
 import EmailSupport from '../screens/app/EmailSupport';
+import EventsScreen from '../screens/app/Events/EventsScreen';
 import ViewFamilyTree from '../screens/app/FamilyDetails';
 import AddFamilyDetails from '../screens/app/FamilyDetails/AddFamilyDetails';
 import EditUserFamilyDetails from '../screens/app/FamilyDetails/EditUserFamilyDetails/EditUserFamilyDetails';
@@ -27,12 +28,10 @@ import ProfilePage from '../screens/app/Profile';
 import Register from '../screens/app/Register';
 import SettingBottomSheet from '../screens/app/Settings';
 import Support from '../screens/app/Support';
+import TermAndCondition from '../screens/app/TermAndCondition/TermAndCondition';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
-import AllUserDirectory from '../screens/app/Directory/AllUserDirectory';
-import TermAndCondition from '../screens/app/TermAndCondition/TermAndCondition';
-import EventsScreen from '../screens/app/Events/EventsScreen';
 
 const RootStack = createNativeStackNavigator()
 

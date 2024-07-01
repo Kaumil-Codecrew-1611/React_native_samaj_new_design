@@ -61,26 +61,34 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
 
     const handleNodePress = (node) => {
         if (!isLoggedIn) {
+            const popupTimeout = setTimeout(() => {
+                Popup.hide();
+            }, 2000);
             Popup.show({
                 type: 'Danger',
                 title: 'Please login',
                 button: true,
                 textBody: `You need to be logged in to view ${node?.firstname ? node?.firstname.toLowerCase() + " " + node.lastname.toLowerCase() : "This user"}'s profile.`,
                 buttonText: 'Register/login',
-                timing: 3000,
-                autoClose: true,
+                autoClose: false,
                 callback: () => {
+                    clearTimeout(popupTimeout);
                     Popup.hide();
                     navigation.navigate('Welcome');
+                },
+                cancelButtonText: 'Cancel',
+                cancelCallback: () => {
+                    clearTimeout(popupTimeout);
+                    Popup.hide();
                 }
-            })
-            return console.log("Not logged in")
+            });
+            return console.log("Not logged in");
         }
         if (node?.wife) {
-            const nodeProfile = { _id: node._id, firstname: node.firstname, lastname: node.lastname, wife: node.wife }
-            openProfilePopup(nodeProfile)
+            const nodeProfile = { _id: node._id, firstname: node.firstname, lastname: node.lastname, wife: node.wife };
+            openProfilePopup(nodeProfile);
         } else {
-            const userId = node._id
+            const userId = node._id;
             navigation.navigate('NodeDetails', { userId, node, paramsId });
         }
     };
