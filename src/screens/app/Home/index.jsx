@@ -140,7 +140,7 @@ const Home = ({ navigation }) => {
                             )}
                             <Text className={`${windowWidth < 321 ? "text-base" : "text-xl"} font-semibold tracking-wider text-rose-700`}>
                                 {firstName && lastName
-                                    ? `${firstName} ${lastName}`
+                                    ? `${firstName}${lastName}`
                                     : titleOfHeader}
                             </Text>
                         </View>

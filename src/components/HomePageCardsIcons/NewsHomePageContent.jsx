@@ -6,16 +6,16 @@ import ApiContext from '../../context/ApiContext';
 import { GlobalContext } from '../../context/globalState';
 
 const useTruncateText = (text, wordLimit) => {
-    return text && text.split(' ').slice(0, wordLimit).join(' ') + (text.split(' ').length > wordLimit ? '...' : '');
+    return text && text?.split(' ').slice(0, wordLimit).join(' ') + (text?.split(' ').length > wordLimit ? '...' : '');
 };
 
 const stripHtmlTags = (html) => {
-    html = html.replace(/<\/?(b|strong)>/gi, '**');
-    return html.replace(/<\/?[^>]+(>|$)/g, '');
+    html = html?.replace(/<\/?(b|strong)>/gi, '**');
+    return html?.replace(/<\/?[^>]+(>|$)/g, '');
 };
 
 const parseAndRenderText = (text) => {
-    const parts = text.split('**').map((part, index) =>
+    const parts = text?.split('**').map((part, index) =>
         index % 2 === 1 ? (
             <Text key={index} style={{ fontWeight: 'bold' }}>{part}</Text>
         ) : (

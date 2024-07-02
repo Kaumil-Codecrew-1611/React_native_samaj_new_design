@@ -153,7 +153,7 @@ const resources = {
       entermobilenumberandpassword: 'Enter mobile number and password',
       emailOrMobileNumber: 'Email or Phone Number',
       YourHeader: 'Your Header',
-      OurPurpose: 'Our Purpose',
+      OurPurpose: 'Our purpose',
       sendusonemail: 'Send us on email',
       facinganissue: 'Facing an issue? Our support team is here to help. Contact us via email.',
       emailOrMobileRequired: 'Email or Phone number is required',

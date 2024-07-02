@@ -77,7 +77,7 @@ export default function AllUserDirectory() {
 
         const removeTextAfterSlash = (text) => {
             if (!text) return 'N/A';
-            return text && text.split('/')[0].trim();
+            return text && text?.split('/')[0].trim();
         };
 
         const onPressIn = () => {

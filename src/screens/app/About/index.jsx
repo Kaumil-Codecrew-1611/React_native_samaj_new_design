@@ -25,11 +25,11 @@ const Aboutus = () => {
     useEffect(() => {
         (async function () {
             const contentAboutUs = await aboutUsContentApi();
-            setTitleForEn(contentAboutUs?.AboutusData?.titleE);
-            setTitleForGn(contentAboutUs?.AboutusData?.titleG);
-            setDescriptionEn(contentAboutUs?.AboutusData?.descriptionE);
-            setDescriptionGn(contentAboutUs?.AboutusData?.descriptionG);
-            setAboutUsImage(contentAboutUs?.AboutusData?.image);
+            setTitleForEn(contentAboutUs?.AboutusData[0]?.titleE);
+            setTitleForGn(contentAboutUs?.AboutusData[0]?.titleG);
+            setDescriptionEn(contentAboutUs?.AboutusData[0]?.descriptionE);
+            setDescriptionGn(contentAboutUs?.AboutusData[0]?.descriptionG);
+            setAboutUsImage(contentAboutUs?.AboutusData[0]?.image);
         })();
     }, []);
 

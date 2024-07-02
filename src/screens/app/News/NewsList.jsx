@@ -53,7 +53,7 @@ function NewsList({ navigation, news, loading }) {
 
         const truncateText = (text, wordLimit) => {
             const plainText = text && text.replace(/<[^>]*>?/gm, '');
-            const words = plainText && plainText.split(' ');
+            const words = plainText && plainText?.split(' ');
             if (words?.length > wordLimit) {
                 return words.slice(0, wordLimit).join(' ') + '...';
             }

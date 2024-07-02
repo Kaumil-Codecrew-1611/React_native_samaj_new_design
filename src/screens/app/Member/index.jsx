@@ -108,7 +108,7 @@ export default function Member() {
                             <Image
                                 source={{ uri: ImageOfMember }}
                                 style={styles.image}
-                                resizeMode="stretch"
+                                resizeMode="cover"
                             />
                         </TouchableOpacity>
                     </Animated.View>
