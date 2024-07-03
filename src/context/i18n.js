@@ -226,6 +226,8 @@ const resources = {
       AllUser: "All User",
       PhoneNumber: "Phone Number",
       AllEvents: "All Events",
+      SuccessfullyLoggedOut: "Logout Successfully",
+      LanguageChangedSuccessfully: "Language Change Successfully",
     },
   },
   gu: {
@@ -449,6 +451,8 @@ const resources = {
       AllUser: "સભ્યો ની યાદી",
       PhoneNumber: "ફોન નંબર",
       AllEvents: "બધા પ્રસંગો",
+      SuccessfullyLoggedOut: "સફળતાપૂર્વક લૉગઆઉટ થઇ ગયુ છે",
+      LanguageChangedSuccessfully: "ભાષા સફળતા પૂર્વક બદલાઈ ગઈ છે",
     },
   },
 };

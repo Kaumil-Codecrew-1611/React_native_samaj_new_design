@@ -29,7 +29,6 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         lastname: yup.string().required(t('pleaseenterlastname')),
         education: yup.string().required(t('pleaseentereducation')),
         address: yup.string().required(t('pleaseenteraddress')),
-        mobile_number: yup.string().matches(/^[0-9]{10}$/, t('pleaseenteravalidmobilenumber')),
         job: yup.string().required(t('pleaseenterjob')),
         relationship: yup.string().required(t('pleasechooserelation')),
         marital_status: yup.string().required(t('pleasechoosemaritalstatus')),
