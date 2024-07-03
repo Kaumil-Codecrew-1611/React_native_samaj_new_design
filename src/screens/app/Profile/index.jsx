@@ -9,11 +9,12 @@ import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import toastMessage from '../../../utils/toastMessage';
 
 const ProfilePage = ({ navigation }) => {
 
     const { t } = useTranslation();
-    const { setuserDataInStorage, allUserInfo, progress, setIsBottomSheetVisible, setAllUserInfo } = useContext(GlobalContext);
+    const { setuserDataInStorage, allUserInfo, progress, setAllUserInfo } = useContext(GlobalContext);
     const { updateUserProfileImage, updateUserBannerProfileImage, resetAllData } = useContext(ApiContext);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
@@ -170,6 +171,7 @@ const ProfilePage = ({ navigation }) => {
         setAllUserInfo({})
         progress.value = withTiming("1");
         navigation.navigate("Home");
+        toastMessage(t('SuccessfullyLoggedOut'), 'Success');
     };
 
     const formatDate = (timestamp) => {
@@ -264,7 +266,7 @@ const ProfilePage = ({ navigation }) => {
             const fileName = imageName;
             const fileType = image.mime;
 
-            userData.append('image', {
+            userData.append('profile_banner', {
                 uri: imagePath,
                 type: fileType,
                 name: fileName,
@@ -279,26 +281,34 @@ const ProfilePage = ({ navigation }) => {
             await setuserDataInStorage('user', response.userData);
             navigation.navigate('Profile');
         }).catch((error) => {
-            console.log(error, "errorChangingImage")
+            console.log(error, "error Changing Image")
         });
-    };
-
-    const handleShare = async () => {
-        try {
-            await Share.share({
-                message: `Check out this awesome app: ${appUrl}`,
-            });
-        } catch (error) {
-            console.error('Error sharing:', error.message);
-        }
-    };
+    }
 
     useFocusEffect(
         useCallback(() => {
-            return () => {
-                setIsBottomSheetVisible(false);
-            };
-        }, []))
+            navigation.getParent()?.setOptions({ tabBarStyle: { display: "flex" } });
+        }, [])
+    );
+
+    const handleShare = async () => {
+        try {
+            const result = await Share.share({
+                message: appUrl,
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    console.log('Shared with activity type of:', result.activityType);
+                } else {
+                    console.log('Shared');
+                }
+            } else if (result.action === Share.dismissedAction) {
+                console.log('Dismissed');
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    };
 
     return (
         <>

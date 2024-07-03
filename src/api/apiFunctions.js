@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosInstance from '../utils/axiosInstance';
 
 export const registerUser = async (userData) => {
@@ -101,14 +100,11 @@ export const newsDetailsById = async (newsId) => {
 export const updateUserProfile = async (payload) => {
     try {
         const { userData, id } = payload;
-        const axiosWithHeaders = axios.create({
-            baseURL: axiosInstance.defaults.baseURL,
+        const response = await axiosInstance.post(`/profile_image/${id}`, userData, {
             headers: {
-                'Content-Type': 'multipart/form-data',
-                'ngrok-skip-browser-warning': 'true'
-            },
+                'Content-Type': 'multipart/form-data'
+            }
         });
-        const response = await axiosWithHeaders.post(`/profile_image/${id}`, userData);
         return response.data
     } catch (error) {
         console.log(error, "error")
@@ -118,13 +114,12 @@ export const updateUserProfile = async (payload) => {
 export const profileBannerImageUpdate = async (payload) => {
     try {
         const { userData, id } = payload;
-        const axiosWithHeaders = axios.create({
-            baseURL: axiosInstance.defaults.baseURL,
+
+        const response = await axiosInstance.post(`/profile_banner/${id}`, userData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-            },
+            }
         });
-        const response = await axiosWithHeaders.post(`/profile_banner/${id}`, userData);
         return response.data
     } catch (error) {
         console.log(error, "error")
@@ -196,7 +191,7 @@ export const allUserReview = async (search) => {
     return response.data
 };
 
-export const termAndCondition  = async () => {
+export const termAndCondition = async () => {
     const response = await axiosInstance.get(`/termsandcondition`);
     return response.data
 };

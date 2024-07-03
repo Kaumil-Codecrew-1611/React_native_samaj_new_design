@@ -11,42 +11,47 @@ const SettingBottomSheet = () => {
 
     const { defaultLanguage, setDefaultLanguage } = useContext(GlobalContext);
     const [language, setLanguage] = useState('');
-    const [alertOpen, setAlertOpen] = useState(false)
+    const [alertOpen, setAlertOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const { t } = useTranslation();
     const successMessages = t('successchangeLanguage');
-    useEffect(() => {
-        setLanguage(defaultLanguage)
-    }, [])
 
-    const changeLanguage = async (selectedLanguage) => {
+    useEffect(() => {
+        setLanguage(defaultLanguage);
+    }, [defaultLanguage]);
+
+    const changeLanguage = (selectedLanguage) => {
         setLanguage(selectedLanguage);
         setAlertOpen(true);
     };
+
     const closeAlertModal = () => {
         setLanguage(defaultLanguage);
         setAlertOpen(false);
-    }
+    };
 
     const AlertActionModal = async () => {
-        setLoading(true)
-        await AsyncStorage.setItem('selectedLanguage', language);
-        setLoading(false)
-        i18n.changeLanguage(language)
-            .then(() => { setAlertOpen(false); setDefaultLanguage(language); })
-            .catch((error) => {
-                toastMessage('Something went wrong')
-                console.error('Error changing language:', error);
-            });
-
-    }
+        setLoading(true);
+        try {
+            await AsyncStorage.setItem('selectedLanguage', language);
+            await i18n.changeLanguage(language);
+            setDefaultLanguage(language);
+            toastMessage(t('LanguageChangedSuccessfully'), 'Success');
+            setAlertOpen(false);
+        } catch (error) {
+            toastMessage("Something went wrong", 'error');
+            console.error('Error changing language:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         const getSelectedLanguage = async () => {
             try {
                 const storedLanguage = await AsyncStorage.getItem('selectedLanguage');
                 if (storedLanguage) {
-                    await i18n.changeLanguage(storedLanguage)
+                    await i18n.changeLanguage(storedLanguage);
                     setLanguage(storedLanguage);
                 }
             } catch (error) {
@@ -57,7 +62,6 @@ const SettingBottomSheet = () => {
     }, []);
 
     return (
-
         <View style={styles.container} className="flex-1 p-6 bg-indigo-50">
             <Radio.Group
                 name="language"
