@@ -277,6 +277,7 @@ const ProfilePage = ({ navigation }) => {
                 userData
             };
             const response = await updateUserBannerProfileImage(payload);
+            console.log("thisi is dfor userData", response)
             setIsBannerPopupVisible(false);
             await setuserDataInStorage('user', response.userData);
             navigation.navigate('Profile');
