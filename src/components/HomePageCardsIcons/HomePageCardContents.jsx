@@ -43,7 +43,7 @@ const HomePageCardContents = ({ content, image, redirectTo, functionality, navig
         <>
             {content && (
                 <View
-                    className={"rounded-[15px] bg-white shadow-input shadow-custom-elevation shadow-md shadow-black"}
+                    className={"rounded-[15px] bg-white"}
                     style={[
                         styles.container,
                         windowWidth < 361 && styles.smallContainer,
