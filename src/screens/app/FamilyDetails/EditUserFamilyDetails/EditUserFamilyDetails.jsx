@@ -20,6 +20,7 @@ import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
 import { GlobalContext } from '../../../../context/globalState';
+import toastMessage from '../../../../utils/toastMessage';
 
 export default function EditUserFamilyDetails({ navigation, route }) {
 
@@ -64,6 +65,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
             data: data
         }
         setLoading(true)
+        toastMessage(("User Update Successfully"), "Success");
         await updateFamilyDetailsUser(payload);
         setLoading(false)
         navigation.navigate('ViewFamilyDetails');

@@ -76,6 +76,7 @@ const NodeDetails = ({ navigation, route }) => {
     };
 
     const handleDelete = async (user_Id) => {
+        toastMessage(("User Delete Successfully"), 'Success');
         await handleDeleteProfileUser(user_Id)
         navigation.navigate('ViewFamilyDetails');
     };
@@ -143,6 +144,7 @@ const NodeDetails = ({ navigation, route }) => {
                 id: userId,
                 userData
             };
+            toastMessage(("User Update Successfully"), 'Success');
             const response = await updateUserProfileImage(payload);
             if (response) {
                 setImage(response.userData.photo)
