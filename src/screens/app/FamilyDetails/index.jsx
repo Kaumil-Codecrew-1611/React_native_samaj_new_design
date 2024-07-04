@@ -133,7 +133,7 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
-                        className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white`}
+                        className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white mb-2`}
                     >
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             {loading ? renderSkeleton() : (
@@ -165,7 +165,6 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                                             </TouchableOpacity>
                                         )}
                                     </View>
-
                                 </View>
                             )}
                         </ScrollView>
