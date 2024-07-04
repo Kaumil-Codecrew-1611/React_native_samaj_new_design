@@ -82,7 +82,7 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                     Popup.hide();
                 }
             });
-            return console.log("Not logged in");
+            return console.log("User is not logged In");
         }
         if (node?.wife) {
             const nodeProfile = { _id: node._id, firstname: node.firstname, lastname: node.lastname, wife: node.wife };
@@ -228,7 +228,7 @@ const ViewFamilyTree = ({ navigation, route }) => {
                     setUserData(contentOfAllFamilyMembers);
                 }
             } catch (error) {
-                console.log("error", error);
+                console.log(error, "fetching error in family details");
             }
         })();
     }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser, state.updateFamilyDetailsUser, paramsData]);

@@ -46,7 +46,6 @@ const VillageWisePersons = ({ navigation, route }) => {
                     i18n.changeLanguage(storedLanguage).catch((error) => {
                         console.error('Error changing language:', error);
                     });
-                    console.log(storedLanguage, "storedLanguage")
                     setLanguage(storedLanguage);
                 }
             } catch (error) {

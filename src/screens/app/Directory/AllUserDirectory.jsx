@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState, useMemo } from 'react';
 import { Animated, Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import ImageViewing from 'react-native-image-viewing';
@@ -8,13 +8,13 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 import { useTranslation } from 'react-i18next';
+import debounce from 'lodash.debounce';
 
 const { width } = Dimensions.get('screen');
 const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
 const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
-export default function AllUserDirectory() {
-
+const AllUserDirectory = () => {
     const { t } = useTranslation();
     const scrollY = useRef(new Animated.Value(0)).current;
     const [height1, setHeight1] = useState(100);
@@ -31,12 +31,17 @@ export default function AllUserDirectory() {
         outputRange: [-width, 0]
     });
 
-    useEffect(() => {
-        (async function () {
-            const contentAboutUs = await allUserDirectory(search ? search : "");
+    const fetchUserDirectory = useCallback(
+        debounce(async (searchQuery) => {
+            const contentAboutUs = await allUserDirectory(searchQuery);
             setLoading(false);
             setUserOfDirectory(contentAboutUs);
-        })();
+        }, 300),
+        []
+    );
+
+    useEffect(() => {
+        fetchUserDirectory(search);
     }, [search]);
 
     useFocusEffect(
@@ -52,22 +57,19 @@ export default function AllUserDirectory() {
         setIsVisible(true);
     };
 
-    const renderSkeletonItem = () => {
-        return (
-            <View className="mt-2 px-3">
-                <View className="bg-white rounded-lg p-2 flex flex-row shadow-md">
-                    <View className="w-16 h-16 bg-gray-300 text-black font-semibold text-center rounded-lg flex items-center justify-center"></View>
-                    <View className="ml-3">
-                        <View className="text-lg font-semibold bg-gray-100 w-64 h-5 rounded-md mt-1"></View>
-                        <View className="flex flex-row items-center bg-gray-100 rounded-md w-36 h-3 mt-3"></View>
-                    </View>
+    const renderSkeletonItem = useMemo(() => () => (
+        <View className="mt-2 px-3">
+            <View className="bg-white rounded-lg p-2 flex flex-row shadow-md">
+                <View className="w-16 h-16 bg-gray-300 text-black font-semibold text-center rounded-lg flex items-center justify-center"></View>
+                <View className="ml-3">
+                    <View className="text-lg font-semibold bg-gray-100 w-64 h-5 rounded-md mt-1"></View>
+                    <View className="flex flex-row items-center bg-gray-100 rounded-md w-36 h-3 mt-3"></View>
                 </View>
             </View>
-        );
-    };
+        </View>
+    ), []);
 
-    const renderActualItem = ({ item }) => {
-
+    const renderActualItem = useMemo(() => ({ item }) => {
         const location = item.locationsData && item.locationsData.length > 0 ? item.locationsData[0] : {};
         const animation = new Animated.Value(0);
         const inputRange = [0, 1];
@@ -138,7 +140,7 @@ export default function AllUserDirectory() {
                 )}
             </>
         );
-    };
+    }, [selectedImage, isVisible]);
 
     return (
         <View className="bg-gray-300" style={styles.container}>
@@ -203,7 +205,7 @@ export default function AllUserDirectory() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 55
+        paddingBottom: 15
     },
     header: {
         backgroundColor: '#fff',
@@ -218,3 +220,5 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
 });
+
+export default React.memo(AllUserDirectory);

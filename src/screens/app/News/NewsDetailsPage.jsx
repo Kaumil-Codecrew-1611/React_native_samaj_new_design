@@ -64,7 +64,7 @@ const NewsDetailsPage = ({ route }) => {
                 setNewsAddPerson(contentNewsDetails.createdBy);
                 setLoading(false);
             } catch (error) {
-                console.log("error", error);
+                console.log(error, "error for getting data of news details");
             }
         })();
     }, [newsId]);

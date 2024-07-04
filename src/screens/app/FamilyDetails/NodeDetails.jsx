@@ -156,7 +156,7 @@ const NodeDetails = ({ navigation, route }) => {
             }
         }).catch((error) => {
             toastMessage("Please select image again!")
-            console.log(error, "error Changing Image")
+            console.log(error, "User profile image changing error")
         });
     };
 
