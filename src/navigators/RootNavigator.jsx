@@ -49,8 +49,9 @@ const RootNavigator = () => {
         <>
             <RootStack.Navigator screenOptions={{
                 headerTitleAlign: 'center',
+                headerBackTitleVisible: false
             }}>
-                <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false }} />
+                <RootStack.Screen name="TabNavigator" component={BottomTabs} options={{ headerShown: false, headerTitle: '' }} />
                 <RootStack.Screen name='HomeScreen' component={HomeScreen} />
                 <RootStack.Screen name='Profile' component={ProfilePage} />
                 <RootStack.Screen name="VillageListing" component={VillageListing} initialParams={{ listingStyle }} options={({ navigation }) => ({
@@ -69,7 +70,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="NewsList" component={NewsList} options={{ headerTitle: t('NewsList') }} />
                 <RootStack.Screen name="NewsDetailsPage" component={NewsDetailsPage} options={{ headerTitle: t("newsDetails") }} />
                 <RootStack.Screen name="Support" options={{ headerTitle: t("SupportPage") }} component={Support} />
-                <RootStack.Screen name="Seetings" component={SettingBottomSheet} options={{ headerTitle: t("settings") }} />
+                <RootStack.Screen name="Setings" component={SettingBottomSheet} options={{ headerTitle: t("settings") }} />
                 <RootStack.Screen name="EmailSupport" component={EmailSupport} options={{ headerTitle: t("EmailSupport") }} />
                 <RootStack.Screen name="Faqs" component={Faqs} options={{ headerTitle: 'Faqs' }} />
                 <RootStack.Screen name="TermAndCondition" component={TermAndCondition} options={{ headerTitle: 'Term & Condition' }} />

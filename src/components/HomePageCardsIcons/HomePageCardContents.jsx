@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Animated, Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Animated, Dimensions, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const HomePageCardContents = ({ content, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing }) => {
@@ -43,10 +43,10 @@ const HomePageCardContents = ({ content, image, redirectTo, functionality, navig
         <>
             {content && (
                 <View
-                    className={"rounded-[15px] bg-white shadow-input shadow-custom-elevation shadow-md shadow-black"}
+                    className={`rounded-[15px] bg-white shadow-input shadow-custom-elevation  ${Platform.OS == "ios" ? "shadow-sm" : "shadow-md shadow-black"}`}
                     style={[
                         styles.container,
-                        windowWidth < 361 && styles.smallContainer,
+                        windowWidth < 376 && styles.smallContainer,
                     ]}
                 >
                     <Animated.View style={[{ transform: [{ scale }] }]}>
@@ -55,14 +55,15 @@ const HomePageCardContents = ({ content, image, redirectTo, functionality, navig
                             activeOpacity={1}
                             onPressIn={onPressIn}
                             onPressOut={onPressOut}
+                            className="flex items-center justify-center"
                         >
                             <View>
                                 <Image
-                                    className={`${windowWidth < 361 ? "w-16" : "w-24"}  ${windowWidth < 361 ? "h-16" : "h-24"}  font-semibold text-center`}
+                                    className={`${windowWidth < 376 ? "w-14" : "w-24"}  ${windowWidth < 376 ? "h-14" : "h-24"}  font-semibold text-center`}
                                     source={image}
                                 />
                             </View>
-                            <Text className={`${windowWidth < 321 ? "text-base" : windowWidth < 361 ? "text-xl" : "text-lg"} text-black font-semibold text-center tracking-wider`}>
+                            <Text className={`${windowWidth < 376 ? "text-base" : windowWidth < 376 ? "text-xl" : "text-lg"} text-black font-semibold text-center tracking-wider`}>
                                 {content}
                             </Text>
                         </TouchableOpacity>
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     },
     smallContainer: {
         width: 100,
+        height: 100
     },
 });
 
