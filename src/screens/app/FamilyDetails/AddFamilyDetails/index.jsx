@@ -105,6 +105,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('firstname')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -128,6 +129,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('lastname')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -151,6 +153,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('email')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -171,6 +174,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <TextInput
                                                 placeholder={t("PhoneNumber")}
+                                                className="py-3"
                                                 placeholderTextColor="grey"
                                                 style={styles.input}
                                                 value={value}
@@ -220,6 +224,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('education')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -243,6 +248,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('address')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -266,6 +272,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('job')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -300,6 +307,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                             { color: dateValue ? 'black' : 'grey' },
                                                         ]}
                                                         placeholder={t('pleaseenterdob')}
+                                                        className="py-3"
                                                         placeholderTextColor="grey"
                                                         value={dateValue ? dateValue.toDateString() : ''}
                                                         onBlur={onBlur}
@@ -334,6 +342,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 render={({ field: { onChange, value } }) => (
                                                     <Select
                                                         placeholder={t('maritalstatus')}
+                                                        className="py-3 m-1"
                                                         selectedValue={value}
                                                         onValueChange={(itemValue) => onChange(itemValue)}
                                                         _selectedItem={{
@@ -366,6 +375,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, value } }) => (
                                                 <Select
                                                     placeholder={t('relationship')}
+                                                    className="py-3 m-1"
                                                     selectedValue={value}
                                                     onValueChange={(itemValue) => onChange(itemValue)}
                                                     _selectedItem={{

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Dimensions, Platform, StyleSheet, View } from 'react-native';
 import Animated, {
     withTiming
 } from 'react-native-reanimated';
@@ -16,8 +16,10 @@ export const CustomBottomTab = ({
     descriptors,
     navigation,
 }) => {
-    const { progress, tHeight, animatedProps, setIsAuthScreenActive, isAuthScreenActive } = useContext(GlobalContext)
+    const { progress, tHeight, animatedProps, setIsAuthScreenActive, isAuthScreenActive } = useContext(GlobalContext);
     const navigationRef = useNavigation();
+    const [windowHeight] = useState(Dimensions.get('window').height);
+    console.log("thisisforheightthisisforheightthisisforheight", windowHeight)
 
     useEffect(() => {
         const unsubscribe = navigationRef.addListener('state', () => {
@@ -58,7 +60,7 @@ export const CustomBottomTab = ({
     return (
         <>
             <View style={styles.tabBarContainer}>
-                <Svg width={SCREEN_WIDTH} height={tHeight} style={styles.shadowMd}>
+                <Svg width={SCREEN_WIDTH} height={Platform.OS == "ios" ? windowHeight > 668 ? tHeight / 1.5 : tHeight : tHeight} style={styles.shadowMd}>
                     <AnimatedPath fill={'#E5E5E5'} animatedProps={animatedProps} />
                 </Svg>
                 <View

@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Button from '../../../components/Button';
-import { SCREEN_HEIGHT } from '../../../constants/Screen';
-import ApiContext from '../../../context/ApiContext';
-import { COLORS } from '../../../utils/colors';
-import { GlobalContext } from '../../../context/globalState';
 import { withTiming } from 'react-native-reanimated';
+import Button from '../../../components/Button';
+import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
+import { COLORS } from '../../../utils/colors';
 
 const Welcome = ({ navigation }) => {
     const { joinPageContent } = useContext(ApiContext);

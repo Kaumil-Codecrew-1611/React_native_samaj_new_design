@@ -54,7 +54,7 @@ const TermAndCondition = () => {
                 {termsAndCondition && termsAndCondition.map((item, index) => {
                     return (
                         <View key={index + "terms"} className="px-4 py-2">
-                            <View className="mt-2  bg-[#F3F5F7] rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black p-5">
+                            <View className="mt-2 bg-white rounded-[15px] mx-0.5 shadow p-5">
                                 <Text className="text-black text-xl font-bold mb-2">
                                     {defaultLanguage == "en" ? item.titleE : item.titleG}
                                 </Text>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: 165,
-        objectFit: "contain"
+        objectFit: "cover"
     },
 });
 

@@ -4,8 +4,8 @@ import { Animated, Linking, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import TwitterIcon from '../../assets/twitter.svg';
 import ApiContext from '../../context/ApiContext';
-
 function ContactUsCard() {
 
     const { t } = useTranslation();
@@ -21,6 +21,7 @@ function ContactUsCard() {
     const { contactUsPageDetails } = useContext(ApiContext);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
+
 
     const twitterAnimation = new Animated.Value(0);
     const instaAnimation = new Animated.Value(0);
@@ -255,11 +256,9 @@ function ContactUsCard() {
                                             onPressOut={onPressOutTwitter}
                                             onPress={() => openLink(twitterLink)}
                                         >
-                                            <AnimatedFontistoIcon
-                                                name="twitter"
-                                                size={40}
-                                                color="#1da1f2"
-                                            />
+
+                                            <TwitterIcon width={40} height={40} color='red' />
+
                                         </TouchableOpacity>
                                     </Animated.View>
                                 )}

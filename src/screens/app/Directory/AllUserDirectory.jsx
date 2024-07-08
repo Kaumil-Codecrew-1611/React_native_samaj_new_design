@@ -153,7 +153,9 @@ export default function AllUserDirectory() {
                         </View>
                     </View>
                 </View>
-                <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center mt-5 mb-3" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
+
+
+                <View className="w-full flex flex-row bg-white rounded-xl shadow-custom-elevation shadow-black shadow-2xl items-center mt-5 mb-3" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                     <TextInput
                         placeholder="search user"
                         placeholderTextColor="grey"

@@ -388,11 +388,13 @@ const ProfilePage = ({ navigation }) => {
                                         onPressIn={onPressAddFamilyIn}
                                         onPressOut={onPressAddFamilyOut}
                                         onPress={openAddFamilyDetails}
-                                        className="flex flex-row items-center justify-between  bg-white rounded-[15px] shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black p-3"
+                                        className="flex flex-row items-center justify-between bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3"
                                     >
                                         <View className="flex-row justify-between gap-2 items-center">
                                             <AnimatedFeatherIcon name="users" size={30} color={"black"} />
-                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("AddFamilyDetails")}</Text>
+                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">
+                                                {t("AddFamilyDetails")}
+                                            </Text>
                                         </View>
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </Pressable>
@@ -404,7 +406,7 @@ const ProfilePage = ({ navigation }) => {
                                         onPressIn={onPressChangePasswordIn}
                                         onPressOut={onPressChangePasswordOut}
                                         onPress={openChangePassword}
-                                        className="flex flex-row items-center justify-between bg-white rounded-[15px] shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black p-3"
+                                        className="flex flex-row items-center justify-between bg-white rounded-[15px] shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3"
                                     >
                                         <View className="flex-row justify-between gap-2 items-center">
                                             <AnimatedFontistoIcon name="locked" size={30} color={"black"} />
@@ -421,7 +423,7 @@ const ProfilePage = ({ navigation }) => {
                                         onPressOut={onPressLogoutCardOut}
                                         onPress={openLogoutModal}
                                     >
-                                        <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black p-3 ">
+                                        <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3 ">
                                             <View className="flex-row justify-between gap-2 items-center">
                                                 <AnimatedFeatherIcon
                                                     name="log-out"

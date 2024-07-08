@@ -108,6 +108,7 @@ const Home = ({ navigation }) => {
         setIsVisible(true);
     }
 
+    console.log("contentAboutUs", windowWidth)
     return (
         <>
             <View className="flex-1 bg-[#E9EDF7] space-y-3 w-full pb-20" edges={['top']}>

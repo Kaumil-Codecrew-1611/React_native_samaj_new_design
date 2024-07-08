@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
@@ -84,6 +84,7 @@ function EmailSupport({ navigation }) {
                                             name="email"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
+                                                    className="py-3"
                                                     placeholder={t('pleaseenteremail')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
@@ -104,6 +105,7 @@ function EmailSupport({ navigation }) {
                                     name="subject"
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <TextInput
+                                            className="py-3"
                                             placeholder={t('pleaseentersubject')}
                                             placeholderTextColor="grey"
                                             style={styles.input}
@@ -122,6 +124,7 @@ function EmailSupport({ navigation }) {
                                     name="message"
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <TextInput
+                                            className="py-3"
                                             placeholder={t('pleaseentermessage')}
                                             placeholderTextColor="grey"
                                             multiline
@@ -162,11 +165,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingLeft: 10,
         marginBottom: 15,
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 5,
     },
 });
 

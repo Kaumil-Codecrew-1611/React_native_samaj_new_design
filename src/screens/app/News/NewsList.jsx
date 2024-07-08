@@ -137,7 +137,7 @@ function NewsList({ navigation, news, loading }) {
                     />
                 ) : (
                     <>
-                        <View className="px-4 pb-3 mt-5">
+                        <View className={`px-4 pb-3 ${Platform.OS == "android" ? 'mt-5' : ""}`}>
                             <Text className="bg-whit text-3xl font-bold text-black">{t("news")}</Text>
                         </View>
                         <View className="bg-[#E9EDF7] pb-12">
