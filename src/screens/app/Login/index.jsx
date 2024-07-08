@@ -4,8 +4,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
+    Dimensions,
     Image,
+    Platform,
     Pressable,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -105,101 +108,106 @@ const Login = ({ navigation }) => {
             });
         })();
     }, []);
-
+    const [windowHeight] = useState(Dimensions.get('window').height);
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+            <View className="relative h-screen bg-red-300" >
 
-            <View className="h-[100%] w-[100%]" style={styles.bannerContainer}>
-                <Image
-                    source={{ uri: imageUrl }}
-                    style={styles.image}
-                />
-            </View>
+                <View className="bg-blue-200 h-1/2">
+                    <Image
+                        source={{ uri: imageUrl }}
+                        style={styles.image}
 
-            <View className="bg-white h-[60%] p-4 rounded-tr-3xl rounded-tl-3xl shadow-md">
-                <Text className="mb-[8px] font-bold text-[16px] text-black mt-2">{t('emailOrMobileNumber')}</Text>
-                <View className="w-full px-4 bg-[#F3F5F7] rounded-[15px] shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
-                    <Controller
-                        control={control}
-                        name="email_or_mobile"
-                        render={({ field: { onChange, onBlur, value } }) => (
-                            <TextInput
-                                className="rounded-lg p-3 text-black"
-                                onBlur={onBlur}
-                                placeholder={t("emailOrMobileNumber")}
-                                onChangeText={onChange}
-                                placeholderTextColor="grey"
-                                value={value}
-                            />
-                        )}
                     />
                 </View>
-                {errors.email_or_mobile && <Text className="text-red-500 mb-[10px] px-3 mt-2">{errors.email_or_mobile.message}</Text>}
-
-                <View>
-                    <Text className="mb-[8px] font-bold text-[16px] text-black mt-2">{t('password')}</Text>
-                    <View className="w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
-                        <Controller
-                            control={control}
-                            name="password"
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <TextInput
-                                    className=" text-black p-2"
-                                    onBlur={onBlur}
-                                    placeholder={t("password")}
-                                    placeholderTextColor="grey"
-                                    onChangeText={onChange}
-                                    value={value}
-                                    secureTextEntry={isCurrentPasswordHidden}
-                                />
-                            )}
-                        />
-                        <View>
-                            <Pressable onPress={onPressCurrentPassword}>
-                                <AnimatedFeatherIcon
-                                    name={isCurrentPasswordHidden ? "eye" : "eye-off"}
-                                    size={25}
-                                    color="black"
-                                />
-                            </Pressable>
+                <View className="absolute bottom-0 bg-[#E9EDF7] h-[60%] p-4 rounded-tr-3xl rounded-tl-3xl shadow-md">
+                    <View className="relative">
+                        <Text className="mb-[1px] font-bold text-[16px] text-black mt-2">{t('emailOrMobileNumber')}</Text>
+                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200"} `}>
+                            <Controller
+                                control={control}
+                                name="email_or_mobile"
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <TextInput
+                                        className="rounded-lg p-3 text-black"
+                                        onBlur={onBlur}
+                                        placeholder={t("emailOrMobileNumber")}
+                                        onChangeText={onChange}
+                                        placeholderTextColor="grey"
+                                        value={value}
+                                    />
+                                )}
+                            />
                         </View>
+                        {errors.email_or_mobile && <Text className="absolute -bottom-4 text-red-500 px-3 ">{errors.email_or_mobile.message}</Text>}
                     </View>
-                    {errors.password && <Text className="text-red-500 mb-[10px] px-3 mt-2">{errors.password.message}</Text>}
-                </View>
 
-                <View className="flex flex-row justify-end my-2" style={styles.registerContainer}>
-                    <Pressable onPress={() => navigation.navigate("ForgotPassword")}>
-                        <Text className="text-base text-blue-500 font-normal">Forgot Password</Text>
-                    </Pressable>
-                </View>
-
-                <View>
-                    {loading ? (
-                        <View className="flex flex-row items-center justify-center bg-[#4e63ac] cursor-pointer p-4 rounded-lg">
-                            <Text className="mr-4 text-base text-white ">{t("Loading")}</Text>
-                            <ActivityIndicator size="large" color="white" />
+                    <View className={`relative ${errors.email_or_mobile ? 'mt-5' : 'mt-1'}`}>
+                        <Text className="mb-[1px] font-bold text-[16px] text-black mt-2">{t('password')}</Text>
+                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200"} `}>
+                            <Controller
+                                control={control}
+                                name="password"
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <TextInput
+                                        className=" text-black p-3"
+                                        onBlur={onBlur}
+                                        placeholder={t("password")}
+                                        placeholderTextColor="grey"
+                                        onChangeText={onChange}
+                                        value={value}
+                                        secureTextEntry={isCurrentPasswordHidden}
+                                    />
+                                )}
+                            />
+                            <View>
+                                <Pressable onPress={onPressCurrentPassword}>
+                                    <AnimatedFeatherIcon
+                                        name={isCurrentPasswordHidden ? "eye" : "eye-off"}
+                                        size={25}
+                                        color="black"
+                                    />
+                                </Pressable>
+                            </View>
                         </View>
-                    ) : (
-                        <Button title={t('login')} onPress={handleSubmit(onSubmit)} disabled={loading} />
-                    )}
-                </View>
+                        {errors.password && <Text className="absolute -bottom-4 text-red-500 px-3 ">{errors.password.message}</Text>}
+                    </View>
 
-                <View className="flex flex-row items-center justify-center mt-3" style={styles.registerContainer}>
-                    <Text className="text-[16px] text-black">{t('donthaveaccount')}</Text>
-                    <Pressable onPress={() => navigation.navigate("Register")}>
-                        <Text className="text-base text-black font-semibold ml-2">{t('register')}</Text>
-                    </Pressable>
-                </View>
+                    <View className="flex flex-row justify-end my-2" style={styles.registerContainer}>
+                        <Pressable onPress={() => navigation.navigate("ForgotPassword")}>
+                            <Text className="text-base text-blue-500 font-normal">Forgot Password</Text>
+                        </Pressable>
+                    </View>
 
-                <View className="flex flex-row items-center justify-center mt-3" style={styles.registerContainer}>
-                    <Text className="text-[16px] text-black">Go to</Text>
-                    <Pressable onPress={() => { progress.value = withTiming("1"); navigation.navigate("Home") }}>
-                        <Text className="text-base text-black font-semibold ml-2">Home Page</Text>
-                    </Pressable>
+                    <View>
+                        {loading ? (
+                            <View className="flex flex-row items-center justify-center bg-[#4e63ac] cursor-pointer p-4 rounded-lg">
+                                <Text className="mr-4 text-base text-white ">{t("Loading")}</Text>
+                                <ActivityIndicator size="large" color="white" />
+                            </View>
+                        ) : (
+                            <Button title={t('login')} onPress={handleSubmit(onSubmit)} disabled={loading} className="p-3" />
+                        )}
+                    </View>
+
+                    <View className="flex flex-row items-center justify-center mt-3" style={styles.registerContainer}>
+                        <Text className="text-[16px] text-black">{t('donthaveaccount')}</Text>
+                        <Pressable onPress={() => navigation.navigate("Register")}>
+                            <Text className="text-base text-black font-semibold ml-2">{t('register')}</Text>
+                        </Pressable>
+                    </View>
+
+                    <View className="flex flex-row items-center justify-center mt-3" style={styles.registerContainer}>
+                        <Text className="text-[16px] text-black">Go to</Text>
+                        <Pressable onPress={() => { progress.value = withTiming("1"); navigation.navigate("Home") }}>
+                            <Text className="text-base text-black font-semibold ml-2">Home Page</Text>
+                        </Pressable>
+                    </View>
+
                 </View>
 
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
@@ -208,6 +216,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+
     },
 
     bannerContainer: {
@@ -216,7 +225,8 @@ const styles = StyleSheet.create({
 
     image: {
         height: "100%",
-        width: "100%"
+        width: "100%",
+        objectFit: "cover",
     }
 
 });
