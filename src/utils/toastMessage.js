@@ -1,8 +1,6 @@
-// import Toast from 'react-native-simple-toast';
 import { Popup } from 'popup-ui'
 function toastMessage(error, type = 'Danger') {
     try {
-        // Toast.show(error);
         Popup.show({
             type,
             title: error,
@@ -10,8 +8,8 @@ function toastMessage(error, type = 'Danger') {
             buttonText: 'Ok',
             callback: () => Popup.hide()
         })
-    } catch (err) {
-        console.log(err, "Error in Toast message")
+    } catch (error) {
+        console.log(error, "Error in Toast message")
     }
 };
 

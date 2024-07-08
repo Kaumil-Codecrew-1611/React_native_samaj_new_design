@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Animated, Dimensions, Image, Keyboard, Pressable, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ImageViewing from 'react-native-image-viewing';
+import { withTiming } from 'react-native-reanimated';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Carousel from '../../../components/Carousel';
 import HomePageCardContents from '../../../components/HomePageCardsIcons/HomePageCardContents';
@@ -12,7 +13,6 @@ import NewsHomePageContent from '../../../components/HomePageCardsIcons/NewsHome
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
-import { withTiming } from 'react-native-reanimated';
 
 const Home = ({ navigation }) => {
 
@@ -24,19 +24,17 @@ const Home = ({ navigation }) => {
     const [sliderImages, setSliderImages] = useState([]);
     const [titleOfHeader, setTitleOfHeader] = useState("");
     const [isVisible, setIsVisible] = useState(false);
-    const [windowWidth] = useState(Dimensions.get('window').width);
+    const windowWidth = Dimensions.get('window').width;
     const animation = new Animated.Value(0);
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const scale = animation.interpolate({ inputRange, outputRange });
-    const images = [(allUserInfo && allUserInfo?.photo) ? { uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` } : require("../../../assets/profile_img.png")]
+    const images = [(allUserInfo && allUserInfo.photo) ? { uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` } : require("../../../assets/profile_img.png")];
 
     const cards = [
         { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutusicons.png') },
         { id: 2, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageIcon.png') },
-        isLoggedIn ?
-            { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } :
-            { id: 4, name: t('joinnow'), redirectTo: "Welcome", image: require('../../../assets/join.png') },
+        isLoggedIn ? { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } : { id: 4, name: t('joinnow'), redirectTo: "Welcome", image: require('../../../assets/join.png') },
         { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/directory.png') },
         // { id: 6, name: t("Events"), redirectTo: "EventsScreen", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
@@ -58,47 +56,30 @@ const Home = ({ navigation }) => {
     };
 
     useEffect(() => {
-        (async function () {
-            const contentContactUs = await contactUsPageDetails();
-            const desiredKeys = ["appheading"];
-            contentContactUs.forEach((item) => {
-                if (desiredKeys.includes(item.key)) {
-                    switch (item.key) {
-                        case 'appheading':
-                            setTitleOfHeader(item.value);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });
-        })();
-    }, []);
-
-    useEffect(() => {
-        const getSelectedLanguage = async () => {
+        const fetchData = async () => {
             try {
                 const storedLanguage = await AsyncStorage.getItem('selectedLanguage');
                 if (storedLanguage) {
-                    i18n.changeLanguage(storedLanguage).catch((error) => {
-                        console.error('Error changing language:', error);
-                    });
+                    await i18n.changeLanguage(storedLanguage);
                 }
+
+                const contentContactUs = await contactUsPageDetails();
+                const appHeadingItem = contentContactUs.find(item => item.key === 'appheading');
+                if (appHeadingItem) {
+                    setTitleOfHeader(appHeadingItem.value);
+                }
+
+                const result = await homePageAllSlider();
+                setSliderImages(result);
+
+                setFirstName(allUserInfo?.firstname);
+                setLastName(allUserInfo?.lastname);
             } catch (error) {
-                console.error('Error retrieving language:', error);
+                console.error('Error fetching data:', error);
             }
         };
-        getSelectedLanguage();
-    }, []);
 
-    useEffect(() => {
-        (async function () {
-            setFirstName(allUserInfo?.firstname);
-            setLastName(allUserInfo?.lastname);
-
-            const result = await homePageAllSlider();
-            setSliderImages(result);
-        })();
+        fetchData();
     }, [allUserInfo]);
 
     const renderItem = ({ item }) => (
@@ -140,9 +121,7 @@ const Home = ({ navigation }) => {
                                 </Text>
                             )}
                             <Text className={`${windowWidth < 321 ? "text-base" : "text-xl"} font-semibold tracking-wider text-rose-700`}>
-                                {firstName && lastName
-                                    ? `${firstName} ${lastName}`
-                                    : titleOfHeader}
+                                {firstName && lastName ? `${firstName} ${lastName}` : titleOfHeader}
                             </Text>
                         </View>
                         <Animated.View style={[{ transform: [{ scale }] }]}>
@@ -152,7 +131,7 @@ const Home = ({ navigation }) => {
                                 onPressOut={onPressOut}
                                 onPress={openProfileImage}
                             >
-                                {allUserInfo && Object.entries(allUserInfo).length > 0 && allUserInfo.photo ? (
+                                {allUserInfo && allUserInfo.photo ? (
                                     <Image source={{ uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` }} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
                                 ) : (
                                     <Image source={require("../../../assets/profile_img.png")} style={{ height: hp(10), width: hp(10), borderRadius: hp(5) }} />
@@ -168,7 +147,6 @@ const Home = ({ navigation }) => {
                             renderItem={renderItem}
                             keyExtractor={(item) => item.id.toString()}
                             numColumns={3}
-                            key={cards[0].id}
                             horizontal={false}
                             showsVerticalScrollIndicator={false}
                             showsHorizontalScrollIndicator={false}

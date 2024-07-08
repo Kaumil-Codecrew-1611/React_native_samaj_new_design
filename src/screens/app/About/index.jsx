@@ -73,7 +73,6 @@ const Aboutus = () => {
 
     return (
         <View className="flex flex-1 bg-white">
-
             <Animated.ScrollView
                 onScroll={handleScroll}
                 ref={scrollRef}

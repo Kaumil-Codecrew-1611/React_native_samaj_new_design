@@ -82,7 +82,7 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                     Popup.hide();
                 }
             });
-            return console.log("Not logged in");
+            return console.log("User is not logged In");
         }
         if (node?.wife) {
             const nodeProfile = { _id: node._id, firstname: node.firstname, lastname: node.lastname, wife: node.wife };
@@ -133,7 +133,7 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
-                        className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow dark:shadow-white`}
+                        className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white mb-2`}
                     >
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             {loading ? renderSkeleton() : (
@@ -165,7 +165,6 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                                             </TouchableOpacity>
                                         )}
                                     </View>
-
                                 </View>
                             )}
                         </ScrollView>
@@ -229,7 +228,7 @@ const ViewFamilyTree = ({ navigation, route }) => {
                     setUserData(contentOfAllFamilyMembers);
                 }
             } catch (error) {
-                console.log("error", error);
+                console.log(error, "fetching error in family details");
             }
         })();
     }, [state.addFamilyMemberDetails, state.handleDeleteProfileUser, state.updateFamilyDetailsUser, paramsData]);

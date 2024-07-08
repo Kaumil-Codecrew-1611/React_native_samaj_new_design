@@ -46,7 +46,6 @@ const VillageWisePersons = ({ navigation, route }) => {
                     i18n.changeLanguage(storedLanguage).catch((error) => {
                         console.error('Error changing language:', error);
                     });
-                    console.log(storedLanguage, "storedLanguage")
                     setLanguage(storedLanguage);
                 }
             } catch (error) {
@@ -58,16 +57,13 @@ const VillageWisePersons = ({ navigation, route }) => {
 
     return (
 
-        <View className="flex-1 bg-gray-300 space-y-5 w-full" edges={['top']}>
-            <View>
-                <Text className="font-bold text-3xl tracking-wider text-neutral-700 mt-4 ml-6">{language == 'gu' ? SelectedVillage.villageG : SelectedVillage.villageE} {t('VillagePeople')}</Text>
-            </View>
-            <View className="relative bg-white m-3 px-3 h-14 rounded-2xl">
+        <View className="flex-1 bg-gray-300 w-full" edges={['top']}>
+            <View className="relative bg-white px-3 mt-3 mx-3 h-14 rounded-2xl">
                 <View className='flex-1 justify-center items-center'>
                     <TouchableOpacity onPress={() => {
                         setSearch("");
                     }}>
-                        <View className="flex flex-row items-center relative overflow-hidden" >
+                        <View className="flex flex-row items-center relative overflow-hidden">
                             <TextInput placeholder={t("searchPersonVillage")} className="w-full text-black" placeholderTextColor="grey" value={search} onChangeText={text => setSearch(text)} />
                             <View className="h-full flex justify-center absolute right-[6px]">
                                 {search !== "" ? (
@@ -87,6 +83,9 @@ const VillageWisePersons = ({ navigation, route }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
+            </View>
+            <View>
+                <Text className="font-bold text-2xl tracking-wider text-black ml-6 my-3">{language == 'gu' ? SelectedVillage.villageG : SelectedVillage.villageE} {t('VillagePeople')}</Text>
             </View>
             <VillageByName searchValue={search} navigation={navigation} SelectedVillage={SelectedVillage} />
         </View >

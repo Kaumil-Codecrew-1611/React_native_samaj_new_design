@@ -156,7 +156,7 @@ const NodeDetails = ({ navigation, route }) => {
             }
         }).catch((error) => {
             toastMessage("Please select image again!")
-            console.log(error, "error Changing Image")
+            console.log(error, "User profile image changing error")
         });
     };
 
@@ -269,7 +269,7 @@ const NodeDetails = ({ navigation, route }) => {
                                 </SkeletonPlaceholder>
                             ) : (
                                 userData && (
-                                    <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData?.firstname + '' + userData?.lastname}</Text>
+                                    <Text className="tracking-wider font-semibold text-[15px] text-neutral-700">{userData?.firstname + ' ' + userData?.lastname}</Text>
                                 )
                             )}
                         </View>

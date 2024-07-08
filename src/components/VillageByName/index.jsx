@@ -140,8 +140,8 @@ const VillageByName = ({ searchValue, navigation, SelectedVillage }) => {
                                                 </Pressable>
                                             </Animated.View>
                                             <View className="flex flex-1">
-                                                <Text className="text-lg font-bold">{item.name}</Text>
-                                                <Text className="capitalize text-base font-semibold">{item.city} - {item.village}</Text>
+                                                <Text className="text-lg font-bold ml-2">{item.name}</Text>
+                                                <Text className="capitalize text-base font-semibold ml-2">{item.city} - {item.village}</Text>
                                             </View>
                                         </View>
                                     </Pressable>
