@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import ApiContext from '../../../context/ApiContext';
 
@@ -18,7 +18,8 @@ function Support({ navigation }) {
     const emailScale = emailAnimation.interpolate({ inputRange, outputRange });
     const faqScale = faqAnimation.interpolate({ inputRange, outputRange });
     const conditionScale = ternConditionAnimation.interpolate({ inputRange, outputRange });
-
+    const [windowHeight] = useState(Dimensions.get('window').height);
+    console.log(windowHeight, ":::windowHeight")
     const onPressInEmail = () => {
         Animated.spring(emailAnimation, {
             toValue: 1,
@@ -93,8 +94,8 @@ function Support({ navigation }) {
                 </View>
                 <View className="w-full mt-6 mb-3 flex flex-row justify-center">
                     <View className="w-[90%]">
-                        <Text className="font-extrabold tracking-wider mb-3 text-2xl text-rose-700 text-center">{t('tellmehowcan')}</Text>
-                        <Text className="tracking-wider text-lg text-neutral-700 text-center">{t('ourcrewofexpertsareon')}</Text>
+                        <Text className={`font-extrabold tracking-wider mb-3  ${windowHeight < 668 ? 'text-xl' : 'text-2xl'} text-rose-700 text-center`}>{t('tellmehowcan')}</Text>
+                        <Text className={`tracking-wider  ${windowHeight < 668 ? 'text-sm' : 'text-lg'} text-neutral-700 text-center`}>{t('ourcrewofexpertsareon')}</Text>
                     </View>
                 </View>
 
@@ -112,7 +113,7 @@ function Support({ navigation }) {
                                 onPressOut={onPressOutEmail}
                                 onPress={() => redirect('EmailSupport')}
                             >
-                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl" style={styles.shadowOfCard}>
+                                <View className="bg-white p-3 mb-2 rounded-[20px] shadow-lg" style={styles.shadowOfCard}>
                                     <View className="flex flex-row justify-between items-center">
                                         <View className="w-[40px] h-[40px] overflow-hidden">
                                             <Image
@@ -122,7 +123,7 @@ function Support({ navigation }) {
                                         </View>
                                         <View className="w-[200px]">
                                             <View>
-                                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">{t('email')}</Text>
+                                                <Text className={`tracking-wider font-extrabold ${windowHeight < 668 ? 'text-lg' : 'text-xl'} text-neutral-700 mb-2`}>{t('email')}</Text>
                                                 <Text className="tracking-wider text-sm text-neutral-700">{t('getthesolutionsend')}</Text>
                                             </View>
                                         </View>
@@ -155,7 +156,7 @@ function Support({ navigation }) {
                                         </View>
                                         <View className="w-[200px]">
                                             <View>
-                                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">FAQs</Text>
+                                                <Text className={`tracking-wider font-extrabold ${windowHeight < 668 ? 'text-lg' : 'text-xl'} text-neutral-700 mb-2`}>FAQs</Text>
                                                 <Text className="tracking-wider text-sm text-neutral-700">{t('findintelligentanswersInstantly')}</Text>
                                             </View>
                                         </View>
@@ -188,7 +189,7 @@ function Support({ navigation }) {
                                         </View>
                                         <View className="w-[200px]">
                                             <View>
-                                                <Text className="tracking-wider font-extrabold text-xl text-neutral-700 mb-2">{t("termsAndCondition")}</Text>
+                                                <Text className={`tracking-wider font-extrabold ${windowHeight < 668 ? 'text-lg' : 'text-xl'} text-neutral-700 mb-2`}>{t("termsAndCondition")}</Text>
                                                 <Text className="tracking-wider text-sm text-neutral-700">{t("termsAndConditionCardContent")}</Text>
                                             </View>
                                         </View>

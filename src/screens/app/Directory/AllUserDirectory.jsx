@@ -1,13 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Animated, Dimensions, FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import ImageViewing from 'react-native-image-viewing';
 import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
-import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('screen');
 const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
@@ -113,15 +113,15 @@ export default function AllUserDirectory() {
                                 </TouchableOpacity>
                             </Animated.View>
                         </View>
-                        <View>
-                            <Text className="text-xl font-bold">
-                                {item?.lastname} {item?.firstname} {item?.middlename}
-                            </Text>
-                            <View className="flex flex-row items-center">
-                                <Text className="text-lg font-semibold">
-                                    Village :-
+                        <View className="flex-1">
+                            <View className=" w-full overflow-hidden">
+                                <Text className="text-lg font-bold w-full overflow-hidden text-ellipsis break-words">
+                                    {item?.lastname} {item?.firstname} {item?.middlename}
                                 </Text>
-                                <Text className="text-sm font-semibold ml-2">
+                            </View>
+                            <View className="flex flex-row items-center w-full flex-wrap">
+                                <Text className="text-sm font-semibold">
+                                    Village:{` `}
                                     {removeTextAfterSlash(location?.village)} - {removeTextAfterSlash(item?.city)}
                                 </Text>
                             </View>
@@ -153,11 +153,13 @@ export default function AllUserDirectory() {
                         </View>
                     </View>
                 </View>
-                <View className="w-full flex flex-row bg-white rounded-xl shadow-2xl items-center mt-5 mb-3" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
+
+
+                <View className="w-full flex flex-row bg-white rounded-xl shadow-custom-elevation shadow-black shadow-2xl items-center mt-5 mb-3" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                     <TextInput
-                        placeholder="search by person"
+                        placeholder="search user"
                         placeholderTextColor="grey"
-                        className="basis-[90%] tracking-wider text-neutral-700 pl-2"
+                        className={`basis-[90%] ${Platform.OS == "ios" ? "p-3" : ""} tracking-wider text-neutral-700 pl-2`}
                         value={search}
                         onChangeText={text => setSearch(text)}
                     />
@@ -203,13 +205,7 @@ export default function AllUserDirectory() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 55
-    },
-    header: {
-        backgroundColor: '#fff',
-        padding: 20,
-        paddingTop: 20,
-        marginBottom: 20,
+        paddingBottom: 15
     },
     bar: {
         height: 10,

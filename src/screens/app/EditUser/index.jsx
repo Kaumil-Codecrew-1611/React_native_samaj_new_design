@@ -118,6 +118,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('firstname')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -141,6 +142,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('lastname')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -164,6 +166,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('middlename')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -187,6 +190,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('email')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -210,6 +214,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('mobile')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -257,13 +262,14 @@ const EditUserProfile = ({ navigation }) => {
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
-                                        <View className="mx-1">
+                                        <View className="mx-1 rounded-lg">
                                             <Controller
                                                 control={control}
                                                 name="marital_status"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <Select
                                                         placeholder={t('maritalstatus')}
+                                                        className="py-3 rounded-lg"
                                                         selectedValue={value}
                                                         onValueChange={onChange}
                                                         _selectedItem={{
@@ -300,6 +306,7 @@ const EditUserProfile = ({ navigation }) => {
                                                     render={({ field: { value } }) => (
                                                         <TextInput
                                                             placeholder={t('pleaseenterdob')}
+                                                            className="py-3"
                                                             placeholderTextColor="grey"
                                                             style={styles.input}
                                                             value={new Date(value).toDateString()}
@@ -332,6 +339,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('education')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -355,6 +363,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('job')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -378,6 +387,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('address')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -401,6 +411,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('address')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -424,6 +435,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('state')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}
@@ -447,6 +459,7 @@ const EditUserProfile = ({ navigation }) => {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('pincode')}
+                                                    className="py-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     defaultValue={value}

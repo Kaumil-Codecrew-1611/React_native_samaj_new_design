@@ -42,7 +42,7 @@ const BottomTabs = () => {
                         name="News"
                         component={News}
                     />
-                    < Tab.Screen
+                    <Tab.Screen
                         options={{ tabBarLabel: t("Contactus") }}
                         name="Contactus"
                         component={ContactUs}

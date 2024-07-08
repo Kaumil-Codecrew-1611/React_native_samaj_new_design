@@ -132,6 +132,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('firstname')}
+                                                    className="p-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -155,6 +156,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('lastname')}
+                                                    className="p-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -178,6 +180,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('email')}
+                                                    className="p-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -189,7 +192,9 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     </View>
                                 </View>
                                 <View className="w-full">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">
+                                        {t('mobile')}:
+                                    </Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -198,6 +203,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <TextInput
                                                 placeholder={t("PhoneNumber")}
+                                                className="p-3"
                                                 placeholderTextColor="grey"
                                                 style={styles.input}
                                                 value={value}
@@ -258,6 +264,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                             { color: dateValue ? 'black' : 'grey' },
                                                         ]}
                                                         placeholder="Select Date of Birth"
+                                                        className="p-3"
                                                         placeholderTextColor="grey"
                                                         value={dateValue ? dateValue.toDateString() : ''}
                                                         onBlur={onBlur}
@@ -297,6 +304,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('education')}
+                                                    className="p-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -320,6 +328,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('job')}
+                                                    className="p-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -343,6 +352,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
                                                     placeholder={t('address')}
+                                                    className="p-3"
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -399,6 +409,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             render={({ field: { onChange, value } }) => (
                                                 <Select
                                                     placeholder={t('relationship')}
+                                                    className="p-2 m-1"
                                                     selectedValue={value}
                                                     onValueChange={(itemValue) => onChange(itemValue)}
                                                     _selectedItem={{

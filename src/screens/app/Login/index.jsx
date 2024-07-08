@@ -124,7 +124,7 @@ const Login = ({ navigation }) => {
                         name="email_or_mobile"
                         render={({ field: { onChange, onBlur, value } }) => (
                             <TextInput
-                                className="rounded-lg p-2 text-black"
+                                className="rounded-lg p-3 text-black"
                                 onBlur={onBlur}
                                 placeholder={t("emailOrMobileNumber")}
                                 onChangeText={onChange}
@@ -184,14 +184,14 @@ const Login = ({ navigation }) => {
                     )}
                 </View>
 
-                <View className="flex flex-row justify-center mt-3" style={styles.registerContainer}>
+                <View className="flex flex-row items-center justify-center mt-3" style={styles.registerContainer}>
                     <Text className="text-[16px] text-black">{t('donthaveaccount')}</Text>
                     <Pressable onPress={() => navigation.navigate("Register")}>
                         <Text className="text-base text-black font-semibold ml-2">{t('register')}</Text>
                     </Pressable>
                 </View>
 
-                <View className="flex flex-row justify-center mt-3" style={styles.registerContainer}>
+                <View className="flex flex-row items-center justify-center mt-3" style={styles.registerContainer}>
                     <Text className="text-[16px] text-black">Go to</Text>
                     <Pressable onPress={() => { progress.value = withTiming("1"); navigation.navigate("Home") }}>
                         <Text className="text-base text-black font-semibold ml-2">Home Page</Text>

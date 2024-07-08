@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NativeBaseProvider } from 'native-base';
 import { Root } from 'popup-ui';
 import React, { useContext, useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
@@ -69,7 +69,10 @@ const App = () => {
                 onReady={() => changeNavigationBarColor('white')}
                 onStateChange={handleStateChange}
               >
-                <RootNavigator />
+                <SafeAreaView style={{ flex: 0 }} />
+                <SafeAreaView style={{ flex: 1, backgroundColor: 'gray' }}>
+                  <RootNavigator />
+                </SafeAreaView>
               </NavigationContainer>
             </NativeBaseProvider>
           </PaperProvider>

@@ -1,8 +1,8 @@
-import { View, Text, Keyboard } from 'react-native';
-import React, { useEffect, useContext, useCallback } from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { GlobalContext } from '../../context/globalState';
 import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect } from 'react';
+import { Keyboard } from 'react-native';
+import { GlobalContext } from '../../context/globalState';
 
 const CustomBottomSheet = ({ screenFirstPercentage, screenSecondPercentage }) => {
     const { isBottomSheetVisible, handleSheetChanges, bottomSheetRef, setScreenpercentage, snapPoints, bottomSheetContent, setIsBottomSheetVisible } = useContext(GlobalContext);

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -69,7 +69,7 @@ function NewsList({ navigation, news, loading }) {
                     onPress={() => { openNewsDetailsPage(item?._id); }}
                 >
                     <View className="bg-white shadow-2xl rounded-3xl w-[100%] mt-4 p-5 mx-5 mb-5" style={styles.shadowOfCard}>
-                        <View className="overflow-hidden object-cover shadow-xl shadow-black">
+                        <View className={`overflow-hidden object-cover  ${Platform.OS == "ios" ? "shadow-lg" : "shadow-black shadow-xl"} `}>
                             <View className="relative">
                                 <Image
                                     className="object-cover"
@@ -77,7 +77,7 @@ function NewsList({ navigation, news, loading }) {
                                     style={{ height: 180, width: '100%', borderRadius: 20 }}
                                 />
                                 {item.createdBy &&
-                                    <View className="rounded-bl-[20px] bg-white absolute bottom-0 px-2">
+                                    <View className="rounded-bl-[20px] bg-gray-300 absolute bottom-0 px-2">
                                         <View className="flex flex-row items-center gap-2">
                                             <Text className="font-bold text-black text-base">
                                                 Created By
@@ -108,7 +108,7 @@ function NewsList({ navigation, news, loading }) {
                         </View>
                     </View>
                 </TouchableOpacity>
-            </Animated.View>
+            </Animated.View >
         );
     };
 
@@ -137,9 +137,8 @@ function NewsList({ navigation, news, loading }) {
                     />
                 ) : (
                     <>
-                        <View className="px-4 pb-3 mt-5">
+                        <View className={`px-4 pb-3 ${Platform.OS == "android" ? 'mt-5' : ""}`}>
                             <Text className="bg-whit text-3xl font-bold text-black">{t("news")}</Text>
-                            <View className="border-b-2 w-[20%]"></View>
                         </View>
                         <View className="bg-[#E9EDF7] pb-12">
                             <FlatList

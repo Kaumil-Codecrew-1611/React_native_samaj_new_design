@@ -25,14 +25,15 @@ const Aboutus = () => {
     useEffect(() => {
         (async function () {
             const contentAboutUs = await aboutUsContentApi();
-            setTitleForEn(contentAboutUs?.AboutusData[0]?.titleE);
-            setTitleForGn(contentAboutUs?.AboutusData[0]?.titleG);
-            setDescriptionEn(contentAboutUs?.AboutusData[0]?.descriptionE);
-            setDescriptionGn(contentAboutUs?.AboutusData[0]?.descriptionG);
-            setAboutUsImage(contentAboutUs?.AboutusData[0]?.image);
+            setTitleForEn(contentAboutUs?.AboutusData?.titleE);
+            setTitleForGn(contentAboutUs?.AboutusData?.titleG);
+            setDescriptionEn(contentAboutUs?.AboutusData?.descriptionE);
+            setDescriptionGn(contentAboutUs?.AboutusData?.descriptionG);
+            console.log(contentAboutUs?.AboutusData?.image, ":::contentAboutUs?.AboutusData?.image")
+            setAboutUsImage(contentAboutUs?.AboutusData?.image);
+            console.log("sdgfhg", contentAboutUs)
         })();
     }, []);
-
     const imageAnimatedStyle = useAnimatedStyle(() => {
         return {
             transform: [
@@ -54,6 +55,8 @@ const Aboutus = () => {
         };
     });
 
+    console.log("dfgkvdfhshjgddksuhj", `${process.env.IMAGE_URL}${aboutUsImage}`)
+
     const scrollY = useSharedValue(0);
     const headerHeight = useSharedValue(0);
     const headerAnimatedStyle = useAnimatedStyle(() => {
@@ -70,9 +73,7 @@ const Aboutus = () => {
 
     return (
         <View className="flex flex-1 bg-white">
-            <Animated.View style={[headerAnimatedStyle]}>
-                <Text className="font-bold text-2xl text-center p-5">{t('YourHeader')}</Text>
-            </Animated.View>
+
             <Animated.ScrollView
                 onScroll={handleScroll}
                 ref={scrollRef}
