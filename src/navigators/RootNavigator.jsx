@@ -32,6 +32,7 @@ import TermAndCondition from '../screens/app/TermAndCondition/TermAndCondition';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
+import BusinessListing from '../screens/app/Business/BusinessListing';
 
 const RootStack = createNativeStackNavigator()
 
@@ -90,6 +91,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="EditUserFamilyDetails" component={EditUserFamilyDetails} options={{ headerTitle: t("EditFamilyDetails") }} />
                 <RootStack.Screen name="AllUserDirectory" component={AllUserDirectory} options={{ headerTitle: "Directory" }} />
                 <RootStack.Screen name="EventsScreen" component={EventsScreen} options={{ headerTitle: t("AllEvents") }} />
+                <RootStack.Screen name="BusinessScreen" component={BusinessListing} options={{ headerTitle: t("Business") }} />
             </RootStack.Navigator>
         </>
     )

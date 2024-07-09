@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Animated, Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, Dimensions, Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import { withTiming } from 'react-native-reanimated';
@@ -42,6 +42,8 @@ const ProfilePage = ({ navigation }) => {
     const openProfileScale = openProfileAnimation.interpolate({ inputRange, outputRange });
     const shareAppScale = shareAppAnimation.interpolate({ inputRange, outputRange });
 
+    const windowHeight = Dimensions.get('window').height;
+    console.log(windowHeight, "windowHeight")
     const onPressCancelIn = () => {
         Animated.spring(cancelAnimation, {
             toValue: 1,
@@ -354,8 +356,8 @@ const ProfilePage = ({ navigation }) => {
                     </View>
 
                 </View>
-                <View className="basis-[75%]">
-                    <View className="flex items-center">
+                <View className="basis-4/5">
+                    <View className={`flex ${windowHeight < 670 && "mt-7"} items-center`}>
 
                         <Text className="text-rose-700 font-bold text-2xl">{allUserInfo?.firstname} {allUserInfo?.lastname}</Text>
                         <View className="flex flex-row items-center justify-center">
@@ -379,9 +381,10 @@ const ProfilePage = ({ navigation }) => {
                         </View>
 
                     </View>
-                    <SafeAreaView className="flex-1 h-[2000px] bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7">
-                        <ScrollView scrollEnabled={true} nestedScrollEnabled={true} marginHorizontal={1} contentContainerStyle={{ flexGrow: 1 }} className="p-10">
-                            <View className="flex flex-col gap-4">
+                    {/* <SafeAreaView className="flex-1  bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7"> */}
+                    <View className="h-full flex-1 bg-[#e7eaf1] overflow-hidden rounded-t-[50px]">
+                        <ScrollView style={{ paddingHorizontal: 20, marginTop: 30, flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+                            <View className="flex-col gap-4">
                                 <Animated.View style={[{ transform: [{ scale: addFamilyScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
@@ -399,7 +402,6 @@ const ProfilePage = ({ navigation }) => {
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </Pressable>
                                 </Animated.View>
-
                                 <Animated.View style={[{ transform: [{ scale: changePasswordScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
@@ -415,7 +417,6 @@ const ProfilePage = ({ navigation }) => {
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </Pressable>
                                 </Animated.View>
-
                                 <Animated.View style={[{ transform: [{ scale: logoutCardScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
@@ -436,10 +437,30 @@ const ProfilePage = ({ navigation }) => {
                                         </View>
                                     </Pressable>
                                 </Animated.View>
-
+                                <Animated.View style={[{ transform: [{ scale: logoutCardScale }] }]} >
+                                    <Pressable
+                                        activeOpacity={1}
+                                        onPressIn={onPressLogoutCardIn}
+                                        onPressOut={onPressLogoutCardOut}
+                                        onPress={openLogoutModal}
+                                    >
+                                        <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3 ">
+                                            <View className="flex-row justify-between gap-2 items-center">
+                                                <AnimatedFeatherIcon
+                                                    name="log-out"
+                                                    size={25}
+                                                    color="black"
+                                                />
+                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Logout</Text>
+                                            </View>
+                                            <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                                        </View>
+                                    </Pressable>
+                                </Animated.View>
                             </View>
                         </ScrollView>
-                    </SafeAreaView>
+                    </View>
+                    {/* </SafeAreaView> */}
                 </View>
 
                 <ImageViewing

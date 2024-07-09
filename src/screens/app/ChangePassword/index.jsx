@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import * as yup from 'yup';
@@ -74,10 +74,10 @@ const ChangePassword = ({ navigation }) => {
     };
 
     return (
-        <View className="flex-1 bg-green-200 px-2 selection: relative">
+        <View className="flex-1 bg-[#E9EDF7] px-2 selection: relative">
             <View className="w-full bg-white mx-2 h-[83%] pt-24 rounded-t-[30px] absolute bottom-0">
                 <View className="w-full absolute top-[-60px] z-10 h-32 flex-row justify-center">
-                    <View className="w-72 rounded-xl bg-green-600 h-full flex-row justify-center items-center">
+                    <View className="w-72 rounded-xl bg-[#4e63ac] h-full flex-row justify-center items-center">
                         <Text className="text-white text-xl tracking-wider font-extrabold">{t('changePassword')}</Text>
                     </View>
                 </View>
@@ -88,19 +88,19 @@ const ChangePassword = ({ navigation }) => {
                     >
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                                <View className="flex-1">
+                                <View className="flex-1 px-1">
                                     <View>
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('changePassword')}:</Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-black">{t('changePassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
+                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
                                             <Controller
                                                 control={control}
                                                 name="old_password"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         placeholderTextColor={"gray"}
-                                                        className="basis-[85%] text-black pl-[10px]"
+                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
                                                         placeholder={t('currentpassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
@@ -123,16 +123,16 @@ const ChangePassword = ({ navigation }) => {
                                     </View>
                                     <View className="my-5">
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('newPassword')}:</Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-black">{t('newPassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black">
+                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
                                             <Controller
                                                 control={control}
                                                 name="password"
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <TextInput
                                                         placeholderTextColor={"gray"}
-                                                        className="basis-[85%] text-black pl-[10px]"
+                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
                                                         placeholder={t('newPassword')}
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
@@ -155,9 +155,9 @@ const ChangePassword = ({ navigation }) => {
                                     </View>
                                     <View>
                                         <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">{t('confirmpassword')}:</Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-black">{t('confirmpassword')}:</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md shadow-black" >
+                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
                                             <Controller
                                                 control={control}
                                                 name="cpassword"
@@ -168,7 +168,7 @@ const ChangePassword = ({ navigation }) => {
                                                         onChangeText={onChange}
                                                         value={value}
                                                         placeholderTextColor={"gray"}
-                                                        className="basis-[85%] text-black pl-[10px]"
+                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
                                                         secureTextEntry={isConfirmPasswordHidden}
                                                     />
                                                 )}
@@ -192,12 +192,12 @@ const ChangePassword = ({ navigation }) => {
                     <View className="mb-16">
 
                         {loading ? (
-                            <View className="flex flex-row items-center justify-center bg-green-600 py-4 cursor-pointer p-4 rounded-lg">
+                            <View className="flex flex-row items-center justify-center bg-[#4e63ac] py-4 cursor-pointer p-4 rounded-lg">
                                 <Text className="mr-4 text-lg font-bold text-white ">{t("Loading")}</Text>
                                 <ActivityIndicator size="small" color="white" />
                             </View>
                         ) : (
-                            <Button className="bg-green-600 py-4 rounded-lg" title={t('changePassword')} disabled={loading} onPress={handleSubmit(onSubmit)} />
+                            <Button className="bg-[#4e63ac] py-4 rounded-lg" title={t('changePassword')} disabled={loading} onPress={handleSubmit(onSubmit)} />
                         )}
 
                     </View>
@@ -206,5 +206,17 @@ const ChangePassword = ({ navigation }) => {
         </View>
     );
 };
+const styles = StyleSheet.create({
+    backdrop: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,  // You can adjust these values as needed
+            height: 0, // You can adjust these values as needed
+        },
+        shadowOpacity: 0.35,  // Increase the opacity for a more prominent shadow
+        shadowRadius: 3.34,  // Adjust the radius for a more spread-out shadow
+        elevation: 7,  // Elevation for Android shadow
+    },
 
+});
 export default ChangePassword;

@@ -262,7 +262,7 @@ const EditUserProfile = ({ navigation }) => {
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
-                                        <View className="mx-1 rounded-lg">
+                                        <View className="mx-1 rounded-lg bg-[#eee]">
                                             <Controller
                                                 control={control}
                                                 name="marital_status"
@@ -272,6 +272,8 @@ const EditUserProfile = ({ navigation }) => {
                                                         className="py-3 rounded-lg"
                                                         selectedValue={value}
                                                         onValueChange={onChange}
+                                                        placeholderTextColor={'grey'}
+                                                        fontSize={14}
                                                         _selectedItem={{
                                                             bg: "blue.300",
                                                             endIcon: <CheckIcon size="5" />,
@@ -498,7 +500,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     input: {
-        backgroundColor: '#F3F5F7',
+        backgroundColor: '#eee',
         color: '#333',
         borderRadius: 10,
         paddingLeft: 10,

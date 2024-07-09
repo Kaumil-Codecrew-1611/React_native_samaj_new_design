@@ -139,11 +139,11 @@ const ForgotPassword = ({ navigation }) => {
 
     return (
 
-        <View className="flex-1 bg-green-200 px-2 relative">
+        <View className="flex-1 bg-[#E9EDF7] px-2 relative">
             <View className="w-full bg-white mx-2 h-[83%] pt-24 rounded-t-[30px] absolute bottom-0">
 
                 <View className="w-full absolute top-[-60px] z-10 h-28 flex-row justify-center">
-                    <View className="w-72 rounded-xl bg-green-600 h-full flex-row justify-center items-center">
+                    <View className="w-72 rounded-xl bg-[#4e63ac] h-full flex-row justify-center items-center">
                         <Text className="text-white text-2xl tracking-wider font-extrabold">Create New Password</Text>
                     </View>
                 </View>
@@ -163,7 +163,8 @@ const ForgotPassword = ({ navigation }) => {
                                                 {t('PleaseEnterEmail')}
                                             </Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
+                                        {/*   <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}> */}
+                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}>
                                             <Controller
                                                 control={control}
                                                 name="EnterEmail"
@@ -172,24 +173,25 @@ const ForgotPassword = ({ navigation }) => {
                                                         style={styles.input}
                                                         placeholder={t('PleaseEnterEmail')}
                                                         onBlur={onBlur}
+                                                        placeholderTextColor="grey"
                                                         onChangeText={onChange}
                                                         value={value}
-                                                        className="basis-[85%]"
+                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
                                                     />
                                                 )}
                                             />
                                         </View>
                                         {errors.EnterEmail && <Text style={styles.error}>{errors.EnterEmail.message}</Text>}
-                                        {!isEmailValid && <Text style={styles.error}>{isEmailValidErrorMessage}</Text>}
+                                        {/*{!isEmailValid && <Text style={styles.error}>{isEmailValidErrorMessage}</Text>} */}
                                         {loading ? (
-                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-green-600 py-4 rounded-lg">
+                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-[#4e63ac] py-4 rounded-lg">
                                                 <Text className="mr-4 text-lg text-white ">{t("Loading")}</Text>
                                                 <ActivityIndicator size="small" color="white" />
                                             </View>
                                         ) : (
                                             <View className="absolute bottom-0 w-full">
                                                 <Button
-                                                    className="bg-green-600 py-4 rounded-lg"
+                                                    className="bg-[#4e63ac] py-4 rounded-lg"
                                                     title={"Send OTP"}
                                                     onPress={handleSubmit(data => onSubmit(data, '1'))}
                                                 />
@@ -203,7 +205,7 @@ const ForgotPassword = ({ navigation }) => {
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">OTP</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
+                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}>
                                             <Controller
                                                 control={control}
                                                 name="otp"
@@ -214,22 +216,22 @@ const ForgotPassword = ({ navigation }) => {
                                                         onBlur={onBlur}
                                                         onChangeText={onChange}
                                                         value={value}
-                                                        className="basis-[85%]"
-
+                                                        placeholderTextColor="grey"
+                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
                                                     />
                                                 )}
                                             />
                                         </View>
                                         {errors.otp && <Text style={styles.error}>{errors.otp.message}</Text>}
                                         {loading ? (
-                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-green-600 py-4 rounded-lg">
+                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-[#4e63ac] py-4 rounded-lg">
                                                 <Text className="mr-4 text-lg text-white">{t("Loading")}</Text>
                                                 <ActivityIndicator size="small" color="white" />
                                             </View>
                                         ) : (
                                             <View className="absolute bottom-0 w-full">
                                                 <Button
-                                                    className="bg-green-600 py-4 rounded-lg"
+                                                    className="bg-[#4e63ac] py-4 rounded-lg"
                                                     title={t('Submit')}
                                                     onPress={() => onSubmit(getValues(), '2')}
                                                 />
@@ -243,13 +245,14 @@ const ForgotPassword = ({ navigation }) => {
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700">New Password</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
+                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}>
                                             <TextInput
                                                 style={styles.input}
                                                 placeholder={t('EnterNewPassword')}
                                                 onChangeText={(text) => setNewPassword(text)}
                                                 value={newPassword}
-                                                className="basis-[85%]"
+                                                placeholderTextColor="grey"
+                                                className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
                                                 secureTextEntry={isCurrentPasswordHidden}
                                             />
                                             <View>
@@ -267,13 +270,15 @@ const ForgotPassword = ({ navigation }) => {
                                         <View className="w-full">
                                             <Text className="font-extrabold text-base tracking-wider text-rose-700 mt-5">Confirm Password</Text>
                                         </View>
-                                        <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}>
+                                        {/*  <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}> */}
+                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}>
                                             <TextInput
                                                 style={styles.input}
                                                 placeholder={t('ConfirmNewPassword')}
                                                 onChangeText={(text) => setConfirmPassword(text)}
                                                 value={confirmPassword}
-                                                className="basis-[85%]"
+                                                placeholderTextColor="grey"
+                                                className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
                                                 secureTextEntry={isConfirmPasswordHidden}
                                             />
                                             <View>
@@ -288,14 +293,14 @@ const ForgotPassword = ({ navigation }) => {
                                         </View>
                                         {errors.confirmPassword && <Text style={styles.error}>{errors.confirmPassword.message}</Text>}
                                         {loading ? (
-                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-green-600 py-4 rounded-lg">
+                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-[#4e63ac] py-4 rounded-lg">
                                                 <ActivityIndicator size="small" color="white" />
                                                 <Text className="ml-4 text-lg text-white font-semibold">{t("Loading")}</Text>
                                             </View>
                                         ) : (
                                             <View className="absolute bottom-0 w-full">
                                                 <Button
-                                                    className="bg-green-600 py-4 rounded-lg mt-4"
+                                                    className="bg-[#4e63ac] py-4 rounded-lg mt-4"
                                                     title="Set New Password"
                                                     onPress={() => onSubmit({ newPassword, confirmPassword }, '3')}
                                                 />

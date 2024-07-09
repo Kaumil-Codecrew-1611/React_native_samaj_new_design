@@ -370,7 +370,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
-                                        <View className="mx-1 mb-2">
+                                        <View className="mx-1 mb-2 bg-[#eee]">
                                             <Controller
                                                 control={control}
                                                 name="marital_status"
@@ -379,6 +379,8 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                         placeholder={t('maritalstatus')}
                                                         selectedValue={value}
                                                         onValueChange={(itemValue) => onChange(itemValue)}
+                                                        placeholderTextColor={'grey'}
+                                                        fontSize={14}
                                                         _selectedItem={{
                                                             bg: "blue.300",
                                                             endIcon: <CheckIcon size="5" />,
@@ -402,7 +404,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     <View className="w-full mx-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('relationship')}:</Text>
                                     </View>
-                                    <View className="mx-1 mb-2">
+                                    <View className="mx-1 mb-2 bg-[#eee]">
                                         <Controller
                                             control={control}
                                             name="relationship"
@@ -411,6 +413,8 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                     placeholder={t('relationship')}
                                                     className="p-2 m-1"
                                                     selectedValue={value}
+                                                    placeholderTextColor={'grey'}
+                                                    fontSize={14}
                                                     onValueChange={(itemValue) => onChange(itemValue)}
                                                     _selectedItem={{
                                                         bg: "blue.300",
@@ -457,7 +461,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     input: {
-        backgroundColor: '#F3F5F7',
+        backgroundColor: '#eee',
         color: '#333',
         borderRadius: 10,
         paddingLeft: 10,

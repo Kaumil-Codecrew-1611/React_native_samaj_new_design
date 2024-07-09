@@ -113,47 +113,48 @@ function NewsList({ navigation, news, loading }) {
     };
 
     return (
-        <View className="w-full flex flex-row justify-between flex-wrap">
-            <SafeAreaView style={{ flex: 1 }}>
-                {loading ? (
-                    <FlatList
-                        data={[1, 2, 3]}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={() => (
-                            <View style={{ padding: 10, borderWidth: 1, marginHorizontal: 10, marginBottom: 20, borderRadius: 20, borderColor: "#f3f3f3" }}>
-                                <SkeletonPlaceholder>
-                                    <SkeletonPlaceholder.Item flexDirection="column" alignItems="center">
-                                        <SkeletonPlaceholder.Item width={'100%'} marginBottom={20} height={180} borderRadius={20} />
-                                        <SkeletonPlaceholder.Item width={'100%'} marginLeft={5}>
-                                            <SkeletonPlaceholder.Item width={320} height={22} borderRadius={4} marginBottom={10} />
-                                            <SkeletonPlaceholder.Item width={280} height={22} borderRadius={4} marginBottom={10} />
-                                            <SkeletonPlaceholder.Item width={250} height={22} borderRadius={4} marginBottom={10} />
-                                            <SkeletonPlaceholder.Item width={180} height={22} borderRadius={4} marginBottom={10} />
-                                        </SkeletonPlaceholder.Item>
+        <View className="w-full h-full flex flex-row justify-between flex-wrap">
+            {/* <SafeAreaView > */}
+            {loading ? (
+                <FlatList
+                    data={[1, 2, 3]}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={() => (
+                        <View style={{ padding: 10, borderWidth: 1, marginHorizontal: 10, marginBottom: 20, borderRadius: 20, borderColor: "#f3f3f3" }}>
+                            <SkeletonPlaceholder>
+                                <SkeletonPlaceholder.Item flexDirection="column" alignItems="center">
+                                    <SkeletonPlaceholder.Item width={'100%'} marginBottom={20} height={180} borderRadius={20} />
+                                    <SkeletonPlaceholder.Item width={'100%'} marginLeft={5}>
+                                        <SkeletonPlaceholder.Item width={320} height={22} borderRadius={4} marginBottom={10} />
+                                        <SkeletonPlaceholder.Item width={280} height={22} borderRadius={4} marginBottom={10} />
+                                        <SkeletonPlaceholder.Item width={250} height={22} borderRadius={4} marginBottom={10} />
+                                        <SkeletonPlaceholder.Item width={180} height={22} borderRadius={4} marginBottom={10} />
                                     </SkeletonPlaceholder.Item>
-                                </SkeletonPlaceholder>
-                            </View>
-                        )}
-                    />
-                ) : (
-                    <>
-                        <View className={`px-4 pb-3 ${Platform.OS == "android" ? 'mt-5' : ""}`}>
-                            <Text className="bg-whit text-3xl font-bold text-black">{t("news")}</Text>
+                                </SkeletonPlaceholder.Item>
+                            </SkeletonPlaceholder>
                         </View>
-                        <View className="bg-[#E9EDF7] pb-12">
-                            <FlatList
-                                ListHeaderComponent={() => news && renderItems({ item: news[0] })}
-                                data={news && news.slice(1)}
-                                renderItem={renderItems}
-                                keyExtractor={(item) => item?._id}
-                                contentContainerStyle={{ paddingHorizontal: 12 }}
-                                showsHorizontalScrollIndicator={false}
-                                showsVerticalScrollIndicator={false}
-                            />
-                        </View>
-                    </>
-                )}
-            </SafeAreaView>
+                    )}
+                />
+            ) : (
+                <>
+                    {/* style={styles.header} */}
+                    <View className={`px-5 py-5 ${Platform.OS == "android" ? 'mt-5' : "mt-0"}`}>
+                        <Text className="text-2xl font-bold text-black">{t("news")}</Text>
+                    </View>
+                    <View className="bg-[#E9EDF7] pb-12">
+                        <FlatList
+                            ListHeaderComponent={() => news && renderItems({ item: news[0] })}
+                            data={news && news.slice(1)}
+                            renderItem={renderItems}
+                            keyExtractor={(item) => item?._id}
+                            contentContainerStyle={{ paddingHorizontal: 12 }}
+                            showsHorizontalScrollIndicator={false}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    </View>
+                </>
+            )}
+            {/* </SafeAreaView> */}
         </View>
     );
 }
@@ -168,6 +169,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.17,
         shadowRadius: 3.05,
         elevation: 4
+    },
+    header: {
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        paddingTop: 20,
     },
 });
 

@@ -38,7 +38,7 @@ const BottomTabs = () => {
                         component={Member}
                     />
                     <Tab.Screen
-                        options={{ tabBarLabel: t("news") }}
+                        options={{ tabBarLabel: t("news"), headerStyle: { height: 0 } }}
                         name="News"
                         component={News}
                     />
