@@ -97,7 +97,7 @@ export default function AllUserDirectory() {
         return (
             <>
                 <View className="px-3">
-                    <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2">
+                    <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
                         <View className="mr-3">
                             <Animated.View style={[{ transform: [{ scale }] }]} key={item?._id}>
                                 <TouchableOpacity
@@ -114,7 +114,7 @@ export default function AllUserDirectory() {
                             </Animated.View>
                         </View>
                         <View className="flex-1">
-                            <View className=" w-full overflow-hidden">
+                            <View className="w-full overflow-hidden">
                                 <Text className="text-lg font-bold w-full overflow-hidden text-ellipsis break-words">
                                     {item?.lastname} {item?.firstname} {item?.middlename}
                                 </Text>
@@ -141,7 +141,7 @@ export default function AllUserDirectory() {
     };
 
     return (
-        <View className="bg-gray-300" style={styles.container}>
+        <View className="bg-[#E9EDF7]" style={styles.container}>
             <View className="w-full px-3 mt-3">
                 <View className="bg-white h-20 p-2 rounded-2xl flex items-center">
                     <View className="flex flex-row h-full items-center justify-between w-full">
@@ -205,12 +205,22 @@ export default function AllUserDirectory() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 15
+        paddingBottom: 10
     },
     bar: {
         height: 10,
         backgroundColor: '#3d59bf',
         width: '100%',
         position: 'absolute',
+    },
+    shadowOfCard: {
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.17,
+        shadowRadius: 3.05,
+        elevation: 4
     },
 });

@@ -35,7 +35,7 @@ function ContactUs({ navigation }) {
     }, []);
 
     return (
-        <View className=" flex-1 bg-[#E9EDF7] space-y-5 w-full">
+        <View className="flex-1 bg-[#E9EDF7] space-y-5 w-full">
             <View className="bg-white p-3">
                 <View className="flex flex-row justify-between items-center">
                     <Text className="text-2xl tracking-wider text-neutral-700 font-extrabold">

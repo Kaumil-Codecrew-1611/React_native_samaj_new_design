@@ -37,6 +37,8 @@ const Home = ({ navigation }) => {
         isLoggedIn ? { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } : { id: 4, name: t('joinnow'), redirectTo: "Welcome", image: require('../../../assets/join.png') },
         { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/directory.png') },
         // { id: 6, name: t("Events"), redirectTo: "EventsScreen", image: require('../../../assets/events.png') },
+        { id: 6, name: t("Business"), redirectTo: "BusinessScreen", image: require('../../../assets/events.png') },
+        { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
     ];

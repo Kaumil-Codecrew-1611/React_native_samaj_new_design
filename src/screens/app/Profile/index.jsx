@@ -379,7 +379,7 @@ const ProfilePage = ({ navigation }) => {
                         </View>
 
                     </View>
-                    <SafeAreaView className="flex-1 h-[2000px] bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7">
+                    <SafeAreaView className="h-[2000px] bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7">
                         <ScrollView scrollEnabled={true} nestedScrollEnabled={true} marginHorizontal={1} contentContainerStyle={{ flexGrow: 1 }} className="p-10">
                             <View className="flex flex-col gap-4">
                                 <Animated.View style={[{ transform: [{ scale: addFamilyScale }] }]} >

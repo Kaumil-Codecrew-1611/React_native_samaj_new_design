@@ -6,6 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import TwitterIcon from '../../assets/twitter.svg';
 import ApiContext from '../../context/ApiContext';
+
 function ContactUsCard() {
 
     const { t } = useTranslation();
@@ -21,8 +22,6 @@ function ContactUsCard() {
     const { contactUsPageDetails } = useContext(ApiContext);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
-
-
     const twitterAnimation = new Animated.Value(0);
     const instaAnimation = new Animated.Value(0);
     const faceBookAnimation = new Animated.Value(0);
@@ -31,7 +30,6 @@ function ContactUsCard() {
     const twitterScale = twitterAnimation.interpolate({ inputRange, outputRange });
     const instaScale = instaAnimation.interpolate({ inputRange, outputRange });
     const faceBookScale = faceBookAnimation.interpolate({ inputRange, outputRange });
-
 
     const onPressInTwitter = () => {
         Animated.spring(twitterAnimation, {
