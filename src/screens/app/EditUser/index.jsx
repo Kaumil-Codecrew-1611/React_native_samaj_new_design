@@ -292,42 +292,55 @@ const EditUserProfile = ({ navigation }) => {
                                     </View>
                                 </View>
 
-                                <View className="my-1">
-                                    <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
-                                    </View>
-                                    <View className="w-full mt-2">
-                                        <Pressable onPress={() => setShowPicker(true)}>
-                                            <View
-                                                pointerEvents="none"
-                                                className="w-full"
-                                            >
-                                                <Controller
-                                                    control={control}
-                                                    name="dob"
-                                                    render={({ field: { value } }) => (
-                                                        <TextInput
-                                                            placeholder={t('pleaseenterdob')}
-                                                            className="py-3"
-                                                            placeholderTextColor="grey"
-                                                            style={styles.input}
-                                                            value={new Date(value).toDateString()}
-                                                            editable={false}
-                                                        />
-                                                    )}
-                                                />
-                                            </View>
-                                        </Pressable>
-                                        {showPicker && (
-                                            <DateTimePicker
-                                                value={dob}
-                                                mode="date"
-                                                display="spinner"
-                                                onChange={onDateChange}
-                                            />
-                                        )}
-                                        {errors.dob && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.dob.message}</Text>}
-                                    </View>
+                                <View className="w-full mx-1">
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
+                                    <Pressable onPress={() => setShowPicker(true)} className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            render={({ field: { onChange, onBlur, value } }) => {
+                                                let dateValue;
+                                                if (value instanceof Date) {
+                                                    dateValue = value;
+                                                } else if (typeof value === 'string' || value instanceof String) {
+                                                    dateValue = new Date(value);
+                                                } else {
+                                                    dateValue = new Date();
+                                                }
+
+                                                return (
+                                                    <TextInput
+                                                        style={[
+                                                            styles.input,
+                                                            { color: dateValue ? 'black' : 'grey' },
+                                                        ]}
+                                                        placeholder="Select Date of Birth"
+                                                        className="p-3"
+                                                        placeholderTextColor="grey"
+                                                        value={dateValue ? dateValue.toDateString() : ''}
+                                                        onBlur={onBlur}
+                                                        disableFullscreenUI={true}
+                                                        editable={false}
+                                                    />
+                                                );
+                                            }}
+                                            name="dob"
+                                        />
+                                    </Pressable>
+                                    {showPicker && (
+                                        <DateTimePicker
+                                            value={dob ? new Date(dob) : new Date()}
+                                            mode="date"
+                                            display="default"
+                                            onChange={(event, selectedDate) => {
+                                                setShowPicker(false);
+                                                if (selectedDate) {
+                                                    setDob(selectedDate);
+                                                    setValue('dob', selectedDate.toISOString());
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                    {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
                                 </View>
 
                                 <View className="my-1">

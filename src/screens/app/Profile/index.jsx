@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Animated, Dimensions, Image, ImageBackground, Modal, Pressable, SafeAreaView, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, Dimensions, Image, ImageBackground, Modal, Pressable, ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import ImageViewing from 'react-native-image-viewing';
 import { withTiming } from 'react-native-reanimated';
@@ -381,7 +381,6 @@ const ProfilePage = ({ navigation }) => {
                         </View>
 
                     </View>
-                    {/* <SafeAreaView className="flex-1  bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-7"> */}
                     <View className="h-full flex-1 bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-3">
                         <ScrollView style={{ paddingHorizontal: 20, marginTop: 30, flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
                             <View className="flex-col gap-4">
