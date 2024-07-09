@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { withTiming } from 'react-native-reanimated';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import { COLORS } from '../../../utils/colors';
+import { color } from 'native-base/lib/typescript/theme/styled-system';
 
 const Welcome = ({ navigation }) => {
     const { joinPageContent } = useContext(ApiContext);
@@ -35,7 +36,7 @@ const Welcome = ({ navigation }) => {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <LinearGradient
-                colors={[COLORS.secondary, COLORS.primary]}
+                colors={[COLORS.secondary, COLORS.THIRD, COLORS.primary]}
                 className="h-full flex"
             >
                 {/* <View className="flex items-center w-full" style={{ height: SCREEN_HEIGHT / 2 }}> */}
@@ -56,7 +57,12 @@ const Welcome = ({ navigation }) => {
                     <View className="mt-4 w-full px-4">
                         <Button
                             title="Join Now"
-                            className="rounded-2xl bg-lime-600 p-3"
+                            styleTitle={styles.TITLECOLOR}
+                            style={{
+                                paddingVertical: 10,
+                                paddingHorizontal: 8,
+                            }}
+                            className="rounded-2xl bg-[#f1f2f5] "
                             onPress={() => navigation.navigate("Register")}
                         />
                         <View className="flex flex-row justify-center items-center my-3">
@@ -80,5 +86,12 @@ const Welcome = ({ navigation }) => {
         </ScrollView>
     );
 };
-
+const styles = StyleSheet.create({
+    TITLECOLOR: {
+        color: COLORS.primary,
+        fontSize: 20,
+        fontWeight: '500',
+        // paddingHorizontal: 16,
+    }
+});
 export default Welcome;

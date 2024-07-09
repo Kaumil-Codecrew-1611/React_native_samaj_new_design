@@ -309,6 +309,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                         placeholder={t('pleaseenterdob')}
                                                         className="py-3"
                                                         placeholderTextColor="grey"
+                                                        onPress={() => setShowPicker(true)}
                                                         value={dateValue ? dateValue.toDateString() : ''}
                                                         onBlur={onBlur}
                                                         disableFullscreenUI={true}
@@ -335,7 +336,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
-                                        <View className="mx-1 mb-2">
+                                        <View className="mx-1 mb-2 bg-[#eee]">
                                             <Controller
                                                 control={control}
                                                 name="marital_status"
@@ -344,6 +345,8 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                         placeholder={t('maritalstatus')}
                                                         className="py-3 m-1"
                                                         selectedValue={value}
+                                                        placeholderTextColor={'grey'}
+                                                        fontSize={14}
                                                         onValueChange={(itemValue) => onChange(itemValue)}
                                                         _selectedItem={{
                                                             bg: "blue.300",
@@ -368,7 +371,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                     <View className="w-full mx-1">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('relationship')}:</Text>
                                     </View>
-                                    <View className="mx-1 mb-2">
+                                    <View className="mx-1 mb-2 bg-[#eee]">
                                         <Controller
                                             control={control}
                                             name="relationship"
@@ -376,6 +379,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 <Select
                                                     placeholder={t('relationship')}
                                                     className="py-3 m-1"
+                                                    placeholderTextColor={'grey'}
+                                                    fontSize={14}
+                                                    alignItems={'center'}
                                                     selectedValue={value}
                                                     onValueChange={(itemValue) => onChange(itemValue)}
                                                     _selectedItem={{
@@ -460,7 +466,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     input: {
-        backgroundColor: '#F3F5F7',
+        backgroundColor: '#eee',
         color: '#333',
         borderRadius: 10,
         paddingLeft: 10,

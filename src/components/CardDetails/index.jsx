@@ -7,7 +7,7 @@ import {
     useImage
 } from "@shopify/react-native-skia";
 import React, { useEffect, useState } from 'react';
-import { Animated, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const CardDetails = ({ content, size, image, redirectTo, functionality, navigation, handleSetSelectedVillage, villageListing, listingStyle }) => {
@@ -114,13 +114,13 @@ const CardDetails = ({ content, size, image, redirectTo, functionality, navigati
                                                 blur={4}
                                                 clip={{ x: 0, y: blurClipY, width: blurClipWidth, height: 120 }}
                                             >
-                                                <Fill color="rgba(200, 200, 200, 0.2)" />
+                                                <Fill color="rgba(200, 200, 200, 0.37)" />
                                             </BackdropBlur>
                                         </Canvas>
                                     )}
                                     {listingStyle === "grid" ?
                                         <View className="bottom-0 p-2 absolute w-full">
-                                            <Text className={`${small ? 'h-12 text-xl text-center' : large ? 'h-10 text-2xl' : full ? 'h-24 text-4xl' : 'h-12 text-2xl'} font-bold text-gray-200`}>
+                                            <Text style={styles.strokeme} className={`${small ? 'h-12 text-xl text-center' : large ? 'h-10 text-2xl' : full ? 'h-24 text-4xl' : 'h-12 text-2xl'} font-bold stroke-[#243c5a]`}>
                                                 {content}
                                             </Text>
                                         </View>
@@ -168,4 +168,20 @@ const CardDetails = ({ content, size, image, redirectTo, functionality, navigati
     );
 };
 
+const styles = StyleSheet.create({
+    strokeme: {
+        color: "white",
+
+        textShadowColor: "#000",
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 1,
+    },
+});
+
+
 export default CardDetails;
+
+/* 
+
+
+*/
