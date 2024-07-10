@@ -567,9 +567,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     input: {
-        backgroundColor: '#F3F5F7',
+        backgroundColor: '#eee',
         color: '#333',
         borderRadius: 10,
+        paddingVertical: 10,
         paddingLeft: 10,
         marginBottom: 10,
         shadowColor: '#423f40',

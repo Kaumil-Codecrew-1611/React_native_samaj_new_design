@@ -384,6 +384,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Button from '../../../components/Button';
 import Feather from 'react-native-vector-icons/Feather';
 import { t } from 'i18next';
+import { TextArea } from 'native-base';
 const schema = yup.object().shape({
     name: yup.string().required('Name is required'),
     phoneNumber2: yup.string(),
@@ -488,6 +489,101 @@ const AddBusinessDetails = () => {
                                     {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
                                 </View>
                             </View>
+
+                            <View className="mt-1">
+                                <View className="w-full mx-1">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Name:</Text>
+                                </View>
+                                <View className="w-full mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="businessName"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextInput
+                                                style={styles.input}
+                                                placeholder="Business Name"
+                                                onBlur={onBlur}
+                                                placeholderTextColor="grey"
+                                                className="py-3"
+                                                onChangeText={onChange}
+                                                value={value}
+                                            />
+                                        )}
+                                    />
+                                    {errors.businessName && <Text style={styles.errorText}>{errors.businessName.message}</Text>}
+                                </View>
+                            </View>
+                            <View className="mt-1" >
+                                <View className="w-full mx-1">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Address:</Text>
+                                </View>
+                                {/* 
+                                <Controller
+                                        control={control}
+                                        name="address"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextArea
+                                                style={styles.textArea}
+                                                placeholder="Address"
+                                                placeholderTextColor="grey"
+                                                className="py-6 border-none outline-none border-transparent"
+                                                onBlur={onBlur}
+                                                onChangeText={onChange}
+                                                value={value}
+                                                borderWidth={0}
+                                                borderRadius={13}
+                                                borderColor={'transparent'}
+                                            />
+                                        )}
+                                    />
+                                
+                                */}
+                                <View className="w-full mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="address"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextArea
+                                                style={styles.textArea}
+                                                placeholder="Address"
+                                                placeholderTextColor="grey"
+                                                className="py-6 border-none outline-none border-transparent"
+                                                onBlur={onBlur}
+                                                onChangeText={onChange}
+                                                value={value}
+                                                borderWidth={0}
+                                                borderRadius={13}
+                                                borderColor={'transparent'}
+                                            />
+                                        )}
+                                    />
+                                    {errors.address && <Text style={styles.errorText}>{errors.address.message}</Text>}
+                                </View>
+                            </View>
+
+                            <View className="mt-1">
+                                <View className="w-full mx-1">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Email:</Text>
+                                </View>
+                                <View className="w-full mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="businessEmail"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextInput
+                                                style={styles.input}
+                                                placeholder="Business Email"
+                                                onBlur={onBlur}
+                                                placeholderTextColor="grey"
+                                                className="py-3"
+                                                onChangeText={onChange}
+                                                value={value}
+                                            />
+                                        )}
+                                    />
+                                    {errors.businessEmail && <Text style={styles.errorText}>{errors.businessEmail.message}</Text>}
+                                </View>
+                            </View>
                             <View className="mt-1">
                                 <View className="w-full mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Contact Number:</Text>
@@ -532,76 +628,10 @@ const AddBusinessDetails = () => {
                                     />
                                 </View>
                             </View>
-                            <View className="mt-1" >
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Address:</Text>
-                                </View>
-                                <View className="w-full mt-2">
-                                    <Controller
-                                        control={control}
-                                        name="address"
-                                        render={({ field: { onChange, onBlur, value } }) => (
-                                            <TextInput
-                                                style={styles.input}
-                                                placeholder="Address"
-                                                placeholderTextColor="grey"
-                                                className="py-3"
-                                                onBlur={onBlur}
-                                                onChangeText={onChange}
-                                                value={value}
-                                            />
-                                        )}
-                                    />
-                                    {errors.address && <Text style={styles.errorText}>{errors.address.message}</Text>}
-                                </View>
-                            </View>
                             <View className="mt-1">
                                 <View className="w-full mx-1">
-                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Name:</Text>
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo (.PNG extension):</Text>
                                 </View>
-                                <View className="w-full mt-2">
-                                    <Controller
-                                        control={control}
-                                        name="businessName"
-                                        render={({ field: { onChange, onBlur, value } }) => (
-                                            <TextInput
-                                                style={styles.input}
-                                                placeholder="Business Name"
-                                                onBlur={onBlur}
-                                                placeholderTextColor="grey"
-                                                className="py-3"
-                                                onChangeText={onChange}
-                                                value={value}
-                                            />
-                                        )}
-                                    />
-                                    {errors.businessName && <Text style={styles.errorText}>{errors.businessName.message}</Text>}
-                                </View>
-                            </View>
-                            <View className="mt-1">
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Email:</Text>
-                                </View>
-                                <View className="w-full mt-2">
-                                    <Controller
-                                        control={control}
-                                        name="businessEmail"
-                                        render={({ field: { onChange, onBlur, value } }) => (
-                                            <TextInput
-                                                style={styles.input}
-                                                placeholder="Business Email"
-                                                onBlur={onBlur}
-                                                placeholderTextColor="grey"
-                                                className="py-3"
-                                                onChangeText={onChange}
-                                                value={value}
-                                            />
-                                        )}
-                                    />
-                                    {errors.businessEmail && <Text style={styles.errorText}>{errors.businessEmail.message}</Text>}
-                                </View>
-                            </View>
-                            <View >
                                 <TouchableOpacity onPress={pickImage} style={styles.logoContainer}>
                                     {logo ? (
                                         <Image source={{ uri: logo.uri }} style={styles.logo} />
@@ -649,6 +679,27 @@ const AddBusinessDetails = () => {
                                         control={control}
                                         name="businessLongDetail"
                                         render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextArea
+                                                style={styles.textArea}
+                                                placeholder="Business Long Detail"
+                                                placeholderTextColor="grey"
+                                                className="py-6 border-none outline-none border-transparent"
+                                                onBlur={onBlur}
+                                                onChangeText={onChange}
+                                                value={value}
+                                                borderWidth={0}
+                                                borderRadius={13}
+                                                borderColor={'transparent'}
+                                            />
+                                        )}
+                                    />
+                                    {errors.businessLongDetail && <Text style={styles.errorText}>{errors.businessLongDetail.message}</Text>}
+                                </View>
+                                {/* <View className="w-full mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="businessLongDetail"
+                                        render={({ field: { onChange, onBlur, value } }) => (
                                             <TextInput
                                                 style={styles.input}
                                                 placeholder="Business Long Detail"
@@ -661,7 +712,7 @@ const AddBusinessDetails = () => {
                                         )}
                                     />
                                     {errors.businessLongDetail && <Text style={styles.errorText}>{errors.businessLongDetail.message}</Text>}
-                                </View>
+                                </View> */}
                             </View>
 
                             <View className="mt-1">
@@ -887,6 +938,18 @@ const styles = StyleSheet.create({
         shadowRadius: 0.2,
         marginHorizontal: 4,
         elevation: 4,
+    },
+    textArea: {
+        backgroundColor: '#eee',
+        color: '#333',
+
+        shadowColor: '#423f40',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 0.2,
+        marginHorizontal: 0,
+        elevation: 4,
+
     },
     logo: {
         width: 100,
