@@ -437,12 +437,12 @@ const ProfilePage = ({ navigation }) => {
                                         activeOpacity={1}
                                         onPressIn={onPressAddBusinessIn}
                                         onPressOut={onPressAddBusinessOut}
-                                        onPress={() => navigation.navigate('AddBusinessDetailsScreen')}
+                                        onPress={() => navigation.navigate('MyBusinessCardScreen')}
                                     >
                                         <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3 ">
                                             <View className="flex-row justify-between gap-2 items-center">
                                                 <AddBusinessIcon width={30} height={30} color='black' />
-                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Add Business Details</Text>
+                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">My Business</Text>
                                             </View>
                                             <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                         </View>

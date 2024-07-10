@@ -35,6 +35,7 @@ import Welcome from '../screens/app/WelcomeScreen';
 import BusinessListing from '../screens/app/Business/BusinessListing';
 import BusinessCardScreen from '../screens/app/Business/BusinessCardScreen';
 import AddBusinessDetails from '../screens/app/Business/AddBusinessDetails';
+import MyBusinessCards from '../screens/app/Business/MyBusinessCards';
 
 const RootStack = createNativeStackNavigator()
 
@@ -95,6 +96,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="EventsScreen" component={EventsScreen} options={{ headerTitle: t("AllEvents") }} />
                 <RootStack.Screen name="BusinessScreen" component={BusinessListing} options={{ headerTitle: t("Business") }} />
                 <RootStack.Screen name="BusinessCardScreen" component={BusinessCardScreen} options={{ headerTitle: t("Business") }} />
+                <RootStack.Screen name="MyBusinessCardScreen" component={MyBusinessCards} options={{ headerTitle: t("My Business") }} />
                 <RootStack.Screen name="AddBusinessDetailsScreen" component={AddBusinessDetails} options={{ headerTitle: t("Add Business Details") }} />
             </RootStack.Navigator>
         </>
