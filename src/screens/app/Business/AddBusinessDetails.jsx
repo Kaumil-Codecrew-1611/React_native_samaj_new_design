@@ -420,9 +420,8 @@ const AddBusinessDetails = () => {
 
     const onSubmit = (data) => {
         setLoading(true);
-        data.businessLogo = logo; // Ensure logo data is included in form data
-        console.log(data); // Check the logged data in console before submission
-        // Additional logic to submit data to backend or perform further actions
+        data.businessLogo = logo;
+        console.log(data);
         setLoading(false);
     };
 
@@ -453,7 +452,7 @@ const AddBusinessDetails = () => {
     };
 
     return (
-        <View className="bg-[#EFF6F9] w-full flex-1 px-3">
+        <View className="bg-[#E9EDF7] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     Fill the Business details

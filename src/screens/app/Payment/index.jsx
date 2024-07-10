@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Dimensions, ScrollView, Text, View } from 'react-native';
 import Button from '../../../components/Button';
 import { GlobalContext } from '../../../context/globalState';
 import ApiContext from '../../../context/ApiContext';
@@ -90,8 +90,8 @@ function Payment({ navigation, route }) {
 
             // Access the description property
             const errorDescription = errorObject?.error?.description;
-            navigation.navigate('PaymentFailed', { registerData: registerData,amount: data?.order?.amount, description:errorDescription });
-           
+            navigation.navigate('PaymentFailed', { registerData: registerData, amount: data?.order?.amount, description: errorDescription });
+
         }
     };
 
@@ -102,9 +102,11 @@ function Payment({ navigation, route }) {
         PhoneNo: registerData.mobile_number,
         Address: registerData.address + " " + registerData.city + " " + registerData.state + " " + registerData.pincode
     }
+    //117 
+    const windowHeight = Dimensions.get('window').height;
     return (
         <View className="flex-1 bg-green-200 relative">
-            <View className="w-full absolute top-[117px] z-10 h-32 flex-row justify-center">
+            <View className={`w-full absolute  ${windowHeight < 670 ? "top-[90px]" : "top-[117px]"} z-10 h-32 flex-row justify-center`}>
                 <View className=" w-72 rounded-xl bg-green-600 h-full flex-row justify-center items-center">
                     <Text className="text-white text-3xl tracking-wider font-extrabold">PAYMENT</Text>
                 </View>
