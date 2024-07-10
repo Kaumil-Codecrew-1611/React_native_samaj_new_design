@@ -35,6 +35,7 @@ import {
     villagesByUser,
     allUserReview,
     termAndCondition,
+    subscriptionListing
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -107,6 +108,7 @@ export const ApiProvider = ({ children }) => {
     const sendOTPForgotPassword = (userEmailDataForForgotPassword) => apiRequest(sendOtpForForgotPassword, userEmailDataForForgotPassword, setData, 'sendOTPForgotPassword');
     const allUserDirectory = (search) => apiRequest(allUserReview, search, setData, 'allUserDirectory');
     const termsAndConditions = () => apiRequest(termAndCondition, null, setData, 'termsAndConditions');
+    const allSubscriptionListing = () => apiRequest(subscriptionListing, null, setData, 'allSubscriptionListing');
 
     return (
         <ApiContext.Provider value={{
@@ -148,6 +150,7 @@ export const ApiProvider = ({ children }) => {
             forgotPasswordApi,
             allUserDirectory,
             termsAndConditions,
+            allSubscriptionListing,
         }}>
             {children}
         </ApiContext.Provider>

@@ -417,6 +417,22 @@ const ProfilePage = ({ navigation }) => {
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </Pressable>
                                 </Animated.View>
+                                <Animated.View style={[{ transform: [{ scale: AddBusinessScale }] }]} >
+                                    <Pressable
+                                        activeOpacity={1}
+                                        onPressIn={onPressAddBusinessIn}
+                                        onPressOut={onPressAddBusinessOut}
+                                        onPress={() => navigation.navigate('AddBusinessDetailsScreen')}
+                                    >
+                                        <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3 ">
+                                            <View className="flex-row justify-between gap-2 items-center">
+                                                <AddBusinessIcon width={30} height={30} color='black' />
+                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Add Business Details</Text>
+                                            </View>
+                                            <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                                        </View>
+                                    </Pressable>
+                                </Animated.View>
                                 <Animated.View style={[{ transform: [{ scale: changePasswordScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
@@ -432,17 +448,22 @@ const ProfilePage = ({ navigation }) => {
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </Pressable>
                                 </Animated.View>
-                                <Animated.View style={[{ transform: [{ scale: AddBusinessScale }] }]} >
+
+                                <Animated.View style={[{ transform: [{ scale: logoutCardScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
-                                        onPressIn={onPressAddBusinessIn}
-                                        onPressOut={onPressAddBusinessOut}
-                                        onPress={() => navigation.navigate('AddBusinessDetailsScreen')}
+                                        onPressIn={onPressLogoutCardIn}
+                                        onPressOut={onPressLogoutCardOut}
+                                        onPress={openLogoutModal}
                                     >
                                         <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3 ">
                                             <View className="flex-row justify-between gap-2 items-center">
-                                                <AddBusinessIcon width={30} height={30} color='black' />
-                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Add Business Details</Text>
+                                                <AnimatedFeatherIcon
+                                                    name="log-out"
+                                                    size={25}
+                                                    color="black"
+                                                />
+                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Logout</Text>
                                             </View>
                                             <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                         </View>

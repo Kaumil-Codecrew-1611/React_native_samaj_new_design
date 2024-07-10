@@ -34,6 +34,7 @@ const Aboutus = () => {
             console.log("sdgfhg", contentAboutUs)
         })();
     }, []);
+
     const imageAnimatedStyle = useAnimatedStyle(() => {
         return {
             transform: [

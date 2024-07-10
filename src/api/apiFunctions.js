@@ -195,3 +195,8 @@ export const termAndCondition = async () => {
     const response = await axiosInstance.get(`/termsandcondition`);
     return response.data
 };
+
+export const subscriptionListing = async () => {
+    const response = await axiosInstance.get(`/getPlans`);
+    return response.data
+};

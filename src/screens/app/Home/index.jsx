@@ -39,6 +39,7 @@ const Home = ({ navigation }) => {
         // { id: 6, name: t("Events"), redirectTo: "EventsScreen", image: require('../../../assets/events.png') },
         { id: 6, name: t("Business"), redirectTo: "BusinessScreen", image: require('../../../assets/events.png') },
         { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
+        { id: 8, name: "payment", redirectTo: "BusinessSubscription", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
     ];
