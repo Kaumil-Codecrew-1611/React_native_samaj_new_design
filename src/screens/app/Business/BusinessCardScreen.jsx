@@ -1,4 +1,4 @@
-import { Image, Pressable, Text, View } from 'native-base';
+import { Image, Text, View } from 'native-base';
 import React, { useContext, useEffect, useState } from 'react';
 import { Animated, Linking, ScrollView, TouchableOpacity } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
@@ -16,6 +16,7 @@ const BusinessCardScreen = () => {
     const [twitterLink, setTwitterLink] = useState('');
     const [faceBookLink, setFaceBookLink] = useState('');
     const [instagramLink, setInstagramLink] = useState('');
+    const [linkedinLink, setLinkedinLink] = useState('');
     const twitterAnimation = new Animated.Value(0);
     const instaAnimation = new Animated.Value(0);
     const faceBookAnimation = new Animated.Value(0);
@@ -34,7 +35,7 @@ const BusinessCardScreen = () => {
     useEffect(() => {
         (async function () {
             const contentContactUs = await contactUsPageDetails();
-            const desiredKeys = ['contact1', 'contactno1', 'contact2', 'contactno2', 'email', "instagram", "facebook", "twitter"];
+            const desiredKeys = ['contact1', 'contactno1', 'contact2', 'contactno2', 'email', "instagram", "facebook", "twitter", "linkedin"];
             contentContactUs.forEach((item) => {
                 if (desiredKeys.includes(item.key)) {
                     switch (item.key) {
@@ -52,6 +53,9 @@ const BusinessCardScreen = () => {
                             break;
                         case 'twitter':
                             setTwitterLink(item.value);
+                            break;
+                        case 'linkedin':
+                            setLinkedinLink(item.value);
                             break;
                         default:
                             break;
@@ -159,7 +163,7 @@ const BusinessCardScreen = () => {
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View className="p-5 h-full bg-blue-100">
+                <View className="p-3 h-screen bg-blue-100">
                     <View className="bg-white rounded-2xl p-5 w-full max-w-md shadow-lg relative overflow-hidden">
                         <View className="items-center mb-4">
 
@@ -202,7 +206,7 @@ const BusinessCardScreen = () => {
                                 <Text className="text-black text-base font-bold tracking-wide">Mobile Number :- </Text>
                                 <TouchableOpacity onPress={() => handleCallOpenLink("+91" + contactno1)}>
                                     <View>
-                                        <Text className="text-[#5176df] tracking-wider text-sm font-semibold">
+                                        <Text className="text-[#5176df] text-sm font-semibold">
                                             +91 {contactno1}
                                         </Text>
                                     </View>
@@ -222,44 +226,44 @@ const BusinessCardScreen = () => {
 
                             <View className="flex flex-row items-center flex-wrap mb-2">
 
-                                <Text className="text-black text-lg font-bold tracking-wide">Address :- </Text>
+                                <Text className="text-black text-base font-bold tracking-wide">Address :- </Text>
                                 <TouchableOpacity
                                     className="ms-2"
                                     onPress={() => Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent("B-382 Nishitpark aadinathnagar odhav ahmedabad"))}
                                 >
-                                    <Text className="text-[#5176df] tracking-wider text-md font-medium">B-382 Nishitpark aadinathnagar odhav ahmedabad</Text>
+                                    <Text className="text-[#5176df] text-md font-medium">B-382 Nishitpark aadinathnagar odhav ahmedabad</Text>
                                 </TouchableOpacity>
 
                             </View>
                             <View className="flex flex-row items-center flex-wrap mb-2">
 
-                                <Text className="text-black text-lg font-bold tracking-wide">Company Email :- </Text>
+                                <Text className="text-black text-base font-bold tracking-wide">Company Email :- </Text>
                                 <TouchableOpacity onPress={() => handleClickOnMail("vishwprajapati66@gmail.com")}>
-                                    <Text className="text-[#5176df] tracking-wider text-md font-medium">vishwprajapati66@gmail.com</Text>
+                                    <Text className="text-[#5176df] text-md font-medium">vishwprajapati66@gmail.com</Text>
                                 </TouchableOpacity>
 
                             </View>
                             <View className="flex flex-row items-center flex-wrap mb-2">
 
-                                <Text className="text-black text-lg font-bold tracking-wide">Website :- </Text>
+                                <Text className="text-black text-base font-bold tracking-wide">Website :- </Text>
                                 <TouchableOpacity onPress={handlePress}>
-                                    <Text className="text-blue-500">https://international.ajaymodi.com/</Text>
+                                    <Text className="text-[#5176df] text-sm font-semibold">https://international.ajaymodi.com/</Text>
                                 </TouchableOpacity>
 
                             </View>
 
                             <View className="flex flex-row items-center flex-wrap mb-2">
-                                <Text className="text-black text-lg font-bold tracking-wide">Description :- </Text>
-                                <Text>Asgard tours and travells is trusted and also safest travell agency in gujarat. we are only one travellers who plan word tours in our agency in gujarat</Text>
+                                <Text className="text-black text-base font-bold tracking-wide">Description :- </Text>
+                                <Text className="text-black text-sm text-justify">Asgard tours and travells is trusted and also safest travell agency in gujarat. we are only one travellers who plan word tours in our agency in gujarat</Text>
                             </View>
 
                         </View>
 
                         <View>
-                            <Text className="text-center text-md text-black font-semibold tracking-wide">Connect with me on</Text>
+                            <Text className="text-center text-md text-black font-semibold mt-2">Connect with me on</Text>
                         </View>
 
-                        <View className="flex flex-row justify-around mt-3">
+                        <View className="flex flex-row justify-around items-center mt-3">
 
                             <TouchableOpacity
                                 activeOpacity={1}
@@ -280,7 +284,7 @@ const BusinessCardScreen = () => {
                                 activeOpacity={1}
                                 onPressIn={onPressInLinkedin}
                                 onPressOut={onPressOutLinkedin}
-                                onPress={() => openLink(faceBookLink)}
+                                onPress={() => openLink(linkedinLink)}
                             >
                                 <Animated.View style={[{ transform: [{ scale: linkedinScale }] }]}>
                                     <AnimatedFontistoIcon
