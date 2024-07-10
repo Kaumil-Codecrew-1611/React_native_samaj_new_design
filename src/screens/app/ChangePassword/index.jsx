@@ -51,9 +51,10 @@ const ChangePassword = ({ navigation }) => {
             if (reponse.changePassStatus) {
                 navigateToUserProfile()
             }
-            setLoading(false);
         } catch (error) {
             console.error('Error changing password:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
