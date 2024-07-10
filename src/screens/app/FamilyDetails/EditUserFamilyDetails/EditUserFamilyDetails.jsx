@@ -270,6 +270,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                         onBlur={onBlur}
                                                         disableFullscreenUI={true}
                                                         editable={false}
+                                                        onPress={() => setShowPicker(true)}
                                                     />
                                                 );
                                             }}

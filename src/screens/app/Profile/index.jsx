@@ -10,7 +10,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import toastMessage from '../../../utils/toastMessage';
-
+import AddBusinessIcon from '../../../assets/addBusiness.svg';
 const ProfilePage = ({ navigation }) => {
 
     const { t } = useTranslation();
@@ -27,6 +27,7 @@ const ProfilePage = ({ navigation }) => {
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
     const cancelAnimation = new Animated.Value(0);
     const LogoutAnimation = new Animated.Value(0);
+    const AddBusinessAnimation = new Animated.Value(0);
     const addFamilyAnimation = new Animated.Value(0);
     const changePasswordAnimation = new Animated.Value(0);
     const logoutCardAnimation = new Animated.Value(0);
@@ -36,9 +37,11 @@ const ProfilePage = ({ navigation }) => {
     const outputRange = [1, 0.8];
     const cancelScale = cancelAnimation.interpolate({ inputRange, outputRange });
     const LogoutScale = LogoutAnimation.interpolate({ inputRange, outputRange });
+    const AddBusinessScale = AddBusinessAnimation.interpolate({ inputRange, outputRange });
     const addFamilyScale = addFamilyAnimation.interpolate({ inputRange, outputRange });
     const changePasswordScale = changePasswordAnimation.interpolate({ inputRange, outputRange });
     const logoutCardScale = logoutCardAnimation.interpolate({ inputRange, outputRange });
+
     const openProfileScale = openProfileAnimation.interpolate({ inputRange, outputRange });
     const shareAppScale = shareAppAnimation.interpolate({ inputRange, outputRange });
 
@@ -67,6 +70,19 @@ const ProfilePage = ({ navigation }) => {
 
     const onPressLogoutOut = () => {
         Animated.spring(LogoutAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+    const onPressAddBusinessIn = () => {
+        Animated.spring(AddBusinessAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressAddBusinessOut = () => {
+        Animated.spring(AddBusinessAnimation, {
             toValue: 0,
             useNativeDriver: true,
         }).start();
@@ -417,21 +433,17 @@ const ProfilePage = ({ navigation }) => {
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </Pressable>
                                 </Animated.View>
-                                <Animated.View style={[{ transform: [{ scale: logoutCardScale }] }]} >
+                                <Animated.View style={[{ transform: [{ scale: AddBusinessScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
-                                        onPressIn={onPressLogoutCardIn}
-                                        onPressOut={onPressLogoutCardOut}
-                                        onPress={openLogoutModal}
+                                        onPressIn={onPressAddBusinessIn}
+                                        onPressOut={onPressAddBusinessOut}
+                                        onPress={() => navigation.navigate('AddBusinessDetailsScreen')}
                                     >
                                         <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3 ">
                                             <View className="flex-row justify-between gap-2 items-center">
-                                                <AnimatedFeatherIcon
-                                                    name="log-out"
-                                                    size={25}
-                                                    color="black"
-                                                />
-                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Logout</Text>
+                                                <AddBusinessIcon width={30} height={30} color='black' />
+                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Add Business Details</Text>
                                             </View>
                                             <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                         </View>
