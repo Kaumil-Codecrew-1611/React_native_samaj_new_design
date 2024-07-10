@@ -436,46 +436,22 @@ const ProfilePage = ({ navigation }) => {
                                         </View>
                                     </Pressable>
                                 </Animated.View>
-                                <Animated.View style={[{ transform: [{ scale: logoutCardScale }] }]} >
-                                    <Pressable
-                                        activeOpacity={1}
-                                        onPressIn={onPressLogoutCardIn}
-                                        onPressOut={onPressLogoutCardOut}
-                                        onPress={openLogoutModal}
-                                    >
-                                        <View className="flex flex-row items-center justify-between bg-white rounded-[15px]  shadow-input mx-0.5 shadow-custom-elevation shadow-md p-3 ">
-                                            <View className="flex-row justify-between gap-2 items-center">
-                                                <AnimatedFeatherIcon
-                                                    name="log-out"
-                                                    size={25}
-                                                    color="black"
-                                                />
-                                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">Logout</Text>
-                                            </View>
-                                            <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                                        </View>
-                                    </Pressable>
-                                </Animated.View>
                             </View>
                         </ScrollView>
                     </View>
-                    {/* </SafeAreaView> */}
                 </View>
-
                 <ImageViewing
                     images={profileImage}
                     imageIndex={0}
                     visible={isVisible}
                     onRequestClose={() => setIsVisible(false)}
                 />
-
                 <ImageViewing
                     images={bannerImages}
                     imageIndex={0}
                     visible={isBannerVisible}
                     onRequestClose={() => setBannerIsVisible(false)}
                 />
-
             </View>
             <Modal
                 transparent={true}
