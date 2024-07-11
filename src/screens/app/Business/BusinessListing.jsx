@@ -6,11 +6,11 @@ const BusinessListing = () => {
 
     const businessList = [
         {
-            name: 'Kaumil Patel',
-            role: 'Owner of Asgrad tours and travells',
+            name: 'Vishw Prajapati',
+            role: 'God of Asgrad tours and travells',
             phoneNumber: '+919173211901',
             address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-            email: 'kaumil@gmail.com'
+            email: 'vishwprajapati66@gmail.com'
         },
         {
             name: 'Vishw Prajapati',

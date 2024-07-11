@@ -1,5 +1,5 @@
 import { Text } from "native-base";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Animated, Dimensions, StyleSheet, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Carousel from "react-native-reanimated-carousel";
@@ -7,17 +7,23 @@ import Carousel from "react-native-reanimated-carousel";
 const PAGE_WIDTH = Dimensions.get('window').width;
 
 function Parallax({ sliderImages }) {
+
     const [autoPlay] = useState(true);
     const [snapEnabled] = useState(true);
-    const modifiedImages = sliderImages?.map(item => {
-        const imageName = item?.image?.split('.')[0];
-        return {
-            ...item,
-            image: `${process.env.IMAGE_URL}${item?.image}`,
-            title: imageName
-        };
-    });
-    console.log(process.env.IMAGE_URL, ":::process.env.IMAGE_URL")
+
+    const modifiedImages = useMemo(() => {
+        return sliderImages?.map(item => {
+            const imageName = item?.image?.split('.')[0];
+            return {
+                ...item,
+                image: `${process.env.IMAGE_URL}${item?.image}`,
+                title: imageName,
+            };
+        });
+    }, [sliderImages]);
+
+    console.log(process.env.IMAGE_URL, ":::process.env.IMAGE_URL");
+
     return (
         <>
             <View>
@@ -50,7 +56,6 @@ function Parallax({ sliderImages }) {
                 <View className="border-b-2 border-rose-700 w-[15%]"></View>
             </View>
         </>
-
     );
 }
 
