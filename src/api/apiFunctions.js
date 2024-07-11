@@ -125,6 +125,18 @@ export const profileBannerImageUpdate = async (payload) => {
         console.log(error, "error")
     }
 };
+export const registerBusinessData = async (payload) => {
+    try {
+        const response = await axiosInstance.post(`/registerBusiness`, payload, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return response.data
+    } catch (error) {
+        console.log(error, "error")
+    }
+};
 
 export const editUserProfile = async (userId) => {
     const response = await axiosInstance.get(`/user-edit/${userId}`);

@@ -35,7 +35,8 @@ import {
     villagesByUser,
     allUserReview,
     termAndCondition,
-    subscriptionListing
+    subscriptionListing,
+    registerBusinessData
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -103,6 +104,7 @@ export const ApiProvider = ({ children }) => {
     const forgotPasswordApi = (newSetForgotPassword) => apiRequest(setNewForgotPassword, newSetForgotPassword, setData, 'forgotPasswordApi');
     const handleDeleteProfileUser = (userProfileId) => apiRequest(handleFamilyUserProfile, userProfileId, setData, 'handleDeleteProfileUser');
     const updateUserBannerProfileImage = (payload) => apiRequest(profileBannerImageUpdate, payload, setData, 'updateUserBannerProfileImage');
+    const registerUserBusinessData = (payload) => apiRequest(registerBusinessData, payload, setData, 'registerBusinessDetails');
     const numberCheckForRegisterUser = (numberData) => apiRequest(numberCheckForRegister, numberData, setData, 'numberCheckForRegisterUser');
     const checkOtpForForgotPassword = (checkotpForForgotPassword) => apiRequest(otpCheckForForgotPassword, checkotpForForgotPassword, setData, 'checkOtpForForgotPassword');
     const sendOTPForgotPassword = (userEmailDataForForgotPassword) => apiRequest(sendOtpForForgotPassword, userEmailDataForForgotPassword, setData, 'sendOTPForgotPassword');
@@ -151,6 +153,7 @@ export const ApiProvider = ({ children }) => {
             allUserDirectory,
             termsAndConditions,
             allSubscriptionListing,
+            registerUserBusinessData
         }}>
             {children}
         </ApiContext.Provider>

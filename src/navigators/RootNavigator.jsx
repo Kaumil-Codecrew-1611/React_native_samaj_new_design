@@ -37,6 +37,7 @@ import BusinessCardScreen from '../screens/app/Business/BusinessCardScreen';
 import AddBusinessDetails from '../screens/app/Business/AddBusinessDetails';
 import BusinessSubscription from '../screens/app/Business/BusinessSubscription';
 import MyBusinessCards from '../screens/app/Business/MyBusinessCards';
+import FlipImage from '../screens/app/Business/FlipImage';
 
 const RootStack = createNativeStackNavigator()
 
@@ -100,6 +101,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="MyBusinessCardScreen" component={MyBusinessCards} options={{ headerTitle: t("My Business") }} />
                 <RootStack.Screen name="AddBusinessDetailsScreen" component={AddBusinessDetails} options={{ headerTitle: t("Add Business Details") }} />
                 <RootStack.Screen name="BusinessSubscription" component={BusinessSubscription} options={{ headerTitle: "Subscription" }} />
+                <RootStack.Screen name="FlipImage" component={FlipImage} options={{ headerTitle: "Flip Image" }} />
             </RootStack.Navigator>
         </>
     )

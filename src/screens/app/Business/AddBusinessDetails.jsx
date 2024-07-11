@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
 export default AddBusinessDetails; */
 
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, KeyboardAvoidingView, TouchableWithoutFeedback, ScrollView, Keyboard, Platform, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -385,6 +385,9 @@ import Button from '../../../components/Button';
 import Feather from 'react-native-vector-icons/Feather';
 import { t } from 'i18next';
 import { TextArea } from 'native-base';
+import { GlobalContext } from '../../../context/globalState';
+import ApiContext from '../../../context/ApiContext';
+
 const schema = yup.object().shape({
     name: yup.string().required('Name is required'),
     phoneNumber2: yup.string(),
@@ -412,18 +415,53 @@ const AddBusinessDetails = () => {
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema)
     });
-
+    const { allUserInfo } = useContext(GlobalContext);
+    const { registerUserBusinessData } = useContext(ApiContext);
+    const [userId] = useState(allUserInfo._id)
     const [loading, setLoading] = useState(false);
     const [logo, setLogo] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
     const dateOfOpeningJob = watch('dateOfOpeningJob') || new Date();
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         setLoading(true);
-        data.businessLogo = logo;
-        console.log(data);
+        console.log(data, ":::::datadata")
+        const formData = new FormData();
+
+        // Append the fields to the formData object
+        formData.append('address', data.address);
+        formData.append('businessContactNumber', data.businessContactNumber);
+        formData.append('businessEmail', data.businessEmail);
+        formData.append('businessLongDetail', data.businessLongDetail);
+        formData.append('businessName', data.businessName);
+        formData.append('businessShortDetail', data.businessShortDetail);
+        formData.append('businessType', data.businessType);
+        formData.append('businessWebsite', data.businessWebsite);
+        formData.append('dateOfOpeningJob', String(data.dateOfOpeningJob));
+        formData.append('facebook', data.facebook);
+        formData.append('instagram', data.instagram);
+        formData.append('linkedIn', data.linkedIn);
+        formData.append('name', data.name);
+        formData.append('phoneNumber2', data.phoneNumber2);
+        formData.append('role', data.role);
+        formData.append('twitter', data.twitter);
+        formData.append('user_id', data.userId);
+
+        // Append the business logo file
+        const businessLogo = {
+            uri: data.businessLogo.uri,
+            name: data.businessLogo.fileName,
+            type: data.businessLogo.type
+        };
+        formData.append('businessLogo', businessLogo);
+
+        console.log(formData, "111111:::::businessData");
+
+        // Call the API using fetch
+        const response = await registerUserBusinessData(formData);
         setLoading(false);
     };
+
 
     const pickImage = () => {
         ImagePicker.launchImageLibrary({ mediaType: 'photo' }, response => {
