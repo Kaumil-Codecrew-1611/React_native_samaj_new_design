@@ -212,3 +212,18 @@ export const subscriptionListing = async () => {
     const response = await axiosInstance.get(`/getPlans`);
     return response.data
 };
+
+export const allBusinessListing = async () => {
+    const response = await axiosInstance.get(`/allBusinesses`);
+    return response.data
+};
+
+export const userSelfBusinessCard = async (userCardId) => {
+    const response = await axiosInstance.get(`/userBusinesses/${userCardId}`);
+    return response.data
+};
+
+export const subscriptionSelected = async (subscriptionData) => {
+    const response = await axiosInstance.post('/createSubscriptions', subscriptionData);
+    return response.data;
+};

@@ -46,7 +46,6 @@ const ProfilePage = ({ navigation }) => {
     const shareAppScale = shareAppAnimation.interpolate({ inputRange, outputRange });
 
     const windowHeight = Dimensions.get('window').height;
-    console.log(windowHeight, "windowHeight")
     const onPressCancelIn = () => {
         Animated.spring(cancelAnimation, {
             toValue: 1,

@@ -19,7 +19,6 @@ export const CustomBottomTab = ({
     const { progress, tHeight, animatedProps, setIsAuthScreenActive, isAuthScreenActive } = useContext(GlobalContext);
     const navigationRef = useNavigation();
     const [windowHeight] = useState(Dimensions.get('window').height);
-    console.log("thisisforheightthisisforheightthisisforheight", windowHeight)
 
     useEffect(() => {
         const unsubscribe = navigationRef.addListener('state', () => {

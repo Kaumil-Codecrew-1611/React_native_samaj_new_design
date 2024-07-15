@@ -2,7 +2,9 @@ import React, { createContext, useReducer } from 'react';
 import {
     aboutUsContent,
     addFamilyMember,
+    allBusinessListing,
     allNewsListing,
+    allUserReview,
     allVillageListing,
     changePassword,
     committeeMembers,
@@ -24,19 +26,20 @@ import {
     otpCheckForForgotPassword,
     payOrderData,
     profileBannerImageUpdate,
+    registerBusinessData,
     registerUser,
     relationshipDataList,
     sendMailSupport,
     sendOtpForForgotPassword,
     setNewForgotPassword,
+    subscriptionListing,
+    subscriptionSelected,
+    termAndCondition,
     updateUserFamilyMembers,
     updateUserProfile,
     userPasswordChange,
-    villagesByUser,
-    allUserReview,
-    termAndCondition,
-    subscriptionListing,
-    registerBusinessData
+    userSelfBusinessCard,
+    villagesByUser
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
 
@@ -81,7 +84,9 @@ export const ApiProvider = ({ children }) => {
     const joinPageContent = () => apiRequest(joinPageData, null, setData, 'joinPageDetails');
     const homePageAllSlider = () => apiRequest(homePageSlider, null, setData, 'homesliderimage');
     const newsDataById = (newsId) => apiRequest(newsDetailsById, newsId, setData, 'newsDataById');
+    const userBusinessCard = (userCardId) => apiRequest(userSelfBusinessCard, userCardId, setData, 'userBusinessCard');
     const register = (userData) => apiRequest(registerUser, userData, setData, 'registerResponse');
+    const subscriptionForBusiness = (subscriptionData) => apiRequest(subscriptionSelected, subscriptionData, setData, 'subscriptionForBusiness');
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
     const loginAPICall = (userData) => apiRequest(loginUser, userData, setData, 'loginDataResponse');
     const PayOrder = (orderData) => apiRequest(payOrderData, orderData, setData, 'orderDataResponse');
@@ -111,11 +116,13 @@ export const ApiProvider = ({ children }) => {
     const allUserDirectory = (search) => apiRequest(allUserReview, search, setData, 'allUserDirectory');
     const termsAndConditions = () => apiRequest(termAndCondition, null, setData, 'termsAndConditions');
     const allSubscriptionListing = () => apiRequest(subscriptionListing, null, setData, 'allSubscriptionListing');
+    const allUsersBussinessListing = () => apiRequest(allBusinessListing, null, setData, 'allUsersBussinessListing');
 
     return (
         <ApiContext.Provider value={{
             state,
             register,
+            subscriptionForBusiness,
             changeUserPassword,
             resetData,
             resetAllData,
@@ -136,6 +143,7 @@ export const ApiProvider = ({ children }) => {
             allDataOfFamilyById,
             userDataByParentId,
             newsDataById,
+            userBusinessCard,
             updateUserProfileImage,
             updateUserProfileUser,
             updateUserPostProfile,
@@ -153,7 +161,8 @@ export const ApiProvider = ({ children }) => {
             allUserDirectory,
             termsAndConditions,
             allSubscriptionListing,
-            registerUserBusinessData
+            registerUserBusinessData,
+            allUsersBussinessListing
         }}>
             {children}
         </ApiContext.Provider>

@@ -207,17 +207,5 @@ const ChangePassword = ({ navigation }) => {
         </View>
     );
 };
-const styles = StyleSheet.create({
-    backdrop: {
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,  // You can adjust these values as needed
-            height: 0, // You can adjust these values as needed
-        },
-        shadowOpacity: 0.35,  // Increase the opacity for a more prominent shadow
-        shadowRadius: 3.34,  // Adjust the radius for a more spread-out shadow
-        elevation: 7,  // Elevation for Android shadow
-    },
 
-});
 export default ChangePassword;

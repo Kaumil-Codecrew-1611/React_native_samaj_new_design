@@ -39,7 +39,7 @@ const Home = ({ navigation }) => {
         // { id: 6, name: t("Events"), redirectTo: "EventsScreen", image: require('../../../assets/events.png') },
         { id: 6, name: t("Business"), redirectTo: "BusinessScreen", image: require('../../../assets/events.png') },
         { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
-        { id: 8, name: "payment", redirectTo: "BusinessSubscription", image: require('../../../assets/events.png') },
+        { id: 8, name: "payment", redirectTo: "BusinessPaymentPage", image: require('../../../assets/events.png') },
         { id: 9, name: "Image", redirectTo: "FlipImage", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
@@ -66,23 +66,19 @@ const Home = ({ navigation }) => {
                 if (storedLanguage) {
                     await i18n.changeLanguage(storedLanguage);
                 }
-
                 const contentContactUs = await contactUsPageDetails();
                 const appHeadingItem = contentContactUs.find(item => item.key === 'appheading');
                 if (appHeadingItem) {
                     setTitleOfHeader(appHeadingItem.value);
                 }
-
                 const result = await homePageAllSlider();
                 setSliderImages(result);
-
                 setFirstName(allUserInfo?.firstname);
                 setLastName(allUserInfo?.lastname);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
     }, [allUserInfo]);
 
@@ -112,7 +108,6 @@ const Home = ({ navigation }) => {
         setIsVisible(true);
     }
 
-    console.log("contentAboutUs", windowWidth)
     return (
         <>
             <View className="flex-1 bg-[#E9EDF7] space-y-3 w-full pb-20" edges={['top']}>

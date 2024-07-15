@@ -64,7 +64,6 @@ const Login = ({ navigation }) => {
 
     const onSubmit = async (data) => {
         setLoading(true);
-        console.log("Device token:  ::: ", pushNotificationToken)
         try {
             const res = await loginAPICall({
                 email_or_mobile: data?.email_or_mobile,

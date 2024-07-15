@@ -22,8 +22,6 @@ function Parallax({ sliderImages }) {
         });
     }, [sliderImages]);
 
-    console.log(process.env.IMAGE_URL, ":::process.env.IMAGE_URL");
-
     return (
         <>
             <View>

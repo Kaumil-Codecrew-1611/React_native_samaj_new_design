@@ -29,9 +29,7 @@ const Aboutus = () => {
             setTitleForGn(contentAboutUs?.AboutusData?.titleG);
             setDescriptionEn(contentAboutUs?.AboutusData?.descriptionE);
             setDescriptionGn(contentAboutUs?.AboutusData?.descriptionG);
-            console.log(contentAboutUs?.AboutusData?.image, ":::contentAboutUs?.AboutusData?.image")
             setAboutUsImage(contentAboutUs?.AboutusData?.image);
-            console.log("sdgfhg", contentAboutUs)
         })();
     }, []);
 
@@ -55,8 +53,6 @@ const Aboutus = () => {
             ]
         };
     });
-
-    console.log("dfgkvdfhshjgddksuhj", `${process.env.IMAGE_URL}${aboutUsImage}`)
 
     const scrollY = useSharedValue(0);
     const headerHeight = useSharedValue(0);

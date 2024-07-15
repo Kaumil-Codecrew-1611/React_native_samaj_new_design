@@ -1,57 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Animated, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import AddBusinessIcon from '../../../assets/addBusiness.svg';
 import AppIcon from '../../../components/AppIcon';
+import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
 
 const MyBusinessCards = ({ navigation }) => {
 
     const [loading, setLoading] = useState(true);
-    const [businessList, setBusinessList] = useState([]);
+    const [myBusinessCard, setMyBusinessCard] = useState("")
+    const { userBusinessCard } = useContext(ApiContext);
+    const { allUserInfo } = useContext(GlobalContext);
+    const userCardId = allUserInfo._id
 
     useEffect(() => {
-        setTimeout(() => {
-            setBusinessList([
-                {
-                    name: 'Vishw Prajapati',
-                    role: 'King of Asgrad tours and travells',
-                    phoneNumber: '+919173211901',
-                    address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-                    email: 'vishwprajapati66@gmail.com'
-                },
-                {
-                    name: 'Vishw Prajapati',
-                    role: 'Owner of Asgrad',
-                    phoneNumber: '+919173211901',
-                    address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-                    email: 'vishwprajapati66@gmail.com'
-                },
-                {
-                    name: 'Vishw Prajapati',
-                    role: 'Owner of Asgrad',
-                    phoneNumber: '+919173211901',
-                    address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-                    email: 'vishwprajapati66@gmail.com'
-                },
-                {
-                    name: 'Vishw Prajapati',
-                    role: 'Owner of Asgrad',
-                    phoneNumber: '+919173211901',
-                    address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-                    email: 'vishwprajapati66@gmail.com'
-                },
-                {
-                    name: 'Vishw Prajapati',
-                    role: 'Owner of Asgrad',
-                    phoneNumber: '+919173211901',
-                    address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-                    email: 'vishwprajapati66@gmail.com'
-                },
-            ]);
-            setLoading(false);
-        }, 2000);
-    }, []);
+        (async function () {
+            try {
+                setLoading(true);
+                const userBusinessCardApi = await userBusinessCard(userCardId);
+                setMyBusinessCard(userBusinessCardApi.businesses)
+            } catch (error) {
+                console.log(error, "error for getting data of news details");
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, [userCardId]);
 
     const handleCallOpenLink = (phoneNumber) => {
         if (phoneNumber) {
@@ -89,7 +65,7 @@ const MyBusinessCards = ({ navigation }) => {
 
         return (
             <View className="p-3">
-                <Animated.View style={[{ transform: [{ scale }] }]} className="flex justify-center items-center">
+                <Animated.View style={[{ transform: [{ scale }] }]}>
                     <TouchableOpacity
                         activeOpacity={1}
                         onPressIn={onPressIn}
@@ -102,7 +78,7 @@ const MyBusinessCards = ({ navigation }) => {
                             <View className="p-4 flex flex-row">
                                 <View>
                                     <Text className="text-white text-2xl w-64 font-bold">{item.name}</Text>
-                                    <Text className="text-white text-lg w-64 mb-4">{item.role}</Text>
+                                    <Text className="text-white text-lg w-64 mb-4">{item.role} of {item.businessName}</Text>
                                 </View>
                                 <View className="w-40 h-50" style={{ height: 40, backgroundColor: '#ffffff', transform: [{ rotate: '45deg' }], position: 'absolute', top: -20, right: -20 }} />
                             </View>
@@ -110,8 +86,8 @@ const MyBusinessCards = ({ navigation }) => {
                             <View className="bg-white p-4">
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Mobile Number : </Text>
-                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber}</Text>
+                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.businessContactNumber)}>
+                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessContactNumber}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View className="flex flex-row flex-wrap items-center">
@@ -125,9 +101,20 @@ const MyBusinessCards = ({ navigation }) => {
                                 </View>
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Website Link : </Text>
-                                    <TouchableOpacity onPress={() => handleClickOnMail(item.email)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.email}</Text>
+                                    <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
+                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
                                     </TouchableOpacity>
+                                </View>
+                                <View className="flex items-end mt-2">
+                                    {item.status == "payment_pending" ?
+                                        <View className="bg-red-100 w-1/3 rounded-md p-2">
+                                            <Text className="text-red-700 capitalize text-xs">payment pending</Text>
+                                        </View>
+                                        :
+                                        <View className="bg-blue-100 w-1/3 rounded-md p-2">
+                                            <Text className="text-blue-700">Published</Text>
+                                        </View>
+                                    }
                                 </View>
                             </View>
                         </LinearGradient>
@@ -203,13 +190,13 @@ const MyBusinessCards = ({ navigation }) => {
             </View>
             {loading ? (
                 renderSkeleton()
-            ) : businessList.length === 0 ? (
+            ) : myBusinessCard.length === 0 ? (
                 <View className="flex-1 justify-center items-center">
                     <Text className="text-lg text-gray-500">No business details found</Text>
                 </View>
             ) : (
                 <FlatList
-                    data={businessList}
+                    data={myBusinessCard}
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index.toString()}
                     contentContainerStyle={{ flexGrow: 1 }}

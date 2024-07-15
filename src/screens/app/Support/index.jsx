@@ -19,7 +19,6 @@ function Support({ navigation }) {
     const faqScale = faqAnimation.interpolate({ inputRange, outputRange });
     const conditionScale = ternConditionAnimation.interpolate({ inputRange, outputRange });
     const [windowHeight] = useState(Dimensions.get('window').height);
-    console.log(windowHeight, ":::windowHeight")
     const onPressInEmail = () => {
         Animated.spring(emailAnimation, {
             toValue: 1,

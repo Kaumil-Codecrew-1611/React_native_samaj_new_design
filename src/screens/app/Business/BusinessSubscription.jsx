@@ -2,13 +2,16 @@ import { FlatList, Radio } from 'native-base';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Animated, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
 
-const BusinessSubscription = () => {
+const BusinessSubscription = ({ route, navigation }) => {
 
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const [value, setValue] = useState('');
-    const { allSubscriptionListing } = useContext(ApiContext);
+    const businessId = route.params.businessId
+    const { allSubscriptionListing, subscriptionForBusiness } = useContext(ApiContext);
+    const { allUserInfo } = useContext(GlobalContext);
     const animation = useMemo(() => new Animated.Value(0), []);
     const scale = animation.interpolate({ inputRange, outputRange });
     const [subscriptionListing, setSubscriptionListing] = useState([]);
@@ -50,9 +53,25 @@ const BusinessSubscription = () => {
         fetchData();
     }, []);
 
+    const onSubmit = async () => {
+        const payload = {
+            plan_id: subscriptionListing.find(item => item._id == value).plan_id,
+            user_id: allUserInfo._id,
+            business_id: businessId
+        }
+        try {
+            const response = await subscriptionForBusiness(payload)
+            console.log("Response of subscription data", response)
+            navigation.navigate('BusinessPaymentPage', { response: response });
+        } catch (error) {
+            console.log("error", error)
+        }
+    };
+
     const bestValuePlanIndex = useMemo(() => getBestValuePlanIndex(), [getBestValuePlanIndex]);
 
     const renderItem = useCallback(({ item, index }) => (
+
         <View className="w-screen">
             <Pressable
                 onPress={() => handlePress(item._id)}
@@ -131,7 +150,7 @@ const BusinessSubscription = () => {
 
                     <View className="w-[40%]">
                         <Text className="text-black text-lg">
-                            Total Pay <Text className="font-bold"> {selectedPlanPrice} ₹ </Text>
+                            Total Pay <Text className="font-bold">{selectedPlanPrice} ₹ </Text>
                         </Text>
                     </View>
 
@@ -141,7 +160,12 @@ const BusinessSubscription = () => {
                                 activeOpacity={1}
                                 onPressIn={onPressIn}
                                 onPressOut={onPressOut}
-                                className="bg-blue-600 p-3 rounded-lg flex flex-row justify-center w-full"
+                                onPress={onSubmit}
+                                disabled={subscriptionListing.length === 0}
+                                style={[
+                                    styles.subscribeButton,
+                                    (subscriptionListing.length === 0) && styles.disabledButton
+                                ]}
                             >
                                 <Text className="text-white text-lg font-bold">Subscribe Now</Text>
                             </TouchableOpacity>
@@ -151,7 +175,7 @@ const BusinessSubscription = () => {
                 </View>
             </View>
 
-        </View>
+        </View >
     );
 };
 
@@ -186,6 +210,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 1)',
     },
 
+    subscribeButton: {
+        backgroundColor: 'rgba(78, 99, 172, 1)',
+        padding: 15,
+        borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%',
+    },
+    disabledButton: {
+        backgroundColor: "blue",
+        opacity: 0.5,
+    },
 });
 
 export default React.memo(BusinessSubscription);

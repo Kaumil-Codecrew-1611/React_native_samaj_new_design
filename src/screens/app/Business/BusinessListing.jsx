@@ -1,46 +1,24 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Animated, FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import ApiContext from '../../../context/ApiContext';
 
 const BusinessListing = () => {
 
-    const businessList = [
-        {
-            name: 'Vishw Prajapati',
-            role: 'God of Asgrad tours and travells',
-            phoneNumber: '+919173211901',
-            address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-            email: 'vishwprajapati66@gmail.com'
-        },
-        {
-            name: 'Vishw Prajapati',
-            role: 'Owner of Asgrad',
-            phoneNumber: '+919173211901',
-            address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-            email: 'vishwprajapati66@gmail.com'
-        },
-        {
-            name: 'Vishw Prajapati',
-            role: 'Owner of Asgrad',
-            phoneNumber: '+919173211901',
-            address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-            email: 'vishwprajapati66@gmail.com'
-        },
-        {
-            name: 'Vishw Prajapati',
-            role: 'Owner of Asgrad',
-            phoneNumber: '+919173211901',
-            address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-            email: 'vishwprajapati66@gmail.com'
-        },
-        {
-            name: 'Vishw Prajapati',
-            role: 'Owner of Asgrad',
-            phoneNumber: '+919173211901',
-            address: 'B-382 Nishitpark aadinathnagar odhav ahmedabad',
-            email: 'vishwprajapati66@gmail.com'
-        },
-    ];
+    const { allUsersBussinessListing } = useContext(ApiContext);
+    const [businessListing, setBusinessListing] = useState()
+
+    useEffect(() => {
+        (async function () {
+            try {
+                const contentBusinessListing = await allUsersBussinessListing();
+                setBusinessListing(contentBusinessListing.businesses)
+
+            } catch (error) {
+                console.log("error", error)
+            }
+        })();
+    }, []);
 
     const handleCallOpenLink = (phoneNumber) => {
         if (phoneNumber) {
@@ -54,8 +32,8 @@ const BusinessListing = () => {
         }
     };
 
-
     const renderItem = ({ item, index }) => {
+
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
         const inputRange = [0, 1];
@@ -76,10 +54,10 @@ const BusinessListing = () => {
             }).start();
         };
 
-
         return (
+
             <View className="p-3">
-                <Animated.View style={[{ transform: [{ scale }] }]} className="flex justify-center items-center">
+                <Animated.View style={[{ transform: [{ scale }] }]}>
                     <TouchableOpacity
                         activeOpacity={1}
                         onPressIn={onPressIn}
@@ -92,7 +70,7 @@ const BusinessListing = () => {
                             <View className="p-4 flex flex-row">
                                 <View>
                                     <Text className="text-white text-2xl w-64 font-bold">{item.name}</Text>
-                                    <Text className="text-white text-lg w-64 mb-4">{item.role}</Text>
+                                    <Text className="text-white text-lg w-64 mb-4">{item.role} of {item.businessName}</Text>
                                 </View>
                                 <View className="w-40 h-50" style={{ height: 40, backgroundColor: '#ffffff', transform: [{ rotate: '45deg' }], position: 'absolute', top: -20, right: -20 }} />
                             </View>
@@ -100,10 +78,15 @@ const BusinessListing = () => {
                             <View className="bg-white p-4">
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Mobile Number : </Text>
-                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber}</Text>
+                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.businessContactNumber)}>
+                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessContactNumber}</Text>
+                                    </TouchableOpacity>
+                                    <Text> , </Text>
+                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber2)}>
+                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber2}</Text>
                                     </TouchableOpacity>
                                 </View>
+
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Address : </Text>
                                     <TouchableOpacity
@@ -113,10 +96,11 @@ const BusinessListing = () => {
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.address}</Text>
                                     </TouchableOpacity>
                                 </View>
+
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Website Link : </Text>
-                                    <TouchableOpacity onPress={() => handleClickOnMail(item.email)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.email}</Text>
+                                    <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
+                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -128,15 +112,17 @@ const BusinessListing = () => {
     };
 
     return (
+
         <View className="bg-[#E9EDF7] h-full">
             <FlatList
-                data={businessList}
+                data={businessListing}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
                 contentContainerStyle={{ flexGrow: 1 }}
                 showsVerticalScrollIndicator={false}
             />
         </View>
+
     );
 };
 

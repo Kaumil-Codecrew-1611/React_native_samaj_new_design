@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Animated, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { GlobalContext } from '../../../context/globalState';
 
@@ -114,7 +113,6 @@ function NewsList({ navigation, news, loading }) {
 
     return (
         <View className="w-full h-full flex flex-row justify-between flex-wrap">
-            {/* <SafeAreaView > */}
             {loading ? (
                 <FlatList
                     data={[1, 2, 3]}
@@ -137,7 +135,6 @@ function NewsList({ navigation, news, loading }) {
                 />
             ) : (
                 <>
-                    {/* style={styles.header} */}
                     <View className={`px-5 py-5 ${Platform.OS == "android" ? 'mt-5' : "mt-0"}`}>
                         <Text className="text-2xl font-bold text-black">{t("news")}</Text>
                     </View>
@@ -154,7 +151,6 @@ function NewsList({ navigation, news, loading }) {
                     </View>
                 </>
             )}
-            {/* </SafeAreaView> */}
         </View>
     );
 }
