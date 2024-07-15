@@ -23,8 +23,9 @@ const schema = yup.object().shape({
     businessType: yup.string().required('Business type is required'),
 });
 
-const AddBusinessDetails = ({ navigation }) => {
-
+const AddBusinessDetails = ({ route, navigation }) => {
+    const template = route.params;
+    console.log(template.templateId, " this is a template id")
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema)
     });

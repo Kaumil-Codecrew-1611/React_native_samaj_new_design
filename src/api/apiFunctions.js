@@ -217,6 +217,10 @@ export const allBusinessListing = async () => {
     const response = await axiosInstance.get(`/allBusinesses`);
     return response.data
 };
+export const allBusinessTemplateList = async () => {
+    const response = await axiosInstance.get(`/templateListing`);
+    return response.data
+};
 
 export const userSelfBusinessCard = async (userCardId) => {
     const response = await axiosInstance.get(`/userBusinesses/${userCardId}`);

@@ -176,7 +176,8 @@ const MyBusinessCards = ({ navigation }) => {
                             activeOpacity={1}
                             onPressIn={onPressInAddBusiness}
                             onPressOut={onPressOutAddBusiness}
-                            onPress={() => navigation.navigate('AddBusinessDetailsScreen')}
+                            // onPress={() => navigation.navigate('AddBusinessDetailsScreen')}
+                            onPress={() => navigation.navigate('SelectBusinessTemplate')}
                         >
                             <View className="w-full flex-row items-center gap-1 ">
                                 <AppIcon type="Feather" color={"#3b82f6"} name="plus-circle" size={26} />
