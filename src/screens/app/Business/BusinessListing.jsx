@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Animated, FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 
-const BusinessListing = () => {
+const BusinessListing = ({ navigation }) => {
 
     const { allUsersBussinessListing } = useContext(ApiContext);
-    const [businessListing, setBusinessListing] = useState()
+    const [businessListing, setBusinessListing] = useState([]);
 
     useEffect(() => {
         (async function () {
             try {
                 const contentBusinessListing = await allUsersBussinessListing();
-                setBusinessListing(contentBusinessListing.businesses)
-
+                setBusinessListing(contentBusinessListing.businesses || []);
             } catch (error) {
-                console.log("error", error)
+                console.log("error", error);
             }
         })();
     }, []);
@@ -33,7 +33,7 @@ const BusinessListing = () => {
     };
 
     const renderItem = ({ item, index }) => {
-
+        console.log("itemitemitemitem", item.images)
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
         const inputRange = [0, 1];
@@ -54,14 +54,19 @@ const BusinessListing = () => {
             }).start();
         };
 
-        return (
+        const handleOpenCardOfBusiness = (images) => {
+            navigation.navigate('FlipImage', { images: images });
+        }
 
+
+        return (
             <View className="p-3">
                 <Animated.View style={[{ transform: [{ scale }] }]}>
                     <TouchableOpacity
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
+                        onPress={() => handleOpenCardOfBusiness(item.images)}
                     >
                         <LinearGradient
                             colors={[backgroundColor, backgroundColor]}
@@ -74,7 +79,6 @@ const BusinessListing = () => {
                                 </View>
                                 <View className="w-40 h-50" style={{ height: 40, backgroundColor: '#ffffff', transform: [{ rotate: '45deg' }], position: 'absolute', top: -20, right: -20 }} />
                             </View>
-
                             <View className="bg-white p-4">
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Mobile Number : </Text>
@@ -86,7 +90,6 @@ const BusinessListing = () => {
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber2}</Text>
                                     </TouchableOpacity>
                                 </View>
-
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Address : </Text>
                                     <TouchableOpacity
@@ -96,7 +99,6 @@ const BusinessListing = () => {
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.address}</Text>
                                     </TouchableOpacity>
                                 </View>
-
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Website Link : </Text>
                                     <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
@@ -112,17 +114,19 @@ const BusinessListing = () => {
     };
 
     return (
-
         <View className="bg-[#E9EDF7] h-full">
-            <FlatList
-                data={businessListing}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                contentContainerStyle={{ flexGrow: 1 }}
-                showsVerticalScrollIndicator={false}
-            />
+            {businessListing.length === 0 ? (
+                <NoDataFound message={"There are no Business"} />
+            ) : (
+                <FlatList
+                    data={businessListing}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    showsVerticalScrollIndicator={false}
+                />
+            )}
         </View>
-
     );
 };
 

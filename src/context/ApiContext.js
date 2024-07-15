@@ -4,6 +4,7 @@ import {
     activeBusiness,
     addFamilyMember,
     allBusinessListing,
+    allBusinessTemplateList,
     allNewsListing,
     allUserReview,
     allVillageListing,
@@ -119,6 +120,7 @@ export const ApiProvider = ({ children }) => {
     const termsAndConditions = () => apiRequest(termAndCondition, null, setData, 'termsAndConditions');
     const allSubscriptionListing = () => apiRequest(subscriptionListing, null, setData, 'allSubscriptionListing');
     const allUsersBussinessListing = () => apiRequest(allBusinessListing, null, setData, 'allUsersBussinessListing');
+    const getAllBussinessTemplateListing = () => apiRequest(allBusinessTemplateList, null, setData, 'get_All_Business_Template_Listing');
 
     return (
         <ApiContext.Provider value={{
@@ -165,7 +167,8 @@ export const ApiProvider = ({ children }) => {
             termsAndConditions,
             allSubscriptionListing,
             registerUserBusinessData,
-            allUsersBussinessListing
+            allUsersBussinessListing,
+            getAllBussinessTemplateListing
         }}>
             {children}
         </ApiContext.Provider>

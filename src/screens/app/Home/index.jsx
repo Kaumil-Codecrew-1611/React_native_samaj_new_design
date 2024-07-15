@@ -38,9 +38,9 @@ const Home = ({ navigation }) => {
         { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/directory.png') },
         // { id: 6, name: t("Events"), redirectTo: "EventsScreen", image: require('../../../assets/events.png') },
         { id: 6, name: t("Business"), redirectTo: "BusinessScreen", image: require('../../../assets/events.png') },
-        { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
-        { id: 8, name: "payment", redirectTo: "BusinessPaymentPage", image: require('../../../assets/events.png') },
-        { id: 9, name: "Image", redirectTo: "BusinessPaymentFail", image: require('../../../assets/events.png') },
+        // { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
+        // { id: 8, name: "payment", redirectTo: "BusinessPaymentPage", image: require('../../../assets/events.png') },
+        // { id: 9, name: "Image", redirectTo: "FlipImage", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
     ];

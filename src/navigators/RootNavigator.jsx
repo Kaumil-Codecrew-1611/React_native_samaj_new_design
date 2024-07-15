@@ -5,6 +5,16 @@ import { Dimensions, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import BottomTabs from '../containers/BottomTabs';
 import Aboutus from '../screens/app/About';
+import AddBusinessDetails from '../screens/app/Business/AddBusinessDetails';
+import BusinessCardScreen from '../screens/app/Business/BusinessCardScreen';
+import BusinessListing from '../screens/app/Business/BusinessListing';
+import BusinessPaymentFail from '../screens/app/Business/BusinessPaymentFail';
+import BusinessPaymentPage from '../screens/app/Business/BusinessPaymentPage';
+import BusinessPaymentSuccess from '../screens/app/Business/BusinessPaymentSuccess';
+import BusinessSubscription from '../screens/app/Business/BusinessSubscription';
+import FlipImage from '../screens/app/Business/FlipImage';
+import MyBusinessCards from '../screens/app/Business/MyBusinessCards';
+import SelectBusinessTemplate from '../screens/app/Business/SelectBusinessTemplate';
 import ChangePassword from '../screens/app/ChangePassword';
 import AllUserDirectory from '../screens/app/Directory/AllUserDirectory';
 import EditUserProfile from '../screens/app/EditUser';
@@ -32,15 +42,6 @@ import TermAndCondition from '../screens/app/TermAndCondition/TermAndCondition';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
-import BusinessListing from '../screens/app/Business/BusinessListing';
-import BusinessCardScreen from '../screens/app/Business/BusinessCardScreen';
-import AddBusinessDetails from '../screens/app/Business/AddBusinessDetails';
-import BusinessSubscription from '../screens/app/Business/BusinessSubscription';
-import MyBusinessCards from '../screens/app/Business/MyBusinessCards';
-import FlipImage from '../screens/app/Business/FlipImage';
-import BusinessPaymentPage from '../screens/app/Business/BusinessPaymentPage';
-import BusinessPaymentSuccess from '../screens/app/Business/BusinessPaymentSuccess';
-import BusinessPaymentFail from '../screens/app/Business/BusinessPaymentFail';
 
 const RootStack = createNativeStackNavigator()
 
@@ -108,6 +109,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="BusinessSubscription" component={BusinessSubscription} options={{ headerTitle: "Subscription" }} />
                 <RootStack.Screen name="FlipImage" component={FlipImage} options={{ headerTitle: "Flip Image" }} />
                 <RootStack.Screen name="BusinessPaymentPage" component={BusinessPaymentPage} options={{ headerTitle: "Business Payment" }} />
+                <RootStack.Screen name="SelectBusinessTemplate" component={SelectBusinessTemplate} options={{ headerTitle: "Business Template" }} />
             </RootStack.Navigator>
         </>
     )
