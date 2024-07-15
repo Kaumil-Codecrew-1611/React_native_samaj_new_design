@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, ScrollView, Text, View } from 'react-native';
-import Button from '../../../components/Button';
-import { GlobalContext } from '../../../context/globalState';
-import ApiContext from '../../../context/ApiContext';
 import RazorpayCheckout from 'react-native-razorpay';
+import Button from '../../../components/Button';
+import ApiContext from '../../../context/ApiContext';
+import { GlobalContext } from '../../../context/globalState';
 
-function Payment({ navigation, route }) {
+function Payment({ navigation }) {
+
     const { registerData, setRegisterData } = useContext(GlobalContext);
     const { state, getAmount, PayOrder, register } = useContext(ApiContext);
     const [amount, setAmount] = useState(0);
@@ -13,8 +14,8 @@ function Payment({ navigation, route }) {
     useEffect(() => {
         fetchPaymentAmount();
     }, []);
-    useEffect(() => {
 
+    useEffect(() => {
         setAmount(parseFloat(state?.amountData?.value));
     }, [state.amountData])
 
@@ -25,27 +26,14 @@ function Payment({ navigation, route }) {
             console.error('An error occurred while fetching payment amount:', error);
         }
     };
-    const [orderDataRes, setOrderDataRes] = useState(null)
-    useEffect(() => {
-        // if (state.orderDataResponse) payNow(state.orderDataResponse)
-        setOrderDataRes(state?.orderDataResponse)
-    }, [state.orderDataResponse])
 
     async function handlePayment() {
         try {
-
             const result = await PayOrder({
                 firstname: registerData?.firstName,
-                // personal_id: registerData?.personal_id,
                 mobile_number: registerData?.mobile_number,
             });
-            /*   setTimeout(async () => {
-                  if (state?.orderDataResponse) { */
-
             await payNow(result);
-            /*    }
-           }, 1000) */
-
         } catch (error) {
             console.error('An error occurred while handling payment:', error);
         }
@@ -73,37 +61,28 @@ function Payment({ navigation, route }) {
 
             const { razorpay_payment_id } = paymentResponse;
 
-            // Create a new object with the updated payment_id
             const updatedRegisterData = { ...registerData, payment_id: razorpay_payment_id };
 
             await register({ PerentsData: updatedRegisterData });
 
-            // Update the state with the new data
             setRegisterData(updatedRegisterData);
 
-            // Navigate to PaymentSuccess
             navigation.navigate('PaymentSuccess', { registerData: updatedRegisterData, amount: data?.order?.amount });
         } catch (error) {
-            // Navigate to PaymentFailed
-
             const errorObject = JSON.parse(error.description);
-
-            // Access the description property
             const errorDescription = errorObject?.error?.description;
             navigation.navigate('PaymentFailed', { registerData: registerData, amount: data?.order?.amount, description: errorDescription });
 
         }
     };
 
-
-    // const { payload } = route.params;
     const payload = {
         Name: registerData.firstname + " " + registerData.lastname,
         PhoneNo: registerData.mobile_number,
         Address: registerData.address + " " + registerData.city + " " + registerData.state + " " + registerData.pincode
     }
-    //117 
     const windowHeight = Dimensions.get('window').height;
+
     return (
         <View className="flex-1 bg-green-200 relative">
             <View className={`w-full absolute  ${windowHeight < 670 ? "top-[90px]" : "top-[117px]"} z-10 h-32 flex-row justify-center`}>
@@ -111,6 +90,7 @@ function Payment({ navigation, route }) {
                     <Text className="text-white text-3xl tracking-wider font-extrabold">PAYMENT</Text>
                 </View>
             </View>
+
             <View className="w-full bg-white h-[75%] pt-24 px-8 rounded-t-[45px] overflow-hidden absolute bottom-0">
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                     <View className="flex-1 ">
@@ -144,6 +124,7 @@ function Payment({ navigation, route }) {
                     <Button className="bg-green-600 py-3 rounded-lg" title={`Pay(${amount}₹)`} onPress={() => handlePayment()} />
                 </View>
             </View>
+
         </View>
     );
 }

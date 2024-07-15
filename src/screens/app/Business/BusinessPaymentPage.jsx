@@ -1,12 +1,30 @@
-import React, { useCallback, useMemo } from 'react';
-import { Animated, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
+import {
+    Animated,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
+import RazorpayCheckout from 'react-native-razorpay';
+import ApiContext from '../../../context/ApiContext';
+import { t } from 'i18next';
+import { ActivityIndicator } from 'react-native-paper';
 
-const ChangePassword = ({ route }) => {
+const BusinessPaymentPage = ({ route, navigation }) => {
 
-    console.log("routerouterouteroute", route.params)
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
+    const { activeBusinessData } = useContext(ApiContext);
+    const responseOfData = route.params?.response?.businessData;
+    const razorpayData = route.params?.response;
+    const planDetailsOfSubscription = route.params?.response?.planDetail;
     const animation = useMemo(() => new Animated.Value(0), []);
+    const [loading, setLoading] = useState("");
     const scale = animation.interpolate({ inputRange, outputRange });
 
     const onPressIn = useCallback(() => {
@@ -23,14 +41,48 @@ const ChangePassword = ({ route }) => {
         }).start();
     }, [animation]);
 
+    const handlePayment = async (data) => {
+        try {
+            const options = {
+                key: data.razorpay_id,
+                subscription_id: data.subscription_id,
+                plan_id: data.plan_id,
+                name: 'Pay to Panchal Samaj',
+                description: 'Recurring Payment to Panchal Samaj',
+                image: 'https://samajapp.codecrewinfotech.com/uploads/appstore.png',
+                prefill: {
+                    name: responseOfData.name || '',
+                    email: responseOfData.businessEmail || '',
+                },
+                notes: {
+                    name: responseOfData.businessName || '',
+                    email: responseOfData.businessEmail || '',
+                },
+                theme: {
+                    color: '#0D5ADD',
+                }
+            };
+            setLoading(true);
+            const paymentResponse = await RazorpayCheckout.open(options);
+            setLoading(false);
+            const { razorpay_payment_id } = paymentResponse;
+            const updatedRegisterData = { payment_id: razorpay_payment_id, business_id: responseOfData._id };
+            await activeBusinessData(updatedRegisterData);
+            navigation.navigate('BusinessPaymentSuccess', { name: responseOfData.name, businessEmail: responseOfData.businessEmail, businessName: responseOfData.businessName });
+        } catch (error) {
+            console.log("error", error);
+            navigation.navigate('BusinessPaymentFail', { name: responseOfData.name, businessEmail: responseOfData.businessEmail, businessName: responseOfData.businessName });
+        }
+    };
+
     return (
 
         <View className="flex-1 bg-[#E9EDF7] p-2">
             <View className="bg-white mx-2 h-[80%] rounded-tl-[30px] rounded-tr-[30px] absolute bottom-0 left-0 right-0">
                 <View className="absolute top-[-35] left-0 right-0 items-center">
-                    <Text className="bg-[#4e63ac] text-white text-xl font-bold rounded-[18px] p-5">Payment for business card</Text>
+                    <Text className="bg-[#4e63ac] text-white text-xl font-bold rounded-[18px] p-5">Payment for Business Card</Text>
                 </View>
-                <View className="flex flex-1 p-8 pt-12" style={styles.contentContainer}>
+                <View className="flex flex-1 p-8 pt-12 mt-4">
                     <KeyboardAvoidingView
                         behavior={Platform.OS === "ios" ? "padding" : "height"}
                         className="flex flex-1"
@@ -38,70 +90,70 @@ const ChangePassword = ({ route }) => {
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <ScrollView showsVerticalScrollIndicator={false}>
                                 <View className="w-full">
-                                    <View className="flex flex-row items-center">
-                                        <Text className="w-[40%] text-[18px] text-black font-semibold my-3">
-                                            Name :-
-                                        </Text>
-                                        <Text className="w-[60%] text-justify text-md text-black font-semibold my-3">
-                                            Prajapati Vishw Amitbhai
-                                        </Text>
-                                    </View>
-                                    <View className="flex flex-row items-center">
-                                        <Text className="w-[40%] text-[18px] text-black font-semibold my-3">
-                                            Company Email :-
-                                        </Text>
-                                        <Text className="w-[60%] text-justify text-md text-black font-semibold my-3">
-                                            vishwprajapati66@gmail.com
-                                        </Text>
-                                    </View>
-                                    <View className="flex flex-row items-center">
-                                        <Text className="w-[40%] text-[18px] text-black font-semibold my-3">
-                                            Company Name :-
-                                        </Text>
-                                        <Text className="w-[60%] text-justify text-md text-black font-semibold my-3">
-                                            Asgard tours and travels
-                                        </Text>
-                                    </View>
+                                    {responseOfData && (
+                                        <>
+                                            <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-4 rounded-[10px]">
+                                                <View className="flex flex-row justify-between items-center">
+                                                    <Text className="w-[50%] text-[16px] text-black font-semibold mr-2">
+                                                        Name :-
+                                                    </Text>
+                                                    <Text className="w-[50%] text-justify text-md text-black font-semibold">
+                                                        {responseOfData.name}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-4 rounded-[10px]">
+                                                <View className="flex flex-row items-center">
+                                                    <Text className="w-[50%] text-[16px] text-black font-semibold mr-2">
+                                                        Company Name :-
+                                                    </Text>
+                                                    <Text className="w-[50%] text-md text-black font-semibold">
+                                                        {responseOfData.businessName}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-4 rounded-[10px]">
+                                                <View className="flex flex-row items-center">
+                                                    <Text className="w-[50%] text-[16px] text-black font-semibold mr-2">
+                                                        Company Email :-
+                                                    </Text>
+                                                    <Text className="w-[50%] text-md text-black font-semibold">
+                                                        {responseOfData.businessEmail}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </>
+                                    )}
                                 </View>
                             </ScrollView>
                         </TouchableWithoutFeedback>
                     </KeyboardAvoidingView>
-                    <Animated.View style={[{ transform: [{ scale }] }]}>
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPressIn={onPressIn}
-                            onPressOut={onPressOut}
-                        >
-                            <View className="bg-[#4e63ac] rounded-xl p-3">
-                                <Text className="text-white text-lg font-bold text-center">Pay Now</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </Animated.View>
+
+                    {loading ? (
+                        <View className="bg-[#4e63ac] rounded-[10px] flex flex-row justify-center items-center p-3">
+                            <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
+                            <ActivityIndicator size="small" color="white" />
+                        </View>
+                    ) : (
+                        <Animated.View style={[{ transform: [{ scale }] }]}>
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPressIn={onPressIn}
+                                onPressOut={onPressOut}
+                                onPress={() => handlePayment(razorpayData)}
+                            >
+                                <View className="bg-[#4e63ac] rounded-xl p-3">
+                                    <Text className="text-white text-lg font-bold text-center">
+                                        Pay Now {planDetailsOfSubscription?.[0]?.price} ₹
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Animated.View>
+                    )}
                 </View>
             </View>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-
-    fieldContainer: {
-        marginBottom: 16,
-    },
-    label: {
-        fontSize: 14,
-        color: '#666',
-        marginBottom: 4,
-    },
-    value: {
-        fontSize: 16,
-        color: '#333',
-    },
-    link: {
-        color: '#007AFF',
-        textDecorationLine: 'underline',
-    },
-
-});
-
-export default ChangePassword;
+export default BusinessPaymentPage;

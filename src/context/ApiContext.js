@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import {
     aboutUsContent,
+    activeBusiness,
     addFamilyMember,
     allBusinessListing,
     allNewsListing,
@@ -87,6 +88,7 @@ export const ApiProvider = ({ children }) => {
     const userBusinessCard = (userCardId) => apiRequest(userSelfBusinessCard, userCardId, setData, 'userBusinessCard');
     const register = (userData) => apiRequest(registerUser, userData, setData, 'registerResponse');
     const subscriptionForBusiness = (subscriptionData) => apiRequest(subscriptionSelected, subscriptionData, setData, 'subscriptionForBusiness');
+    const activeBusinessData = (businessKeyData) => apiRequest(activeBusiness, businessKeyData, setData, 'activeBusinessData');
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
     const loginAPICall = (userData) => apiRequest(loginUser, userData, setData, 'loginDataResponse');
     const PayOrder = (orderData) => apiRequest(payOrderData, orderData, setData, 'orderDataResponse');
@@ -132,6 +134,7 @@ export const ApiProvider = ({ children }) => {
             loginAPICall,
             homePageAllSlider,
             aboutUsContentApi,
+            activeBusinessData,
             villagesListing,
             allUserByVillageId,
             newsListing,

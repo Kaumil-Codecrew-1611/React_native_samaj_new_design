@@ -1,6 +1,7 @@
+import { t } from 'i18next';
 import { FlatList, Radio } from 'native-base';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Animated, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 
@@ -15,6 +16,7 @@ const BusinessSubscription = ({ route, navigation }) => {
     const animation = useMemo(() => new Animated.Value(0), []);
     const scale = animation.interpolate({ inputRange, outputRange });
     const [subscriptionListing, setSubscriptionListing] = useState([]);
+    const [loading, setLoading] = useState("");
 
     const handlePress = ((subscriptionValue) => {
         setValue(subscriptionValue);
@@ -60,7 +62,9 @@ const BusinessSubscription = ({ route, navigation }) => {
             business_id: businessId
         }
         try {
+            setLoading(true)
             const response = await subscriptionForBusiness(payload)
+            setLoading(false)
             console.log("Response of subscription data", response)
             navigation.navigate('BusinessPaymentPage', { response: response });
         } catch (error) {
@@ -72,7 +76,7 @@ const BusinessSubscription = ({ route, navigation }) => {
 
     const renderItem = useCallback(({ item, index }) => (
 
-        <View className="w-screen">
+        <View className="w-screen mt-3">
             <Pressable
                 onPress={() => handlePress(item._id)}
                 style={[
@@ -154,24 +158,30 @@ const BusinessSubscription = ({ route, navigation }) => {
                         </Text>
                     </View>
 
-                    <View className="w-[60%]">
-                        <Animated.View style={[{ transform: [{ scale }] }]} className="flex justify-center items-center">
-                            <TouchableOpacity
-                                activeOpacity={1}
-                                onPressIn={onPressIn}
-                                onPressOut={onPressOut}
-                                onPress={onSubmit}
-                                disabled={subscriptionListing.length === 0}
-                                style={[
-                                    styles.subscribeButton,
-                                    (subscriptionListing.length === 0) && styles.disabledButton
-                                ]}
-                            >
-                                <Text className="text-white text-lg font-bold">Subscribe Now</Text>
-                            </TouchableOpacity>
-                        </Animated.View>
-                    </View>
-
+                    {loading ? (
+                        <View className="bg-[#4e63ac] w-[60%] rounded-[10px] flex flex-row justify-center items-center p-[11px]">
+                            <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
+                            <ActivityIndicator size="large" color="white" />
+                        </View>
+                    ) : (
+                        <View className="w-[60%]">
+                            <Animated.View style={[{ transform: [{ scale }] }]} className="flex justify-center items-center">
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPressIn={onPressIn}
+                                    onPressOut={onPressOut}
+                                    onPress={onSubmit}
+                                    disabled={subscriptionListing.length === 0}
+                                    style={[
+                                        styles.subscribeButton,
+                                        (subscriptionListing.length === 0) && styles.disabledButton
+                                    ]}
+                                >
+                                    <Text className="text-white text-lg font-bold">Subscribe Now</Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+                        </View>
+                    )}
                 </View>
             </View>
 

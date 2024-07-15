@@ -39,6 +39,8 @@ import BusinessSubscription from '../screens/app/Business/BusinessSubscription';
 import MyBusinessCards from '../screens/app/Business/MyBusinessCards';
 import FlipImage from '../screens/app/Business/FlipImage';
 import BusinessPaymentPage from '../screens/app/Business/BusinessPaymentPage';
+import BusinessPaymentSuccess from '../screens/app/Business/BusinessPaymentSuccess';
+import BusinessPaymentFail from '../screens/app/Business/BusinessPaymentFail';
 
 const RootStack = createNativeStackNavigator()
 
@@ -89,6 +91,8 @@ const RootNavigator = () => {
                 <RootStack.Screen name="EditUserProfile" component={EditUserProfile} options={{ headerTitle: t("EditUserProfile") }} />
                 <RootStack.Screen name="Payment" component={Payment} options={{ headerTitle: t("PaymentPage") }} />
                 <RootStack.Screen name="PaymentSuccess" component={PaymentSuccess} options={{ headerTitle: t("PaymentPage") }} />
+                <RootStack.Screen name="BusinessPaymentSuccess" component={BusinessPaymentSuccess} options={{ headerTitle: "Payment Success" }} />
+                <RootStack.Screen name="BusinessPaymentFail" component={BusinessPaymentFail} options={{ headerTitle: "Payment Fail" }} />
                 <RootStack.Screen name="PaymentFailed" component={PaymentFailed} options={{ headerTitle: t("PaymentPage") }} />
                 <RootStack.Screen name="select_village" options={{ headerTitle: t("RegisterPage") }} component={SelectVillage} />
                 <RootStack.Screen name="ViewFamilyDetails" options={{ headerTitle: t("familyDetailsPage") }} component={ViewFamilyTree} />

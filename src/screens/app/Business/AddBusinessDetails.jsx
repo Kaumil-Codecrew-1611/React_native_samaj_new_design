@@ -504,12 +504,12 @@ const AddBusinessDetails = ({ navigation }) => {
                             </View>
                             <View className="mt-3 mb-6">
                                 {loading ? (
-                                    <View className="flex flex-row items-center justify-center bg-blue-500 cursor-pointer p-2 rounded-lg">
+                                    <View className="flex flex-row items-center justify-center bg-[#4e63ac] cursor-pointer p-2 rounded-lg">
                                         <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
                                         <ActivityIndicator size="large" color="white" />
                                     </View>
                                 ) : (
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title="Submit" disabled={loading} onPress={handleSubmit(onSubmit)} />
+                                    <Button className="bg-[#4e63ac] py-3 rounded-lg" title="Submit" disabled={loading} onPress={handleSubmit(onSubmit)} />
                                 )}
                             </View>
                         </ScrollView>
