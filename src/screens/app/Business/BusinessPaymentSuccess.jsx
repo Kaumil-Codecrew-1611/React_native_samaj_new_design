@@ -14,9 +14,9 @@ function BusinessPaymentSuccess({ navigation, route }) {
     }
 
     return (
-        <View className="flex-1 bg-green-200 relative">
-            <View className={`w-full absolute  ${windowHeight < 670 ? "top-[90px]" : "top-[160px]"} z-10 h-16 flex-row justify-center`}>
-                <View className=" w-72 rounded-xl bg-green-600 h-full flex-row justify-center items-center">
+        <View className="flex-1 bg-blue-200 relative">
+            <View className={`w-full absolute  ${windowHeight < 670 ? "top-[115px]" : "top-[160px]"} z-10 h-16 flex-row justify-center`}>
+                <View className=" w-72 rounded-xl bg-[#4e63ac] h-full flex-row justify-center items-center">
                     <Text className="text-white text-xl font-extrabold">Business Payment Success</Text>
                 </View>
             </View>
@@ -50,7 +50,8 @@ function BusinessPaymentSuccess({ navigation, route }) {
                     </View>
                 </ScrollView>
                 <View className="mb-12">
-                    <Button className="bg-green-600 py-3 rounded-lg" title="Go to Business Page" onPress={handleredirect} />
+                    {/*  className={`w-full absolute   z-10 h-16 flex-row justify-center`} */}
+                    <Button className={`bg-[#4e63ac] py-3 rounded-lg ${windowHeight < 670 ? "top-[19px]" : ""}`} title="Go to Business Page" onPress={handleredirect} />
                 </View>
             </View>
         </View>
