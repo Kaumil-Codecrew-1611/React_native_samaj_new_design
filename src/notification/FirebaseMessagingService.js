@@ -7,7 +7,7 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 });
 
 // Request user permission for notifications
-async function requestUserPermission() {
+export async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -15,7 +15,24 @@ async function requestUserPermission() {
 
     if (enabled) {
         console.log('Authorization status:', authStatus);
+        getFCMToken();
     }
+}
+
+// Get FCM token
+async function getFCMToken() {
+    try {
+        const fcmToken = await messaging().getToken();
+        console.log(fcmToken, ":::before fcmToken")
+        if (fcmToken) {
+            console.log('Your Firebase Token is:', fcmToken);
+        } else {
+            console.log('Failed', 'No token received');
+        }
+    } catch (error) {
+        console.log(error, "::::which error arrived?")
+    }
+
 }
 
 requestUserPermission();
