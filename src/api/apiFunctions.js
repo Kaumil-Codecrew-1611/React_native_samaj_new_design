@@ -231,3 +231,8 @@ export const subscriptionSelected = async (subscriptionData) => {
     const response = await axiosInstance.post('/createSubscriptions', subscriptionData);
     return response.data;
 };
+
+export const activeBusiness = async (businessKeyData) => {
+    const response = await axiosInstance.post('/activeBusiness', businessKeyData);
+    return response.data;
+};

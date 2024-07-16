@@ -1,23 +1,21 @@
-
-import React, { useState, useRef } from 'react';
-import { View, Image, TouchableWithoutFeedback, Animated, StyleSheet, Dimensions } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Animated, Dimensions, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
 const { width } = Dimensions.get('window');
-const IMAGE_SIZE = width * 1; // 80% of screen width
+const IMAGE_SIZE = width * 1;
 
-const FlipImage = () => {
+const FlipImage = ({ route }) => {
+
     const [flipped, setFlipped] = useState(false);
     const flipAnim = useRef(new Animated.Value(0)).current;
-
-    const frontImage = require('../../../assets/card01.png');
-    const backImage = require('../../../assets/card02.png');
-
+    const frontImage = route.params.images.front
+    const backImage = route.params.images.back
     const flipToValue = flipped ? 0 : 1;
 
     const handleFlip = () => {
         Animated.timing(flipAnim, {
             toValue: flipToValue,
-            duration: 800,
+            duration: 1000,
             useNativeDriver: true,
         }).start(() => {
             setFlipped(!flipped);
@@ -47,15 +45,16 @@ const FlipImage = () => {
             <TouchableWithoutFeedback onPress={handleFlip}>
                 <View>
                     <Animated.View style={[styles.image, frontAnimatedStyle, flipped ? styles.hidden : styles.visible]}>
-                        <Image source={frontImage} style={styles.image} />
+                        <Image source={{ uri: process.env.IMAGE_URL + frontImage }} style={styles.image} />
                     </Animated.View>
                     <Animated.View style={[styles.image, backAnimatedStyle, flipped ? styles.visible : styles.hidden]}>
-                        <Image source={backImage} style={styles.image} />
+                        <Image source={{ uri: process.env.IMAGE_URL + backImage }} style={styles.image} />
                     </Animated.View>
                 </View>
             </TouchableWithoutFeedback>
         </View>
     );
+
 };
 
 const styles = StyleSheet.create({

@@ -4,7 +4,20 @@ import { t } from 'i18next';
 import { TextArea } from 'native-base';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import Feather from 'react-native-vector-icons/Feather';
 import * as yup from 'yup';
@@ -24,6 +37,7 @@ const schema = yup.object().shape({
 });
 
 const AddBusinessDetails = ({ route, navigation }) => {
+
     const template = route.params;
     console.log(template.templateId, " this is a template id")
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
@@ -63,6 +77,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
             type: data?.businessLogo?.type ?? ''
         };
         data?.businessLogo?.uri && data.businessLogo?.type && data.businessLogo?.fileName && formData.append('businessLogo', businessLogo);
+        template.templateId && formData.append('template_id', template.templateId);
         try {
             const response = await registerUserBusinessData(formData);
             navigation.navigate('BusinessSubscription', { businessId: response.businessDetail._id, formData });
@@ -112,7 +127,6 @@ const AddBusinessDetails = ({ route, navigation }) => {
                 >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
-
                             <View>
                                 <View className="w-full mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Full Name:</Text>
@@ -487,6 +501,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                     {errors.role && <Text style={styles.errorText}>{errors.role.message}</Text>}
                                 </View>
                             </View>
+
                             <View style={styles.datePickerContainer}>
                                 <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Opening of Job:</Text>
                                 <TouchableWithoutFeedback onPress={() => setShowPicker(true)}>
@@ -503,16 +518,18 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                     />
                                 )}
                             </View>
+
                             <View className="mt-3 mb-6">
                                 {loading ? (
-                                    <View className="flex flex-row items-center justify-center bg-blue-500 cursor-pointer p-2 rounded-lg">
+                                    <View className="flex flex-row items-center justify-center bg-[#4e63ac] cursor-pointer p-2 rounded-lg">
                                         <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>
                                         <ActivityIndicator size="large" color="white" />
                                     </View>
                                 ) : (
-                                    <Button className="bg-blue-500 py-3 rounded-lg" title="Submit" disabled={loading} onPress={handleSubmit(onSubmit)} />
+                                    <Button className="bg-[#4e63ac] py-3 rounded-lg" title="Submit" disabled={loading} onPress={handleSubmit(onSubmit)} />
                                 )}
                             </View>
+
                         </ScrollView>
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>

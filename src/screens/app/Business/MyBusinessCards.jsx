@@ -1,33 +1,39 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useContext, useState } from 'react';
 import { Animated, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import AddBusinessIcon from '../../../assets/addBusiness.svg';
 import AppIcon from '../../../components/AppIcon';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 
 const MyBusinessCards = ({ navigation }) => {
 
     const [loading, setLoading] = useState(true);
-    const [myBusinessCard, setMyBusinessCard] = useState("")
+    const [myBusinessCard, setMyBusinessCard] = useState("");
     const { userBusinessCard } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
-    const userCardId = allUserInfo._id
+    const userCardId = allUserInfo._id;
 
-    useEffect(() => {
-        (async function () {
-            try {
-                setLoading(true);
-                const userBusinessCardApi = await userBusinessCard(userCardId);
-                setMyBusinessCard(userBusinessCardApi.businesses)
-            } catch (error) {
-                console.log(error, "error for getting data of news details");
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, [userCardId]);
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const userBusinessCardApi = await userBusinessCard(userCardId);
+            setMyBusinessCard(userBusinessCardApi.businesses);
+        } catch (error) {
+            console.log(error, "error for getting data of business cards");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchData();
+        }, [userCardId])
+    );
 
     const handleCallOpenLink = (phoneNumber) => {
         if (phoneNumber) {
@@ -43,7 +49,9 @@ const MyBusinessCards = ({ navigation }) => {
 
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
+
     const renderItem = ({ item, index }) => {
+
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
 
@@ -63,6 +71,10 @@ const MyBusinessCards = ({ navigation }) => {
             }).start();
         };
 
+        const handleOpenCardOfBusiness = (images) => {
+            navigation.navigate('FlipImage', { images: images });
+        }
+
         return (
             <View className="p-3">
                 <Animated.View style={[{ transform: [{ scale }] }]}>
@@ -70,6 +82,7 @@ const MyBusinessCards = ({ navigation }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
+                        onPress={() => handleOpenCardOfBusiness(item.images)}
                     >
                         <LinearGradient
                             colors={[backgroundColor, backgroundColor]}
@@ -99,19 +112,21 @@ const MyBusinessCards = ({ navigation }) => {
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.address}</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View className="flex flex-row flex-wrap items-center">
-                                    <Text className="text-black text-lg font-bold">Website Link : </Text>
-                                    <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                {item.businessWebsite &&
+                                    <View className="flex flex-row flex-wrap items-center">
+                                        <Text className="text-black text-lg font-bold">Website Link : </Text>
+                                        <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
+                                            <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
                                 <View className="flex items-end mt-2">
-                                    {item.status == "payment_pending" ?
+                                    {item.status === "payment_pending" ?
                                         <View className="bg-red-100 w-1/3 rounded-md p-2">
                                             <Text className="text-red-700 capitalize text-xs">payment pending</Text>
                                         </View>
                                         :
-                                        <View className="bg-blue-100 w-1/3 rounded-md p-2">
+                                        <View className="bg-blue-100 w-1/4 rounded-md p-2">
                                             <Text className="text-blue-700">Published</Text>
                                         </View>
                                     }
@@ -120,13 +135,13 @@ const MyBusinessCards = ({ navigation }) => {
                         </LinearGradient>
                     </TouchableOpacity>
                 </Animated.View>
-            </View>
+            </View >
         );
     };
 
     const renderSkeleton = () => (
         [...Array(5)].map((_, index) => (
-            <SkeletonPlaceholder>
+            <SkeletonPlaceholder key={index}>
                 <SkeletonPlaceholder.Item
                     flexDirection="row"
                     alignItems="center"
@@ -176,7 +191,6 @@ const MyBusinessCards = ({ navigation }) => {
                             activeOpacity={1}
                             onPressIn={onPressInAddBusiness}
                             onPressOut={onPressOutAddBusiness}
-                            // onPress={() => navigation.navigate('AddBusinessDetailsScreen')}
                             onPress={() => navigation.navigate('SelectBusinessTemplate')}
                         >
                             <View className="w-full flex-row items-center gap-1 ">
@@ -192,9 +206,7 @@ const MyBusinessCards = ({ navigation }) => {
             {loading ? (
                 renderSkeleton()
             ) : myBusinessCard.length === 0 ? (
-                <View className="flex-1 justify-center items-center">
-                    <Text className="text-lg text-gray-500">No business details found</Text>
-                </View>
+                <NoDataFound message={"There are no Business"} />
             ) : (
                 <FlatList
                     data={myBusinessCard}
