@@ -1,10 +1,11 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Animated, TouchableOpacity, Pressable } from 'react-native';
 import { Radio } from 'native-base';
-import ApiContext from '../../../context/ApiContext';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Animated, FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImageView from "react-native-image-viewing";
+import ApiContext from '../../../context/ApiContext';
 
 const SelectBusinessTemplate = ({ navigation }) => {
+
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const [value, setValue] = useState('');
@@ -35,7 +36,6 @@ const SelectBusinessTemplate = ({ navigation }) => {
     };
 
     const handlePress = useCallback((templateId) => {
-        console.log("Selected template ID:", templateId);
         setValue(templateId);
     }, []);
 
@@ -57,7 +57,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
         const animationForTemplate = new Animated.Value(0);
         const template_scale = animationForTemplate.interpolate({
             inputRange: [0, 1],
-            outputRange: [1, 1.1] // Adjust as per your requirement
+            outputRange: [1, 1.1]
         });
 
         const onPresstemplateIn = () => {
@@ -80,7 +80,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
         };
 
         return (
-            <View style={{ width: '100%' }}>
+            <View style={{ width: '100%', marginTop: "10px" }}>
                 <Pressable
                     onPress={() => handlePress(item.id)}
                     onPressIn={onPresstemplateIn}
@@ -118,10 +118,13 @@ const SelectBusinessTemplate = ({ navigation }) => {
             </View>
         );
     };
+
     const scale = animation.interpolate({ inputRange, outputRange });
+
     const onMoveToAddBusinessForm = () => {
         navigation.navigate('AddBusinessDetailsScreen', { templateId: value });
     }
+
     return (
         <>
             <View className="bg-[#E9EDF7] h-screen">
@@ -139,12 +142,6 @@ const SelectBusinessTemplate = ({ navigation }) => {
 
                 <View className="absolute bottom-16 w-screen p-2 bg-white rounded">
                     <View className="flex flex-row justify-between items-center w-full">
-
-                        {/* <View className="w-[40%]">
-                            <Text className="text-black text-lg">
-                                Total Pay <Text className="font-bold">{ } ₹ </Text>
-                            </Text>
-                        </View> */}
 
                         <View className="w-full">
                             <Animated.View style={[{ transform: [{ scale }] }]} className="flex items-end">
@@ -179,15 +176,10 @@ const SelectBusinessTemplate = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-
-
-
     flatlistContainer: {
         marginTop: 2,
         padding: 1,
     },
-
-
     subscribeButton: {
         backgroundColor: '#4E63AC',
         padding: 10,
@@ -196,7 +188,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
-
     disabledButton: {
         opacity: 0.5,
     },
@@ -219,6 +210,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     selectedTemplate: {
+        marginTop: 10,
         borderColor: 'blue',
         borderWidth: 2,
         transform: [{ scale: 1.05 }],

@@ -250,7 +250,6 @@ const ProfilePage = ({ navigation }) => {
             const imagePath = image.path;
             const fileName = imageName;
             const fileType = image.mime;
-            console.log(imagePath, ":::imagePath", fileType, ":::type", fileName, ":::name")
             userData.append('image', {
                 uri: imagePath,
                 type: fileType,

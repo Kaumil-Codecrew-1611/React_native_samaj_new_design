@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { t } from 'i18next';
 import { TextArea } from 'native-base';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
     ActivityIndicator,
@@ -23,7 +23,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
-import { GlobalContext } from '../../../context/globalState';
 
 const schema = yup.object().shape({
     name: yup.string().required('Name is required'),
@@ -36,56 +35,17 @@ const schema = yup.object().shape({
     businessType: yup.string().required('Business type is required'),
 });
 
-const AddBusinessDetails = ({ route, navigation }) => {
+const EditBusinessDetails = ({ route, navigation }) => {
 
-    const template = route.params;
+    const businessCardId = route.params.businessId;
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema)
     });
-    const { allUserInfo } = useContext(GlobalContext);
-    const { registerUserBusinessData } = useContext(ApiContext);
-    const userId = allUserInfo._id
+    const { handleEditBusinessCard, updateCardBusinessData } = useContext(ApiContext);
     const [loading, setLoading] = useState(false);
     const [logo, setLogo] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
     const dateOfOpeningJob = watch('dateOfOpeningJob') || new Date();
-
-    const onSubmit = async (data) => {
-        setLoading(true);
-        const formData = new FormData();
-        data?.address && formData.append('address', data.address);
-        data?.businessContactNumber && formData.append('businessContactNumber', data.businessContactNumber);
-        data?.businessEmail && formData.append('businessEmail', data.businessEmail);
-        data?.businessLongDetail && formData.append('businessLongDetail', data.businessLongDetail);
-        data?.businessName && formData.append('businessName', data.businessName);
-        data?.businessShortDetail && formData.append('businessShortDetail', data.businessShortDetail);
-        data?.businessType && formData.append('businessType', data.businessType);
-        data?.businessWebsite && formData.append('businessWebsite', data.businessWebsite);
-        data?.dateOfOpeningJob && formData.append('dateOfOpeningJob', String(data.dateOfOpeningJob));
-        data?.facebook && formData.append('facebook', data.facebook);
-        data?.instagram && formData.append('instagram', data.instagram);
-        data?.linkedIn && formData.append('linkedIn', data.linkedIn);
-        data?.name && formData.append('name', data.name);
-        data?.phoneNumber2 && formData.append('phoneNumber2', data.phoneNumber2);
-        data?.role && formData.append('role', data.role);
-        data?.twitter && formData.append('twitter', data.twitter);
-        userId && formData.append('user_id', userId);
-        const businessLogo = {
-            uri: data?.businessLogo?.uri ?? null,
-            name: data?.businessLogo?.fileName ?? '',
-            type: data?.businessLogo?.type ?? ''
-        };
-        data?.businessLogo?.uri && data.businessLogo?.type && data.businessLogo?.fileName && formData.append('businessLogo', businessLogo);
-        template.templateId && formData.append('template_id', template.templateId);
-        try {
-            const response = await registerUserBusinessData(formData);
-            navigation.navigate('BusinessSubscription', { businessId: response.businessDetail._id, formData });
-        } catch (error) {
-            console.log("error", error)
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const pickImage = () => {
         ImagePicker.launchImageLibrary({ mediaType: 'photo' }, response => {
@@ -112,6 +72,46 @@ const AddBusinessDetails = ({ route, navigation }) => {
             setValue('dateOfOpeningJob', currentDate);
         }
     };
+
+    const onSubmit = async (data) => {
+        setLoading(true);
+        try {
+            await updateCardBusinessData(data, businessCardId)
+            navigation.navigate('MyBusinessCardScreen');
+            console.log("Form data submitted:", data);
+        } catch (error) {
+            console.error("Error updating business card:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        (async function () {
+            try {
+                const contentBusinessCard = await handleEditBusinessCard(businessCardId);
+                if (contentBusinessCard.businessData) {
+                    const data = contentBusinessCard.businessData;
+                    setValue('name', data.name);
+                    setValue('businessName', data.businessName);
+                    setValue('address', data.address);
+                    setValue('businessEmail', data.businessEmail);
+                    setValue('businessContactNumber', data.businessContactNumber?.toString());
+                    setValue('phoneNumber2', data.phoneNumber2);
+                    setValue('businessShortDetail', data.businessShortDetail);
+                    setValue('businessLongDetail', data.businessLongDetail);
+                    setValue('businessWebsite', data.businessWebsite);
+                    setValue('businessType', data.businessType);
+                    setValue('role', data.role);
+                    if (data.dateOfOpeningJob) {
+                        setValue('dateOfOpeningJob', new Date(data.dateOfOpeningJob));
+                    }
+                }
+            } catch (error) {
+                console.log("Error in getting details business edit", error)
+            }
+        })();
+    }, []);
 
     return (
         <View className="bg-[#E9EDF7] w-full flex-1 px-3">
@@ -525,7 +525,12 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                         <ActivityIndicator size="large" color="white" />
                                     </View>
                                 ) : (
-                                    <Button className="bg-[#4e63ac] py-3 rounded-lg" title="Submit" disabled={loading} onPress={handleSubmit(onSubmit)} />
+                                    <Button
+                                        className="bg-[#4e63ac] py-3 rounded-lg"
+                                        title="Submit"
+                                        onPress={handleSubmit(onSubmit)}
+                                        disabled={loading}
+                                    />
                                 )}
                             </View>
 
@@ -560,7 +565,6 @@ const styles = StyleSheet.create({
     textArea: {
         backgroundColor: '#eee',
         color: '#333',
-
         shadowColor: '#423f40',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
@@ -608,4 +612,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddBusinessDetails;
+export default EditBusinessDetails;

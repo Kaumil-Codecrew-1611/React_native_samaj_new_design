@@ -236,3 +236,13 @@ export const activeBusiness = async (businessKeyData) => {
     const response = await axiosInstance.post('/activeBusiness', businessKeyData);
     return response.data;
 };
+
+export const editBusinessCard = async (businessCardId) => {
+    const response = await axiosInstance.get(`/getBusiness/${businessCardId}`);
+    return response.data
+};
+
+export const updateBusinessCard = async ({ businessData, updateBusinessId }) => {
+    const response = await axiosInstance.post(`/editBusiness/${updateBusinessId}`, businessData);
+    return response.data;
+};

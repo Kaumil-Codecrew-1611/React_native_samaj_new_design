@@ -65,7 +65,6 @@ const BusinessSubscription = ({ route, navigation }) => {
             setLoading(true)
             const response = await subscriptionForBusiness(payload)
             setLoading(false)
-            console.log("Response of subscription data", response)
             navigation.navigate('BusinessPaymentPage', { response: response });
         } catch (error) {
             console.log("error", error)

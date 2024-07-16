@@ -1,5 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { Animated, Dimensions, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    Animated,
+    Dimensions,
+    Image,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View,
+} from 'react-native';
 
 const { width } = Dimensions.get('window');
 const IMAGE_SIZE = width * 1;
@@ -54,7 +61,6 @@ const FlipImage = ({ route }) => {
             </TouchableWithoutFeedback>
         </View>
     );
-
 };
 
 const styles = StyleSheet.create({

@@ -71,8 +71,13 @@ const MyBusinessCards = ({ navigation }) => {
             }).start();
         };
 
-        const handleOpenCardOfBusiness = (images) => {
-            navigation.navigate('FlipImage', { images: images });
+        const handleOpenCardOfBusiness = (images, id) => {
+            {
+                item.status === "payment_pending"
+                    ? navigation.navigate('EditBusinessDetails', { businessId: id })
+                    : navigation.navigate('FlipImage', { images: images })
+            }
+
         }
 
         return (
@@ -82,7 +87,7 @@ const MyBusinessCards = ({ navigation }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
-                        onPress={() => handleOpenCardOfBusiness(item.images)}
+                        onPress={() => handleOpenCardOfBusiness(item.images, item._id)}
                     >
                         <LinearGradient
                             colors={[backgroundColor, backgroundColor]}
@@ -101,6 +106,12 @@ const MyBusinessCards = ({ navigation }) => {
                                     <Text className="text-black text-lg font-bold">Mobile Number : </Text>
                                     <TouchableOpacity onPress={() => handleCallOpenLink(item.businessContactNumber)}>
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessContactNumber}</Text>
+                                    </TouchableOpacity>
+                                    {item.phoneNumber2 &&
+                                        <Text> , </Text>
+                                    }
+                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber2)}>
+                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber2}</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View className="flex flex-row flex-wrap items-center">
@@ -122,11 +133,11 @@ const MyBusinessCards = ({ navigation }) => {
                                 }
                                 <View className="flex items-end mt-2">
                                     {item.status === "payment_pending" ?
-                                        <View className="bg-red-100 w-1/3 rounded-md p-2">
-                                            <Text className="text-red-700 capitalize text-xs">payment pending</Text>
+                                        <View className="bg-red-100 w-[33%] rounded-md p-2">
+                                            <Text className="text-red-700 text-xs">Payment Pending</Text>
                                         </View>
                                         :
-                                        <View className="bg-blue-100 w-1/4 rounded-md p-2">
+                                        <View className="bg-blue-100 w-[22%] rounded-md p-1">
                                             <Text className="text-blue-700">Published</Text>
                                         </View>
                                     }

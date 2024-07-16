@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Animated, FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
+import {
+    Animated,
+    FlatList,
+    Linking,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
@@ -33,7 +40,7 @@ const BusinessListing = ({ navigation }) => {
     };
 
     const renderItem = ({ item, index }) => {
-        console.log("itemitemitemitem", item.images)
+
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
         const inputRange = [0, 1];
@@ -58,7 +65,6 @@ const BusinessListing = ({ navigation }) => {
             navigation.navigate('FlipImage', { images: images });
         }
 
-
         return (
             <View className="p-3">
                 <Animated.View style={[{ transform: [{ scale }] }]}>
@@ -79,17 +85,22 @@ const BusinessListing = ({ navigation }) => {
                                 </View>
                                 <View className="w-40 h-50" style={{ height: 40, backgroundColor: '#ffffff', transform: [{ rotate: '45deg' }], position: 'absolute', top: -20, right: -20 }} />
                             </View>
+
                             <View className="bg-white p-4">
+
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Mobile Number : </Text>
                                     <TouchableOpacity onPress={() => handleCallOpenLink(item.businessContactNumber)}>
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessContactNumber}</Text>
                                     </TouchableOpacity>
-                                    <Text> , </Text>
+                                    {item.phoneNumber2 &&
+                                        <Text> , </Text>
+                                    }
                                     <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber2)}>
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber2}</Text>
                                     </TouchableOpacity>
                                 </View>
+
                                 <View className="flex flex-row flex-wrap items-center">
                                     <Text className="text-black text-lg font-bold">Address : </Text>
                                     <TouchableOpacity
@@ -99,12 +110,16 @@ const BusinessListing = ({ navigation }) => {
                                         <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.address}</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View className="flex flex-row flex-wrap items-center">
-                                    <Text className="text-black text-lg font-bold">Website Link : </Text>
-                                    <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
-                                    </TouchableOpacity>
-                                </View>
+
+                                {item.businessWebsite &&
+                                    <View className="flex flex-row flex-wrap items-center">
+                                        <Text className="text-black text-lg font-bold">Website Link : </Text>
+                                        <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
+                                            <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                }
+
                             </View>
                         </LinearGradient>
                     </TouchableOpacity>

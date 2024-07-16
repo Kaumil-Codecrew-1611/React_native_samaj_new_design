@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import {
     aboutUsContent,
     activeBusiness,
+    updateBusinessCard,
     addFamilyMember,
     allBusinessListing,
     allBusinessTemplateList,
@@ -41,6 +42,7 @@ import {
     updateUserProfile,
     userPasswordChange,
     userSelfBusinessCard,
+    editBusinessCard,
     villagesByUser
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
@@ -87,9 +89,11 @@ export const ApiProvider = ({ children }) => {
     const homePageAllSlider = () => apiRequest(homePageSlider, null, setData, 'homesliderimage');
     const newsDataById = (newsId) => apiRequest(newsDetailsById, newsId, setData, 'newsDataById');
     const userBusinessCard = (userCardId) => apiRequest(userSelfBusinessCard, userCardId, setData, 'userBusinessCard');
+    const handleEditBusinessCard = (businessCardId) => apiRequest(editBusinessCard, businessCardId, setData, 'handleEditBusinessCard');
     const register = (userData) => apiRequest(registerUser, userData, setData, 'registerResponse');
     const subscriptionForBusiness = (subscriptionData) => apiRequest(subscriptionSelected, subscriptionData, setData, 'subscriptionForBusiness');
     const activeBusinessData = (businessKeyData) => apiRequest(activeBusiness, businessKeyData, setData, 'activeBusinessData');
+    const updateCardBusinessData = (businessData, updateBusinessId) => apiRequest(updateBusinessCard, { businessData, updateBusinessId }, setData, 'updateCardBusinessData');
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
     const loginAPICall = (userData) => apiRequest(loginUser, userData, setData, 'loginDataResponse');
     const PayOrder = (orderData) => apiRequest(payOrderData, orderData, setData, 'orderDataResponse');
@@ -137,6 +141,7 @@ export const ApiProvider = ({ children }) => {
             homePageAllSlider,
             aboutUsContentApi,
             activeBusinessData,
+            updateCardBusinessData,
             villagesListing,
             allUserByVillageId,
             newsListing,
@@ -149,6 +154,7 @@ export const ApiProvider = ({ children }) => {
             userDataByParentId,
             newsDataById,
             userBusinessCard,
+            handleEditBusinessCard,
             updateUserProfileImage,
             updateUserProfileUser,
             updateUserPostProfile,
