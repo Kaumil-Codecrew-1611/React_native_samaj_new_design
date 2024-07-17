@@ -43,7 +43,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
     });
     const { handleEditBusinessCard, updateCardBusinessData } = useContext(ApiContext);
     const [loading, setLoading] = useState(false);
-    const [logo, setLogo] = useState(null);
+    const [pngImage, setPngImage] = useState("");
     const [showPicker, setShowPicker] = useState(false);
     const dateOfOpeningJob = watch('dateOfOpeningJob') || new Date();
 
@@ -56,7 +56,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
             } else {
                 const source = response.assets[0];
                 if (source.type === 'image/png') {
-                    setLogo(source);
+                    setPngImage(source.uri);
                     setValue('businessLogo', source, { shouldValidate: true });
                 } else {
                     alert('Only PNG files are allowed');
@@ -74,13 +74,41 @@ const EditBusinessDetails = ({ route, navigation }) => {
     };
 
     const onSubmit = async (data) => {
-        setLoading(true);
         try {
-            await updateCardBusinessData(data, businessCardId)
-            navigation.navigate('MyBusinessCardScreen');
-            console.log("Form data submitted:", data);
+            setLoading(true);
+            const formData = new FormData();
+            data?.address && formData.append('address', data.address);
+            data?.businessContactNumber && formData.append('businessContactNumber', data.businessContactNumber);
+            data?.businessEmail && formData.append('businessEmail', data.businessEmail);
+            data?.businessLongDetail && formData.append('businessLongDetail', data.businessLongDetail);
+            data?.businessName && formData.append('businessName', data.businessName);
+            data?.businessShortDetail && formData.append('businessShortDetail', data.businessShortDetail);
+            data?.businessType && formData.append('businessType', data.businessType);
+            data?.businessWebsite && formData.append('businessWebsite', data.businessWebsite);
+            data?.dateOfOpeningJob && formData.append('dateOfOpeningJob', String(data.dateOfOpeningJob));
+            data?.facebook && formData.append('facebook', data.facebook);
+            data?.instagram && formData.append('instagram', data.instagram);
+            data?.linkedIn && formData.append('linkedIn', data.linkedIn);
+            data?.name && formData.append('name', data.name);
+            data?.phoneNumber2 && formData.append('phoneNumber2', data.phoneNumber2);
+            data?.role && formData.append('role', data.role);
+            data?.twitter && formData.append('twitter', data.twitter);
+            businessCardId && formData.append('user_id', businessCardId);
+            const businessLogo = {
+                uri: data?.businessLogo?.uri ?? null,
+                name: data?.businessLogo?.fileName ?? '',
+                type: data?.businessLogo?.type ?? ''
+            };
+            data?.businessLogo?.uri && data.businessLogo?.type && data.businessLogo?.fileName && formData.append('businessLogo', businessLogo);
+            await updateCardBusinessData(formData, businessCardId);
+
+            if (data.status === "payment_pending") {
+                navigation.navigate('BusinessSubscription', { businessId: businessCardId, formData: data });
+            } else {
+                navigation.navigate('MyBusinessCardScreen');
+            }
         } catch (error) {
-            console.error("Error updating business card:", error);
+            console.log("errorInSubmit", error)
         } finally {
             setLoading(false);
         }
@@ -103,6 +131,8 @@ const EditBusinessDetails = ({ route, navigation }) => {
                     setValue('businessWebsite', data.businessWebsite);
                     setValue('businessType', data.businessType);
                     setValue('role', data.role);
+                    setValue('status', data.status);
+                    setPngImage(process.env.IMAGE_URL + data.businessLogo)
                     if (data.dateOfOpeningJob) {
                         setValue('dateOfOpeningJob', new Date(data.dateOfOpeningJob));
                     }
@@ -114,8 +144,9 @@ const EditBusinessDetails = ({ route, navigation }) => {
     }, []);
 
     return (
+
         <View className="bg-[#E9EDF7] w-full flex-1 px-3">
-            <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
+            <View className="w-full bg-white overflow-hidden flex-1 p-3 rounded-md mt-3 mb-4">
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     Fill the Business details
                 </Text>
@@ -278,8 +309,8 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo (.PNG extension):</Text>
                                 </View>
                                 <TouchableOpacity onPress={pickImage} style={styles.logoContainer}>
-                                    {logo ? (
-                                        <Image source={{ uri: logo.uri }} style={styles.logo} />
+                                    {pngImage ? (
+                                        <Image source={{ uri: pngImage }} style={styles.logo} />
                                     ) : (
                                         <Feather name="image" style={styles.icon} />
                                     )}

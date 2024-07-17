@@ -115,7 +115,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
 
     return (
         <View className="bg-[#E9EDF7] w-full flex-1 px-3">
-            <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
+            <View className="w-full bg-white overflow-hidden flex-1 p-3 rounded-md mt-3 mb-4">
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     Fill the Business details
                 </Text>

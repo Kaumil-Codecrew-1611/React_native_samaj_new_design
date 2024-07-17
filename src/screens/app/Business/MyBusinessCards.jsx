@@ -1,4 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
+import { Image } from 'native-base';
 import React, { useCallback, useContext, useState } from 'react';
 import { Animated, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,6 +14,7 @@ const MyBusinessCards = ({ navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [myBusinessCard, setMyBusinessCard] = useState("");
+    console.log("myBusinessCardmyBusinessCardmyBusinessCard", myBusinessCard)
     const { userBusinessCard } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
     const userCardId = allUserInfo._id;
@@ -54,8 +56,10 @@ const MyBusinessCards = ({ navigation }) => {
 
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
+        const editCardAnimation = new Animated.Value(0);
 
         const scale = animation.interpolate({ inputRange, outputRange });
+        const editCardScale = editCardAnimation.interpolate({ inputRange, outputRange });
 
         const onPressIn = () => {
             Animated.spring(animation, {
@@ -71,13 +75,26 @@ const MyBusinessCards = ({ navigation }) => {
             }).start();
         };
 
-        const handleOpenCardOfBusiness = (images, id) => {
-            {
-                item.status === "payment_pending"
-                    ? navigation.navigate('EditBusinessDetails', { businessId: id })
-                    : navigation.navigate('FlipImage', { images: images })
-            }
+        const onPressEditBusinessIn = () => {
+            Animated.spring(editCardAnimation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
 
+        const onPressEditBusinessOut = () => {
+            Animated.spring(editCardAnimation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const handleOpenCardOfBusiness = (images) => {
+            navigation.navigate('FlipImage', { images: images })
+        }
+
+        const handleEditBusinessCard = (id) => {
+            navigation.navigate('SelectBusinessTemplate', { businessId: id, templateNumber: myBusinessCard[0].template_id })
         }
 
         return (
@@ -87,7 +104,7 @@ const MyBusinessCards = ({ navigation }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
-                        onPress={() => handleOpenCardOfBusiness(item.images, item._id)}
+                        onPress={() => handleOpenCardOfBusiness(item.images)}
                     >
                         <LinearGradient
                             colors={[backgroundColor, backgroundColor]}
@@ -131,9 +148,21 @@ const MyBusinessCards = ({ navigation }) => {
                                         </TouchableOpacity>
                                     </View>
                                 }
-                                <View className="flex items-end mt-2">
+                                <View className="flex flex-row justify-between items-center mt-2 px-3">
+                                    <Animated.View style={[{ transform: [{ scale: editCardScale }] }]}>
+                                        <View>
+                                            <TouchableOpacity
+                                                activeOpacity={0.9}
+                                                onPressIn={onPressEditBusinessIn}
+                                                onPressOut={onPressEditBusinessOut}
+                                                onPress={() => handleEditBusinessCard(item._id)}
+                                            >
+                                                <Image className="w-11 h-11" source={require("../../../assets/edit.png")} width={35} height={35} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </Animated.View>
                                     {item.status === "payment_pending" ?
-                                        <View className="bg-red-100 w-[33%] rounded-md p-2">
+                                        <View className="bg-red-100 w-[32%] rounded-md py-2 pl-1">
                                             <Text className="text-red-700 text-xs">Payment Pending</Text>
                                         </View>
                                         :
@@ -192,28 +221,30 @@ const MyBusinessCards = ({ navigation }) => {
 
     return (
         <View className="bg-[#E9EDF7] h-full">
-            <View className="px-3">
-                <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
-                    <View className="mr-3">
-                        <AddBusinessIcon width={40} height={40} color='black' />
+            {myBusinessCard.length < 1 &&
+                <View className="px-3">
+                    <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
+                        <View className="mr-3">
+                            <AddBusinessIcon width={40} height={40} color='black' />
+                        </View>
+                        <Animated.View style={[{ transform: [{ scale }] }]} className="absolute right-2 bg-blue-100 rounded-xl p-2">
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPressIn={onPressInAddBusiness}
+                                onPressOut={onPressOutAddBusiness}
+                                onPress={() => navigation.navigate('SelectBusinessTemplate')}
+                            >
+                                <View className="w-full flex-row items-center gap-1">
+                                    <AppIcon type="Feather" color={"#3b82f6"} name="plus-circle" size={26} />
+                                    <Text className="text-blue-500 text-lg font-bold">
+                                        Business
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Animated.View>
                     </View>
-                    <Animated.View style={[{ transform: [{ scale }] }]} className="absolute right-2 bg-blue-100 rounded-xl p-2">
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPressIn={onPressInAddBusiness}
-                            onPressOut={onPressOutAddBusiness}
-                            onPress={() => navigation.navigate('SelectBusinessTemplate')}
-                        >
-                            <View className="w-full flex-row items-center gap-1 ">
-                                <AppIcon type="Feather" color={"#3b82f6"} name="plus-circle" size={26} />
-                                <Text className="text-blue-500 text-lg font-bold">
-                                    Business
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </Animated.View>
                 </View>
-            </View>
+            }
             {loading ? (
                 renderSkeleton()
             ) : myBusinessCard.length === 0 ? (

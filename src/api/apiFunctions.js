@@ -243,6 +243,10 @@ export const editBusinessCard = async (businessCardId) => {
 };
 
 export const updateBusinessCard = async ({ businessData, updateBusinessId }) => {
-    const response = await axiosInstance.post(`/editBusiness/${updateBusinessId}`, businessData);
+    const response = await axiosInstance.post(`/editBusiness/${updateBusinessId}`, businessData,{
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
     return response.data;
 };

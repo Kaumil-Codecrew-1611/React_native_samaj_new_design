@@ -135,7 +135,7 @@ const BusinessSubscription = ({ route, navigation }) => {
 
     return (
 
-        <View className="bg-[#E9EDF7] h-screen">
+        <View className="bg-[#E9EDF7] h-full">
 
             <View className="bg-white rounded-lg m-2 p-3 mb-4">
                 <Text className="text-black text-xl font-bold">Choose Your Business Card Plan</Text>
@@ -148,8 +148,8 @@ const BusinessSubscription = ({ route, navigation }) => {
                 contentContainerStyle={{ marginTop: 2, padding: 1 }}
             />
 
-            <View className="absolute bottom-16 w-screen p-3 bg-white rounded">
-                <View className="flex flex-row justify-between items-center w-full">
+            <View className="relative">
+                <View className="flex absolute p-3 bg-white rounded bottom-0 flex-row justify-between items-center w-full">
 
                     <View className="w-[40%]">
                         <Text className="text-black text-lg">

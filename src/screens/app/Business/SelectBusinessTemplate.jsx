@@ -4,10 +4,12 @@ import { Animated, FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View
 import ImageView from "react-native-image-viewing";
 import ApiContext from '../../../context/ApiContext';
 
-const SelectBusinessTemplate = ({ navigation }) => {
+const SelectBusinessTemplate = ({ navigation, route }) => {
 
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
+    const editSelectedTemplateNumber = route.params.templateNumber
+    console.log("routerouterouteroute", editSelectedTemplateNumber)
     const [value, setValue] = useState('');
     const animation = useMemo(() => new Animated.Value(0), []);
     const { getAllBussinessTemplateListing } = useContext(ApiContext);
@@ -17,7 +19,8 @@ const SelectBusinessTemplate = ({ navigation }) => {
 
     useEffect(() => {
         fetchAllBusinessTemplate();
-    }, []);
+        setValue(editSelectedTemplateNumber)
+    }, [editSelectedTemplateNumber]);
 
     const fetchAllBusinessTemplate = async () => {
         try {
@@ -54,6 +57,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
     }, [animation]);
 
     const renderItem = ({ item }) => {
+
         const animationForTemplate = new Animated.Value(0);
         const template_scale = animationForTemplate.interpolate({
             inputRange: [0, 1],
@@ -127,7 +131,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
 
     return (
         <>
-            <View className="bg-[#E9EDF7] h-screen">
+            <View className="bg-[#E9EDF7] h-full">
 
                 <View className="bg-white rounded-lg m-2 p-3 mb-4">
                     <Text className="text-black text-xl font-bold">Choose Your Business Template</Text>
@@ -140,9 +144,8 @@ const SelectBusinessTemplate = ({ navigation }) => {
                     contentContainerStyle={styles.flatlistContainer}
                 />
 
-                <View className="absolute bottom-16 w-screen p-2 bg-white rounded">
-                    <View className="flex flex-row justify-between items-center w-full">
-
+                <View className="relative">
+                    <View className="absolute bottom-0 p-2 bg-white rounded flex flex-row justify-between items-center w-full">
                         <View className="w-full">
                             <Animated.View style={[{ transform: [{ scale }] }]} className="flex items-end">
                                 <TouchableOpacity
@@ -150,10 +153,10 @@ const SelectBusinessTemplate = ({ navigation }) => {
                                     onPressIn={onPressIn}
                                     onPressOut={onPressOut}
                                     onPress={onMoveToAddBusinessForm}
-                                    disabled={templateListing.length === 0}
+                                    disabled={!value}
                                     style={[
                                         styles.subscribeButton,
-                                        (templateListing.length === 0) && styles.disabledButton
+                                        (!value) && styles.disabledButton
                                     ]}
                                 >
                                     <Text className="text-white text-lg font-bold">Next</Text>
