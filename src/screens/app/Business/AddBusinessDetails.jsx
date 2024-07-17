@@ -115,7 +115,254 @@ const AddBusinessDetails = ({ route, navigation }) => {
     };
 
     return (
-        <View className="bg-[#E9EDF7] w-full flex-1 px-3">
+        <>
+            <View className="bg-[#E9EDF7] w-full flex-1 px-3">
+                <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
+                    <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
+                        Fill the Business details
+                    </Text>
+                    <View className="w-full mx-0 my-3 bg-neutral-700 h-[2px]"></View>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        style={styles.container}
+                    >
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+                                <View>
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Full Name:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="name"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    style={styles.input}
+                                                    placeholderTextColor="grey"
+                                                    className="py-3"
+                                                    placeholder="Please enter your full name"
+                                                    onBlur={onBlur}
+                                                    onChangeText={onChange}
+                                                    value={value}
+                                                />
+                                            )}
+                                        />
+                                        {errors.name ? (
+                                            <Text style={styles.errorText}>{errors.name.message}</Text>
+                                        ) : (
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                        )}
+                                    </View>
+                                </View>
+
+                                <View className="mt-1">
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Name:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="businessName"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    style={styles.input}
+                                                    placeholder="Business Name"
+                                                    onBlur={onBlur}
+                                                    placeholderTextColor="grey"
+                                                    className="py-3"
+                                                    onChangeText={onChange}
+                                                    value={value}
+                                                />
+                                            )}
+                                        />
+                                        {errors.businessName ? (
+                                            <Text style={styles.errorText}>{errors.businessName.message}</Text>
+                                        ) : (
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                        )}
+                                    </View>
+                                </View>
+
+                                <View className="mt-1">
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Address:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="address"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    style={styles.textArea}
+                                                    placeholder="Address"
+                                                    placeholderTextColor="grey"
+                                                    className="py-6 border-none outline-none border-transparent"
+                                                    onBlur={onBlur}
+                                                    onChangeText={onChange}
+                                                    value={value}
+                                                    borderWidth={0}
+                                                    borderRadius={13}
+                                                    borderColor={'transparent'}
+                                                />
+                                            )}
+                                        />
+                                        {errors.address ? (
+                                            <Text style={styles.errorText}>{errors.address.message}</Text>
+                                        ) : (
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                        )}
+                                    </View>
+                                </View>
+
+                                <View className="mt-1">
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Email:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="businessEmail"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    style={styles.input}
+                                                    placeholder="Business Email"
+                                                    onBlur={onBlur}
+                                                    placeholderTextColor="grey"
+                                                    className="py-3"
+                                                    onChangeText={onChange}
+                                                    value={value}
+                                                />
+                                            )}
+                                        />
+                                        {errors.businessEmail ? (
+                                            <Text style={styles.errorText}>{errors.businessEmail.message}</Text>
+                                        ) : (
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                        )}
+                                    </View>
+                                </View>
+
+                                <View className="mt-1">
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Contact Number:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="businessContactNumber"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    style={styles.input}
+                                                    placeholder="Business Contact Number"
+                                                    onBlur={onBlur}
+                                                    placeholderTextColor="grey"
+                                                    className="py-3"
+                                                    onChangeText={onChange}
+                                                    value={value}
+                                                />
+                                            )}
+                                        />
+                                        {errors.businessContactNumber ? (
+                                            <Text style={styles.errorText}>{errors.businessContactNumber.message}</Text>
+                                        ) : (
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                        )}
+                                    </View>
+                                </View>
+
+                                <View className="mt-1">
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Phone Number 2:</Text>
+                                    </View>
+                                    <View className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="phoneNumber2"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    style={styles.input}
+                                                    placeholder="Phone Number 2"
+                                                    placeholderTextColor="grey"
+                                                    className="py-3"
+                                                    onBlur={onBlur}
+                                                    onChangeText={onChange}
+                                                    value={value}
+                                                />
+                                            )}
+                                        />
+                                        {errors.phoneNumber2 ? (
+                                            <Text style={styles.errorText}>{errors.phoneNumber2.message}</Text>
+                                        ) : (
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                        )}
+                                    </View>
+                                </View>
+
+                                <View className="mt-1">
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Select Opening Date:</Text>
+                                    </View>
+                                    <TouchableOpacity className="w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="dateOfOpeningJob"
+                                            render={({ field: { onChange, value } }) => (
+                                                <TouchableOpacity
+                                                    className="py-4 w-full bg-[#E9EDF7] rounded-md text-gray-500 px-3"
+                                                    onPress={() => setShowPicker(true)}
+                                                >
+                                                    <Text style={{ color: value ? '#000' : 'grey' }}>{value ? value.toLocaleDateString() : 'Select date'}</Text>
+                                                </TouchableOpacity>
+                                            )}
+                                        />
+                                        {showPicker && (
+                                            <DateTimePicker
+                                                value={dateOfOpeningJob}
+                                                mode="date"
+                                                display="default"
+                                                onChange={onDateChange}
+                                            />
+                                        )}
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View className="mt-2">
+                                    <View className="w-full mx-1">
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo:</Text>
+                                    </View>
+                                    <View className="flex-row mt-3">
+                                        {logo && (
+                                            <View className="mr-2">
+                                                <Image source={{ uri: logo.uri }} style={{ width: 60, height: 60 }} />
+                                            </View>
+                                        )}
+                                        <TouchableOpacity
+                                            className="flex-1 h-15 justify-center bg-[#E9EDF7] rounded-md items-center"
+                                            onPress={pickImage}
+                                        >
+                                            <Text className="text-base text-neutral-800 font-medium tracking-wider">Upload</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+
+                                <View className="mt-5 flex-row justify-center">
+                                    <TouchableOpacity className="w-full" onPress={handleSubmit(onSubmit)}>
+                                        <View className="w-full h-12 bg-[#E9EDF7] rounded-md items-center justify-center">
+                                            {loading ? (
+                                                <ActivityIndicator size="small" color="#000" />
+                                            ) : (
+                                                <Text className="text-base text-neutral-800 font-medium tracking-wider">Submit</Text>
+                                            )}
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </ScrollView>
+                        </TouchableWithoutFeedback>
+                    </KeyboardAvoidingView>
+                </View>
+            </View>
+            {/*  <View className="bg-[#E9EDF7] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     Fill the Business details
@@ -534,7 +781,8 @@ const AddBusinessDetails = ({ route, navigation }) => {
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>
             </View>
-        </View>
+        </View> */}
+        </>
     );
 };
 
