@@ -148,7 +148,7 @@ const VillageListing = ({ navigation, route }) => {
                     </View>
                 </View>
 
-                <View className="w-full px-4 mb-3 shadow-custom-elevation shadow-sm shadow">
+                <View className="w-full px-4 mb-3 shadow-custom-elevation shadow-sm">
                     <View className="w-full flex flex-row bg-white rounded-xl items-center">
                         <TextInput placeholder={t("searchVillage")} placeholderTextColor="grey" className="basis-[90%] tracking-wider py-3 text-neutral-700 pl-2 " value={search} onChangeText={text => setSearch(text)} />
                         <TouchableOpacity onPress={() => {

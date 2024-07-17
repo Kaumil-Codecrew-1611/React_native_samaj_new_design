@@ -29,18 +29,20 @@ const Home = ({ navigation }) => {
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const scale = animation.interpolate({ inputRange, outputRange });
-    const images = [(allUserInfo && allUserInfo.photo) ? { uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` } : require("../../../assets/profile_img.png")];
+    const images = [(allUserInfo && allUserInfo.photo)
+        ? { uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` }
+        : require("../../../assets/profile_img.png")
+    ];
 
     const cards = [
         { id: 1, name: t('aboutUs'), redirectTo: "Aboutus", image: require('../../../assets/aboutusicons.png') },
         { id: 2, name: t('villages'), redirectTo: "VillageListing", image: require('../../../assets/villageIcon.png') },
-        isLoggedIn ? { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') } : { id: 4, name: t('joinnow'), redirectTo: "Welcome", image: require('../../../assets/join.png') },
+        isLoggedIn ? { id: 3, name: t('profile'), redirectTo: "Profile", image: require('../../../assets/prifileImage.png') }
+            : { id: 4, name: t('joinnow'), redirectTo: "Welcome", image: require('../../../assets/join.png') },
         { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/directory.png') },
-        // { id: 6, name: t("Events"), redirectTo: "EventsScreen", image: require('../../../assets/events.png') },
-        { id: 6, name: t("Business"), redirectTo: "BusinessScreen", image: require('../../../assets/events.png') },
-        { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
-        // { id: 8, name: "payment", redirectTo: "BusinessPaymentPage", image: require('../../../assets/events.png') },
-        // { id: 9, name: "Image", redirectTo: "FlipImage", image: require('../../../assets/events.png') },
+        isLoggedIn ? { id: 6, name: t("Business"), redirectTo: "BusinessScreen", image: require('../../../assets/events.png') }
+            : { id: "", name: "", redirectTo: "", image: "" },
+        // { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
     ];

@@ -180,9 +180,9 @@ const Login = ({ navigation }) => {
 
                     <View>
                         {loading ? (
-                            <View className="flex flex-row items-center justify-center bg-[#4e63ac] cursor-pointer p-4 rounded-lg">
+                            <View className="flex flex-row items-center justify-center bg-[#4e63ac] cursor-pointer p-3 rounded-lg">
                                 <Text className="mr-4 text-base text-white ">{t("Loading")}</Text>
-                                <ActivityIndicator size="large" color="white" />
+                                <ActivityIndicator size="small" color="white" />
                             </View>
                         ) : (
                             <Button title={t('login')} onPress={handleSubmit(onSubmit)} disabled={loading} className="p-3" />

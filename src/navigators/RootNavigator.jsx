@@ -42,6 +42,7 @@ import TermAndCondition from '../screens/app/TermAndCondition/TermAndCondition';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
+import EditBusinessDetails from '../screens/app/Business/EditBusinessDetails';
 
 const RootStack = createNativeStackNavigator()
 
@@ -106,6 +107,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="BusinessCardScreen" component={BusinessCardScreen} options={{ headerTitle: t("Business") }} />
                 <RootStack.Screen name="MyBusinessCardScreen" component={MyBusinessCards} options={{ headerTitle: t("My Business") }} />
                 <RootStack.Screen name="AddBusinessDetailsScreen" component={AddBusinessDetails} options={{ headerTitle: t("Add Business Details") }} />
+                <RootStack.Screen name="EditBusinessDetails" component={EditBusinessDetails} options={{ headerTitle: "Edit Business Details" }} />
                 <RootStack.Screen name="BusinessSubscription" component={BusinessSubscription} options={{ headerTitle: "Subscription" }} />
                 <RootStack.Screen name="FlipImage" component={FlipImage} options={{ headerTitle: "Flip Image" }} />
                 <RootStack.Screen name="BusinessPaymentPage" component={BusinessPaymentPage} options={{ headerTitle: "Business Payment" }} />

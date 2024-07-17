@@ -1,12 +1,15 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Animated, TouchableOpacity, Pressable } from 'react-native';
 import { Radio } from 'native-base';
-import ApiContext from '../../../context/ApiContext';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Animated, FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImageView from "react-native-image-viewing";
+import ApiContext from '../../../context/ApiContext';
 
-const SelectBusinessTemplate = ({ navigation }) => {
+const SelectBusinessTemplate = ({ navigation, route }) => {
+
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
+    const editSelectedTemplateNumber = route.params.templateNumber
+    console.log("routerouterouteroute", editSelectedTemplateNumber)
     const [value, setValue] = useState('');
     const animation = useMemo(() => new Animated.Value(0), []);
     const { getAllBussinessTemplateListing } = useContext(ApiContext);
@@ -16,7 +19,8 @@ const SelectBusinessTemplate = ({ navigation }) => {
 
     useEffect(() => {
         fetchAllBusinessTemplate();
-    }, []);
+        setValue(editSelectedTemplateNumber)
+    }, [editSelectedTemplateNumber]);
 
     const fetchAllBusinessTemplate = async () => {
         try {
@@ -35,7 +39,6 @@ const SelectBusinessTemplate = ({ navigation }) => {
     };
 
     const handlePress = useCallback((templateId) => {
-        console.log("Selected template ID:", templateId);
         setValue(templateId);
     }, []);
 
@@ -54,10 +57,11 @@ const SelectBusinessTemplate = ({ navigation }) => {
     }, [animation]);
 
     const renderItem = ({ item }) => {
+
         const animationForTemplate = new Animated.Value(0);
         const template_scale = animationForTemplate.interpolate({
             inputRange: [0, 1],
-            outputRange: [1, 1.1] // Adjust as per your requirement
+            outputRange: [1, 1.1]
         });
 
         const onPresstemplateIn = () => {
@@ -80,7 +84,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
         };
 
         return (
-            <View style={{ width: '100%' }}>
+            <View style={{ width: '100%', marginTop: "10px" }}>
                 <Pressable
                     onPress={() => handlePress(item.id)}
                     onPressIn={onPresstemplateIn}
@@ -118,13 +122,16 @@ const SelectBusinessTemplate = ({ navigation }) => {
             </View>
         );
     };
+
     const scale = animation.interpolate({ inputRange, outputRange });
+
     const onMoveToAddBusinessForm = () => {
         navigation.navigate('AddBusinessDetailsScreen', { templateId: value });
     }
+
     return (
         <>
-            <View className="bg-[#E9EDF7] h-screen">
+            <View className="bg-[#E9EDF7] h-full">
 
                 <View className="bg-white rounded-lg m-2 p-3 mb-4">
                     <Text className="text-black text-xl font-bold">Choose Your Business Template</Text>
@@ -137,15 +144,8 @@ const SelectBusinessTemplate = ({ navigation }) => {
                     contentContainerStyle={styles.flatlistContainer}
                 />
 
-                <View className="absolute bottom-16 w-screen p-2 bg-white rounded">
-                    <View className="flex flex-row justify-between items-center w-full">
-
-                        {/* <View className="w-[40%]">
-                            <Text className="text-black text-lg">
-                                Total Pay <Text className="font-bold">{ } ₹ </Text>
-                            </Text>
-                        </View> */}
-
+                <View className="relative">
+                    <View className="absolute bottom-0 p-2 bg-white rounded flex flex-row justify-between items-center w-full">
                         <View className="w-full">
                             <Animated.View style={[{ transform: [{ scale }] }]} className="flex items-end">
                                 <TouchableOpacity
@@ -153,10 +153,10 @@ const SelectBusinessTemplate = ({ navigation }) => {
                                     onPressIn={onPressIn}
                                     onPressOut={onPressOut}
                                     onPress={onMoveToAddBusinessForm}
-                                    disabled={templateListing.length === 0}
+                                    disabled={!value}
                                     style={[
                                         styles.subscribeButton,
-                                        (templateListing.length === 0) && styles.disabledButton
+                                        (!value) && styles.disabledButton
                                     ]}
                                 >
                                     <Text className="text-white text-lg font-bold">Next</Text>
@@ -179,15 +179,10 @@ const SelectBusinessTemplate = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-
-
-
     flatlistContainer: {
         marginTop: 2,
         padding: 1,
     },
-
-
     subscribeButton: {
         backgroundColor: '#4E63AC',
         padding: 10,
@@ -196,7 +191,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
-
     disabledButton: {
         opacity: 0.5,
     },
@@ -219,6 +213,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     selectedTemplate: {
+        marginTop: 10,
         borderColor: 'blue',
         borderWidth: 2,
         transform: [{ scale: 1.05 }],

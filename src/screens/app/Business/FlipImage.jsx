@@ -1,8 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { Animated, Dimensions, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-
-const { width } = Dimensions.get('window');
-const IMAGE_SIZE = width * 1;
+import {
+    Animated,
+    Image,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 
 const FlipImage = ({ route }) => {
 
@@ -45,16 +48,15 @@ const FlipImage = ({ route }) => {
             <TouchableWithoutFeedback onPress={handleFlip}>
                 <View>
                     <Animated.View style={[styles.image, frontAnimatedStyle, flipped ? styles.hidden : styles.visible]}>
-                        <Image source={{ uri: process.env.IMAGE_URL + frontImage }} style={styles.image} />
+                        <Image source={{ uri: `${process.env.IMAGE_URL}${frontImage}?${new Date().getMinutes()}` }} style={styles.image} />
                     </Animated.View>
                     <Animated.View style={[styles.image, backAnimatedStyle, flipped ? styles.visible : styles.hidden]}>
-                        <Image source={{ uri: process.env.IMAGE_URL + backImage }} style={styles.image} />
+                        <Image source={{ uri: `${process.env.IMAGE_URL}${backImage}?${new Date().getMinutes()}` }} style={styles.image} />
                     </Animated.View>
                 </View>
             </TouchableWithoutFeedback>
         </View>
     );
-
 };
 
 const styles = StyleSheet.create({
@@ -64,8 +66,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
-        width: IMAGE_SIZE,
-        height: IMAGE_SIZE,
+        width: 400,
+        height: 650,
         backfaceVisibility: 'hidden',
     },
     hidden: {

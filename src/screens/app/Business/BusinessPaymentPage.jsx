@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import {
     Animated,
@@ -10,10 +11,9 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import RazorpayCheckout from 'react-native-razorpay';
 import ApiContext from '../../../context/ApiContext';
-import { t } from 'i18next';
-import { ActivityIndicator } from 'react-native-paper';
 
 const BusinessPaymentPage = ({ route, navigation }) => {
 

@@ -8,7 +8,6 @@ function BusinessPaymentFail({ navigation, route }) {
     const nameOfUser = route.params.name
     const nameOfEmail = route.params.businessEmail
     const nameOfBusinessName = route.params.businessName
-    console.log("paymentFailDatapaymentFailDatapaymentFailData", route.params.businessName)
     const handleredirect = () => {
         navigation.navigate("MyBusinessCardScreen");
     }
