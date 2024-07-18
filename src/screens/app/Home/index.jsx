@@ -42,7 +42,7 @@ const Home = ({ navigation }) => {
         { id: 5, name: t('Directory'), redirectTo: "AllUserDirectory", image: require('../../../assets/directory.png') },
         isLoggedIn ? { id: 6, name: t("Business"), redirectTo: "BusinessScreen", image: require('../../../assets/events.png') }
             : { id: "", name: "", redirectTo: "", image: "" },
-        // { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen", image: require('../../../assets/events.png') },
+        { id: 7, name: t("Business"), redirectTo: "BusinessCardScreen2", image: require('../../../assets/events.png') },
         { id: "", name: "", redirectTo: "", image: "" },
         { id: "", name: "", redirectTo: "", image: "" },
     ];

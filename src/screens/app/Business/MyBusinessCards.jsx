@@ -14,7 +14,6 @@ const MyBusinessCards = ({ navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [myBusinessCard, setMyBusinessCard] = useState("");
-    console.log("myBusinessCardmyBusinessCardmyBusinessCard", myBusinessCard)
     const { userBusinessCard } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
     const userCardId = allUserInfo._id;

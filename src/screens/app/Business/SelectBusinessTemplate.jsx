@@ -8,8 +8,8 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
 
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
-    const editSelectedTemplateNumber = route.params.templateNumber
-    console.log("routerouterouteroute", editSelectedTemplateNumber)
+    const editSelectedTemplateNumber = route.params?.templateNumber
+    const businessCardId = route.params?.businessId
     const [value, setValue] = useState('');
     const animation = useMemo(() => new Animated.Value(0), []);
     const { getAllBussinessTemplateListing } = useContext(ApiContext);
@@ -86,7 +86,7 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
         return (
             <View style={{ width: '100%', marginTop: "10px" }}>
                 <Pressable
-                    onPress={() => handlePress(item.id)}
+                    onPress={() => handlePress(item._id)}
                     onPressIn={onPresstemplateIn}
                     onPressOut={onPresstemplateOut}
                     style={[
@@ -126,7 +126,7 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
     const scale = animation.interpolate({ inputRange, outputRange });
 
     const onMoveToAddBusinessForm = () => {
-        navigation.navigate('AddBusinessDetailsScreen', { templateId: value });
+        navigation.navigate(businessCardId ? 'EditBusinessDetails' : 'AddBusinessDetailsScreen', { templateId: value, businessId: businessCardId });
     }
 
     return (

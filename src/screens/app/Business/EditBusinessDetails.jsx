@@ -38,6 +38,7 @@ const schema = yup.object().shape({
 const EditBusinessDetails = ({ route, navigation }) => {
 
     const businessCardId = route.params.businessId;
+    const templateId = route.params?.templateId
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema)
     });
@@ -94,6 +95,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
             data?.role && formData.append('role', data.role);
             data?.twitter && formData.append('twitter', data.twitter);
             businessCardId && formData.append('user_id', businessCardId);
+            templateId && formData.append('template_id', templateId);
             const businessLogo = {
                 uri: data?.businessLogo?.uri ?? null,
                 name: data?.businessLogo?.fileName ?? '',
