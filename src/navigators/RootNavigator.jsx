@@ -43,6 +43,9 @@ import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
 import EditBusinessDetails from '../screens/app/Business/EditBusinessDetails';
+import Template1 from '../screens/app/Business/BusinessTemplates/Template1';
+import Template2 from '../screens/app/Business/BusinessTemplates/Template2';
+import Template3 from '../screens/app/Business/BusinessTemplates/Template3';
 
 const RootStack = createNativeStackNavigator()
 
@@ -112,6 +115,9 @@ const RootNavigator = () => {
                 <RootStack.Screen name="FlipImage" component={FlipImage} options={{ headerTitle: "Flip Image" }} />
                 <RootStack.Screen name="BusinessPaymentPage" component={BusinessPaymentPage} options={{ headerTitle: "Business Payment" }} />
                 <RootStack.Screen name="SelectBusinessTemplate" component={SelectBusinessTemplate} options={{ headerTitle: "Business Template" }} />
+                <RootStack.Screen name="BusinessTemplate1" component={Template1} options={{ headerTitle: "Business Template 1" }} />
+                <RootStack.Screen name="BusinessTemplate2" component={Template2} options={{ headerTitle: "Business Template 2" }} />
+                <RootStack.Screen name="BusinessTemplate3" component={Template3} options={{ headerTitle: "Business Template 3" }} />
             </RootStack.Navigator>
         </>
     )

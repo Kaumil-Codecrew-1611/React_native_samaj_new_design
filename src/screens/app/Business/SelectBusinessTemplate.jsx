@@ -1,35 +1,25 @@
 import { Radio } from 'native-base';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Animated, FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import ImageView from "react-native-image-viewing";
-import ApiContext from '../../../context/ApiContext';
+import { getAllTemplates } from '../../../utils/BusinessUtils';
 
 const SelectBusinessTemplate = ({ navigation }) => {
-
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const [value, setValue] = useState('');
     const animation = useMemo(() => new Animated.Value(0), []);
-    const { getAllBussinessTemplateListing } = useContext(ApiContext);
     const [templateListing, setTemplateListing] = useState([]);
-    const [images, setImages] = useState([]);
     const [visible, setIsVisible] = useState(false);
 
     useEffect(() => {
         fetchAllBusinessTemplate();
     }, []);
 
-    const fetchAllBusinessTemplate = async () => {
+    const fetchAllBusinessTemplate = () => {
         try {
-            const allBusinessTemplate = await getAllBussinessTemplateListing();
-            const formattedTemplates = allBusinessTemplate.templates.map(template => ({
-                ...template,
-                images: [
-                    { uri: process.env.IMAGE_URL + template.image.front },
-                    { uri: process.env.IMAGE_URL + template.image.back },
-                ],
-            }));
-            setTemplateListing(formattedTemplates);
+            const allBusinessTemplate = getAllTemplates();
+            console.log(allBusinessTemplate, ":::allBusinessTemplate")
+            setTemplateListing(allBusinessTemplate);
         } catch (error) {
             console.log("Error fetching all business template:", error);
         }
@@ -74,9 +64,8 @@ const SelectBusinessTemplate = ({ navigation }) => {
             }).start();
         };
 
-        const onGetImages = (image) => {
-            setImages(image);
-            setIsVisible(true);
+        const onPreviewTemplate = () => {
+            navigation.navigate(item.name); // Navigate to the specific screen
         };
 
         return (
@@ -103,7 +92,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
                                 </Text>
                                 <Animated.View style={{ transform: [{ scale: template_scale }], justifyContent: 'center', paddingTop: 10, paddingBottom: 3 }}>
                                     <TouchableOpacity
-                                        onPress={() => onGetImages(item.images)}
+                                        onPress={onPreviewTemplate}
                                     >
                                         <Text style={{ fontSize: 14, color: 'blue' }}>Preview Template</Text>
                                     </TouchableOpacity>
@@ -164,13 +153,6 @@ const SelectBusinessTemplate = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-
-            <ImageView
-                images={images}
-                imageIndex={0}
-                visible={visible}
-                onRequestClose={() => setIsVisible(false)}
-            />
         </>
     );
 };
