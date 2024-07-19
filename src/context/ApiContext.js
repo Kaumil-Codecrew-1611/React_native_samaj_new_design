@@ -2,16 +2,17 @@ import React, { createContext, useReducer } from 'react';
 import {
     aboutUsContent,
     activeBusiness,
-    updateBusinessCard,
     addFamilyMember,
     allBusinessListing,
     allBusinessTemplateList,
     allNewsListing,
     allUserReview,
     allVillageListing,
+    cancelSubscription,
     changePassword,
     committeeMembers,
     contactUsDetails,
+    editBusinessCard,
     editUserFamilyMembers,
     editUserPostProfile,
     editUserProfile,
@@ -38,11 +39,11 @@ import {
     subscriptionListing,
     subscriptionSelected,
     termAndCondition,
+    updateBusinessCard,
     updateUserFamilyMembers,
     updateUserProfile,
     userPasswordChange,
     userSelfBusinessCard,
-    editBusinessCard,
     villagesByUser
 } from '../api/apiFunctions';
 import { apiRequest } from './apiHelper';
@@ -92,6 +93,7 @@ export const ApiProvider = ({ children }) => {
     const handleEditBusinessCard = (businessCardId) => apiRequest(editBusinessCard, businessCardId, setData, 'handleEditBusinessCard');
     const register = (userData) => apiRequest(registerUser, userData, setData, 'registerResponse');
     const subscriptionForBusiness = (subscriptionData) => apiRequest(subscriptionSelected, subscriptionData, setData, 'subscriptionForBusiness');
+    const cancelSubscriptionForUser = (UserIdCancelSubscription) => apiRequest(cancelSubscription, UserIdCancelSubscription, setData, 'cancelSubscriptionForUser');
     const activeBusinessData = (businessKeyData) => apiRequest(activeBusiness, businessKeyData, setData, 'activeBusinessData');
     const updateCardBusinessData = (businessData, updateBusinessId) => apiRequest(updateBusinessCard, { businessData, updateBusinessId }, setData, 'updateCardBusinessData');
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
@@ -131,6 +133,7 @@ export const ApiProvider = ({ children }) => {
             state,
             register,
             subscriptionForBusiness,
+            cancelSubscriptionForUser,
             changeUserPassword,
             resetData,
             resetAllData,

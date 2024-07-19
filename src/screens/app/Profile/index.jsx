@@ -16,7 +16,12 @@ const ProfilePage = ({ navigation }) => {
 
     const { t } = useTranslation();
     const { setuserDataInStorage, allUserInfo, progress, setAllUserInfo } = useContext(GlobalContext);
-    const { updateUserProfileImage, updateUserBannerProfileImage, resetAllData } = useContext(ApiContext);
+    const {
+        updateUserProfileImage,
+        updateUserBannerProfileImage,
+        resetAllData,
+        // cancelSubscriptionForUser
+    } = useContext(ApiContext);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const [isVisible, setIsVisible] = useState(false);
@@ -25,15 +30,15 @@ const ProfilePage = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [isBannerPopupVisible, setIsBannerPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [cancelSubscriptionmodalVisible, setCancelSubscriptionmodalVisible] = useState(false);
+    // const [cancelSubscriptionmodalVisible, setCancelSubscriptionmodalVisible] = useState(false);
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
     const cancelAnimation = new Animated.Value(0);
-    const cancelsubscriptionpopupAnimation = new Animated.Value(0);
+    // const cancelsubscriptionpopupAnimation = new Animated.Value(0);
     const LogoutAnimation = new Animated.Value(0);
-    const cancelSubSucessAnimation = new Animated.Value(0);
+    // const cancelSubSucessAnimation = new Animated.Value(0);
     const myBusinessAnimation = new Animated.Value(0);
     const addFamilyAnimation = new Animated.Value(0);
-    const calcelSubscription = new Animated.Value(0);
+    // const calcelSubscription = new Animated.Value(0);
     const changePasswordAnimation = new Animated.Value(0);
     const logoutCardAnimation = new Animated.Value(0);
     const openProfileAnimation = new Animated.Value(0);
@@ -41,57 +46,59 @@ const ProfilePage = ({ navigation }) => {
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const cancelScale = cancelAnimation.interpolate({ inputRange, outputRange });
-    const cancelSubscriptionPopUpScale = cancelsubscriptionpopupAnimation.interpolate({ inputRange, outputRange });
+    // const cancelSubscriptionPopUpScale = cancelsubscriptionpopupAnimation.interpolate({ inputRange, outputRange });
     const LogoutScale = LogoutAnimation.interpolate({ inputRange, outputRange });
-    const cancelSubSucessScale = cancelSubSucessAnimation.interpolate({ inputRange, outputRange });
+    // const cancelSubSucessScale = cancelSubSucessAnimation.interpolate({ inputRange, outputRange });
     const myBusinessScale = myBusinessAnimation.interpolate({ inputRange, outputRange });
     const addFamilyScale = addFamilyAnimation.interpolate({ inputRange, outputRange });
-    const cancelSubscriptionScale = calcelSubscription.interpolate({ inputRange, outputRange });
+    // const cancelSubscriptionScale = calcelSubscription.interpolate({ inputRange, outputRange });
     const changePasswordScale = changePasswordAnimation.interpolate({ inputRange, outputRange });
     const logoutCardScale = logoutCardAnimation.interpolate({ inputRange, outputRange });
-
     const openProfileScale = openProfileAnimation.interpolate({ inputRange, outputRange });
     const shareAppScale = shareAppAnimation.interpolate({ inputRange, outputRange });
-
     const windowHeight = Dimensions.get('window').height;
+
     const onPressCancelIn = () => {
         Animated.spring(cancelAnimation, {
             toValue: 1,
             useNativeDriver: true,
         }).start();
     };
-    const onPressSubscriptionpopupCancelIn = () => {
-        Animated.spring(cancelsubscriptionpopupAnimation, {
-            toValue: 1,
-            useNativeDriver: true,
-        }).start();
-    };
 
+    /*     const onPressSubscriptionpopupCancelIn = () => {
+            Animated.spring(cancelsubscriptionpopupAnimation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+     */
     const onPressCancelOut = () => {
         Animated.spring(cancelAnimation, {
             toValue: 0,
             useNativeDriver: true,
         }).start();
     };
-    const onPressSubscriptionpopupOut = () => {
-        Animated.spring(cancelsubscriptionpopupAnimation, {
-            toValue: 0,
-            useNativeDriver: true,
-        }).start();
-    };
 
-    const onPressSubCancelSucessIn = () => {
-        Animated.spring(cancelSubSucessAnimation, {
-            toValue: 1,
-            useNativeDriver: true,
-        }).start();
-    };
-    const onPressSubCancelSucessOut = () => {
-        Animated.spring(cancelSubSucessAnimation, {
-            toValue: 0,
-            useNativeDriver: true,
-        }).start();
-    };
+    /*     const onPressSubscriptionpopupOut = () => {
+            Animated.spring(cancelsubscriptionpopupAnimation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
+    
+        const onPressSubCancelSucessIn = () => {
+            Animated.spring(cancelSubSucessAnimation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+    
+        const onPressSubCancelSucessOut = () => {
+            Animated.spring(cancelSubSucessAnimation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        }; */
 
     const onPressLogoutIn = () => {
         Animated.spring(LogoutAnimation, {
@@ -106,6 +113,7 @@ const ProfilePage = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
+
     const onPressMyBusiness = () => {
         Animated.spring(myBusinessAnimation, {
             toValue: 1,
@@ -121,18 +129,19 @@ const ProfilePage = ({ navigation }) => {
     };
 
 
-    const onPressCacelSubscriptionIn = () => {
-        Animated.spring(calcelSubscription, {
-            toValue: 1,
-            useNativeDriver: true,
-        }).start();
-    };
-    const onPressCancelSubscriptionOut = () => {
-        Animated.spring(calcelSubscription, {
-            toValue: 0,
-            useNativeDriver: true,
-        }).start();
-    };
+    /*     const onPressCacelSubscriptionIn = () => {
+            Animated.spring(calcelSubscription, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+    
+        const onPressCancelSubscriptionOut = () => {
+            Animated.spring(calcelSubscription, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        }; */
 
     const onPressAddFamilyIn = () => {
         Animated.spring(addFamilyAnimation, {
@@ -161,6 +170,7 @@ const ProfilePage = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
+
     const onPressLogoutCardIn = () => {
         Animated.spring(logoutCardAnimation, {
             toValue: 1,
@@ -238,18 +248,15 @@ const ProfilePage = ({ navigation }) => {
         navigation.navigate("Home");
         toastMessage(t('SuccessfullyLoggedOut'), 'Success');
     };
-    const handleCacelSubSucess = async () => {
-        setLoading(true)
-        /*  await setuserDataInStorage('user', null);
-         await resetAllData();
-         
-         setAllUserInfo({})
-         progress.value = withTiming("1");
-         navigation.navigate("Home"); */
-        setLoading(false)
-        setCancelSubscriptionmodalVisible(false)
-        toastMessage("subscription cancel sucessfully", 'Success');
-    };
+
+    /*     const handleCacelSubSucess = async () => {
+            setLoading(true)
+            const userIdForCancelSubscription = allUserInfo?._id;
+            await cancelSubscriptionForUser(userIdForCancelSubscription)
+            setLoading(false)
+            setCancelSubscriptionmodalVisible(false)
+            toastMessage("subscription cancel sucessfully", 'Success');
+        }; */
 
     const formatDate = (timestamp) => {
         if (!timestamp) {
@@ -268,6 +275,7 @@ const ProfilePage = ({ navigation }) => {
     const openModal = () => {
         setIsPopupVisible(true);
     };
+
     const openBannerModal = () => {
         setIsBannerPopupVisible(true);
     };
@@ -293,16 +301,18 @@ const ProfilePage = ({ navigation }) => {
     const openLogoutModal = async () => {
         setModalVisible(true)
     };
-    const openCancelSubscriptionModal = async () => {
-        setCancelSubscriptionmodalVisible(true)
-    };
+
+    /*     const openCancelSubscriptionModal = async () => {
+            setCancelSubscriptionmodalVisible(true)
+        }; */
 
     const closeLogoutModal = async () => {
         setModalVisible(false)
     };
-    const closeCancelSubscriptionModal = async () => {
-        setCancelSubscriptionmodalVisible(false)
-    };
+
+    /*     const closeCancelSubscriptionModal = async () => {
+            setCancelSubscriptionmodalVisible(false)
+        }; */
 
     const selectImage = async () => {
         ImagePicker.openPicker({
@@ -464,7 +474,7 @@ const ProfilePage = ({ navigation }) => {
                     <View className="h-full flex-1 bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-3">
                         <ScrollView style={{ paddingHorizontal: 20, marginTop: 30, flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
                             <View className="flex-col gap-4">
-                                <Animated.View style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                                {/* <Animated.View style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
                                         onPressIn={onPressCacelSubscriptionIn}
@@ -480,7 +490,7 @@ const ProfilePage = ({ navigation }) => {
                                         </View>
                                         <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
                                     </Pressable>
-                                </Animated.View>
+                                </Animated.View> */}
                                 <Animated.View style={[{ transform: [{ scale: addFamilyScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
@@ -567,6 +577,7 @@ const ProfilePage = ({ navigation }) => {
                     onRequestClose={() => setBannerIsVisible(false)}
                 />
             </View>
+
             <Modal
                 transparent={true}
                 visible={isPopupVisible}
@@ -590,6 +601,7 @@ const ProfilePage = ({ navigation }) => {
                     </View>
                 </View>
             </Modal>
+
             <Modal
                 transparent={true}
                 visible={modalVisible}
@@ -641,8 +653,7 @@ const ProfilePage = ({ navigation }) => {
                 </View>
             </Modal>
 
-            {/* this below model is for subscription cancel */}
-            <Modal
+            {/*    <Modal
                 transparent={true}
                 visible={cancelSubscriptionmodalVisible}
                 animationType="slideTop"
@@ -687,11 +698,11 @@ const ProfilePage = ({ navigation }) => {
                                     </Animated.View>
                                 )}
                             </View>
-
                         </View>
                     </View>
                 </View>
-            </Modal>
+            </Modal> */}
+
             <Modal
                 transparent={true}
                 visible={isBannerPopupVisible}
@@ -715,6 +726,7 @@ const ProfilePage = ({ navigation }) => {
                     </View>
                 </View>
             </Modal>
+
         </>
     );
 };

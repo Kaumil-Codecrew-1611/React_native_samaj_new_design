@@ -1,19 +1,24 @@
 import { useFocusEffect } from '@react-navigation/native';
+import { t } from 'i18next';
+import { Pressable } from 'native-base';
 import React, { useCallback, useContext, useState } from 'react';
-import { Animated, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, FlatList, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import Feather from 'react-native-vector-icons/Feather';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import AddBusinessIcon from '../../../assets/addBusiness.svg';
 import AppIcon from '../../../components/AppIcon';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 import { getTemplateById } from '../../../utils/BusinessUtils';
+
 const MyBusinessCards = ({ navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [myBusinessCard, setMyBusinessCard] = useState("");
-    const { userBusinessCard } = useContext(ApiContext);
+    const { userBusinessCard, cancelSubscriptionForUser } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
     const userCardId = allUserInfo._id;
 
@@ -177,6 +182,75 @@ const MyBusinessCards = ({ navigation }) => {
 
     const animationOnPressOfAddBusiness = new Animated.Value(0);
     const scale = animationOnPressOfAddBusiness.interpolate({ inputRange, outputRange });
+    const [cancelSubscriptionmodalVisible, setCancelSubscriptionmodalVisible] = useState(false);
+    const cancelsubscriptionpopupAnimation = new Animated.Value(0);
+    const cancelSubSucessAnimation = new Animated.Value(0);
+    const calcelSubscription = new Animated.Value(0);
+    const cancelSubscriptionPopUpScale = cancelsubscriptionpopupAnimation.interpolate({ inputRange, outputRange });
+    const cancelSubSucessScale = cancelSubSucessAnimation.interpolate({ inputRange, outputRange });
+    const cancelSubscriptionScale = calcelSubscription.interpolate({ inputRange, outputRange });
+    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
+
+    const onPressSubscriptionpopupCancelIn = () => {
+        Animated.spring(cancelsubscriptionpopupAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressSubscriptionpopupOut = () => {
+        Animated.spring(cancelsubscriptionpopupAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressSubCancelSucessIn = () => {
+        Animated.spring(cancelSubSucessAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressSubCancelSucessOut = () => {
+        Animated.spring(cancelSubSucessAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressCacelSubscriptionIn = () => {
+        Animated.spring(calcelSubscription, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressCancelSubscriptionOut = () => {
+        Animated.spring(calcelSubscription, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const handleCacelSubSucess = async () => {
+        setLoading(true)
+        const userIdForCancelSubscription = allUserInfo?._id;
+        await cancelSubscriptionForUser(userIdForCancelSubscription)
+        setLoading(false)
+        setCancelSubscriptionmodalVisible(false)
+        toastMessage("subscription cancel sucessfully", 'Success');
+    };
+
+    const openCancelSubscriptionModal = async () => {
+        setCancelSubscriptionmodalVisible(true)
+    };
+
+    const closeCancelSubscriptionModal = async () => {
+        setCancelSubscriptionmodalVisible(false)
+    };
+
 
     const onPressInAddBusiness = () => {
         Animated.spring(animationOnPressOfAddBusiness, {
@@ -194,28 +268,48 @@ const MyBusinessCards = ({ navigation }) => {
 
     return (
         <View className="bg-[#E9EDF7] h-full">
-            <View className="px-3">
-                <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
-                    <View className="mr-3">
-                        <AddBusinessIcon width={40} height={40} color='black' />
+            {myBusinessCard && myBusinessCard.length < 1 ?
+                <View className="px-3">
+                    <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
+                        <View className="mr-3">
+                            <AddBusinessIcon width={40} height={40} color='black' />
+                        </View>
+                        <Animated.View style={[{ transform: [{ scale }] }]} className="absolute right-2 bg-blue-100 rounded-xl p-2">
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPressIn={onPressInAddBusiness}
+                                onPressOut={onPressOutAddBusiness}
+                                onPress={() => navigation.navigate('SelectBusinessTemplate')}
+                            >
+                                <View className="w-full flex-row items-center gap-1 ">
+                                    <AppIcon type="Feather" color={"#3b82f6"} name="plus-circle" size={26} />
+                                    <Text className="text-blue-500 text-lg font-bold">
+                                        Business
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Animated.View>
                     </View>
-                    <Animated.View style={[{ transform: [{ scale }] }]} className="absolute right-2 bg-blue-100 rounded-xl p-2">
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPressIn={onPressInAddBusiness}
-                            onPressOut={onPressOutAddBusiness}
-                            onPress={() => navigation.navigate('SelectBusinessTemplate')}
-                        >
-                            <View className="w-full flex-row items-center gap-1 ">
-                                <AppIcon type="Feather" color={"#3b82f6"} name="plus-circle" size={26} />
-                                <Text className="text-blue-500 text-lg font-bold">
-                                    Business
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </Animated.View>
                 </View>
-            </View>
+                :
+                <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                    <Pressable
+                        activeOpacity={1}
+                        onPressIn={onPressCacelSubscriptionIn}
+                        onPressOut={onPressCancelSubscriptionOut}
+                        onPress={openCancelSubscriptionModal}
+                        className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
+                    >
+                        <View className="flex-row justify-between gap-2 items-center">
+                            <AnimatedFeatherIcon name="users" size={30} color={"black"} />
+                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">
+                                {t("CancelSubscription")}
+                            </Text>
+                        </View>
+                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                    </Pressable>
+                </Animated.View>
+            }
             {loading ? (
                 renderSkeleton()
             ) : myBusinessCard.length === 0 ? (
@@ -229,6 +323,55 @@ const MyBusinessCards = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                 />
             )}
+            <Modal
+                transparent={true}
+                visible={cancelSubscriptionmodalVisible}
+                animationType="slideTop"
+                onRequestClose={closeCancelSubscriptionModal}
+            >
+                <View className="flex-1 justify-top items-center">
+                    {cancelSubscriptionmodalVisible && (
+                        <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
+                    )}
+                    <View className="w-4/5 bg-white rounded-[15px] px-3 py-4 shadow-lg mt-[90%]">
+                        <Text className="text-lg text-black mb-4">{t("confirmSubscriptionCacel")}</Text>
+                        <View className="flex-row justify-around">
+                            <Animated.View style={[{ transform: [{ scale: cancelSubscriptionPopUpScale }] }]} >
+                                <Pressable
+                                    activeOpacity={1}
+                                    onPressIn={onPressSubscriptionpopupCancelIn}
+                                    onPressOut={onPressSubscriptionpopupOut}
+                                    onPress={closeCancelSubscriptionModal}
+                                    className="px-6 py-3 bg-gray-400 rounded-[15px] mr-2"
+                                >
+                                    <Text className="text-white">{t('cancel')}</Text>
+                                </Pressable>
+                            </Animated.View>
+
+                            <View>
+                                {loading ? (
+                                    <View className="px-6 py-3 bg-red-500 rounded-[15px] flex flex-row">
+                                        <Text className="text-white mr-4">{t("Loading")}</Text>
+                                        <ActivityIndicator size="small" color="white" />
+                                    </View>
+                                ) : (
+                                    <Animated.View style={[{ transform: [{ scale: cancelSubSucessScale }] }]} >
+                                        <Pressable
+                                            activeOpacity={1}
+                                            onPressIn={onPressSubCancelSucessIn}
+                                            onPressOut={onPressSubCancelSucessOut}
+                                            onPress={() => handleCacelSubSucess()} disabled={loading}
+                                            className="px-6 py-3 bg-red-500 rounded-[15px]"
+                                        >
+                                            <Text className="text-white ">{t('cacelSubScription')}</Text>
+                                        </Pressable>
+                                    </Animated.View>
+                                )}
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
