@@ -75,8 +75,9 @@ function EmailSupport({ navigation }) {
                             </View>
                             <View className="w-full p-3">
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700"> {t('email')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <Controller
@@ -97,45 +98,51 @@ function EmailSupport({ navigation }) {
                                         {errors.email && <Text className="text-red-500 mb-[10px]">{errors.email.message}</Text>}
                                     </View>
                                 </View>
-                                <View className="w-full">
+                                <View className="w-full flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('subject')}:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
-                                <Controller
-                                    control={control}
-                                    name="subject"
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <TextInput
-                                            className="py-3"
-                                            placeholder={t('pleaseentersubject')}
-                                            placeholderTextColor="grey"
-                                            style={styles.input}
-                                            value={value}
-                                            onBlur={onBlur}
-                                            onChangeText={onChange}
-                                        />
-                                    )}
-                                />
-                                {errors.subject && <Text className="text-red-500 mb-[10px]">{errors.subject.message}</Text>}
-                                <View className="w-full">
+                                <View className="mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="subject"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextInput
+                                                className="py-3"
+                                                placeholder={t('pleaseentersubject')}
+                                                placeholderTextColor="grey"
+                                                style={styles.input}
+                                                value={value}
+                                                onBlur={onBlur}
+                                                onChangeText={onChange}
+                                            />
+                                        )}
+                                    />
+                                    {errors.subject && <Text className="text-red-500 mb-[10px]">{errors.subject.message}</Text>}
+                                </View>
+                                <View className="w-full flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('message')}:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
-                                <Controller
-                                    control={control}
-                                    name="message"
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <TextInput
-                                            className="py-3"
-                                            placeholder={t('pleaseentermessage')}
-                                            placeholderTextColor="grey"
-                                            multiline
-                                            style={styles.input}
-                                            value={value}
-                                            onBlur={onBlur}
-                                            onChangeText={onChange}
-                                        />
-                                    )}
-                                />
-                                {errors.message && <Text className="text-red-500">{errors.message.message}</Text>}
+                                <View className="mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="message"
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <TextInput
+                                                className="py-3"
+                                                placeholder={t('pleaseentermessage')}
+                                                placeholderTextColor="grey"
+                                                multiline
+                                                style={styles.input}
+                                                value={value}
+                                                onBlur={onBlur}
+                                                onChangeText={onChange}
+                                            />
+                                        )}
+                                    />
+                                    {errors.message && <Text className="text-red-500">{errors.message.message}</Text>}
+                                </View>
                             </View>
                             <View className="w-full p-3">
                                 <Button className="bg-blue-500 py-3 rounded-lg" title="Send Email" onPress={handleSubmit(onSubmit)} />

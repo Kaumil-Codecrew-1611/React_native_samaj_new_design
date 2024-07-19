@@ -20,6 +20,7 @@ import * as yup from 'yup';
 import Button from '../../../../components/Button';
 import ApiContext from '../../../../context/ApiContext';
 import { GlobalContext } from '../../../../context/globalState';
+import toastMessage from '../../../../utils/toastMessage';
 
 export default function AddFamilyDetails({ navigation, route }) {
 
@@ -79,6 +80,13 @@ export default function AddFamilyDetails({ navigation, route }) {
         })();
     }, []);
 
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            // const errorMessage = Object.values(errors).map(error => error.message).join(', ');
+            toastMessage("Please fill all the required fields");
+        }
+    }, [errors]);
+
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
@@ -95,8 +103,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             <View>
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -119,8 +128,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('lastname')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -187,8 +197,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <View className="mx-1 mb-2">
@@ -214,8 +225,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('education')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -238,8 +250,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('address')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -262,8 +275,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('job')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -332,21 +346,24 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
-                                        <View className="mx-1 mb-2 bg-[#eee]">
+                                        <View className="mx-1 mb-2 bg-[#eee]" style={styles.input}>
                                             <Controller
                                                 control={control}
                                                 name="marital_status"
                                                 render={({ field: { onChange, value } }) => (
                                                     <Select
+                                                        borderWidth={0}
                                                         placeholder={t('maritalstatus')}
                                                         className="py-3 m-1"
                                                         selectedValue={value}
                                                         placeholderTextColor={'grey'}
                                                         fontSize={14}
+
                                                         onValueChange={(itemValue) => onChange(itemValue)}
                                                         _selectedItem={{
                                                             bg: "blue.300",
@@ -368,19 +385,22 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View className=" w-full mt-2">
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('relationship')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
-                                    <View className="mx-1 mb-2 bg-[#eee]">
+                                    <View className="mx-1 mb-2 bg-[#eee]" style={styles.input}>
                                         <Controller
                                             control={control}
                                             name="relationship"
                                             render={({ field: { onChange, value } }) => (
                                                 <Select
+                                                    borderWidth={0}
                                                     placeholder={t('relationship')}
                                                     className="py-3 m-1"
                                                     placeholderTextColor={'grey'}
                                                     fontSize={14}
+
                                                     alignItems={'center'}
                                                     selectedValue={value}
                                                     onValueChange={(itemValue) => onChange(itemValue)}
@@ -388,7 +408,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                         bg: "blue.300",
                                                         endIcon: <CheckIcon size="5" />,
                                                     }}
-                                                    style={styles.select}
+                                                // style={styles.select}
                                                 >
                                                     {relationData.length > 0 ? (
                                                         relationData.map((relation) => {

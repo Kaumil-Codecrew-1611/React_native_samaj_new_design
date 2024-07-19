@@ -89,6 +89,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
         }
     };
 
+
     const pickImage = () => {
         ImagePicker.launchImageLibrary({ mediaType: 'photo' }, response => {
             if (response.didCancel) {
@@ -97,12 +98,38 @@ const AddBusinessDetails = ({ route, navigation }) => {
                 console.log('ImagePicker Error: ', response.error);
             } else {
                 const source = response.assets[0];
-                console.log(source, ":::source")
-                setLogo(source);
-                setValue('businessLogo', source, { shouldValidate: true });
+                console.log(source, ":::source");
+
+                // Check if the image has a 1:1 aspect ratio and is at least 200x200 pixels
+                const aspectRatio = source.width / source.height;
+                if (aspectRatio === 1 && source.width >= 200 && source.height >= 200) {
+                    setLogo(source);
+                    setValue('businessLogo', source, { shouldValidate: true });
+                } else {
+                    alert('Invalid Image', 'Please upload an image with a 1:1 aspect ratio and a minimum size of 200x200 pixels.');
+                }
             }
         });
     };
+
+    /*     const pickImage = () => {
+            ImagePicker.launchImageLibrary({ mediaType: 'photo' }, response => {
+                if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                } else if (response.error) {
+                    console.log('ImagePicker Error: ', response.error);
+                } else {
+                    const source = response.assets[0];
+                    // if (source.type === 'image/png') {
+                    console.log(source, ":::source")
+                    setLogo(source);
+                    setValue('businessLogo', source, { shouldValidate: true });
+                    //  } else {
+                        // alert('Only PNG files are allowed');
+                    // } 
+                }
+            });
+        }; */
 
     const onDateChange = (event, selectedDate) => {
         if (selectedDate !== undefined) {
@@ -114,8 +141,8 @@ const AddBusinessDetails = ({ route, navigation }) => {
 
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
-            const errorMessage = Object.values(errors).map(error => error.message).join(', ');
-            toastMessage(errorMessage);
+            // const errorMessage = Object.values(errors).map(error => error.message).join(', ');
+            toastMessage("Please fill all the required fields");
         }
     }, [errors]);
 
