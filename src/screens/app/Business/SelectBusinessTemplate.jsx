@@ -71,7 +71,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
         return (
             <View style={{ width: '100%', marginTop: "10px" }}>
                 <Pressable
-                    onPress={() => handlePress(item.id)}
+                    onPress={() => handlePress(item.template_id)}
                     onPressIn={onPresstemplateIn}
                     onPressOut={onPresstemplateOut}
                     style={[
@@ -99,7 +99,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
                                 </Animated.View>
                             </View>
                             <View>
-                                <Radio value={item.id} my={1} />
+                                <Radio value={item.template_id} my={1} />
                             </View>
                         </View>
                     </Radio.Group>
@@ -125,7 +125,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
                 <FlatList
                     data={templateListing}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item.template_id.toString()}
                     contentContainerStyle={styles.flatlistContainer}
                 />
 

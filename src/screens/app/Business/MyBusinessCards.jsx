@@ -8,7 +8,7 @@ import AppIcon from '../../../components/AppIcon';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-
+import { getTemplateById } from '../../../utils/BusinessUtils';
 const MyBusinessCards = ({ navigation }) => {
 
     const [loading, setLoading] = useState(true);
@@ -21,6 +21,7 @@ const MyBusinessCards = ({ navigation }) => {
         try {
             setLoading(true);
             const userBusinessCardApi = await userBusinessCard(userCardId);
+            console.log(userBusinessCardApi, "::::userBusinessCardApi")
             setMyBusinessCard(userBusinessCardApi.businesses);
         } catch (error) {
             console.log(error, "error for getting data of business cards");
@@ -51,7 +52,8 @@ const MyBusinessCards = ({ navigation }) => {
     const outputRange = [1, 0.8];
 
     const renderItem = ({ item, index }) => {
-
+        let selectedTemplate = getTemplateById(item.template_id);
+        console.log(selectedTemplate, ":::selectedTemplate")
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
 
@@ -75,7 +77,7 @@ const MyBusinessCards = ({ navigation }) => {
             {
                 item.status === "payment_pending"
                     ? navigation.navigate('EditBusinessDetails', { businessId: id })
-                    : navigation.navigate('FlipImage', { images: images })
+                    : navigation.navigate(selectedTemplate?.name)
             }
 
         }

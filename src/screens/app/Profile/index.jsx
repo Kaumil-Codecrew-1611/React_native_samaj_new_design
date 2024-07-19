@@ -24,11 +24,15 @@ const ProfilePage = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [isBannerPopupVisible, setIsBannerPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [cancelSubscriptionmodalVisible, setCancelSubscriptionmodalVisible] = useState(false);
     const appUrl = 'https://play.google.com/store/apps/details?id=com.panchal_application&pcampaignid=web_share';
     const cancelAnimation = new Animated.Value(0);
+    const cancelsubscriptionpopupAnimation = new Animated.Value(0);
     const LogoutAnimation = new Animated.Value(0);
+    const cancelSubSucessAnimation = new Animated.Value(0);
     const myBusinessAnimation = new Animated.Value(0);
     const addFamilyAnimation = new Animated.Value(0);
+    const calcelSubscription = new Animated.Value(0);
     const changePasswordAnimation = new Animated.Value(0);
     const logoutCardAnimation = new Animated.Value(0);
     const openProfileAnimation = new Animated.Value(0);
@@ -36,9 +40,12 @@ const ProfilePage = ({ navigation }) => {
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
     const cancelScale = cancelAnimation.interpolate({ inputRange, outputRange });
+    const cancelSubscriptionPopUpScale = cancelsubscriptionpopupAnimation.interpolate({ inputRange, outputRange });
     const LogoutScale = LogoutAnimation.interpolate({ inputRange, outputRange });
+    const cancelSubSucessScale = cancelSubSucessAnimation.interpolate({ inputRange, outputRange });
     const myBusinessScale = myBusinessAnimation.interpolate({ inputRange, outputRange });
     const addFamilyScale = addFamilyAnimation.interpolate({ inputRange, outputRange });
+    const cancelSubscriptionScale = calcelSubscription.interpolate({ inputRange, outputRange });
     const changePasswordScale = changePasswordAnimation.interpolate({ inputRange, outputRange });
     const logoutCardScale = logoutCardAnimation.interpolate({ inputRange, outputRange });
 
@@ -52,9 +59,34 @@ const ProfilePage = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
+    const onPressSubscriptionpopupCancelIn = () => {
+        Animated.spring(cancelsubscriptionpopupAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
 
     const onPressCancelOut = () => {
         Animated.spring(cancelAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+    const onPressSubscriptionpopupOut = () => {
+        Animated.spring(cancelsubscriptionpopupAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressSubCancelSucessIn = () => {
+        Animated.spring(cancelSubSucessAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+    const onPressSubCancelSucessOut = () => {
+        Animated.spring(cancelSubSucessAnimation, {
             toValue: 0,
             useNativeDriver: true,
         }).start();
@@ -87,6 +119,20 @@ const ProfilePage = ({ navigation }) => {
         }).start();
     };
 
+
+    const onPressCacelSubscriptionIn = () => {
+        Animated.spring(calcelSubscription, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+    const onPressCancelSubscriptionOut = () => {
+        Animated.spring(calcelSubscription, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
     const onPressAddFamilyIn = () => {
         Animated.spring(addFamilyAnimation, {
             toValue: 1,
@@ -100,6 +146,7 @@ const ProfilePage = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
+
     const onPressChangePasswordIn = () => {
         Animated.spring(changePasswordAnimation, {
             toValue: 1,
@@ -190,6 +237,18 @@ const ProfilePage = ({ navigation }) => {
         navigation.navigate("Home");
         toastMessage(t('SuccessfullyLoggedOut'), 'Success');
     };
+    const handleCacelSubSucess = async () => {
+        setLoading(true)
+        /*  await setuserDataInStorage('user', null);
+         await resetAllData();
+         
+         setAllUserInfo({})
+         progress.value = withTiming("1");
+         navigation.navigate("Home"); */
+        setLoading(false)
+        setCancelSubscriptionmodalVisible(false)
+        toastMessage("subscription cancel sucessfully", 'Success');
+    };
 
     const formatDate = (timestamp) => {
         if (!timestamp) {
@@ -233,9 +292,15 @@ const ProfilePage = ({ navigation }) => {
     const openLogoutModal = async () => {
         setModalVisible(true)
     };
+    const openCancelSubscriptionModal = async () => {
+        setCancelSubscriptionmodalVisible(true)
+    };
 
     const closeLogoutModal = async () => {
         setModalVisible(false)
+    };
+    const closeCancelSubscriptionModal = async () => {
+        setCancelSubscriptionmodalVisible(false)
     };
 
     const selectImage = async () => {
@@ -398,6 +463,23 @@ const ProfilePage = ({ navigation }) => {
                     <View className="h-full flex-1 bg-[#e7eaf1] overflow-hidden rounded-t-[50px] mt-3">
                         <ScrollView style={{ paddingHorizontal: 20, marginTop: 30, flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
                             <View className="flex-col gap-4">
+                                <Animated.View style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                                    <Pressable
+                                        activeOpacity={1}
+                                        onPressIn={onPressCacelSubscriptionIn}
+                                        onPressOut={onPressCancelSubscriptionOut}
+                                        onPress={openCancelSubscriptionModal}
+                                        className="flex flex-row items-center justify-between bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3"
+                                    >
+                                        <View className="flex-row justify-between gap-2 items-center">
+                                            <AnimatedFeatherIcon name="users" size={30} color={"black"} />
+                                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">
+                                                {t("CancelSubscription")}
+                                            </Text>
+                                        </View>
+                                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                                    </Pressable>
+                                </Animated.View>
                                 <Animated.View style={[{ transform: [{ scale: addFamilyScale }] }]} >
                                     <Pressable
                                         activeOpacity={1}
@@ -548,6 +630,58 @@ const ProfilePage = ({ navigation }) => {
                                             className="px-6 py-3 bg-red-500 rounded-[15px]"
                                         >
                                             <Text className="text-white ">{t('logout')}</Text>
+                                        </Pressable>
+                                    </Animated.View>
+                                )}
+                            </View>
+
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* this below model is for subscription cancel */}
+            <Modal
+                transparent={true}
+                visible={cancelSubscriptionmodalVisible}
+                animationType="slideTop"
+                onRequestClose={closeCancelSubscriptionModal}
+            >
+                <View className="flex-1 justify-top items-center">
+                    {cancelSubscriptionmodalVisible && (
+                        <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
+                    )}
+                    <View className="w-4/5 bg-white rounded-[15px] px-3 py-4 shadow-lg mt-[90%]">
+                        <Text className="text-lg text-black mb-4">{t("confirmSubscriptionCacel")}</Text>
+                        <View className="flex-row justify-around">
+                            <Animated.View style={[{ transform: [{ scale: cancelSubscriptionPopUpScale }] }]} >
+                                <Pressable
+                                    activeOpacity={1}
+                                    onPressIn={onPressSubscriptionpopupCancelIn}
+                                    onPressOut={onPressSubscriptionpopupOut}
+                                    onPress={closeCancelSubscriptionModal}
+                                    className="px-6 py-3 bg-gray-400 rounded-[15px] mr-2"
+                                >
+                                    <Text className="text-white">{t('cancel')}</Text>
+                                </Pressable>
+                            </Animated.View>
+
+                            <View>
+                                {loading ? (
+                                    <View className="px-6 py-3 bg-red-500 rounded-[15px] flex flex-row">
+                                        <Text className="text-white mr-4">{t("Loading")}</Text>
+                                        <ActivityIndicator size="small" color="white" />
+                                    </View>
+                                ) : (
+                                    <Animated.View style={[{ transform: [{ scale: cancelSubSucessScale }] }]} >
+                                        <Pressable
+                                            activeOpacity={1}
+                                            onPressIn={onPressSubCancelSucessIn}
+                                            onPressOut={onPressSubCancelSucessOut}
+                                            onPress={() => handleCacelSubSucess()} disabled={loading}
+                                            className="px-6 py-3 bg-red-500 rounded-[15px]"
+                                        >
+                                            <Text className="text-white ">{t('cacelSubScription')}</Text>
                                         </Pressable>
                                     </Animated.View>
                                 )}

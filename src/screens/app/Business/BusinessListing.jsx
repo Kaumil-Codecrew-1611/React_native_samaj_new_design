@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
-
+import { getTemplateById } from '../../../utils/BusinessUtils';
 const BusinessListing = ({ navigation }) => {
 
     const { allUsersBussinessListing } = useContext(ApiContext);
@@ -60,9 +60,10 @@ const BusinessListing = ({ navigation }) => {
                 useNativeDriver: true,
             }).start();
         };
-
+        console.log(item, ":::::::hey item ")
         const handleOpenCardOfBusiness = (images) => {
-            navigation.navigate('FlipImage', { images: images });
+            const selectedTemplate = getTemplateById(item.template_id);
+            navigation.navigate(selectedTemplate?.name);
         }
 
         return (
