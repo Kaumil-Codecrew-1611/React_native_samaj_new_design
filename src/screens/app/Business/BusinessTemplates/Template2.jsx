@@ -215,6 +215,7 @@ const BusinessCard = () => {
     }, []);
 
     return (
+
         <View className="flex flex-1 bg-[#E6F2FF] items-center justify-start mt-5">
             <View style={{ width: 350, height: 550 }}>
                 <Animated.View style={[frontAnimatedStyle, { backfaceVisibility: 'hidden', position: 'absolute', width: '100%', height: '100%' }]}>
@@ -241,6 +242,7 @@ const BusinessCard = () => {
                 <Text className="text-base text-black font-medium">Flip Card</Text>
             </View>
         </View>
+
     );
 };
 
