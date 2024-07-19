@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useContext, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Feather from 'react-native-vector-icons/Feather';
 import * as yup from 'yup';
@@ -73,6 +73,7 @@ const ChangePassword = ({ navigation }) => {
     const onPressConfirmPassword = () => {
         setConfirmPasswordHidden(!isConfirmPasswordHidden);
     };
+    const [windowHeight] = useState(Dimensions.get('window').height);
 
     return (
         <View className="flex-1 bg-[#E9EDF7] px-2 selection: relative">
@@ -85,16 +86,17 @@ const ChangePassword = ({ navigation }) => {
                 <View className="flex-1 px-8">
                     <KeyboardAvoidingView
                         behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        className="flex flex-1"
+                        className="flex flex-1 mb-2"
                     >
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                                 <View className="flex-1 px-1">
                                     <View>
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold text-base tracking-wider text-black">{t('changePassword')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
-                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
+                                        <View className={`w-full my-1 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
                                             <Controller
                                                 control={control}
                                                 name="old_password"
@@ -123,10 +125,11 @@ const ChangePassword = ({ navigation }) => {
                                         {errors.old_password && <Text className="text-red-500">{errors.old_password.message}</Text>}
                                     </View>
                                     <View className="my-5">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold text-base tracking-wider text-black">{t('newPassword')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
-                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
+                                        <View className={`w-full my-1 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
                                             <Controller
                                                 control={control}
                                                 name="password"
@@ -155,10 +158,11 @@ const ChangePassword = ({ navigation }) => {
                                         {errors.password && <Text className="text-red-500">{errors.password.message}</Text>}
                                     </View>
                                     <View>
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold text-base tracking-wider text-black">{t('confirmpassword')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
-                                        <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
+                                        <View className={`w-full my-1 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
                                             <Controller
                                                 control={control}
                                                 name="cpassword"
@@ -190,7 +194,7 @@ const ChangePassword = ({ navigation }) => {
                             </ScrollView>
                         </TouchableWithoutFeedback>
                     </KeyboardAvoidingView>
-                    <View className="mb-16">
+                    <View className={`${windowHeight > 668 ? 'mb-16' : 'mb-5'}`}>
 
                         {loading ? (
                             <View className="flex flex-row items-center justify-center bg-[#4e63ac] py-4 cursor-pointer p-4 rounded-lg">
