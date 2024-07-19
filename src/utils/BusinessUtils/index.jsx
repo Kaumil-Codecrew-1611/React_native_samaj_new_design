@@ -2,9 +2,9 @@
 
 // Define the static object with the templates
 const templates = {
-    1: { template_id: 1, name: "BusinessTemplate1" },
-    2: { template_id: 2, name: "BusinessTemplate2" },
-    3: { template_id: 3, name: "BusinessTemplate3" }
+    1: { template_id: 1, name: "BusinessTemplate1", user_templ: "BusinessUserTemplate1" },
+    2: { template_id: 2, name: "BusinessTemplate2", user_templ: "BusinessUserTemplate2" },
+    3: { template_id: 3, name: "BusinessTemplate3", user_templ: "BusinessUserTemplate3" },
 };
 
 // Method to return all templates as an array of objects

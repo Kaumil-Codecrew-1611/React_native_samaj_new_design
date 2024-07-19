@@ -63,7 +63,7 @@ const BusinessListing = ({ navigation }) => {
         console.log(item, ":::::::hey item ")
         const handleOpenCardOfBusiness = (images) => {
             const selectedTemplate = getTemplateById(item.template_id);
-            navigation.navigate(selectedTemplate?.name);
+            navigation.navigate(selectedTemplate?.user_templ);
         }
 
         return (

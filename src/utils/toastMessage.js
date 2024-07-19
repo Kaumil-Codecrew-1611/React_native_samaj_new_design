@@ -6,6 +6,7 @@ function toastMessage(error, type = 'Danger') {
             title: error,
             button: true,
             buttonText: 'Ok',
+            closeButton: true,
             callback: () => Popup.hide()
         })
     } catch (error) {

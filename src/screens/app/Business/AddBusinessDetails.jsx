@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { t } from 'i18next';
 import { TextArea } from 'native-base';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
     ActivityIndicator,
@@ -24,10 +24,11 @@ import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
+import toastMessage from '../../../utils/toastMessage';
 
 const schema = yup.object().shape({
-    name: yup.string().required('Name is required'),
-    businessName: yup.string().required('Business name is required'),
+    name: yup.string().required('Please Enter Name'),
+    businessName: yup.string().required('Please Enter Your Business name'),
     role: yup.string(),
     address: yup.string().required('Address is required'),
     businessEmail: yup.string().email('Invalid business email'),
@@ -97,6 +98,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
             } else {
                 const source = response.assets[0];
                 // if (source.type === 'image/png') {
+                console.log(source, ":::source")
                 setLogo(source);
                 setValue('businessLogo', source, { shouldValidate: true });
                 /* } else {
@@ -113,6 +115,12 @@ const AddBusinessDetails = ({ route, navigation }) => {
             setValue('dateOfOpeningJob', currentDate);
         }
     };
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            const errorMessage = Object.values(errors).map(error => error.message).join(', ');
+            toastMessage(errorMessage);
+        }
+    }, [errors]);
 
     return (
         <View className="bg-[#E9EDF7] w-full flex-1 px-3">

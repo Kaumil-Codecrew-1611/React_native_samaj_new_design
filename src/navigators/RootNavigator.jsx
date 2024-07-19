@@ -45,6 +45,9 @@ import TermAndCondition from '../screens/app/TermAndCondition/TermAndCondition';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
+import Bus_User_template1 from '../screens/app/Business/BusinessTemplates/BusinessUserTemplates/Bus_User_template1';
+import Bus_User_template2 from '../screens/app/Business/BusinessTemplates/BusinessUserTemplates/Bus_User_template2';
+import Bus_User_template3 from '../screens/app/Business/BusinessTemplates/BusinessUserTemplates/Bus_User_template3';
 
 const RootStack = createNativeStackNavigator()
 
@@ -116,6 +119,9 @@ const RootNavigator = () => {
                 <RootStack.Screen name="BusinessTemplate1" component={Template1} options={{ headerTitle: "Business Template 1" }} />
                 <RootStack.Screen name="BusinessTemplate2" component={Template2} options={{ headerTitle: "Business Template 2" }} />
                 <RootStack.Screen name="BusinessTemplate3" component={Template3} options={{ headerTitle: "Business Template 3" }} />
+                <RootStack.Screen name="BusinessUserTemplate1" component={Bus_User_template1} options={{ headerTitle: "Business Template 1" }} />
+                <RootStack.Screen name="BusinessUserTemplate2" component={Bus_User_template2} options={{ headerTitle: "Business Template 2" }} />
+                <RootStack.Screen name="BusinessUserTemplate3" component={Bus_User_template3} options={{ headerTitle: "Business Template 3" }} />
             </RootStack.Navigator>
         </>
     )
