@@ -156,8 +156,9 @@ const Register = ({ navigation }) => {
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                                 <View className="my-1">
-                                    <View className="w-full ml-1">
+                                    <View className="w-full ml-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold  text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -179,8 +180,9 @@ const Register = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('lastname')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -202,8 +204,9 @@ const Register = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('middlename')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -211,7 +214,7 @@ const Register = ({ navigation }) => {
                                             name="middlename"
                                             render={({ field: { onChange, onBlur, value } }) => (
                                                 <TextInput
-                                                    placeholder={t('lastname')}
+                                                    placeholder={t('middlename')}
                                                     placeholderTextColor="grey"
                                                     style={styles.input}
                                                     value={value}
@@ -225,8 +228,9 @@ const Register = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <Controller
@@ -249,8 +253,9 @@ const Register = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('password')} :</Text>
+                                    <View className="w-full flex flex-row gap-[0.5px]">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('password')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -317,8 +322,9 @@ const Register = ({ navigation }) => {
 
                                 <View className="my-1">
 
-                                    <View className="w-full">
+                                    <View className="w-full flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
 
                                     <View className="w-full mt-2">
@@ -342,8 +348,9 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('address')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -365,8 +372,9 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('city')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -388,8 +396,9 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('state')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -411,8 +420,9 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('pincode')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -435,8 +445,9 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('education')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -458,8 +469,9 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('job')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className=" w-full mt-2">
                                             <Controller
@@ -513,8 +525,9 @@ const Register = ({ navigation }) => {
                                     </View>
 
                                     <View className="my-1">
-                                        <View className="w-full">
+                                        <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className="w-full mt-2">
                                             <View className="mb-[10px] ml-1">

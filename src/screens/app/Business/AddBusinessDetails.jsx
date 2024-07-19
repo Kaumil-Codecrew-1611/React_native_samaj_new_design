@@ -279,7 +279,6 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                     />
                                 </View>
                             </View>
-
                             <View className="mt-1">
                                 <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">
@@ -298,6 +297,18 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                     <Text style={styles.errorText}>{errors.businessLogo.message}</Text>
                                 )}
                             </View>
+                            {/*  <View className="mt-1">
+                                <View className="w-full mx-1">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo (.PNG extension):</Text>
+                                </View>
+                                <TouchableOpacity onPress={pickImage} style={styles.logoContainer}>
+                                    {logo ? (
+                                        <Image source={{ uri: logo.uri }} style={styles.logo} />
+                                    ) : (
+                                        <Feather name="image" style={styles.icon} />
+                                    )}
+                                </TouchableOpacity>
+                            </View> */}
 
                             <View className="mt-1">
                                 <View className="w-full mx-1 flex flex-row gap-[0.5px]">
