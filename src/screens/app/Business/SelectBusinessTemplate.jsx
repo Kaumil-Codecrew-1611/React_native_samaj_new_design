@@ -1,38 +1,24 @@
 import { Radio } from 'native-base';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Animated, FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import ImageView from "react-native-image-viewing";
-import ApiContext from '../../../context/ApiContext';
+import { getAllTemplates } from '../../../utils/BusinessUtils';
 
-const SelectBusinessTemplate = ({ navigation, route }) => {
-
+const SelectBusinessTemplate = ({ navigation }) => {
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
-    const editSelectedTemplateNumber = route.params?.templateNumber
-    const businessCardId = route.params?.businessId
     const [value, setValue] = useState('');
     const animation = useMemo(() => new Animated.Value(0), []);
-    const { getAllBussinessTemplateListing } = useContext(ApiContext);
     const [templateListing, setTemplateListing] = useState([]);
-    const [images, setImages] = useState([]);
     const [visible, setIsVisible] = useState(false);
 
     useEffect(() => {
         fetchAllBusinessTemplate();
-        setValue(editSelectedTemplateNumber)
-    }, [editSelectedTemplateNumber]);
+    }, []);
 
-    const fetchAllBusinessTemplate = async () => {
+    const fetchAllBusinessTemplate = () => {
         try {
-            const allBusinessTemplate = await getAllBussinessTemplateListing();
-            const formattedTemplates = allBusinessTemplate.templates.map(template => ({
-                ...template,
-                images: [
-                    { uri: process.env.IMAGE_URL + template.image.front },
-                    { uri: process.env.IMAGE_URL + template.image.back },
-                ],
-            }));
-            setTemplateListing(formattedTemplates);
+            const allBusinessTemplate = getAllTemplates();
+            setTemplateListing(allBusinessTemplate);
         } catch (error) {
             console.log("Error fetching all business template:", error);
         }
@@ -57,7 +43,6 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
     }, [animation]);
 
     const renderItem = ({ item }) => {
-
         const animationForTemplate = new Animated.Value(0);
         const template_scale = animationForTemplate.interpolate({
             inputRange: [0, 1],
@@ -78,15 +63,14 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
             }).start();
         };
 
-        const onGetImages = (image) => {
-            setImages(image);
-            setIsVisible(true);
+        const onPreviewTemplate = () => {
+            navigation.navigate(item.name); // Navigate to the specific screen
         };
 
         return (
             <View style={{ width: '100%', marginTop: "10px" }}>
                 <Pressable
-                    onPress={() => handlePress(item._id)}
+                    onPress={() => handlePress(item.template_id)}
                     onPressIn={onPresstemplateIn}
                     onPressOut={onPresstemplateOut}
                     style={[
@@ -107,14 +91,14 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
                                 </Text>
                                 <Animated.View style={{ transform: [{ scale: template_scale }], justifyContent: 'center', paddingTop: 10, paddingBottom: 3 }}>
                                     <TouchableOpacity
-                                        onPress={() => onGetImages(item.images)}
+                                        onPress={onPreviewTemplate}
                                     >
                                         <Text style={{ fontSize: 14, color: 'blue' }}>Preview Template</Text>
                                     </TouchableOpacity>
                                 </Animated.View>
                             </View>
                             <View>
-                                <Radio value={item.id} my={1} />
+                                <Radio value={item.template_id} my={1} />
                             </View>
                         </View>
                     </Radio.Group>
@@ -126,12 +110,12 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
     const scale = animation.interpolate({ inputRange, outputRange });
 
     const onMoveToAddBusinessForm = () => {
-        navigation.navigate(businessCardId ? 'EditBusinessDetails' : 'AddBusinessDetailsScreen', { templateId: value, businessId: businessCardId });
+        navigation.navigate('AddBusinessDetailsScreen', { templateId: value });
     }
 
     return (
         <>
-            <View className="bg-[#E9EDF7] h-full">
+            <View className="bg-[#E9EDF7] h-screen">
 
                 <View className="bg-white rounded-lg m-2 p-3 mb-4">
                     <Text className="text-black text-xl font-bold">Choose Your Business Template</Text>
@@ -140,12 +124,13 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
                 <FlatList
                     data={templateListing}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item.template_id.toString()}
                     contentContainerStyle={styles.flatlistContainer}
                 />
 
-                <View className="relative">
-                    <View className="absolute bottom-0 p-2 bg-white rounded flex flex-row justify-between items-center w-full">
+                <View className="absolute bottom-16 w-screen p-2 bg-white rounded">
+                    <View className="flex flex-row justify-between items-center w-full">
+
                         <View className="w-full">
                             <Animated.View style={[{ transform: [{ scale }] }]} className="flex items-end">
                                 <TouchableOpacity
@@ -153,10 +138,10 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
                                     onPressIn={onPressIn}
                                     onPressOut={onPressOut}
                                     onPress={onMoveToAddBusinessForm}
-                                    disabled={!value}
+                                    disabled={templateListing.length === 0}
                                     style={[
                                         styles.subscribeButton,
-                                        (!value) && styles.disabledButton
+                                        (templateListing.length === 0) && styles.disabledButton
                                     ]}
                                 >
                                     <Text className="text-white text-lg font-bold">Next</Text>
@@ -167,13 +152,6 @@ const SelectBusinessTemplate = ({ navigation, route }) => {
                     </View>
                 </View>
             </View>
-
-            <ImageView
-                images={images}
-                imageIndex={0}
-                visible={visible}
-                onRequestClose={() => setIsVisible(false)}
-            />
         </>
     );
 };

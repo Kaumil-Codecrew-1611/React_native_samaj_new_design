@@ -34,6 +34,7 @@ const schema = yup.object().shape({
     businessContactNumber: yup.string(),
     businessShortDetail: yup.string().required('Business short detail is required'),
     businessType: yup.string().required('Business type is required'),
+    businessLogo: yup.mixed().required('Business logo is required'),
 });
 
 const AddBusinessDetails = ({ route, navigation }) => {
@@ -95,12 +96,12 @@ const AddBusinessDetails = ({ route, navigation }) => {
                 console.log('ImagePicker Error: ', response.error);
             } else {
                 const source = response.assets[0];
-                if (source.type === 'image/png') {
-                    setLogo(source);
-                    setValue('businessLogo', source, { shouldValidate: true });
-                } else {
+                // if (source.type === 'image/png') {
+                setLogo(source);
+                setValue('businessLogo', source, { shouldValidate: true });
+                /* } else {
                     alert('Only PNG files are allowed');
-                }
+                } */
             }
         });
     };
@@ -115,7 +116,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
 
     return (
         <View className="bg-[#E9EDF7] w-full flex-1 px-3">
-            <View className="w-full bg-white overflow-hidden flex-1 p-3 rounded-md mt-3 mb-4">
+            <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     Fill the Business details
                 </Text>
@@ -127,8 +128,9 @@ const AddBusinessDetails = ({ route, navigation }) => {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             <View>
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Full Name:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -146,13 +148,15 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
+
                                     {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
                                 </View>
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Name:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -175,8 +179,9 @@ const AddBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1" >
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Address:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
 
                                 <View className="w-full mt-2">
@@ -203,8 +208,9 @@ const AddBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Email:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -227,8 +233,9 @@ const AddBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Contact Number:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -274,8 +281,11 @@ const AddBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo (.PNG extension):</Text>
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">
+                                        Business Logo:
+                                    </Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
                                 <TouchableOpacity onPress={pickImage} style={styles.logoContainer}>
                                     {logo ? (
@@ -284,11 +294,15 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                         <Feather name="image" style={styles.icon} />
                                     )}
                                 </TouchableOpacity>
+                                {errors.businessLogo && (
+                                    <Text style={styles.errorText}>{errors.businessLogo.message}</Text>
+                                )}
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Short Description:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -454,8 +468,9 @@ const AddBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Type Of Business:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -478,8 +493,9 @@ const AddBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Role:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13, }}>*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller

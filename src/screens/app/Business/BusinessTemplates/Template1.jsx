@@ -1,12 +1,13 @@
-import { Image, ScrollView, Text, View } from 'native-base';
-import { React, useContext, useState } from 'react';
-import { Animated, Linking, TouchableOpacity } from 'react-native';
+import { Image, ScrollView } from 'native-base';
+import React, { useContext, useState } from 'react';
+import { Animated, Linking, Text, TouchableOpacity, View } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import TwitterIcon from '../../../../assets/twitter.svg';
 import { GlobalContext } from '../../../../context/globalState';
 
-const BusinessCardScreen = () => {
+
+const Template1 = () => {
 
     const inputRange = [0, 1];
     const outputRange = [1, 0.8];
@@ -188,30 +189,31 @@ const BusinessCardScreen = () => {
                                     <Text className="text-[#5176df] text-md font-medium">B-382 Nishitpark aadinathnagar odhav ahmedabad</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View className="flex flex-row items-center flex-wrap mb-2">
 
+                            <View className="flex flex-row items-center flex-wrap mb-2">
                                 <Text className="text-black text-base font-bold tracking-wide">Company Email :- </Text>
                                 <TouchableOpacity onPress={() => handleClickOnMail("vishwprajapati66@gmail.com")}>
                                     <Text className="text-[#5176df] text-md font-medium">vishwprajapati66@gmail.com</Text>
                                 </TouchableOpacity>
-
                             </View>
-                            <View className="flex flex-row items-center flex-wrap mb-2">
 
+                            <View className="flex flex-row items-center flex-wrap mb-2">
                                 <Text className="text-black text-base font-bold tracking-wide">Website :- </Text>
                                 <TouchableOpacity onPress={handlePress}>
                                     <Text className="text-[#5176df] text-sm font-semibold">https://international.ajaymodi.com/</Text>
                                 </TouchableOpacity>
-
                             </View>
+
                             <View className="flex flex-row items-center flex-wrap mb-2">
                                 <Text className="text-black text-base font-bold tracking-wide">Short Description :- </Text>
                                 <Text className="text-black text-sm text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</Text>
                             </View>
+
                             <View className="flex flex-row items-center flex-wrap mb-2">
                                 <Text className="text-black text-base font-bold tracking-wide">Long description :- </Text>
                                 <Text className="text-black text-sm text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Nulla facilisi. Morbi ut ultrices felis. Curabitur ultricies, nisi nec interdum facilisis, nulla dolor.</Text>
                             </View>
+
                         </View>
 
                         <View>
@@ -288,8 +290,8 @@ const BusinessCardScreen = () => {
                 </View>
             </ScrollView>
         </View>
-    );
-};
+    )
+}
 
 const styles = {
     card: {
@@ -307,4 +309,4 @@ const styles = {
     },
 };
 
-export default BusinessCardScreen;
+export default Template1

@@ -6,12 +6,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import BottomTabs from '../containers/BottomTabs';
 import Aboutus from '../screens/app/About';
 import AddBusinessDetails from '../screens/app/Business/AddBusinessDetails';
-import BusinessCardScreen from '../screens/app/Business/BusinessComponent/BusinessCardScreen';
 import BusinessListing from '../screens/app/Business/BusinessListing';
 import BusinessPaymentFail from '../screens/app/Business/BusinessPaymentFail';
 import BusinessPaymentPage from '../screens/app/Business/BusinessPaymentPage';
 import BusinessPaymentSuccess from '../screens/app/Business/BusinessPaymentSuccess';
 import BusinessSubscription from '../screens/app/Business/BusinessSubscription';
+import Template1 from '../screens/app/Business/BusinessTemplates/Template1';
+import Template2 from '../screens/app/Business/BusinessTemplates/Template2';
+import Template3 from '../screens/app/Business/BusinessTemplates/Template3';
+import EditBusinessDetails from '../screens/app/Business/EditBusinessDetails';
 import FlipImage from '../screens/app/Business/FlipImage';
 import MyBusinessCards from '../screens/app/Business/MyBusinessCards';
 import SelectBusinessTemplate from '../screens/app/Business/SelectBusinessTemplate';
@@ -42,8 +45,6 @@ import TermAndCondition from '../screens/app/TermAndCondition/TermAndCondition';
 import VillageListing from '../screens/app/VillageListing';
 import VillageWisePersons from '../screens/app/VillageWisePersons';
 import Welcome from '../screens/app/WelcomeScreen';
-import EditBusinessDetails from '../screens/app/Business/EditBusinessDetails';
-import BusinessCardScreen2 from '../screens/app/Business/BusinessComponent/BusinessCardScreen2';
 
 const RootStack = createNativeStackNavigator()
 
@@ -105,8 +106,6 @@ const RootNavigator = () => {
                 <RootStack.Screen name="AllUserDirectory" component={AllUserDirectory} options={{ headerTitle: "Directory" }} />
                 <RootStack.Screen name="EventsScreen" component={EventsScreen} options={{ headerTitle: t("AllEvents") }} />
                 <RootStack.Screen name="BusinessScreen" component={BusinessListing} options={{ headerTitle: t("Business") }} />
-                <RootStack.Screen name="BusinessCardScreen" component={BusinessCardScreen} options={{ headerTitle: t("Business") }} />
-                <RootStack.Screen name="BusinessCardScreen2" component={BusinessCardScreen2} options={{ headerTitle: "Business Card 2" }} />
                 <RootStack.Screen name="MyBusinessCardScreen" component={MyBusinessCards} options={{ headerTitle: t("My Business") }} />
                 <RootStack.Screen name="AddBusinessDetailsScreen" component={AddBusinessDetails} options={{ headerTitle: t("Add Business Details") }} />
                 <RootStack.Screen name="EditBusinessDetails" component={EditBusinessDetails} options={{ headerTitle: "Edit Business Details" }} />
@@ -114,6 +113,9 @@ const RootNavigator = () => {
                 <RootStack.Screen name="FlipImage" component={FlipImage} options={{ headerTitle: "Flip Image" }} />
                 <RootStack.Screen name="BusinessPaymentPage" component={BusinessPaymentPage} options={{ headerTitle: "Business Payment" }} />
                 <RootStack.Screen name="SelectBusinessTemplate" component={SelectBusinessTemplate} options={{ headerTitle: "Business Template" }} />
+                <RootStack.Screen name="BusinessTemplate1" component={Template1} options={{ headerTitle: "Business Template 1" }} />
+                <RootStack.Screen name="BusinessTemplate2" component={Template2} options={{ headerTitle: "Business Template 2" }} />
+                <RootStack.Screen name="BusinessTemplate3" component={Template3} options={{ headerTitle: "Business Template 3" }} />
             </RootStack.Navigator>
         </>
     )
