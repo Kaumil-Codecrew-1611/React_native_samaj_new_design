@@ -61,8 +61,7 @@ const BusinessListing = ({ navigation }) => {
                 useNativeDriver: true,
             }).start();
         };
-        console.log(item, ":::::::hey item ")
-        const handleOpenCardOfBusiness = (images) => {
+        const handleOpenCardOfBusiness = () => {
             const selectedTemplate = getTemplateById(item.template_id);
             navigation.navigate(selectedTemplate?.user_templ);
         }
@@ -121,7 +120,6 @@ const BusinessListing = ({ navigation }) => {
                                         </TouchableOpacity>
                                     </View>
                                 }
-
                             </View>
                         </LinearGradient>
                     </TouchableOpacity>

@@ -97,13 +97,9 @@ const AddBusinessDetails = ({ route, navigation }) => {
                 console.log('ImagePicker Error: ', response.error);
             } else {
                 const source = response.assets[0];
-                // if (source.type === 'image/png') {
                 console.log(source, ":::source")
                 setLogo(source);
                 setValue('businessLogo', source, { shouldValidate: true });
-                /* } else {
-                    alert('Only PNG files are allowed');
-                } */
             }
         });
     };
@@ -115,6 +111,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
             setValue('dateOfOpeningJob', currentDate);
         }
     };
+
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
             const errorMessage = Object.values(errors).map(error => error.message).join(', ');
@@ -124,7 +121,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
 
     return (
         <View className="bg-[#E9EDF7] w-full flex-1 px-3">
-            <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
+            <View className="w-full bg-white overflow-hidden flex-1 p-3 rounded-md mt-3 mb-4">
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     Fill the Business details
                 </Text>
@@ -135,6 +132,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
                 >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+
                             <View>
                                 <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Full Name:</Text>
@@ -287,6 +285,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                     />
                                 </View>
                             </View>
+
                             <View className="mt-1">
                                 <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">
@@ -305,18 +304,6 @@ const AddBusinessDetails = ({ route, navigation }) => {
                                     <Text style={styles.errorText}>{errors.businessLogo.message}</Text>
                                 )}
                             </View>
-                            {/*  <View className="mt-1">
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo (.PNG extension):</Text>
-                                </View>
-                                <TouchableOpacity onPress={pickImage} style={styles.logoContainer}>
-                                    {logo ? (
-                                        <Image source={{ uri: logo.uri }} style={styles.logo} />
-                                    ) : (
-                                        <Feather name="image" style={styles.icon} />
-                                    )}
-                                </TouchableOpacity>
-                            </View> */}
 
                             <View className="mt-1">
                                 <View className="w-full mx-1 flex flex-row gap-[0.5px]">
@@ -537,7 +524,10 @@ const AddBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View style={styles.datePickerContainer}>
-                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Opening of Job:</Text>
+                                <View className="w-full mx-1 flex flex-row gap-[0.5px]">
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Opening of Job:</Text>
+                                    <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                </View>
                                 <TouchableWithoutFeedback onPress={() => setShowPicker(true)}>
                                     <View style={styles.input} className="p-3">
                                         <Text >{dateOfOpeningJob.toDateString()}</Text>
@@ -614,12 +604,6 @@ const styles = StyleSheet.create({
     },
     datePickerContainer: {
         marginVertical: 10,
-    },
-    datePicker: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        marginVertical: 5,
     },
     logoContainer: {
         width: 200,

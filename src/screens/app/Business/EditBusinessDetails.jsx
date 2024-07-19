@@ -38,6 +38,7 @@ const schema = yup.object().shape({
 const EditBusinessDetails = ({ route, navigation }) => {
 
     const businessCardId = route.params.businessId;
+    const userId = route.params.userId;
     const templateId = route.params?.templateId
     const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm({
         resolver: yupResolver(schema)
@@ -75,6 +76,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
     };
 
     const onSubmit = async (data) => {
+
         try {
             setLoading(true);
             const formData = new FormData();
@@ -94,7 +96,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
             data?.phoneNumber2 && formData.append('phoneNumber2', data.phoneNumber2);
             data?.role && formData.append('role', data.role);
             data?.twitter && formData.append('twitter', data.twitter);
-            businessCardId && formData.append('user_id', businessCardId);
+            userId && formData.append('user_id', userId);
             templateId && formData.append('template_id', templateId);
             const businessLogo = {
                 uri: data?.businessLogo?.uri ?? null,
@@ -102,13 +104,14 @@ const EditBusinessDetails = ({ route, navigation }) => {
                 type: data?.businessLogo?.type ?? ''
             };
             data?.businessLogo?.uri && data.businessLogo?.type && data.businessLogo?.fileName && formData.append('businessLogo', businessLogo);
-            await updateCardBusinessData(formData, businessCardId);
 
+            await updateCardBusinessData(formData, businessCardId);
             if (data.status === "payment_pending") {
                 navigation.navigate('BusinessSubscription', { businessId: businessCardId, formData: data });
             } else {
                 navigation.navigate('MyBusinessCardScreen');
             }
+
         } catch (error) {
             console.log("errorInSubmit", error)
         } finally {
@@ -149,19 +152,24 @@ const EditBusinessDetails = ({ route, navigation }) => {
 
         <View className="bg-[#E9EDF7] w-full flex-1 px-3">
             <View className="w-full bg-white overflow-hidden flex-1 p-3 rounded-md mt-3 mb-4">
+
                 <Text className="font-extrabold tracking-wider mx-1 text-2xl text-rose-700">
                     Fill the Business details
                 </Text>
+
                 <View className="w-full mx-0 my-3 bg-neutral-700 h-[2px]"></View>
+
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     style={styles.container}
                 >
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+
                             <View>
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Full Name:</Text>
+                                <View className="w-full flex flex-row mx-1">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Full Name: </Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -179,13 +187,14 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-                                    {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
+                                    {errors.name && <Text className="text-red-600 mb-1">{errors.name.message}</Text>}
                                 </View>
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full flex flex-row mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Name:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -203,13 +212,14 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-                                    {errors.businessName && <Text style={styles.errorText}>{errors.businessName.message}</Text>}
+                                    {errors.businessName && <Text className="text-red-600 mb-1">{errors.businessName.message}</Text>}
                                 </View>
                             </View>
 
                             <View className="mt-1" >
-                                <View className="w-full mx-1">
+                                <View className="w-full flex flex-row mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Company Address:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
 
                                 <View className="w-full mt-2">
@@ -231,13 +241,14 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-                                    {errors.address && <Text style={styles.errorText}>{errors.address.message}</Text>}
+                                    {errors.address && <Text className="text-red-600 mb-1">{errors.address.message}</Text>}
                                 </View>
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full flex flex-row mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Email:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -255,13 +266,14 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-                                    {errors.businessEmail && <Text style={styles.errorText}>{errors.businessEmail.message}</Text>}
+                                    {errors.businessEmail && <Text className="text-red-600 mb-1">{errors.businessEmail.message}</Text>}
                                 </View>
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full flex flex-row mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Contact Number:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -307,8 +319,9 @@ const EditBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo (.PNG extension):</Text>
+                                <View className="w-full flex flex-row mx-1">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Logo</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <TouchableOpacity onPress={pickImage} style={styles.logoContainer}>
                                     {pngImage ? (
@@ -320,8 +333,9 @@ const EditBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full flex flex-row mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Short Description:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -339,7 +353,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-                                    {errors.businessShortDetail && <Text style={styles.errorText}>{errors.businessShortDetail.message}</Text>}
+                                    {errors.businessShortDetail && <Text className="text-red-600 mb-1">{errors.businessShortDetail.message}</Text>}
                                 </View>
                             </View>
 
@@ -389,7 +403,6 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-
                                 </View>
                             </View>
 
@@ -487,8 +500,9 @@ const EditBusinessDetails = ({ route, navigation }) => {
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full flex flex-row mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Type Of Business:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -506,13 +520,14 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-                                    {errors.businessType && <Text style={styles.errorText}>{errors.businessType.message}</Text>}
+                                    {errors.businessType && <Text className="text-red-600 mb-1">{errors.businessType.message}</Text>}
                                 </View>
                             </View>
 
                             <View className="mt-1">
-                                <View className="w-full mx-1">
+                                <View className="w-full flex flex-row mx-1">
                                     <Text className="font-extrabold text-base tracking-wider text-neutral-700">Business Role:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
                                 </View>
                                 <View className="w-full mt-2">
                                     <Controller
@@ -530,12 +545,15 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                             />
                                         )}
                                     />
-                                    {errors.role && <Text style={styles.errorText}>{errors.role.message}</Text>}
+                                    {errors.role && <Text className="text-red-600 mb-1">{errors.role.message}</Text>}
                                 </View>
                             </View>
 
                             <View style={styles.datePickerContainer}>
-                                <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Opening of Job:</Text>
+                                <View className="flex flex-row">
+                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">Date of Opening of Job:</Text>
+                                    <Text className="text-red-600 text-[17px] h-3">*</Text>
+                                </View>
                                 <TouchableWithoutFeedback onPress={() => setShowPicker(true)}>
                                     <View style={styles.input} className="p-3">
                                         <Text >{dateOfOpeningJob.toDateString()}</Text>
@@ -605,23 +623,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 0,
         elevation: 4,
     },
-    logo: {
-        width: 100,
-        height: 100,
-        marginVertical: 10
-    },
-    errorText: {
-        color: 'red',
-        marginBottom: 5
-    },
     datePickerContainer: {
         marginVertical: 10,
-    },
-    datePicker: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        marginVertical: 5,
     },
     logoContainer: {
         width: 200,

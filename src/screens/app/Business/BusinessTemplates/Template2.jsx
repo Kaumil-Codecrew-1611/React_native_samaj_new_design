@@ -1,3 +1,4 @@
+import { Pressable } from 'native-base';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -5,6 +6,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import TwitterIcon from '../../../../assets/twitter.svg';
 
 const BusinessCard = () => {
+
     const [flipped, setFlipped] = useState(false);
     const flipAnim = useRef(new Animated.Value(0)).current;
     const inputRange = [0, 1];
@@ -17,12 +19,68 @@ const BusinessCard = () => {
     const [faceBookLink, setFaceBookLink] = useState('');
     const [instagramLink, setInstagramLink] = useState('');
     const [linkedinLink, setLinkedinLink] = useState('');
+    const flipAnimation = useRef(new Animated.Value(0)).current;
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const instaScale = instaAnimation.interpolate({ inputRange, outputRange });
     const twitterScale = twitterAnimation.interpolate({ inputRange, outputRange });
     const faceBookScale = faceBookAnimation.interpolate({ inputRange, outputRange });
     const linkedinScale = linkedinAnimation.interpolate({ inputRange, outputRange });
-    const flipAnimation = useRef(new Animated.Value(0)).current;
+
+    const onPressFacebookIn = () => {
+        Animated.spring(faceBookAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressFacebookOut = () => {
+        Animated.spring(faceBookAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressLinkedinIn = () => {
+        Animated.spring(linkedinAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressLinkedinOut = () => {
+        Animated.spring(linkedinAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressInstagramIn = () => {
+        Animated.spring(instaAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressInstagramOut = () => {
+        Animated.spring(instaAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressTwitterIn = () => {
+        Animated.spring(twitterAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressTwitterOut = () => {
+        Animated.spring(twitterAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
 
     const flipStyle = {
         transform: [
@@ -80,26 +138,55 @@ const BusinessCard = () => {
     const renderSocialIcons = () => (
         <>
             <View className="flex flex-row justify-around mt-6">
-                <TouchableOpacity activeOpacity={1} onPress={() => openLink(faceBookLink)}>
-                    <Animated.View style={[{ transform: [{ scale: faceBookScale }] }]}>
-                        <AnimatedFontistoIcon name="facebook" size={30} color="#0866ff" />
-                    </Animated.View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} onPress={() => openLink(linkedinLink)}>
-                    <Animated.View style={[{ transform: [{ scale: linkedinScale }] }]}>
-                        <AnimatedFontistoIcon name="linkedin" size={30} color="#0866ff" />
-                    </Animated.View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} onPress={() => openLink(instagramLink)}>
-                    <Animated.View style={[{ transform: [{ scale: instaScale }] }]}>
-                        <AnimatedFontistoIcon name="instagram" size={30} color="#f700b2" />
-                    </Animated.View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} onPress={() => openLink(twitterLink)}>
-                    <Animated.View style={[{ transform: [{ scale: twitterScale }] }]}>
-                        <TwitterIcon width={30} height={30} color='red' />
-                    </Animated.View>
-                </TouchableOpacity>
+
+                <Animated.View style={[{ transform: [{ scale: faceBookScale }] }]}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => openLink(faceBookLink)}>
+                        <Pressable
+                            activeOpacity={1}
+                            onPressIn={onPressFacebookIn}
+                            onPressOut={onPressFacebookOut}
+                        >
+                            <AnimatedFontistoIcon name="facebook" size={30} color="#0866ff" />
+                        </Pressable>
+                    </TouchableOpacity>
+                </Animated.View>
+
+                <Animated.View style={[{ transform: [{ scale: linkedinScale }] }]}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => openLink(linkedinLink)}>
+                        <Pressable
+                            activeOpacity={1}
+                            onPressIn={onPressLinkedinIn}
+                            onPressOut={onPressLinkedinOut}
+                        >
+                            <AnimatedFontistoIcon name="linkedin" size={30} color="#0866ff" />
+                        </Pressable>
+                    </TouchableOpacity>
+                </Animated.View>
+
+                <Animated.View style={[{ transform: [{ scale: instaScale }] }]}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => openLink(instagramLink)}>
+                        <Pressable
+                            activeOpacity={1}
+                            onPressIn={onPressInstagramIn}
+                            onPressOut={onPressInstagramOut}
+                        >
+                            <AnimatedFontistoIcon name="instagram" size={30} color="#f700b2" />
+                        </Pressable>
+                    </TouchableOpacity>
+                </Animated.View>
+
+                <Animated.View style={[{ transform: [{ scale: twitterScale }] }]}>
+                    <TouchableOpacity activeOpacity={1} onPress={() => openLink(twitterLink)}>
+                        <Pressable
+                            activeOpacity={1}
+                            onPressIn={onPressTwitterIn}
+                            onPressOut={onPressTwitterOut}
+                        >
+                            <TwitterIcon width={30} height={30} color='red' />
+                        </Pressable>
+                    </TouchableOpacity>
+                </Animated.View>
+
             </View>
         </>
     );
@@ -119,9 +206,9 @@ const BusinessCard = () => {
                 </View>
             </LinearGradient>
 
-            <ScrollView className="bg-white px-5" style={{ height: 380 }} showsVerticalScrollIndicator={false}>
+            <View className="bg-white px-5" style={{ height: 380 }}>
                 {content}
-            </ScrollView>
+            </View>
 
             <View className="h-20 rounded-bl-xl bg-white rounded-br-xl">
                 {renderSocialIcons()}
@@ -130,7 +217,7 @@ const BusinessCard = () => {
     );
 
     const frontContent = (
-        <>
+        <View>
             <Text className="text-xl text-black font-bold">
                 Vishw Prajapati
             </Text>
@@ -183,7 +270,7 @@ const BusinessCard = () => {
                 <Text className="text-black text-base font-bold tracking-wide">Short Description :- </Text>
                 <Text className="text-black text-sm text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</Text>
             </View>
-        </>
+        </View>
     );
 
     const backContent = (

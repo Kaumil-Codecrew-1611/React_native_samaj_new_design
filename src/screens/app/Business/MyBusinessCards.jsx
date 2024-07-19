@@ -2,7 +2,18 @@ import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
 import { Pressable } from 'native-base';
 import React, { useCallback, useContext, useState } from 'react';
-import { ActivityIndicator, Animated, FlatList, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Animated,
+    FlatList,
+    Image,
+    Linking,
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Feather from 'react-native-vector-icons/Feather';
@@ -16,17 +27,29 @@ import { getTemplateById } from '../../../utils/BusinessUtils';
 
 const MyBusinessCards = ({ navigation }) => {
 
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
     const [loading, setLoading] = useState(true);
     const [myBusinessCard, setMyBusinessCard] = useState("");
-    const { userBusinessCard, cancelSubscriptionForUser } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
     const userCardId = allUserInfo._id;
+    const calcelSubscription = new Animated.Value(0);
+    const cancelSubSucessAnimation = new Animated.Value(0);
+    const animationOnPressOfAddBusiness = new Animated.Value(0);
+    const cancelsubscriptionpopupAnimation = new Animated.Value(0);
+    const { userBusinessCard, cancelSubscriptionForUser } = useContext(ApiContext);
+    const scale = animationOnPressOfAddBusiness.interpolate({ inputRange, outputRange });
+    const [cancelSubscriptionmodalVisible, setCancelSubscriptionmodalVisible] = useState(false);
+    const cancelSubscriptionPopUpScale = cancelsubscriptionpopupAnimation.interpolate({ inputRange, outputRange });
+    const cancelSubSucessScale = cancelSubSucessAnimation.interpolate({ inputRange, outputRange });
+    const cancelSubscriptionScale = calcelSubscription.interpolate({ inputRange, outputRange });
+    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
     const fetchData = async () => {
         try {
             setLoading(true);
             const userBusinessCardApi = await userBusinessCard(userCardId);
-            console.log(userBusinessCardApi, "::::userBusinessCardApi")
             setMyBusinessCard(userBusinessCardApi.businesses);
         } catch (error) {
             console.log(error, "error for getting data of business cards");
@@ -53,16 +76,14 @@ const MyBusinessCards = ({ navigation }) => {
         }
     };
 
-    const inputRange = [0, 1];
-    const outputRange = [1, 0.8];
-
     const renderItem = ({ item, index }) => {
+
         let selectedTemplate = getTemplateById(item.template_id);
-        console.log(selectedTemplate, ":::selectedTemplate")
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
-
+        const editAnimation = new Animated.Value(0);
         const scale = animation.interpolate({ inputRange, outputRange });
+        const editBusinessCardScale = editAnimation.interpolate({ inputRange, outputRange });
 
         const onPressIn = () => {
             Animated.spring(animation, {
@@ -78,13 +99,22 @@ const MyBusinessCards = ({ navigation }) => {
             }).start();
         };
 
-        const handleOpenCardOfBusiness = (images, id) => {
-            {
-                item.status === "payment_pending"
-                    ? navigation.navigate('EditBusinessDetails', { businessId: id })
-                    : navigation.navigate(selectedTemplate?.name)
-            }
+        const onPressEditCardIn = () => {
+            Animated.spring(editAnimation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
 
+        const onPressEditCardOut = () => {
+            Animated.spring(editAnimation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const handleEditBusinessCard = (id) => {
+            navigation.navigate("EditBusinessDetails", { businessId: id, userId: userCardId })
         }
 
         return (
@@ -94,7 +124,6 @@ const MyBusinessCards = ({ navigation }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
-                        onPress={() => handleOpenCardOfBusiness(item.images, item._id)}
                     >
                         <LinearGradient
                             colors={[backgroundColor, backgroundColor]}
@@ -138,7 +167,20 @@ const MyBusinessCards = ({ navigation }) => {
                                         </TouchableOpacity>
                                     </View>
                                 }
-                                <View className="flex items-end mt-2">
+                                <View className="flex flex-row justify-between items-center mt-2">
+                                    <Animated.View style={[{ transform: [{ scale: editBusinessCardScale }] }]}>
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            onPressIn={onPressEditCardIn}
+                                            onPressOut={onPressEditCardOut}
+                                            onPress={() => handleEditBusinessCard(item._id)}
+                                        >
+                                            <View>
+                                                <Image className="w-9 h-9" source={require("../../../assets/edit.png")} />
+                                            </View>
+                                        </TouchableOpacity>
+                                    </Animated.View>
+
                                     {item.status === "payment_pending" ?
                                         <View className="bg-red-100 w-[33%] rounded-md p-2">
                                             <Text className="text-red-700 text-xs">Payment Pending</Text>
@@ -179,18 +221,6 @@ const MyBusinessCards = ({ navigation }) => {
             </SkeletonPlaceholder>
         ))
     );
-
-    const animationOnPressOfAddBusiness = new Animated.Value(0);
-    const scale = animationOnPressOfAddBusiness.interpolate({ inputRange, outputRange });
-    const [cancelSubscriptionmodalVisible, setCancelSubscriptionmodalVisible] = useState(false);
-    const cancelsubscriptionpopupAnimation = new Animated.Value(0);
-    const cancelSubSucessAnimation = new Animated.Value(0);
-    const calcelSubscription = new Animated.Value(0);
-    const cancelSubscriptionPopUpScale = cancelsubscriptionpopupAnimation.interpolate({ inputRange, outputRange });
-    const cancelSubSucessScale = cancelSubSucessAnimation.interpolate({ inputRange, outputRange });
-    const cancelSubscriptionScale = calcelSubscription.interpolate({ inputRange, outputRange });
-    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
 
     const onPressSubscriptionpopupCancelIn = () => {
         Animated.spring(cancelsubscriptionpopupAnimation, {
@@ -251,7 +281,6 @@ const MyBusinessCards = ({ navigation }) => {
         setCancelSubscriptionmodalVisible(false)
     };
 
-
     const onPressInAddBusiness = () => {
         Animated.spring(animationOnPressOfAddBusiness, {
             toValue: 1,
@@ -267,6 +296,7 @@ const MyBusinessCards = ({ navigation }) => {
     };
 
     return (
+
         <View className="bg-[#E9EDF7] h-full">
             {myBusinessCard && myBusinessCard.length < 1 ?
                 <View className="px-3">
@@ -310,11 +340,13 @@ const MyBusinessCards = ({ navigation }) => {
                     </Pressable>
                 </Animated.View>
             }
+
             {loading ? (
                 renderSkeleton()
             ) : myBusinessCard.length === 0 ? (
                 <NoDataFound message={"There are no Business"} />
             ) : (
+
                 <FlatList
                     data={myBusinessCard}
                     renderItem={renderItem}
@@ -322,7 +354,9 @@ const MyBusinessCards = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     showsVerticalScrollIndicator={false}
                 />
+
             )}
+
             <Modal
                 transparent={true}
                 visible={cancelSubscriptionmodalVisible}
@@ -336,6 +370,7 @@ const MyBusinessCards = ({ navigation }) => {
                     <View className="w-4/5 bg-white rounded-[15px] px-3 py-4 shadow-lg mt-[90%]">
                         <Text className="text-lg text-black mb-4">{t("confirmSubscriptionCacel")}</Text>
                         <View className="flex-row justify-around">
+
                             <Animated.View style={[{ transform: [{ scale: cancelSubscriptionPopUpScale }] }]} >
                                 <Pressable
                                     activeOpacity={1}
@@ -368,10 +403,12 @@ const MyBusinessCards = ({ navigation }) => {
                                     </Animated.View>
                                 )}
                             </View>
+
                         </View>
                     </View>
                 </View>
             </Modal>
+
         </View>
     );
 }
