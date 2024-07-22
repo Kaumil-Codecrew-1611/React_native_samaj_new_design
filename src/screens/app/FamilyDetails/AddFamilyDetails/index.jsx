@@ -27,6 +27,7 @@ export default function AddFamilyDetails({ navigation, route }) {
     const { t } = useTranslation();
     const schema = yup.object().shape({
         firstname: yup.string().required(t('pleaseenterfirstname')),
+        middlename: yup.string().required(t('pleaseentermiddlename')),
         lastname: yup.string().required(t('pleaseenterlastname')),
         education: yup.string().required(t('pleaseentereducation')),
         address: yup.string().required(t('pleaseenteraddress')),
@@ -124,6 +125,30 @@ export default function AddFamilyDetails({ navigation, route }) {
                                             )}
                                         />
                                         {errors.firstname && <Text className="text-red-500 mb-3 mx-1">{errors.firstname.message}</Text>}
+                                    </View>
+                                </View>
+                                <View className="my-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
+                                        <Text className="font-extrabold  text-base tracking-wider text-neutral-700">{t('middlename')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="middlename"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder={t('middlename')}
+                                                    className="py-3"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    defaultValue={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                        {errors.middlename && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.middlename.message}</Text>}
                                     </View>
                                 </View>
 

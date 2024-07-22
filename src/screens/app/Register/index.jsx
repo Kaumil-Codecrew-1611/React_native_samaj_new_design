@@ -99,7 +99,7 @@ const Register = ({ navigation }) => {
         setLoading(true);
         await setRegisterData(data);
         setLoading(false);
-        navigation.navigate('Payment');
+        navigation.navigate('Payment', { firstname: data.firstname, mobile_number: data.mobile_number });
     };
 
     const onDateChange = (event, selectedDate) => {

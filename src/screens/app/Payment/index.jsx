@@ -5,8 +5,9 @@ import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 
-function Payment({ navigation }) {
-
+function Payment({ navigation, route }) {
+    const firstname = route.params?.firstname;
+    const mobile_number = route.params?.mobile_number;
     const { registerData, setRegisterData } = useContext(GlobalContext);
     const { state, getAmount, PayOrder, register } = useContext(ApiContext);
     const [amount, setAmount] = useState(0);
@@ -29,9 +30,10 @@ function Payment({ navigation }) {
 
     async function handlePayment() {
         try {
+            console.log(firstname, "::::registerData?.firstName", mobile_number)
             const result = await PayOrder({
-                firstname: registerData?.firstName,
-                mobile_number: registerData?.mobile_number,
+                firstname: firstname,
+                mobile_number: mobile_number,
             });
             await payNow(result);
         } catch (error) {
@@ -41,6 +43,7 @@ function Payment({ navigation }) {
 
     const payNow = async (data) => {
         try {
+            console.log(data?.order?.id, "::::data?.order?.id")
             const options = {
                 description: 'Pay to Panchal Samaj',
                 image: 'https://samajapp.codecrewinfotech.com/uploads/appstore.png',
@@ -69,9 +72,26 @@ function Payment({ navigation }) {
 
             navigation.navigate('PaymentSuccess', { registerData: updatedRegisterData, amount: data?.order?.amount });
         } catch (error) {
-            const errorObject = JSON.parse(error.description);
-            const errorDescription = errorObject?.error?.description;
+            console.log(error, "::::::::error");
+
+            // Default error description
+            let errorDescription = 'An error occurred while processing payment';
+
+            // Check if error.description is a valid JSON string
+            if (error && error.description) {
+                try {
+                    const errorObject = JSON.parse(error.description);
+                    if (errorObject.error && errorObject.error.description) {
+                        errorDescription = errorObject.error.description;
+                    }
+                } catch (e) {
+                    // error.description is not a valid JSON string, use it as plain string
+                    errorDescription = error.description;
+                }
+            }
+
             navigation.navigate('PaymentFailed', { registerData: registerData, amount: data?.order?.amount, description: errorDescription });
+
 
         }
     };

@@ -59,6 +59,7 @@ export const allNewsListing = async () => {
 
 export const addFamilyMember = async ({ familyData, mainParentId }) => {
     const response = await axiosInstance.post(`/addfamily/${mainParentId}`, familyData);
+    console.log(response, "response")
     return response.data;
 };
 
