@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
+import toastMessage from '../../../utils/toastMessage';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const EditUserProfile = ({ navigation }) => {
@@ -93,6 +94,12 @@ const EditUserProfile = ({ navigation }) => {
         })();
     }, [setValue, allUserInfo._id]);
 
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            // const errorMessage = Object.values(errors).map(error => error.message).join(', ');
+            toastMessage("Please fill all the required fields");
+        }
+    }, [errors]);
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 rounded-md p-3">
@@ -108,8 +115,9 @@ const EditUserProfile = ({ navigation }) => {
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             <View>
                                 <View className="my-1">
-                                    <View className="w-full ml-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold  text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -132,8 +140,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('lastname')}</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -156,8 +165,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('middlename')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -180,8 +190,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -204,8 +215,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('mobile')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -229,8 +241,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className="w-full mt-2">
                                         <View className="mb-[10px] ml-1">
@@ -259,7 +272,7 @@ const EditUserProfile = ({ navigation }) => {
 
                                 <View className="my-1">
                                     <View className="w-full">
-                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
+                                        <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <View className="mx-1 rounded-lg bg-[#eee]">
@@ -288,12 +301,12 @@ const EditUserProfile = ({ navigation }) => {
                                                 )}
                                             />
                                         </View>
-                                        {errors.marital_status && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.marital_status.message}</Text>}
+
                                     </View>
                                 </View>
 
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
+                                <View className="w-full  mt-1">
+                                    <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
                                     <Pressable onPress={() => setShowPicker(true)} className="w-full mt-2">
                                         <Controller
                                             control={control}
@@ -320,6 +333,7 @@ const EditUserProfile = ({ navigation }) => {
                                                         onBlur={onBlur}
                                                         disableFullscreenUI={true}
                                                         editable={false}
+                                                        onPress={() => setShowPicker(true)}
                                                     />
                                                 );
                                             }}
@@ -331,6 +345,14 @@ const EditUserProfile = ({ navigation }) => {
                                             value={dob ? new Date(dob) : new Date()}
                                             mode="date"
                                             display="default"
+                                            onChange={onDateChange}
+                                        />
+
+                                    )}
+                                    {/* <DateTimePicker
+                                            value={dob ? new Date(dob) : new Date()}
+                                            mode="date"
+                                            display="default"
                                             onChange={(event, selectedDate) => {
                                                 setShowPicker(false);
                                                 if (selectedDate) {
@@ -338,14 +360,13 @@ const EditUserProfile = ({ navigation }) => {
                                                     setValue('dob', selectedDate.toISOString());
                                                 }
                                             }}
-                                        />
-                                    )}
-                                    {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
+                                        /> */}
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('education')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -368,8 +389,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('job')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -392,8 +414,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('address')}</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -416,8 +439,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('city')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -440,10 +464,11 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('state')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
-                                    <View className=" w-full mt-2">
+                                    <View className="w-full mt-2">
                                         <Controller
                                             control={control}
                                             name="state"
@@ -464,8 +489,9 @@ const EditUserProfile = ({ navigation }) => {
                                 </View>
 
                                 <View className="my-1">
-                                    <View className="w-full">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('pincode')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller

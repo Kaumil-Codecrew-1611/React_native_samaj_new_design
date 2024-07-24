@@ -31,6 +31,11 @@ const MyBusinessCards = ({ navigation }) => {
     const outputRange = [1, 0.8];
     const [loading, setLoading] = useState(true);
     const [myBusinessCard, setMyBusinessCard] = useState("");
+    const [statusName, setStatusName] = useState("");
+    const [statusColor, setStatusColor] = useState({
+        color: "",
+        bgColor: ""
+    });
     const { allUserInfo } = useContext(GlobalContext);
     const userCardId = allUserInfo._id;
     const calcelSubscription = new Animated.Value(0);
@@ -51,6 +56,29 @@ const MyBusinessCards = ({ navigation }) => {
             setLoading(true);
             const userBusinessCardApi = await userBusinessCard(userCardId);
             setMyBusinessCard(userBusinessCardApi.businesses);
+            switch (userBusinessCardApi?.businesses?.status) {
+                case "payment_pending":
+                    setStatusName('Payment Pending');
+                    setStatusColor({ color: "text-orange-700", bgColor: "bg-orange-100" });
+                    break;
+                case "completed":
+                    setStatusName('Active');
+                    setStatusColor({ color: "text-green-700", bgColor: "bg-green-100" });
+                    break;
+                case "cancelled":
+                    setStatusName('Cancelled');
+                    setStatusColor({ color: "text-blue-700", bgColor: "bg-blue-100" });
+                    break;
+                case "payment_failed":
+                    setStatusName('Payment Failed');
+                    setStatusColor({ color: "text-red-700", bgColor: "bg-red-100" });
+                    break;
+
+                default:
+                    setStatusName(myBusinessCard?.status);
+                    setStatusColor(myBusinessCard?.status);
+                    break;
+            }
         } catch (error) {
             console.log(error, "error for getting data of business cards");
         } finally {
@@ -76,11 +104,11 @@ const MyBusinessCards = ({ navigation }) => {
         }
     };
 
-    const renderItem = ({ item, index }) => {
+    const renderItem = (item) => {
 
         let selectedTemplate = getTemplateById(item.template_id);
         console.log(selectedTemplate.user_templ)
-        const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
+        const backgroundColor = '#0056b3';
         const animation = new Animated.Value(0);
         const editAnimation = new Animated.Value(0);
         const scale = animation.interpolate({ inputRange, outputRange });
@@ -132,7 +160,7 @@ const MyBusinessCards = ({ navigation }) => {
                         onPress={handleNavigation}
                     >
                         <LinearGradient
-                            colors={[backgroundColor, backgroundColor]}
+                            colors={[backgroundColor, '#b5d9f0']}
                             className="overflow-hidden rounded-lg"
                         >
                             <View className="p-4 flex flex-row">
@@ -186,15 +214,15 @@ const MyBusinessCards = ({ navigation }) => {
                                             </View>
                                         </TouchableOpacity>
                                     </Animated.View>
-
-                                    {item.status === "payment_pending" ?
-                                        <View className="bg-red-100 w-[33%] rounded-md p-2">
-                                            <Text className="text-red-700 text-xs">Payment Pending</Text>
+                                    {/* //statusName  statusColor */}
+                                    {!!statusName &&
+                                        <View className={`${statusColor.bgColor}  w-fit  rounded-md p-2`}>
+                                            <Text className={`${statusColor.color} font-bold text-xs text-center`}>{statusName}</Text>
                                         </View>
-                                        :
-                                        <View className="bg-blue-100 w-[22%] rounded-md p-1">
-                                            <Text className="text-blue-700">Published</Text>
-                                        </View>
+                                        /*  :
+                                         <View className="bg-blue-100 w-[22%] rounded-md p-1">
+                                             <Text className="text-blue-700">Published</Text>
+                                         </View> */
                                     }
                                 </View>
                             </View>
@@ -300,11 +328,10 @@ const MyBusinessCards = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
-
     return (
 
         <View className="bg-[#E9EDF7] h-full">
-            {myBusinessCard && myBusinessCard.length < 1 ?
+            {!myBusinessCard ?
                 <View className="px-3">
                     <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
                         <View className="mr-3">
@@ -328,39 +355,33 @@ const MyBusinessCards = ({ navigation }) => {
                     </View>
                 </View>
                 :
-                <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
-                    <Pressable
-                        activeOpacity={1}
-                        onPressIn={onPressCacelSubscriptionIn}
-                        onPressOut={onPressCancelSubscriptionOut}
-                        onPress={openCancelSubscriptionModal}
-                        className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
-                    >
-                        <View className="flex-row justify-between gap-2 items-center">
-                            <AnimatedFeatherIcon name="users" size={30} color={"black"} />
-                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">
-                                {t("CancelSubscription")}
-                            </Text>
-                        </View>
-                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                    </Pressable>
-                </Animated.View>
+                <>
+                    {statusName == "Active" && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                        <Pressable
+                            activeOpacity={1}
+                            onPressIn={onPressCacelSubscriptionIn}
+                            onPressOut={onPressCancelSubscriptionOut}
+                            onPress={openCancelSubscriptionModal}
+                            className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
+                        >
+                            <View className="flex-row justify-between gap-2 items-center">
+                                <AnimatedFeatherIcon name="users" size={30} color={"black"} />
+                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">
+                                    {t("CancelSubscription")}
+                                </Text>
+                            </View>
+                            <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                        </Pressable>
+                    </Animated.View>}
+                </>
             }
 
             {loading ? (
                 renderSkeleton()
-            ) : myBusinessCard.length === 0 ? (
+            ) : !myBusinessCard ? (
                 <NoDataFound message={"There are no Business"} />
             ) : (
-
-                <FlatList
-                    data={myBusinessCard}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    showsVerticalScrollIndicator={false}
-                />
-
+                renderItem(myBusinessCard)
             )}
 
             <Modal

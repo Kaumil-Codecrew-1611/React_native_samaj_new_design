@@ -94,11 +94,11 @@ const BusinessPaymentPage = ({ route, navigation }) => {
                                         <>
 
                                             <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-3 rounded-[10px]">
-                                                <View className="flex flex-row justify-around items-center">
-                                                    <Text className="w-[50%] text-[16px] text-black font-semibold mr-2">
-                                                        Name :-
+                                                <View className="flex flex-row  items-center">
+                                                    <Text className="w-[40%] text-[16px] text-black font-semibold mr-2">
+                                                        Name:
                                                     </Text>
-                                                    <Text className="w-[50%] text-justify text-md text-black font-semibold">
+                                                    <Text className="w-[60%] text-justify text-md text-black font-semibold">
                                                         {responseOfData.name}
                                                     </Text>
                                                 </View>
@@ -107,7 +107,7 @@ const BusinessPaymentPage = ({ route, navigation }) => {
                                             <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-3 rounded-[10px]">
                                                 <View className="flex flex-row items-center">
                                                     <Text className="w-[40%] text-[14px] text-black font-semibold mr-2">
-                                                        Company Name :-
+                                                        Company Name:
                                                     </Text>
                                                     <Text className="w-[60%] text-md text-black font-semibold">
                                                         {responseOfData.businessName}
@@ -117,10 +117,10 @@ const BusinessPaymentPage = ({ route, navigation }) => {
 
                                             <View className="w-full mb-3 bg-[#E9EDF7] flex-row items-center p-3 rounded-[10px]">
                                                 <View className="flex flex-row items-center">
-                                                    <Text className="w-[30%] text-[14px] text-black font-semibold mr-2">
-                                                        Company Email :-
+                                                    <Text className="w-[40%] text-[14px] text-black font-semibold mr-2">
+                                                        Company Email:
                                                     </Text>
-                                                    <Text className="w-[70%] text-md text-black font-semibold">
+                                                    <Text className="w-[60%] text-md text-black font-semibold">
                                                         {responseOfData.businessEmail}
                                                     </Text>
                                                 </View>
