@@ -33,7 +33,6 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         address: yup.string().required(t('pleaseenteraddress')),
         job: yup.string().required(t('pleaseenterjob')),
         relationship: yup.string().required(t('pleasechooserelation')),
-        marital_status: yup.string().required(t('pleasechoosemaritalstatus')),
         gender: yup.string().required(t('pleaseentergender')),
     });
     const { editFamilyDetailsUser, allRelationshipDataList, updateFamilyDetailsUser } = useContext(ApiContext);
@@ -107,6 +106,12 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         })();
     }, []);
 
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            toastMessage("Please fill all the required fields");
+        }
+    }, [errors]);
+
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
             <View className="w-full bg-white flex-1 p-3 rounded-md mt-3 mb-4">
@@ -125,8 +130,9 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             <View>
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('firstname')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -149,8 +155,9 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View>
-                                    <View className="w-full mx-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('lastname')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -218,7 +225,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                         />
                                     </View>
                                 </View>
-                                <View className="w-full">
+                                <View className="w-full mt-1">
                                     <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">
                                         {t('mobile')}:
                                     </Text>
@@ -242,9 +249,10 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     />
                                 </View>
 
-                                <View>
-                                    <View className="w-full mx-1">
+                                <View className="mt-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('gender')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <View className="mx-1 mb-2">
@@ -269,8 +277,8 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     </View>
                                 </View>
 
-                                <View className="w-full mx-1">
-                                    <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
+                                <View className="w-full mt-1">
+                                    <Text className="font-extrabold  text-base tracking-wider text-neutral-700">{t('dateofbirth')}:</Text>
                                     <Pressable onPress={() => setShowPicker(true)} className="w-full mt-2">
                                         <Controller
                                             control={control}
@@ -321,9 +329,10 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
                                 </View>
 
-                                <View>
-                                    <View className="w-full mx-1">
+                                <View className="mt-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('education')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -345,9 +354,10 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     </View>
                                 </View>
 
-                                <View>
-                                    <View className="w-full mx-1">
+                                <View className="mt-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('job')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -369,9 +379,10 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     </View>
                                 </View>
 
-                                <View>
-                                    <View className="w-full mx-1">
+                                <View className="mt-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('address')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
                                     <View className=" w-full mt-2">
                                         <Controller
@@ -393,17 +404,20 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                     </View>
                                 </View>
 
-                                <View>
-                                    <View className="w-full mx-1">
+                                <View className="mt-1">
+                                    <View className="w-full mx-1 ">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
+
                                     </View>
                                     <View className=" w-full mt-2">
-                                        <View className="mx-1 mb-2 bg-[#eee]">
+                                        <View className="mx-1 mb-2 bg-[#eee]" style={styles.select}>
                                             <Controller
                                                 control={control}
                                                 name="marital_status"
+
                                                 render={({ field: { onChange, value } }) => (
                                                     <Select
+                                                        borderWidth={0}
                                                         placeholder={t('maritalstatus')}
                                                         selectedValue={value}
                                                         onValueChange={(itemValue) => onChange(itemValue)}
@@ -413,7 +427,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                             bg: "blue.300",
                                                             endIcon: <CheckIcon size="5" />,
                                                         }}
-                                                        style={styles.select}
+                                                    // style={styles.select}
                                                     >
                                                         <Select.Item label={t('married')} value="married" />
                                                         <Select.Item label={t('unmarried')} value="unmarried" />
@@ -424,20 +438,22 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                 )}
                                             />
                                         </View>
-                                        {errors.marital_status && <Text style={styles.error}>{errors.marital_status.message}</Text>}
+
                                     </View>
                                 </View>
 
-                                <View className=" w-full mt-2">
-                                    <View className="w-full mx-1">
+                                <View className=" w-full mt-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('relationship')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
-                                    <View className="mx-1 mb-2 bg-[#eee]">
+                                    <View className="mx-1 mt-2 mb-2 bg-[#eee]" style={styles.select}>
                                         <Controller
                                             control={control}
                                             name="relationship"
                                             render={({ field: { onChange, value } }) => (
                                                 <Select
+                                                    borderWidth={0}
                                                     placeholder={t('relationship')}
                                                     className="p-2 m-1"
                                                     selectedValue={value}
@@ -448,7 +464,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                                         bg: "blue.300",
                                                         endIcon: <CheckIcon size="5" />,
                                                     }}
-                                                    style={styles.select}
+
                                                 >
                                                     {relationData.length > 0 ? (
                                                         relationData.map((relation) => (
@@ -510,6 +526,17 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     select: {
-        marginBottom: 7,
+        backgroundColor: '#eee',
+        color: '#333',
+        borderRadius: 10,
+        paddingVertical: 8,
+        paddingLeft: 10,
+        marginBottom: 10,
+        shadowColor: '#423f40',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 0.2,
+        marginHorizontal: 4,
+        elevation: 4,
     },
 });

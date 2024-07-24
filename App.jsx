@@ -31,7 +31,7 @@ const App = () => {
     messaging()
       .getToken()
       .then(token => {
-        console.log('Device token:', token);
+        // console.log('Device token:', token);
         setPushNotificationToken(token)
       });
 

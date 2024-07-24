@@ -107,7 +107,7 @@ const MyBusinessCards = ({ navigation }) => {
     const renderItem = (item) => {
 
         let selectedTemplate = getTemplateById(item.template_id);
-        console.log(selectedTemplate.user_templ)
+
         const backgroundColor = '#0056b3';
         const animation = new Animated.Value(0);
         const editAnimation = new Animated.Value(0);
@@ -146,7 +146,7 @@ const MyBusinessCards = ({ navigation }) => {
             navigation.navigate("EditBusinessDetails", { businessId: id, userId: userCardId })
         }
         const handleNavigation = () => {
-            console.log(item.template_id, "item.template_id")
+
             navigation.navigate(selectedTemplate.user_templ, { item })
         }
 
@@ -356,7 +356,7 @@ const MyBusinessCards = ({ navigation }) => {
                 </View>
                 :
                 <>
-                    {statusName == "Active" && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                    {statusName == "Active" || statusName == "payment_failed" && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
                         <Pressable
                             activeOpacity={1}
                             onPressIn={onPressCacelSubscriptionIn}

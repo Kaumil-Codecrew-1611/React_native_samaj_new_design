@@ -82,7 +82,7 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                     Popup.hide();
                 }
             });
-            return console.log("User is not logged In");
+            return;
         }
         if (node?.wife) {
             const nodeProfile = { _id: node._id, firstname: node.firstname, lastname: node.lastname, wife: node.wife };

@@ -104,6 +104,39 @@ const EditBusinessDetails = ({ route, navigation }) => {
             setValue('dateOfOpeningJob', currentDate);
         }
     };
+    const [isSubscriptionData, setIsSubscriptionData] = useState(null);
+    useEffect(() => {
+        (async function () {
+            try {
+                const contentBusinessCard = await handleEditBusinessCard(businessCardId);
+                if (contentBusinessCard.businessData) {
+                    const data = contentBusinessCard.businessData;
+                    setValue('name', data.name);
+                    setValue('businessName', data.businessName);
+                    setValue('address', data.address);
+                    setValue('businessEmail', data.businessEmail);
+                    setValue('businessContactNumber', data.businessContactNumber?.toString());
+                    setValue('phoneNumber2', data.phoneNumber2);
+                    setValue('businessShortDetail', data.businessShortDetail);
+                    setValue('businessLongDetail', data.businessLongDetail);
+                    setValue('businessWebsite', data.businessWebsite);
+                    setValue('businessType', data.businessType);
+                    setValue('role', data.role);
+                    setValue('status', data.status);
+
+                    setValue('businessLogo', process.env.IMAGE_URL + data.businessLogo)
+                    setPngImage(process.env.IMAGE_URL + data.businessLogo)
+                    if (data.dateOfOpeningJob) {
+                        setValue('dateOfOpeningJob', new Date(data.dateOfOpeningJob));
+                    }
+                }
+                console.log("contentBusinessCard.businessData", contentBusinessCard.subscription)
+                setIsSubscriptionData(contentBusinessCard.subscription)
+            } catch (error) {
+                console.log("Error in getting details business edit", error)
+            }
+        })();
+    }, []);
 
     const onSubmit = async (data) => {
 
@@ -148,37 +181,6 @@ const EditBusinessDetails = ({ route, navigation }) => {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        (async function () {
-            try {
-                const contentBusinessCard = await handleEditBusinessCard(businessCardId);
-                if (contentBusinessCard.businessData) {
-                    const data = contentBusinessCard.businessData;
-                    setValue('name', data.name);
-                    setValue('businessName', data.businessName);
-                    setValue('address', data.address);
-                    setValue('businessEmail', data.businessEmail);
-                    setValue('businessContactNumber', data.businessContactNumber?.toString());
-                    setValue('phoneNumber2', data.phoneNumber2);
-                    setValue('businessShortDetail', data.businessShortDetail);
-                    setValue('businessLongDetail', data.businessLongDetail);
-                    setValue('businessWebsite', data.businessWebsite);
-                    setValue('businessType', data.businessType);
-                    setValue('role', data.role);
-                    setValue('status', data.status);
-                    console.log(process.env.IMAGE_URL + data.businessLogo, ":::data.businessLogo")
-                    setValue('businessLogo', process.env.IMAGE_URL + data.businessLogo)
-                    setPngImage(process.env.IMAGE_URL + data.businessLogo)
-                    if (data.dateOfOpeningJob) {
-                        setValue('dateOfOpeningJob', new Date(data.dateOfOpeningJob));
-                    }
-                }
-            } catch (error) {
-                console.log("Error in getting details business edit", error)
-            }
-        })();
-    }, []);
 
     return (
 
