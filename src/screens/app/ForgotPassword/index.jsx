@@ -31,7 +31,6 @@ const ForgotPassword = ({ navigation }) => {
     const [isNewPasswordValid, setNewPasswordValid] = useState(false);
     const [emailForgotPassword, setEmailForgotPassword] = useState('');
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
-    const [isEmailValidErrorMessage, setEmailValidErrorMessage] = useState("")
     const [isCurrentPasswordHidden, setCurrentPasswordHidden] = useState(true);
     const [isConfirmPasswordHidden, setCOnfirmPasswordHidden] = useState(true);
     const { sendOTPForgotPassword, checkOtpForForgotPassword, forgotPasswordApi } = useContext(ApiContext);
@@ -79,15 +78,9 @@ const ForgotPassword = ({ navigation }) => {
                 const payload = { email: data.EnterEmail.toLowerCase() };
                 setEmailForgotPassword(data.EnterEmail);
                 setLoading(true)
-                const response = await sendOTPForgotPassword(payload);
+                await sendOTPForgotPassword(payload);
                 setLoading(false)
-                if (response.status == false) {
-                    setEmailValidErrorMessage(response.message)
-                } else {
-                    setEmailValid(true)
-                }
-                console.log(response, "89 response")
-
+                setEmailValid(true)
                 reset({ otp: '', newPassword: '', confirmPassword: '' });
             } catch (error) {
                 console.error('Error sending OTP', error);
@@ -162,12 +155,12 @@ const ForgotPassword = ({ navigation }) => {
 
                                 {!isEmailValid && (
                                     <View className="my-9 relative flex-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">
+                                        <View className="w-full flex flex-row gap-1">
+                                            <Text className="font-bold text-base text-rose-500">
                                                 {t('PleaseEnterEmail')}
                                             </Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
-                                        {/*   <View className="w-full my-2 flex-row bg-[#F3F5F7] rounded-[15px] items-center" style={styles.inputView}> */}
                                         <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}>
                                             <Controller
                                                 control={control}
@@ -186,7 +179,6 @@ const ForgotPassword = ({ navigation }) => {
                                             />
                                         </View>
                                         {errors.EnterEmail && <Text style={styles.error}>{errors.EnterEmail.message}</Text>}
-                                        {/*{!isEmailValid && <Text style={styles.error}>{isEmailValidErrorMessage}</Text>} */}
                                         {loading ? (
                                             <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-[#4e63ac] py-4 rounded-lg">
                                                 <Text className="mr-4 text-lg text-white ">{t("Loading")}</Text>
@@ -206,8 +198,9 @@ const ForgotPassword = ({ navigation }) => {
 
                                 {isEmailValid && !isNewPasswordValid && (
                                     <View className="my-9 relative flex-1">
-                                        <View className="w-full">
-                                            <Text className="font-extrabold text-base tracking-wider text-rose-700">OTP</Text>
+                                        <View className="w-full flex flex-row gap-1">
+                                            <Text className="font-BOLD text-base text-rose-500">OTP</Text>
+                                            <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}>
                                             <Controller

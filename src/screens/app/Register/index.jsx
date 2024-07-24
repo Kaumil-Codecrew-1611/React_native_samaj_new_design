@@ -112,7 +112,6 @@ const Register = ({ navigation }) => {
     };
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
-            // const errorMessage = Object.values(errors).map(error => error.message).join(', ');
             toastMessage("Please fill all the required fields");
         }
     }, [errors]);
@@ -123,7 +122,7 @@ const Register = ({ navigation }) => {
                 <View className="w-full">
                     <Text className="font-extrabold text-lg tracking-wider text-neutral-700">{t('selectyourvillage')} :</Text>
                 </View>
-                <View className="bg-white w-full mt-2 rounded-md">
+                <View className={`bg-white w-full mt-2 rounded-md shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200"}`}>
                     <Select
                         borderWidth={0}
                         accessibilityLabel={t('selectyourvillage')}
@@ -182,7 +181,7 @@ const Register = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.firstname && <Text className="text-red-500 mb-[16px] mx-1">{errors.firstname.message}</Text>}
+                                        {errors.firstname && <Text className="text-red-500 mx-1">{errors.firstname.message}</Text>}
                                     </View>
                                 </View>
 
@@ -206,7 +205,7 @@ const Register = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.lastname && <Text className="text-red-500 mb-[16px] mx-1">{errors.lastname.message}</Text>}
+                                        {errors.lastname && <Text className="text-red-500 mx-1">{errors.lastname.message}</Text>}
                                     </View>
                                 </View>
 
@@ -230,7 +229,7 @@ const Register = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.middlename && <Text className="text-red-500 mb-[16px] mx-1">{errors.middlename.message}</Text>}
+                                        {errors.middlename && <Text className="text-red-500 mx-1">{errors.middlename.message}</Text>}
                                     </View>
                                 </View>
 
@@ -254,8 +253,8 @@ const Register = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.email && <Text className="text-red-500 mb-[16px] mx-1">{errors.email.message}</Text>}
-                                        {emailError && <Text className="text-red-500 mb-[16px] mx-1">{emailError}</Text>}
+                                        {errors.email && <Text className="text-red-500 mx-1">{errors.email.message}</Text>}
+                                        {emailError && <Text className="text-red-500 mx-1">{emailError}</Text>}
                                     </View>
                                 </View>
 
@@ -279,7 +278,7 @@ const Register = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.password && <Text className="text-red-500 mb-[16px] mx-1">{errors.password.message}</Text>}
+                                        {errors.password && <Text className="text-red-500 mx-1">{errors.password.message}</Text>}
                                     </View>
                                 </View>
 
@@ -325,7 +324,7 @@ const Register = ({ navigation }) => {
                                             onChange={onDateChange}
                                         />
                                     )}
-                                    {errors.dob && <Text className="text-red-500 mb-[16px] mx-1">{errors.dob.message}</Text>}
+                                    {errors.dob && <Text className="text-red-500 mx-1">{errors.dob.message}</Text>}
                                 </View>
 
                                 <View className="my-1">
@@ -351,8 +350,8 @@ const Register = ({ navigation }) => {
                                                 />
                                             )}
                                         />
-                                        {errors.mobile_number && <Text className="text-red-500 mb-[16px] mx-1">{errors.mobile_number.message}</Text>}
-                                        {mobileError && <Text className="text-red-500 mb-[16px] mx-1">{mobileError}</Text>}
+                                        {errors.mobile_number && <Text className="text-red-500 mx-1">{errors.mobile_number.message}</Text>}
+                                        {mobileError && <Text className="text-red-500 mx-1">{mobileError}</Text>}
                                     </View>
 
                                     <View className="my-1">
@@ -375,7 +374,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.address && <Text className="text-red-500 mb-[16px] mx-1">{errors.address.message}</Text>}
+                                            {errors.address && <Text className="text-red-500 mx-1">{errors.address.message}</Text>}
                                         </View>
                                     </View>
 
@@ -399,7 +398,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.city && <Text className="text-red-500 mb-[16px] mx-1">{errors.city.message}</Text>}
+                                            {errors.city && <Text className="text-red-500 mx-1">{errors.city.message}</Text>}
                                         </View>
                                     </View>
 
@@ -423,7 +422,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.state && <Text className="text-red-500 mb-[16px] mx-1">{errors.state.message}</Text>}
+                                            {errors.state && <Text className="text-red-500 mx-1">{errors.state.message}</Text>}
                                         </View>
                                     </View>
 
@@ -448,7 +447,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.pincode && <Text className="text-red-500 mb-[16px] mx-1">{errors.pincode.message}</Text>}
+                                            {errors.pincode && <Text className="text-red-500 mx-1">{errors.pincode.message}</Text>}
                                         </View>
                                     </View>
 
@@ -472,7 +471,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.education && <Text className="text-red-500 mb-[16px] mx-1">{errors.education.message}</Text>}
+                                            {errors.education && <Text className="text-red-500 mx-1">{errors.education.message}</Text>}
                                         </View>
                                     </View>
 
@@ -496,7 +495,7 @@ const Register = ({ navigation }) => {
                                                     />
                                                 )}
                                             />
-                                            {errors.job && <Text className="text-red-500 mb-[16px] mx-1">{errors.job.message}</Text>}
+                                            {errors.job && <Text className="text-red-500 mx-1">{errors.job.message}</Text>}
                                         </View>
                                     </View>
 
@@ -504,7 +503,7 @@ const Register = ({ navigation }) => {
                                         <View className="w-full">
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                         </View>
-                                        <View className=" w-full mt-2">
+                                        <View className="w-full mt-2">
                                             <View className="mx-1" style={styles.select}>
                                                 <Controller
                                                     control={control}
@@ -530,7 +529,7 @@ const Register = ({ navigation }) => {
                                                     )}
                                                 />
                                             </View>
-                                            {errors.marital_status && <Text className="text-red-500 mb-[16px] mx-1">{errors.marital_status.message}</Text>}
+                                            {errors.marital_status && <Text className="text-red-500 mx-1">{errors.marital_status.message}</Text>}
                                         </View>
                                     </View>
 
@@ -559,7 +558,7 @@ const Register = ({ navigation }) => {
                                                     )}
                                                 />
                                             </View>
-                                            {errors.gender && <Text className="text-red-500 mb-[16px] mx-1">{errors.gender.message}</Text>}
+                                            {errors.gender && <Text className="text-red-500 mx-1">{errors.gender.message}</Text>}
                                         </View>
                                     </View>
 

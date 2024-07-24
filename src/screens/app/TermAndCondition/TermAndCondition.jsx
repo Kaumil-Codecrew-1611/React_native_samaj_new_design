@@ -54,7 +54,7 @@ const TermAndCondition = () => {
                 {termsAndCondition && termsAndCondition.map((item, index) => {
                     return (
                         <View key={index + "terms"} className="px-4 py-2">
-                            <View className="mt-2 bg-white rounded-[15px] mx-0.5 shadow p-5">
+                            <View className={`mt-2 bg-white rounded-[15px] p-5 shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200"}`}>
                                 <Text className="text-black text-xl font-bold mb-2">
                                     {defaultLanguage == "en" ? item.titleE : item.titleG}
                                 </Text>

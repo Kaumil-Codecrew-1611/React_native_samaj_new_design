@@ -160,9 +160,9 @@ function ContactUsCard() {
     }
 
     return (
-        <View className="mb-20">
+        <View className="mb-16">
             <View className="p-5">
-                <View className="bg-white rounded-[20px] p-5" style={styles.shadowOfCard}>
+                <View className="bg-white rounded-[15px] p-5" style={styles.shadowOfCard}>
                     <View className="flex flex-row items-center gap-3">
                         <AnimatedFontistoIcon
                             name="mobile"
@@ -211,7 +211,7 @@ function ContactUsCard() {
                 </View>
             </View>
             {email && (
-                <View className="p-5">
+                <View className="px-5">
                     <View className="bg-white rounded-[20px] p-5" style={styles.shadowOfCard}>
                         <View className="flex flex-row items-center gap-3">
                             <AnimatedFontistoIcon

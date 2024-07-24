@@ -169,7 +169,7 @@ const Login = ({ navigation }) => {
                                 </Pressable>
                             </View>
                         </View>
-                        {errors.password && <Text className="absolute -bottom-4 text-red-500 px-3 ">{errors.password.message}</Text>}
+                        {errors.password && <Text className="text-red-500 px-3 ">{errors.password.message}</Text>}
                     </View>
 
                     <View className="flex flex-row justify-end my-2" style={styles.registerContainer}>

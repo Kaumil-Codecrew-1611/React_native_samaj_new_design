@@ -304,7 +304,7 @@ const MyBusinessCards = ({ navigation }) => {
     return (
 
         <View className="bg-[#E9EDF7] h-full">
-            {myBusinessCard && myBusinessCard.length < 1 ?
+            {myBusinessCard && myBusinessCard?.length < 1 ?
                 <View className="px-3">
                     <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
                         <View className="mr-3">
@@ -349,7 +349,7 @@ const MyBusinessCards = ({ navigation }) => {
 
             {loading ? (
                 renderSkeleton()
-            ) : myBusinessCard.length === 0 ? (
+            ) : myBusinessCard?.length === 0 ? (
                 <NoDataFound message={"There are no Business"} />
             ) : (
 

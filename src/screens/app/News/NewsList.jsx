@@ -67,7 +67,7 @@ function NewsList({ navigation, news, loading }) {
                     onPressOut={onPressOut}
                     onPress={() => { openNewsDetailsPage(item?._id); }}
                 >
-                    <View className="bg-white shadow-2xl rounded-3xl w-[100%] mt-4 p-5 mx-5 mb-5" style={styles.shadowOfCard}>
+                    <View className="bg-white shadow-2xl rounded-3xl w-[100%] mt-4 p-3 mx-5 mb-3" style={styles.shadowOfCard}>
                         <View className={`overflow-hidden object-cover  ${Platform.OS == "ios" ? "shadow-lg" : "shadow-black shadow-xl"} `}>
                             <View className="relative">
                                 <Image
@@ -135,7 +135,7 @@ function NewsList({ navigation, news, loading }) {
                 />
             ) : (
                 <>
-                    <View className={`px-5 py-5 ${Platform.OS == "android" ? 'mt-5' : "mt-0"}`}>
+                    <View className={`px-5 py-5 ${Platform.OS == "android" ? 'mt-0' : "mt-0"}`}>
                         <Text className="text-2xl font-bold text-black">{t("news")}</Text>
                     </View>
                     <View className="bg-[#E9EDF7] pb-12">

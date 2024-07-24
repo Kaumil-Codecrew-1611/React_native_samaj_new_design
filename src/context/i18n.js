@@ -451,7 +451,7 @@ const resources = {
       Loading: "રાહ જુવો",
       LatestNews: "તાજા સમાચાર",
       joinnow: "જોઈન કરો",
-      Directory: "સભ્યો ની યાદી",
+      Directory: "સભ્યો",
       Events: "પ્રસન્ગો",
       Business: "વ્યવસાય",
       AllUser: "સભ્યો ની યાદી",
