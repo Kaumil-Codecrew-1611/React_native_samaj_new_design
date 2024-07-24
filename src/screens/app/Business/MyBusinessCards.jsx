@@ -425,7 +425,7 @@ const MyBusinessCards = ({ navigation }) => {
                                             onPress={() => handleCacelSubSucess()} disabled={loading}
                                             className="px-6 py-3 bg-red-500 rounded-[15px]"
                                         >
-                                            <Text className="text-white ">{t('cacelSubScription')}</Text>
+                                            <Text className="text-white">{t('cacelSubScription')}</Text>
                                         </Pressable>
                                     </Animated.View>
                                 )}

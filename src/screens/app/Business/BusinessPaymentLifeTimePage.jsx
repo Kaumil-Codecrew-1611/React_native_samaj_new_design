@@ -120,7 +120,7 @@ const BusinessPaymentLifeTimePage = ({ route, navigation }) => {
                                                         Company Name:
                                                     </Text>
                                                     <Text className="basis-[60%] text-md text-black font-semibold">
-                                                        {responseOfData.businessName} hi the uuu jjdjd kkskks 6hjgdsf sdhfhsdj4kf5h4  dsfjhjsdhf
+                                                        {responseOfData.businessName}
                                                     </Text>
                                                 </View>
                                             </View>
@@ -157,7 +157,7 @@ const BusinessPaymentLifeTimePage = ({ route, navigation }) => {
                             >
                                 <View className="bg-[#4e63ac] rounded-xl p-3">
                                     <Text className="text-white text-lg font-bold text-center">
-                                        Pay Now {orderData.amount} ₹
+                                        Pay Now {orderData.amount / 100} ₹
                                     </Text>
                                 </View>
                             </TouchableOpacity>

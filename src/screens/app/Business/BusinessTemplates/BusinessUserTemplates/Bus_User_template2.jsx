@@ -6,9 +6,8 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import TwitterIcon from '../../../../../assets/twitter.svg';
 
 const Bus_User_template2 = ({ route }) => {
-    const item = route.params.item
-    console.log(item, ":::::::item")
 
+    const item = route.params.item
     const instaAnimation = new Animated.Value(0);
     const twitterAnimation = new Animated.Value(0);
     const linkedinAnimation = new Animated.Value(0);
@@ -165,8 +164,8 @@ const Bus_User_template2 = ({ route }) => {
         setLinkedinLink(item.linkedIn || '');
         setFaceBookLink(item.facebook || '');
     }, []);
-    console.log(item.twitter, ":::item.twitterLink")
     const profileLogo = `${process.env.IMAGE_URL}${item.businessLogo}`
+
     const renderCard = () => (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <LinearGradient
