@@ -98,7 +98,7 @@ const AddBusinessDetails = ({ route, navigation }) => {
                 console.log('ImagePicker Error: ', response.error);
             } else {
                 const source = response.assets[0];
-                console.log(source, ":::source");
+
 
                 // Check if the image has a 1:1 aspect ratio and is at least 200x200 pixels
                 const aspectRatio = source.width / source.height;

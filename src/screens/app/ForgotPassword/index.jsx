@@ -111,9 +111,9 @@ const ForgotPassword = ({ navigation }) => {
                     confirmPassword: data.confirmPassword
                 };
                 setLoading(true)
-                console.log(payload, ":::payload")
+
                 const response = await forgotPasswordApi(payload)
-                console.log(response, "response")
+
                 setLoading(false)
                 if (response.status) {
                     navigation.navigate('Login');

@@ -119,18 +119,18 @@ const BusinessCard = () => {
     };
 
     const handleCallOpenLink = (phoneNumber) => {
-        console.log("Call link pressed: ", phoneNumber);
+
         Linking.openURL(`tel:${phoneNumber}`);
     };
 
     const handleClickOnMail = (emailAddress) => {
-        console.log("Email link pressed: ", emailAddress);
+
         Linking.openURL(`mailto:${emailAddress}`);
     };
 
     const openLink = (url) => {
         if (url) {
-            console.log("URL link pressed: ", url);
+
             Linking.openURL(url);
         }
     };

@@ -14,7 +14,7 @@ export async function requestUserPermission() {
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-        console.log('Authorization status:', authStatus);
+
         getFCMToken();
     }
 }
@@ -23,9 +23,9 @@ export async function requestUserPermission() {
 async function getFCMToken() {
     try {
         const fcmToken = await messaging().getToken();
-        console.log(fcmToken, ":::before fcmToken")
+
         if (fcmToken) {
-            console.log('Your Firebase Token is:', fcmToken);
+
         } else {
             console.log('Failed', 'No token received');
         }
