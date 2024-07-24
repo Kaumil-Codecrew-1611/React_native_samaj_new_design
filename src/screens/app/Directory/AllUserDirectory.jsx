@@ -142,7 +142,7 @@ export default function AllUserDirectory() {
 
     return (
         <View className="bg-[#E9EDF7]" style={styles.container}>
-            <View className="w-full px-3 mt-3">
+            <View className="w-full px-3 mt-4">
                 <View className="bg-white h-20 p-2 rounded-2xl flex items-center">
                     <View className="flex flex-row h-full items-center justify-between w-full">
                         <View>

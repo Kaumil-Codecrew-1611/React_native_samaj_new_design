@@ -58,28 +58,28 @@ const VillageWisePersons = ({ navigation, route }) => {
     return (
 
         <View className="flex-1 bg-gray-300 w-full" edges={['top']}>
-            <View className="relative bg-white px-3 mt-3 mx-3 h-14 rounded-2xl">
+            <View className="relative bg-white px-3 mt-3 mx-3 h-12 rounded-2xl">
                 <View className='flex-1 justify-center items-center'>
                     <TouchableOpacity onPress={() => {
                         setSearch("");
                     }}>
-                        <View className="flex flex-row items-center relative overflow-hidden">
+                        <View className="w-full flex flex-row bg-white rounded-xl items-center px-3">
                             <TextInput placeholder={t("searchPersonVillage")} className="w-full text-black" placeholderTextColor="grey" value={search} onChangeText={text => setSearch(text)} />
-                            <View className="h-full flex justify-center absolute right-[6px]">
-                                {search !== "" ? (
-                                    <AnimatedFontistoIcon
-                                        name="close"
-                                        size={25}
-                                        color={"black"}
-                                    />
-                                ) : (
-                                    <AnimatedFeatherIcon
-                                        name="search"
-                                        size={25}
-                                        color={"black"}
-                                    />
-                                )}
-                            </View>
+                            {/* <View className="h-full flex justify-center absolute right-[6px]"> */}
+                            {search !== "" ? (
+                                <AnimatedFontistoIcon
+                                    name="close"
+                                    size={25}
+                                    color={"black"}
+                                />
+                            ) : (
+                                <AnimatedFeatherIcon
+                                    name="search"
+                                    size={25}
+                                    color={"black"}
+                                />
+                            )}
+                            {/* </View> */}
                         </View>
                     </TouchableOpacity>
                 </View>

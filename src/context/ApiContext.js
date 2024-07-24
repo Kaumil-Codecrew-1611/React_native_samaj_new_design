@@ -12,6 +12,7 @@ import {
     changePassword,
     committeeMembers,
     contactUsDetails,
+    createOrderIdForBusiness,
     editBusinessCard,
     editUserFamilyMembers,
     editUserPostProfile,
@@ -33,6 +34,7 @@ import {
     registerBusinessData,
     registerUser,
     relationshipDataList,
+    selectLifeTimeAcess,
     sendMailSupport,
     sendOtpForForgotPassword,
     setNewForgotPassword,
@@ -128,6 +130,8 @@ export const ApiProvider = ({ children }) => {
     const allUsersBussinessListing = () => apiRequest(allBusinessListing, null, setData, 'allUsersBussinessListing');
     const getAllBussinessTemplateListing = () => apiRequest(allBusinessTemplateList, null, setData, 'get_All_Business_Template_Listing');
 
+    const createBusinessOrder = (b_data) => apiRequest(createOrderIdForBusiness, b_data, setData, 'create_business_order');
+
     return (
         <ApiContext.Provider value={{
             state,
@@ -177,7 +181,9 @@ export const ApiProvider = ({ children }) => {
             allSubscriptionListing,
             registerUserBusinessData,
             allUsersBussinessListing,
-            getAllBussinessTemplateListing
+            getAllBussinessTemplateListing,
+
+            createBusinessOrder
         }}>
             {children}
         </ApiContext.Provider>

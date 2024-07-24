@@ -66,7 +66,7 @@ const Login = ({ navigation }) => {
         setLoading(true);
         try {
             const res = await loginAPICall({
-                email_or_mobile: data?.email_or_mobile,
+                email_or_mobile: data?.email_or_mobile.toLowerCase(),
                 password: data?.password,
                 device_token: pushNotificationToken
             });

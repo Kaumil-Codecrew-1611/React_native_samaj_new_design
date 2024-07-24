@@ -21,6 +21,7 @@ import * as yup from 'yup';
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
 import { GlobalContext } from "../../../context/globalState";
+import toastMessage from '../../../utils/toastMessage';
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Register = ({ navigation }) => {
@@ -109,6 +110,12 @@ const Register = ({ navigation }) => {
             setValue('dob', currentDate);
         }
     };
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            // const errorMessage = Object.values(errors).map(error => error.message).join(', ');
+            toastMessage("Please fill all the required fields");
+        }
+    }, [errors]);
 
     return (
         <View className="bg-[#EFF6F9] w-full flex-1 px-3">
@@ -300,6 +307,7 @@ const Register = ({ navigation }) => {
                                                         placeholder={t('dateofbirth')}
                                                         placeholderTextColor="grey"
                                                         value={dateValue ? dateValue.toDateString() : ''}
+                                                        onPress={() => setShowPicker(true)}
                                                         onBlur={onBlur}
                                                         disableFullscreenUI={true}
                                                         editable={false}
@@ -497,12 +505,14 @@ const Register = ({ navigation }) => {
                                             <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('maritalstatus')}:</Text>
                                         </View>
                                         <View className=" w-full mt-2">
-                                            <View className="mx-1">
+                                            <View className="mx-1" style={styles.select}>
                                                 <Controller
                                                     control={control}
                                                     name="marital_status"
                                                     render={({ field: { onChange, onBlur, value } }) => (
                                                         <Select
+                                                            borderWidth={0}
+
                                                             placeholder={t('selectmaritalstatus')}
                                                             selectedValue={value}
                                                             onValueChange={(itemValue) => onChange(itemValue)}
@@ -584,6 +594,20 @@ const styles = StyleSheet.create({
         color: '#333',
         borderRadius: 10,
         paddingVertical: 10,
+        paddingLeft: 10,
+        marginBottom: 10,
+        shadowColor: '#423f40',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 0.2,
+        marginHorizontal: 4,
+        elevation: 4,
+    },
+    select: {
+        backgroundColor: '#eee',
+        color: '#333',
+        borderRadius: 10,
+        paddingVertical: 8,
         paddingLeft: 10,
         marginBottom: 10,
         shadowColor: '#423f40',

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
@@ -14,7 +14,6 @@ import { GlobalContext } from '../../../context/globalState';
 import i18n from '../../../context/i18n';
 
 const VillageListing = ({ navigation, route }) => {
-
     const { t } = useTranslation();
     const [search, setSearch] = useState("");
     const [language, setLanguage] = useState("");
@@ -48,7 +47,7 @@ const VillageListing = ({ navigation, route }) => {
                 setSearch("");
             };
         }, [])
-    )
+    );
 
     useEffect(() => {
         if (SelectedVillage) {
@@ -59,15 +58,15 @@ const VillageListing = ({ navigation, route }) => {
     }, [SelectedVillage]);
 
     useEffect(() => {
-        setLoading(true);
-        setTimeout(() => {
-            (async function () {
-                const allVillages = await villagesListing(search ? search : "");
-                setAllVillagesListing(allVillages.village);
-                setLoading(false);
-            })();
-        }, 100)
-    }, [search])
+        const loadVillages = async () => {
+            setLoading(true);
+            const allVillages = await villagesListing(search ? search : "");
+            setAllVillagesListing(allVillages.village);
+            setLoading(false);
+        };
+        const timeoutId = setTimeout(loadVillages, 1000);
+        return () => clearTimeout(timeoutId);
+    }, [search]);
 
     useEffect(() => {
         const params = route.params;
@@ -84,7 +83,6 @@ const VillageListing = ({ navigation, route }) => {
                     i18n.changeLanguage(storedLanguage).catch((error) => {
                         console.error('Error changing language:', error);
                     });
-                    console.log(storedLanguage, "storedLanguage")
                     setLanguage(storedLanguage);
                 }
             } catch (error) {
@@ -94,21 +92,19 @@ const VillageListing = ({ navigation, route }) => {
         getSelectedLanguage();
     }, []);
 
-    const renderItem = ({ item }) => {
+    const handleVillageSelect = useCallback(async (item) => {
+        await setSelectedVillage(item);
+        navigation.navigate('VillageWisePersons', { villageId: item._id });
+    }, [navigation, setSelectedVillage]);
 
-        const handleVillageSelect = async (item1) => {
-            await setSelectedVillage(item1);
-            navigation.navigate('VillageWisePersons', { villageId: item._id });
-        };
-
+    const renderItem = useCallback(({ item }) => {
         const villageImage = process.env.IMAGE_URL + item.image;
-
         return (
             <View className={`${listingStyle === 'grid' ? 'flex-1 m-2' : 'flex flex-row w-full'}`}>
                 <CardDetails
                     size={listingStyle === 'grid' ? 'lg' : ""}
                     image={villageImage}
-                    content={language == 'en' ? item.villageE : item.villageG}
+                    content={language == 'en' ? item.villageE : language == 'gu' ? item.villageG : item.villageE}
                     navigation={navigation}
                     villageListing={true}
                     allVillagesListing={allVillagesListing}
@@ -123,16 +119,16 @@ const VillageListing = ({ navigation, route }) => {
                 )}
             </View>
         );
-    };
+    }, [allVillagesListing, handleVillageSelect, language, listingStyle, navigation, search]);
+
+    const keyExtractor = useCallback((item) => item._id, []);
 
     return (
-
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
             <View className="flex-1 bg-gray-300">
-
                 <View className="bg-white m-3 h-20 p-2 px-4 rounded-2xl flex items-center">
                     <View className="flex flex-row h-full items-center justify-between w-full">
                         <View>
@@ -150,10 +146,14 @@ const VillageListing = ({ navigation, route }) => {
 
                 <View className="w-full px-4 mb-3 shadow-custom-elevation shadow-sm">
                     <View className="w-full flex flex-row bg-white rounded-xl items-center">
-                        <TextInput placeholder={t("searchVillage")} placeholderTextColor="grey" className="basis-[90%] tracking-wider py-3 text-neutral-700 pl-2 " value={search} onChangeText={text => setSearch(text)} />
-                        <TouchableOpacity onPress={() => {
-                            setSearch("");
-                        }}>
+                        <TextInput
+                            placeholder={t("searchVillage")}
+                            placeholderTextColor="grey"
+                            className="basis-[90%] tracking-wider py-3 text-neutral-700 pl-2 "
+                            value={search}
+                            onChangeText={text => setSearch(text)}
+                        />
+                        <TouchableOpacity onPress={() => setSearch("")}>
                             <View>
                                 {search !== "" ? (
                                     <AnimatedFontistoIcon
@@ -181,7 +181,7 @@ const VillageListing = ({ navigation, route }) => {
                     <FlatList
                         data={allVillagesListing}
                         renderItem={renderItem}
-                        keyExtractor={(item) => item._id}
+                        keyExtractor={keyExtractor}
                         numColumns={listingStyle === 'grid' ? 2 : 1}
                         key={listingStyle}
                         contentContainerStyle={{
@@ -196,7 +196,6 @@ const VillageListing = ({ navigation, route }) => {
                         showsHorizontalScrollIndicator={false}
                     />
                 )}
-
             </View>
         </KeyboardAvoidingView>
     );

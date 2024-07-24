@@ -48,6 +48,7 @@ import Welcome from '../screens/app/WelcomeScreen';
 import Bus_User_template1 from '../screens/app/Business/BusinessTemplates/BusinessUserTemplates/Bus_User_template1';
 import Bus_User_template2 from '../screens/app/Business/BusinessTemplates/BusinessUserTemplates/Bus_User_template2';
 import Bus_User_template3 from '../screens/app/Business/BusinessTemplates/BusinessUserTemplates/Bus_User_template3';
+import BusinessPaymentLifeTimePage from '../screens/app/Business/BusinessPaymentLifeTimePage';
 
 const RootStack = createNativeStackNavigator()
 
@@ -115,6 +116,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name="BusinessSubscription" component={BusinessSubscription} options={{ headerTitle: "Subscription" }} />
                 <RootStack.Screen name="FlipImage" component={FlipImage} options={{ headerTitle: "Flip Image" }} />
                 <RootStack.Screen name="BusinessPaymentPage" component={BusinessPaymentPage} options={{ headerTitle: "Business Payment" }} />
+                <RootStack.Screen name="BusinessPaymentLifeTimePage" component={BusinessPaymentLifeTimePage} options={{ headerTitle: "Business Payment" }} />
                 <RootStack.Screen name="SelectBusinessTemplate" component={SelectBusinessTemplate} options={{ headerTitle: "Business Template" }} />
                 <RootStack.Screen name="BusinessTemplate1" component={Template1} options={{ headerTitle: "Business Template 1" }} />
                 <RootStack.Screen name="BusinessTemplate2" component={Template2} options={{ headerTitle: "Business Template 2" }} />

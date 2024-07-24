@@ -194,6 +194,7 @@ export const otpCheckForForgotPassword = async (checkotpForForgotPassword) => {
 };
 
 export const setNewForgotPassword = async (newSetForgotPassword) => {
+    console.log(newSetForgotPassword, "newSetForgotPassword")
     const response = await axiosInstance.post(`/forgetpassword/${newSetForgotPassword.userId}`, newSetForgotPassword);
     return response.data
 };
@@ -248,6 +249,12 @@ export const updateBusinessCard = async ({ businessData, updateBusinessId }) => 
             'Content-Type': 'multipart/form-data',
         }
     });
+    return response.data;
+};
+
+export const createOrderIdForBusiness = async (payload) => {
+    console.log(payload, "plan_id", payload, " :::   payload")
+    const response = await axiosInstance.post(`/businessOrder/${payload?.plan_id}`, payload);
     return response.data;
 };
 

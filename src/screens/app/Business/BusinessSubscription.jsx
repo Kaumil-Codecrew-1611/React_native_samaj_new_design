@@ -11,16 +11,13 @@ const BusinessSubscription = ({ route, navigation }) => {
     const outputRange = [1, 0.8];
     const [value, setValue] = useState('');
     const businessId = route.params.businessId
-    const { allSubscriptionListing, subscriptionForBusiness } = useContext(ApiContext);
+    const { allSubscriptionListing, subscriptionForBusiness, createBusinessOrder } = useContext(ApiContext);
     const { allUserInfo } = useContext(GlobalContext);
     const animation = useMemo(() => new Animated.Value(0), []);
     const scale = animation.interpolate({ inputRange, outputRange });
     const [subscriptionListing, setSubscriptionListing] = useState([]);
     const [loading, setLoading] = useState("");
-
-    const handlePress = ((subscriptionValue) => {
-        setValue(subscriptionValue);
-    });
+    const [isRecurryingPayment, setIsRecurryingPayment] = useState(true)
 
     const calculateSavings = useCallback((planPrice, planInterval, monthlyPrice) => {
         const totalReferencePrice = monthlyPrice * planInterval;
@@ -56,16 +53,26 @@ const BusinessSubscription = ({ route, navigation }) => {
     }, []);
 
     const onSubmit = async () => {
+        console.log(value, "::::value")
         const payload = {
-            plan_id: subscriptionListing.find(item => item._id == value).plan_id,
+            ...(isRecurryingPayment ? { plan_id: subscriptionListing.find(item => item._id == value).plan_id } : { plan_id: value }),
             user_id: allUserInfo._id,
             business_id: businessId
         }
+        console.log(payload, "payload")
         try {
-            setLoading(true)
-            const response = await subscriptionForBusiness(payload)
-            setLoading(false)
-            navigation.navigate('BusinessPaymentPage', { response: response });
+            if (isRecurryingPayment) {
+                setLoading(true)
+                const response = await subscriptionForBusiness(payload)
+                setLoading(false)
+                navigation.navigate('BusinessPaymentPage', { response: response });
+            } else {
+                setLoading(true)
+                const response = await createBusinessOrder(payload)
+                console.log(response, " createBusinessOrder response")
+                setLoading(false)
+                navigation.navigate('BusinessPaymentLifeTimePage', { response: response });
+            }
         } catch (error) {
             console.log("error", error)
         }
@@ -73,47 +80,56 @@ const BusinessSubscription = ({ route, navigation }) => {
 
     const bestValuePlanIndex = useMemo(() => getBestValuePlanIndex(), [getBestValuePlanIndex]);
 
-    const renderItem = useCallback(({ item, index }) => (
+    const renderItem = useCallback(({ item, index }) => {
 
-        <View className="w-screen mt-3">
-            <Pressable
-                onPress={() => handlePress(item._id)}
-                style={[
-                    styles.planCard,
-                    value === item._id && styles.selectedPlan,
-                    index === bestValuePlanIndex && styles.recommendedPlan
-                ]}
-            >
-                {index === bestValuePlanIndex && (
-                    <View className="absolute top-[-10px] right-3 bg-[#FFD700] px-3 py-1 rounded-xl">
-                        <Text className="text-black font-bold">Best Value</Text>
-                    </View>
-                )}
-                <Radio.Group
-                    name="subscriptionPlan"
-                    value={value}
-                    onChange={handlePress}
+        setIsRecurryingPayment(item.is_recurring)
+
+        const handlePress = ((subscriptionValue) => {
+            setValue(subscriptionValue);
+        });
+
+        return (
+
+            <View className="w-screen mt-3">
+                <Pressable
+                    onPress={() => handlePress(item._id)}
+                    style={[
+                        styles.planCard,
+                        value === item._id && styles.selectedPlan,
+                        index === bestValuePlanIndex && styles.recommendedPlan
+                    ]}
                 >
-                    <View className="flex flex-row justify-between items-center w-full">
-                        <View>
-                            <Text className="text-lg text-black font-semibold">
-                                {item?.interval} {item?.interval === 1 ? item.period && item.period.slice(0, -1) : item.period ? item.period : "N/A"}
-                            </Text>
-                            <Text className="text-lg text-black font-bold">{item.price} ₹</Text>
-                            {calculateSavings(item.price, item.interval, subscriptionListing[0].price) > 0 && (
-                                <Text className="text-red-400 text-lg font-bold">
-                                    {calculateSavings(item.price, item.interval, subscriptionListing[0].price)}% save
+                    {index === bestValuePlanIndex && (
+                        <View className="absolute top-[-10px] right-3 bg-[#FFD700] px-3 py-1 rounded-xl">
+                            <Text className="text-black font-bold">Best Value</Text>
+                        </View>
+                    )}
+                    <Radio.Group
+                        name="subscriptionPlan"
+                        value={value}
+                        onChange={handlePress}
+                    >
+                        <View className="flex flex-row justify-between items-center w-full">
+                            <View>
+                                <Text className="text-lg text-black font-semibold">
+                                    {item?.interval && item?.interval + " "}{item?.interval === 1 ? item.period && item.period.slice(0, -1) : item.period ? item.period : "N/A"}
                                 </Text>
-                            )}
+                                <Text className="text-lg text-black font-bold">{item.price} ₹</Text>
+                                {calculateSavings(item.price, item.interval, subscriptionListing[0].price) > 0 && (
+                                    <Text className="text-red-400 text-lg font-bold">
+                                        {calculateSavings(item.price, item.interval, subscriptionListing[0].price)}% save
+                                    </Text>
+                                )}
+                            </View>
+                            <View>
+                                <Radio value={item._id} my={1} />
+                            </View>
                         </View>
-                        <View>
-                            <Radio value={item._id} my={1} />
-                        </View>
-                    </View>
-                </Radio.Group>
-            </Pressable>
-        </View>
-    ), [calculateSavings, handlePress, bestValuePlanIndex, subscriptionListing, value]);
+                    </Radio.Group>
+                </Pressable>
+            </View>
+        )
+    }, [calculateSavings, bestValuePlanIndex, subscriptionListing, value]);
 
     const onPressIn = useCallback(() => {
         Animated.spring(animation, {

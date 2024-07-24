@@ -63,7 +63,7 @@ const BusinessListing = ({ navigation }) => {
         };
         const handleOpenCardOfBusiness = () => {
             const selectedTemplate = getTemplateById(item.template_id);
-            navigation.navigate(selectedTemplate?.user_templ);
+            navigation.navigate(selectedTemplate?.user_templ, { item });
         }
 
         return (

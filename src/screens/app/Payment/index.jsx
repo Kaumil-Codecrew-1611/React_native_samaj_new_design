@@ -38,7 +38,14 @@ function Payment({ navigation }) {
             console.error('An error occurred while handling payment:', error);
         }
     };
-
+    function isValidJson(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
     const payNow = async (data) => {
         try {
             const options = {
@@ -69,9 +76,25 @@ function Payment({ navigation }) {
 
             navigation.navigate('PaymentSuccess', { registerData: updatedRegisterData, amount: data?.order?.amount });
         } catch (error) {
-            const errorObject = JSON.parse(error.description);
-            const errorDescription = errorObject?.error?.description;
-            navigation.navigate('PaymentFailed', { registerData: registerData, amount: data?.order?.amount, description: errorDescription });
+
+            let errorDescription = 'Unknown error';
+
+            if (isValidJson(error.description)) {
+                const errorObject = JSON.parse(error.description);
+                errorDescription = errorObject?.error?.description || errorDescription;
+            } else {
+                errorDescription = error.description;
+            }
+
+            navigation.navigate('PaymentFailed', {
+                registerData: registerData,
+                amount: data?.order?.amount,
+                description: errorDescription
+            });
+
+            /*  const errorObject = JSON.parse(error.description);
+             const errorDescription = errorObject?.error?.description;
+             navigation.navigate('PaymentFailed', { registerData: registerData, amount: data?.order?.amount, description: errorDescription }); */
 
         }
     };
@@ -84,9 +107,9 @@ function Payment({ navigation }) {
     const windowHeight = Dimensions.get('window').height;
 
     return (
-        <View className="flex-1 bg-green-200 relative">
+        <View className="flex-1 bg-[#E9EDF7] relative">
             <View className={`w-full absolute  ${windowHeight < 670 ? "top-[90px]" : "top-[117px]"} z-10 h-32 flex-row justify-center`}>
-                <View className=" w-72 rounded-xl bg-green-600 h-full flex-row justify-center items-center">
+                <View className=" w-72 rounded-xl bg-[#4e63ac] h-full flex-row justify-center items-center">
                     <Text className="text-white text-3xl tracking-wider font-extrabold">PAYMENT</Text>
                 </View>
             </View>
@@ -121,7 +144,7 @@ function Payment({ navigation }) {
                     </View>
                 </ScrollView>
                 <View className="mb-12">
-                    <Button className="bg-green-600 py-3 rounded-lg" title={`Pay(${amount}₹)`} onPress={() => handlePayment()} />
+                    <Button className="bg-[#4e63ac] py-3 rounded-lg" title={`Pay(${amount}₹)`} onPress={() => handlePayment()} />
                 </View>
             </View>
 

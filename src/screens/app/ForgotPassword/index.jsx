@@ -76,7 +76,7 @@ const ForgotPassword = ({ navigation }) => {
 
         if (key === '1') {
             try {
-                const payload = { email: data.EnterEmail };
+                const payload = { email: data.EnterEmail.toLowerCase() };
                 setEmailForgotPassword(data.EnterEmail);
                 setLoading(true)
                 const response = await sendOTPForgotPassword(payload);
@@ -86,7 +86,8 @@ const ForgotPassword = ({ navigation }) => {
                 } else {
                     setEmailValid(true)
                 }
-                setUserId(response.user_id);
+                console.log(response, "89 response")
+
                 reset({ otp: '', newPassword: '', confirmPassword: '' });
             } catch (error) {
                 console.error('Error sending OTP', error);
@@ -102,6 +103,7 @@ const ForgotPassword = ({ navigation }) => {
                 setLoading(true)
                 const response = await checkOtpForForgotPassword(payload);
                 setLoading(false)
+                setUserId(response.user_id);
                 setNewPasswordValid(response.status);
             } catch (error) {
                 console.error('Error verifying OTP', error);
@@ -116,7 +118,9 @@ const ForgotPassword = ({ navigation }) => {
                     confirmPassword: data.confirmPassword
                 };
                 setLoading(true)
+                console.log(payload, ":::payload")
                 const response = await forgotPasswordApi(payload)
+                console.log(response, "response")
                 setLoading(false)
                 if (response.status) {
                     navigation.navigate('Login');
@@ -176,7 +180,7 @@ const ForgotPassword = ({ navigation }) => {
                                                         placeholderTextColor="grey"
                                                         onChangeText={onChange}
                                                         value={value}
-                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
+                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px] lowercase`}
                                                     />
                                                 )}
                                             />

@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { Popup } from 'popup-ui';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Animated, FlatList, Keyboard, Modal, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, FlatList, Keyboard, Modal, Platform, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import AppIcon from '../../../components/AppIcon';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
@@ -63,7 +63,7 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
         if (!isLoggedIn) {
             const popupTimeout = setTimeout(() => {
                 Popup.hide();
-            }, 2000);
+            }, 4000);
             Popup.show({
                 type: 'Danger',
                 title: 'Please login',
@@ -133,7 +133,7 @@ const FamilyTree = ({ data: person, navigation, paramsId, parent }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
-                        className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg shadow shadow-black dark:shadow-white mb-2`}
+                        className={`bg-white border rounded-lg p-2.5 mt-1.25 w-full max-w-lg ${Platform.OS == "android" ? "shadow shadow-black dark:shadow-white" : "shadow-sm shadow-gray-400"} mb-2`}
                     >
                         <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
                             {loading ? renderSkeleton() : (

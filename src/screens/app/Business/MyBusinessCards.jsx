@@ -79,6 +79,7 @@ const MyBusinessCards = ({ navigation }) => {
     const renderItem = ({ item, index }) => {
 
         let selectedTemplate = getTemplateById(item.template_id);
+        console.log(selectedTemplate.user_templ)
         const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
         const animation = new Animated.Value(0);
         const editAnimation = new Animated.Value(0);
@@ -116,6 +117,10 @@ const MyBusinessCards = ({ navigation }) => {
         const handleEditBusinessCard = (id) => {
             navigation.navigate("EditBusinessDetails", { businessId: id, userId: userCardId })
         }
+        const handleNavigation = () => {
+            console.log(item.template_id, "item.template_id")
+            navigation.navigate(selectedTemplate.user_templ, { item })
+        }
 
         return (
             <View className="p-3">
@@ -124,6 +129,7 @@ const MyBusinessCards = ({ navigation }) => {
                         activeOpacity={1}
                         onPressIn={onPressIn}
                         onPressOut={onPressOut}
+                        onPress={handleNavigation}
                     >
                         <LinearGradient
                             colors={[backgroundColor, backgroundColor]}

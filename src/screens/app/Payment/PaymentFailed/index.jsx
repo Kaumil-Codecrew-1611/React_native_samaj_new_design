@@ -21,7 +21,7 @@ function PaymentFailed({ navigation, route }) {
                     />
                 </View>
             </View>
-            <View className="relative flex-1 px-5">
+            <View className="relative h-full flex-1 px-5">
                 <View >
                     <Text className="tracking-wider marker:text-center my-3 text-3xl font-extrabold text-neutral-700">{t('paymentFailed')}</Text>
                     <Text className="tracking-wider  mb-3 text-lg font-semibold text-neutral-700">{data?.description}</Text>
@@ -43,7 +43,7 @@ function PaymentFailed({ navigation, route }) {
                         </View>
                     </View>
                 </View>
-                <View className=" w-full left-5 absolute bottom-16">
+                <View className="absolute bottom-4 left-5 w-full mt-8">
                     <Button className="bg-[#f56f4c] py-4 rounded-[20px]" title={t('tryagain')} onPress={() => navigation.navigate('Payment')} />
                 </View>
             </View>

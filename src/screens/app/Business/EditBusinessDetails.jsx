@@ -33,6 +33,7 @@ const schema = yup.object().shape({
     businessContactNumber: yup.string(),
     businessShortDetail: yup.string().required('Business short detail is required'),
     businessType: yup.string().required('Business type is required'),
+    businessLogo: yup.mixed().required('Business logo is required'),
 });
 
 const EditBusinessDetails = ({ route, navigation }) => {
@@ -57,15 +58,44 @@ const EditBusinessDetails = ({ route, navigation }) => {
                 console.log('ImagePicker Error: ', response.error);
             } else {
                 const source = response.assets[0];
-                if (source.type === 'image/png') {
+                console.log(source, ":::source");
+
+                // Check if the image has a 1:1 aspect ratio and is at least 200x200 pixels
+                const aspectRatio = source.width / source.height;
+                if (aspectRatio === 1 && source.width >= 200 && source.height >= 200) {
                     setPngImage(source.uri);
                     setValue('businessLogo', source, { shouldValidate: true });
                 } else {
-                    alert('Only PNG files are allowed');
+                    alert('Invalid Image', 'Please upload an image with a 1:1 aspect ratio and a minimum size of 200x200 pixels.');
                 }
             }
         });
     };
+
+    /* 
+    const pickImage = () => {
+        ImagePicker.launchImageLibrary({ mediaType: 'photo' }, response => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else {
+                const source = response.assets[0];
+                console.log(source, ":::source");
+
+                // Check if the image has a 1:1 aspect ratio and is at least 200x200 pixels
+                const aspectRatio = source.width / source.height;
+                if (aspectRatio === 1 && source.width >= 200 && source.height >= 200) {
+                    setPngImage(source.uri);
+                    setValue('businessLogo', source, { shouldValidate: true });
+                } else {
+                    alert('Invalid Image', 'Please upload an image with a 1:1 aspect ratio and a minimum size of 200x200 pixels.');
+                }
+            }
+        });
+    };
+    
+    */
 
     const onDateChange = (event, selectedDate) => {
         if (selectedDate !== undefined) {
@@ -330,6 +360,9 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                         <Feather name="image" style={styles.icon} />
                                     )}
                                 </TouchableOpacity>
+                                {errors.businessLogo && (
+                                    <Text style={styles.errorText}>{errors.businessLogo.message}</Text>
+                                )}
                             </View>
 
                             <View className="mt-1">
