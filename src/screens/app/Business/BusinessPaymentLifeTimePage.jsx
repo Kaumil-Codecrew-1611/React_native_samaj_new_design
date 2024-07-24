@@ -57,7 +57,7 @@ const BusinessPaymentLifeTimePage = ({ route, navigation }) => {
                 currency: data?.order?.currency,
                 order_id: data?.order?.id,
                 key: data?.razorpay_key_id,
-                amount: data?.order?.amount * 100,
+                amount: data?.order?.amount,
                 name: 'Pay to Panchal Samaj',
                 prefill: {
                     name: registerData?.firstName,

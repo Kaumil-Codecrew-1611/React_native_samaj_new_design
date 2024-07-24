@@ -401,11 +401,11 @@ const ProfilePage = ({ navigation }) => {
                             <Text className="text-rose-700 text-xl font-bold tracking-wider">{formatDate(allUserInfo?.created_at)}</Text>
                         </View>
 
-                        <View className="flex-row gap-1">
-                            <Pressable hitSlop={20} onPress={navigateToAddProfile}>
-                                <Text className="text-blue-600 font-medium text-base">{t('AddProfile')}</Text>
-                            </Pressable>
-                            <Text className="text-blue-600 font-medium text-base">/</Text>
+                        <View className="mt-1">
+                            {/*  <Pressable hitSlop={20} onPress={navigateToAddProfile}>
+                                <Text className="text-blue-600 font-medium text-base">{t('AddChild')}</Text>
+                            </Pressable> */}
+                            {/* <Text className="text-blue-600 font-medium text-base">/</Text> */}
                             <Pressable hitSlop={20} onPress={navigateToEditProfile}>
                                 <Text className="text-blue-600 font-medium text-base">{t('EditProfile')}</Text>
                             </Pressable>

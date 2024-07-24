@@ -28,6 +28,7 @@ export default function AddFamilyDetails({ navigation, route }) {
     const schema = yup.object().shape({
         firstname: yup.string().required(t('pleaseenterfirstname')),
         lastname: yup.string().required(t('pleaseenterlastname')),
+        middlename: yup.string().required(t('pleaseentermiddlename')),
         education: yup.string().required(t('pleaseentereducation')),
         address: yup.string().required(t('pleaseenteraddress')),
         job: yup.string().required(t('pleaseenterjob')),
@@ -153,6 +154,31 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View className="my-1">
+                                    <View className="w-full  flex flex-row gap-[0.5px]">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('middlename')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="middlename"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder={t('middlename')}
+                                                    className="py-3"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    defaultValue={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                        {errors.middlename && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.middlename.message}</Text>}
+                                    </View>
+                                </View>
+
+                                <View className="">
                                     <View className="w-full">
                                         <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('email')}:</Text>
                                     </View>
@@ -359,7 +385,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                     <Select
                                                         borderWidth={0}
                                                         placeholder={t('maritalstatus')}
-                                                        className="py-3 m-1"
+                                                        className="py-2 m-1"
                                                         selectedValue={value}
                                                         placeholderTextColor={'grey'}
                                                         fontSize={14}
@@ -385,7 +411,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                 </View>
 
                                 <View className=" w-full mt-2">
-                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
+                                    <View className="w-full mb-2 mx-1 flex flex-row gap-[0.5px]">
                                         <Text className="font-extrabold text-base tracking-wider text-neutral-700">{t('relationship')}:</Text>
                                         <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                     </View>
@@ -397,7 +423,7 @@ export default function AddFamilyDetails({ navigation, route }) {
                                                 <Select
                                                     borderWidth={0}
                                                     placeholder={t('relationship')}
-                                                    className="py-3 m-1"
+                                                    className="py-2 m-1"
                                                     placeholderTextColor={'grey'}
                                                     fontSize={14}
 
@@ -457,11 +483,9 @@ export default function AddFamilyDetails({ navigation, route }) {
                                     />
                                 </View>
 
-                                <View className="mt-3 mb-6">
 
-                                </View>
 
-                                <View className="mt-3 mb-6">
+                                <View className="mt-4 mb-6">
                                     {loading ? (
                                         <View className="flex flex-row items-center justify-center bg-blue-500 cursor-pointer p-2 rounded-lg">
                                             <Text className="mr-4 text-lg font-semibold text-white ">{t("Loading")}</Text>

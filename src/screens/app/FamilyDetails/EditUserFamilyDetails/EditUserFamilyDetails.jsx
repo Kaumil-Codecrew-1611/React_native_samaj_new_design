@@ -28,6 +28,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
     const schema = yup.object().shape({
         firstname: yup.string().required(t('pleaseenterfirstname')),
         lastname: yup.string().required(t('pleaseenterlastname')),
+        middlename: yup.string().required(t('pleaseentermiddlename')),
         education: yup.string().required(t('pleaseentereducation')),
         address: yup.string().required(t('pleaseenteraddress')),
         job: yup.string().required(t('pleaseenterjob')),
@@ -48,6 +49,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
         defaultValues: {
             firstname: '',
             lastname: '',
+            middlename: '',
             education: '',
             address: '',
             job: '',
@@ -77,6 +79,7 @@ export default function EditUserFamilyDetails({ navigation, route }) {
             if (response) {
                 setValue('firstname', response.firstname);
                 setValue('lastname', response.lastname);
+                setValue('middlename', response.middlename || '');
                 setValue('education', response.education);
                 setValue('address', response.address);
                 setValue('job', response.job);
@@ -166,6 +169,30 @@ export default function EditUserFamilyDetails({ navigation, route }) {
                                             )}
                                         />
                                         {errors.lastname && <Text style={styles.error}>{errors.lastname.message}</Text>}
+                                    </View>
+                                </View>
+                                <View className="my-1">
+                                    <View className="w-full mx-1 flex flex-row gap-[0.5px]">
+                                        <Text className="font-extrabold ml-1 text-base tracking-wider text-neutral-700">{t('middlename')}:</Text>
+                                        <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
+                                    </View>
+                                    <View className=" w-full mt-2">
+                                        <Controller
+                                            control={control}
+                                            name="middlename"
+                                            render={({ field: { onChange, onBlur, value } }) => (
+                                                <TextInput
+                                                    placeholder={t('middlename')}
+                                                    className="py-3"
+                                                    placeholderTextColor="grey"
+                                                    style={styles.input}
+                                                    defaultValue={value}
+                                                    onBlur={onBlur}
+                                                    onChangeText={(text) => onChange(text)}
+                                                />
+                                            )}
+                                        />
+                                        {errors.middlename && <Text className="text-red-500 mb-[16px] mx-[4px]">{errors.middlename.message}</Text>}
                                     </View>
                                 </View>
 

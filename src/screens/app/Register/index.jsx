@@ -529,7 +529,6 @@ const Register = ({ navigation }) => {
                                                     )}
                                                 />
                                             </View>
-                                            {errors.marital_status && <Text className="text-red-500 mx-1">{errors.marital_status.message}</Text>}
                                         </View>
                                     </View>
 

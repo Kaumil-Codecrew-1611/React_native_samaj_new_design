@@ -45,6 +45,7 @@ const BusinessSubscription = ({ route, navigation }) => {
                 const allSubscription = await allSubscriptionListing();
                 setSubscriptionListing(allSubscription.plans);
                 setValue(allSubscription.plans[0]._id);
+                setIsRecurryingPayment(allSubscription.plans[0].is_recurring);
             } catch (error) {
                 console.log("Error fetching all subscriptions:", error);
             }
@@ -59,9 +60,10 @@ const BusinessSubscription = ({ route, navigation }) => {
             user_id: allUserInfo._id,
             business_id: businessId
         }
-        console.log(payload, "payload")
+        console.log(isRecurryingPayment, "payload")
         try {
             if (isRecurryingPayment) {
+                console.log("heyyyy ::::::::::::::")
                 setLoading(true)
                 const response = await subscriptionForBusiness(payload)
                 setLoading(false)
@@ -82,9 +84,10 @@ const BusinessSubscription = ({ route, navigation }) => {
 
     const renderItem = useCallback(({ item, index }) => {
 
-        setIsRecurryingPayment(item.is_recurring)
 
         const handlePress = ((subscriptionValue) => {
+            console.log(item.is_recurring, "is_recurring")
+            setIsRecurryingPayment(item.is_recurring)
             setValue(subscriptionValue);
         });
 
