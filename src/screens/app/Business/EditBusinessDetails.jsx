@@ -33,7 +33,7 @@ const schema = yup.object().shape({
     businessContactNumber: yup.string(),
     businessShortDetail: yup.string().required('Business short detail is required'),
     businessType: yup.string().required('Business type is required'),
-    businessLogo: yup.mixed().required('Business logo is required'),
+    // businessLogo: yup.mixed().required('Business logo is required'),
 });
 
 const EditBusinessDetails = ({ route, navigation }) => {
@@ -167,6 +167,8 @@ const EditBusinessDetails = ({ route, navigation }) => {
                     setValue('businessType', data.businessType);
                     setValue('role', data.role);
                     setValue('status', data.status);
+                    console.log(process.env.IMAGE_URL + data.businessLogo, ":::data.businessLogo")
+                    setValue('businessLogo', process.env.IMAGE_URL + data.businessLogo)
                     setPngImage(process.env.IMAGE_URL + data.businessLogo)
                     if (data.dateOfOpeningJob) {
                         setValue('dateOfOpeningJob', new Date(data.dateOfOpeningJob));
@@ -360,9 +362,9 @@ const EditBusinessDetails = ({ route, navigation }) => {
                                         <Feather name="image" style={styles.icon} />
                                     )}
                                 </TouchableOpacity>
-                                {errors.businessLogo && (
-                                    <Text style={styles.errorText}>{errors.businessLogo.message}</Text>
-                                )}
+                                {/*  {errors.businessLogo && (
+                                    <Text className="text-red-600 mb-1">{errors.businessLogo.message}</Text>
+                                )} */}
                             </View>
 
                             <View className="mt-1">
