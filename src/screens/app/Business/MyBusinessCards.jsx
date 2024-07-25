@@ -356,7 +356,7 @@ const MyBusinessCards = ({ navigation }) => {
                     </View>
                 </View>}
 
-            {myBusinessCard && <>
+            {myBusinessCard && myBusinessCard.is_recurring && <>
                 {(statusName == "Active" || statusName == "payment_failed") && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
                     <Pressable
                         activeOpacity={1}

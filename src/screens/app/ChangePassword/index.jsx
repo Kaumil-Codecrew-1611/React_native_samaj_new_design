@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import Button from '../../../components/Button';
 import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
-
+import { useFabVisibility } from '../../../hooks/useFabVisibility';
 const ChangePassword = ({ navigation }) => {
     const { t } = useTranslation();
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
@@ -74,23 +74,29 @@ const ChangePassword = ({ navigation }) => {
         setConfirmPasswordHidden(!isConfirmPasswordHidden);
     };
     const [windowHeight] = useState(Dimensions.get('window').height);
-
+    const [showFab, processScrollEvent] = useFabVisibility();
     return (
-        <View className="flex-1 bg-[#E9EDF7] px-2 selection: relative">
-            <View className="w-full bg-white mx-2 h-[83%] pt-24 rounded-t-[30px] absolute bottom-0">
-                <View className="w-full absolute top-[-60px] z-10 h-32 flex-row justify-center">
-                    <View className="w-72 rounded-xl bg-[#4e63ac] h-full flex-row justify-center items-center">
-                        <Text className="text-white text-xl tracking-wider font-extrabold">{t('changePassword')}</Text>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            className="flex-1"
+        >
+            <View className="flex-1 bg-[#E9EDF7] px-2 selection: relative">
+                <View className="w-full bg-white mx-2 h-[83%] pt-24 rounded-t-[30px] absolute bottom-0">
+                    <View className="w-full absolute top-[-60px] z-10 h-32 flex-row justify-center">
+                        <View className="w-72 rounded-xl bg-[#4e63ac] h-full flex-row justify-center items-center">
+                            <Text className="text-white text-xl tracking-wider font-extrabold">{t('changePassword')}</Text>
+                        </View>
                     </View>
-                </View>
-                <View className="flex-1 px-8">
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        className="flex flex-1 mb-2"
-                    >
+                    <View className="flex-1 ">
+
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                            <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                                <View className="flex-1 px-1">
+                            <ScrollView
+                                onScroll={processScrollEvent}
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                            >
+                                {/* <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}> */}
+                                <View className="pb-[50%] h-[90%] w-[100%] px-8">
                                     <View>
                                         <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold text-base tracking-wider text-black">{t('changePassword')}:</Text>
@@ -124,7 +130,7 @@ const ChangePassword = ({ navigation }) => {
                                         </View>
                                         {errors.old_password && <Text className="text-red-500">{errors.old_password.message}</Text>}
                                     </View>
-                                    <View className="my-5">
+                                    <View className="my-2">
                                         <View className="w-full flex flex-row gap-[0.5px]">
                                             <Text className="font-extrabold text-base tracking-wider text-black">{t('newPassword')}:</Text>
                                             <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
@@ -193,22 +199,23 @@ const ChangePassword = ({ navigation }) => {
                                 </View>
                             </ScrollView>
                         </TouchableWithoutFeedback>
-                    </KeyboardAvoidingView>
-                    <View className={`${windowHeight > 668 ? 'mb-16' : 'mb-5'}`}>
 
-                        {loading ? (
-                            <View className="flex flex-row items-center justify-center bg-[#4e63ac] py-4 cursor-pointer p-4 rounded-lg">
-                                <Text className="mr-4 text-lg font-bold text-white ">{t("Loading")}</Text>
-                                <ActivityIndicator size="small" color="white" />
-                            </View>
-                        ) : (
-                            <Button className="bg-[#4e63ac] py-4 rounded-lg" title={t('changePassword')} disabled={loading} onPress={handleSubmit(onSubmit)} />
-                        )}
+                        <View className={`px-8 ${windowHeight > 668 ? 'mb-16' : 'mb-5'}`}>
 
+                            {loading ? (
+                                <View className="flex flex-row items-center justify-center bg-[#4e63ac] py-4 cursor-pointer p-4 rounded-lg">
+                                    <Text className="mr-4 text-lg font-bold text-white ">{t("Loading")}</Text>
+                                    <ActivityIndicator size="small" color="white" />
+                                </View>
+                            ) : (
+                                <Button className="bg-[#4e63ac] py-4 rounded-lg" title={t('changePassword')} disabled={loading} onPress={handleSubmit(onSubmit)} />
+                            )}
+
+                        </View>
                     </View>
                 </View>
-            </View>
-        </View>
+            </View >
+        </KeyboardAvoidingView>
     );
 };
 
