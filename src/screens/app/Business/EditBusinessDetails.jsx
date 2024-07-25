@@ -104,7 +104,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
             setValue('dateOfOpeningJob', currentDate);
         }
     };
-    const [isSubscriptionData, setIsSubscriptionData] = useState(null);
+
     useEffect(() => {
         (async function () {
             try {
@@ -130,8 +130,7 @@ const EditBusinessDetails = ({ route, navigation }) => {
                         setValue('dateOfOpeningJob', new Date(data.dateOfOpeningJob));
                     }
                 }
-                console.log("contentBusinessCard.businessData", contentBusinessCard.subscription)
-                setIsSubscriptionData(contentBusinessCard.subscription)
+
             } catch (error) {
                 console.log("Error in getting details business edit", error)
             }
