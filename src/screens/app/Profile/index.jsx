@@ -186,11 +186,6 @@ const ProfilePage = ({ navigation }) => {
         navigation.navigate('ChangePassword');
     };
 
-    const navigateToAddProfile = () => {
-        const parent_id = allUserInfo?._id;
-        navigation.navigate('AddFamilyDetail', { parent_id: parent_id });
-    };
-
     const navigateToEditProfile = () => {
         navigation.navigate('EditUserProfile');
     };
@@ -402,10 +397,6 @@ const ProfilePage = ({ navigation }) => {
                         </View>
 
                         <View className="mt-1">
-                            {/*  <Pressable hitSlop={20} onPress={navigateToAddProfile}>
-                                <Text className="text-blue-600 font-medium text-base">{t('AddChild')}</Text>
-                            </Pressable> */}
-                            {/* <Text className="text-blue-600 font-medium text-base">/</Text> */}
                             <Pressable hitSlop={20} onPress={navigateToEditProfile}>
                                 <Text className="text-blue-600 font-medium text-base">{t('EditProfile')}</Text>
                             </Pressable>

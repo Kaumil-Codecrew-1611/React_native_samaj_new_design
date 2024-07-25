@@ -10,22 +10,23 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import ImageViewing from 'react-native-image-viewing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import TwitterIcon from '../../../../../assets/twitter.svg';
 
 const renderSocialIcons = ({ item }) => {
 
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
     const instaAnimation = new Animated.Value(0);
     const twitterAnimation = new Animated.Value(0);
     const linkedinAnimation = new Animated.Value(0);
     const faceBookAnimation = new Animated.Value(0);
     const [twitterLink, setTwitterLink] = useState('');
     const [faceBookLink, setFaceBookLink] = useState('');
-    const [instagramLink, setInstagramLink] = useState('');
     const [linkedinLink, setLinkedinLink] = useState('');
+    const [instagramLink, setInstagramLink] = useState('');
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
-    const inputRange = [0, 1];
-    const outputRange = [1, 0.8];
     const instaScale = instaAnimation.interpolate({ inputRange, outputRange });
     const twitterScale = twitterAnimation.interpolate({ inputRange, outputRange });
     const faceBookScale = faceBookAnimation.interpolate({ inputRange, outputRange });
@@ -101,6 +102,7 @@ const renderSocialIcons = ({ item }) => {
     };
 
     return (
+
         <View className="flex flex-row justify-around w-[100%]">
             {item.facebook && (
                 <Animated.View style={{ transform: [{ scale: faceBookScale }] }}>
@@ -152,11 +154,18 @@ const renderSocialIcons = ({ item }) => {
             )}
         </View>
     );
+
 };
 
 const Bus_User_template3 = ({ route }) => {
 
+    const inputRange = [0, 1];
+    const outputRange = [1, 0.8];
     const item = route.params.item
+    const logoAnimation = new Animated.Value(0);
+    const logoScale = logoAnimation.interpolate({ inputRange, outputRange });
+    const [isVisible, setIsVisible] = useState(false);
+    const images = item && item.businessLogo ? [{ uri: `${process.env.IMAGE_URL}${item.businessLogo}` }] : [];
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -185,19 +194,47 @@ const Bus_User_template3 = ({ route }) => {
         }
     };
 
+    const onPressLogoIn = () => {
+        Animated.spring(logoAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const onPressLogoOut = () => {
+        Animated.spring(logoAnimation, {
+            toValue: 0,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const openProfileImage = (e) => {
+        e.stopPropagation();
+        setIsVisible(true);
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.userImageContainer}>
 
                 <View style={styles.userImage}>
-                    <Image source={{ uri: process.env.IMAGE_URL + item?.businessLogo }} style={styles.image} />
+                    <Animated.View style={[{ transform: [{ scale: logoScale }] }]}>
+                        <Pressable
+                            activeOpacity={1}
+                            onPressIn={onPressLogoIn}
+                            onPressOut={onPressLogoOut}
+                            onPress={openProfileImage}
+                        >
+                            <Image source={{ uri: process.env.IMAGE_URL + item?.businessLogo }} style={styles.image} />
+                        </Pressable>
+                    </Animated.View>
                 </View>
 
                 <View>
                     <Text className="text-sm text-black font-semibold">{item?.name}</Text>
                     <Text className="text-black text-sm font-semibold">{item?.role}</Text>
                     <Text className="text-lg text-black font-semibold">{item?.businessType}</Text>
-                    <Text className="text-sm font-semibold text-black"> {item?.businessType} - Since {getYear(item?.dateOfOpeningJob)}</Text>
+                    <Text className="text-sm font-semibold text-black">{item?.businessType} - Since {getYear(item?.dateOfOpeningJob)}</Text>
                 </View>
 
             </View>
@@ -281,6 +318,13 @@ const Bus_User_template3 = ({ route }) => {
             <View>
                 <Text className="text-center text-sm font-bold text-gray-400 mt-3">Created by {formatDate(item?.dateOfOpeningJob)}</Text>
             </View>
+
+            <ImageViewing
+                images={images}
+                imageIndex={0}
+                visible={isVisible}
+                onRequestClose={() => setIsVisible(false)}
+            />
 
         </ScrollView>
     );

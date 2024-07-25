@@ -232,6 +232,8 @@ const resources = {
       AllEvents: "All Events",
       SuccessfullyLoggedOut: "Logout Successfully",
       LanguageChangedSuccessfully: "Language Change Successfully",
+      deleteBusinessCardContent1: "This action will permanently delete your business card.",
+      deleteBusinessCardContent2: "Once deleted, you will need to re-add your business card and make a new payment.",
     },
   },
   gu: {
@@ -461,6 +463,8 @@ const resources = {
       AllEvents: "બધા પ્રસંગો",
       SuccessfullyLoggedOut: "સફળતાપૂર્વક લૉગઆઉટ થઇ ગયુ છે",
       LanguageChangedSuccessfully: "ભાષા સફળતા પૂર્વક બદલાઈ ગઈ છે",
+      deleteBusinessCardContent1: "આ ક્રિયા તમારી બિઝનેસ કાર્ડને કાયમ માટે કાઢી નાખશે.",
+      deleteBusinessCardContent2: "એકવાર કાઢી નાખ્યા પછી, તમને ફરીથી તમારી બિઝનેસ કાર્ડ ઉમેરવાની અને નવી ચુકવણી કરવાની જરૂર પડશે.",
     },
   },
 };

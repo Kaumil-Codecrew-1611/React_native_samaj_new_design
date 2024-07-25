@@ -107,12 +107,15 @@ const MyBusinessCards = ({ navigation }) => {
     const renderItem = (item) => {
 
         let selectedTemplate = getTemplateById(item.template_id);
-
         const backgroundColor = '#0056b3';
         const animation = new Animated.Value(0);
+        const cancelDeleteModalAnimation = new Animated.Value(0);
+        const deleteModalAnimation = new Animated.Value(0);
         const editAnimation = new Animated.Value(0);
         const deleteAnimation = new Animated.Value(0);
         const scale = animation.interpolate({ inputRange, outputRange });
+        const cancelDeleteModalScale = cancelDeleteModalAnimation.interpolate({ inputRange, outputRange });
+        const deleteModalScale = deleteModalAnimation.interpolate({ inputRange, outputRange });
         const editBusinessCardScale = editAnimation.interpolate({ inputRange, outputRange });
         const deleteBusinessCardScale = deleteAnimation.interpolate({ inputRange, outputRange });
 
@@ -125,6 +128,34 @@ const MyBusinessCards = ({ navigation }) => {
 
         const onPressOut = () => {
             Animated.spring(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressCancelDeleteModalIn = () => {
+            Animated.spring(cancelDeleteModalAnimation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressCancelDeleteModalOut = () => {
+            Animated.spring(cancelDeleteModalAnimation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressDeleteModalIn = () => {
+            Animated.spring(deleteModalAnimation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressDeleteModalOut = () => {
+            Animated.spring(deleteModalAnimation, {
                 toValue: 0,
                 useNativeDriver: true,
             }).start();
@@ -208,18 +239,24 @@ const MyBusinessCards = ({ navigation }) => {
                                 </View>
 
                                 <View className="bg-white p-4">
+
                                     <View className="flex flex-row flex-wrap items-center">
+
                                         <Text className="text-black text-lg font-bold">Mobile Number : </Text>
                                         <TouchableOpacity onPress={() => handleCallOpenLink(item.businessContactNumber)}>
                                             <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessContactNumber}</Text>
                                         </TouchableOpacity>
+
                                         {item.phoneNumber2 &&
                                             <Text> , </Text>
                                         }
+
                                         <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber2)}>
                                             <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber2}</Text>
                                         </TouchableOpacity>
+
                                     </View>
+
                                     <View className="flex flex-row flex-wrap items-center">
                                         <Text className="text-black text-lg font-bold">Address : </Text>
                                         <TouchableOpacity
@@ -229,6 +266,7 @@ const MyBusinessCards = ({ navigation }) => {
                                             <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.address}</Text>
                                         </TouchableOpacity>
                                     </View>
+
                                     {item.businessWebsite &&
                                         <View className="flex flex-row flex-wrap items-center">
                                             <Text className="text-black text-lg font-bold">Website Link : </Text>
@@ -276,6 +314,7 @@ const MyBusinessCards = ({ navigation }) => {
                         </TouchableOpacity>
                     </Animated.View>
                 </View >
+
                 <Modal
                     transparent={true}
                     visible={isDeleteModalOpen}
@@ -283,45 +322,58 @@ const MyBusinessCards = ({ navigation }) => {
                     onRequestClose={closeDeleteModal}
                 >
                     <View className="flex-1 justify-center items-center">
+
                         {isDeleteModalOpen && (
                             <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                         )}
-                        <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-14">
-                            <Text className="font-bold text-black text-lg mb-4">Are you sure you want to delete the subscription?</Text>
-                            <Text className="text-black mb-4">
-                                Deleting your subscription will have the following consequences:
-                            </Text>
-                            <View className="mb-4">
-                                <Text className="text-black">1. Any remaining time on your current subscription will be forfeited.</Text>
-                                <Text className="text-black">2. You may be charged a cancellation fee as per the subscription policy.</Text>
-                                <Text className="text-black">3. You will lose access to all premium features immediately upon deletion.</Text>
-                                <Text className="text-black">4. Any pending repayments or dues will need to be settled.</Text>
+
+                        <View className="w-4/5 bg-white rounded-[15px] px-4 py-2  shadow-lg mt-14">
+
+                            <Text className="font-bold text-black text-base text-justify">Are you sure you want to delete the subscription?</Text>
+
+                            <View>
+                                <Text className="text-lg text-red-500 font-bold text-center mb-2">
+                                    Disclaimer
+                                </Text>
                             </View>
-                            <Text className="text-black mb-4">
-                                Follow the steps below to complete the deletion process:
-                            </Text>
-                            <View className="mb-4">
-                                <Text className="text-black">1. Review your subscription details and ensure you understand the implications.</Text>
-                                <Text className="text-black">2. Contact support if you have any questions or concerns.</Text>
-                                <Text className="text-black">3. Confirm your decision to delete the subscription.</Text>
-                                <Text className="text-black">4. Complete any necessary payment or administrative steps.</Text>
+                            <View className="px-2 my-2">
+                                <Text className="text-gray-500 text-justify font-semibold text-sm my-1">
+                                    {t("deleteBusinessCardContent1")}
+                                </Text>
+                                <Text className="text-gray-500 text-justify font-semibold text-sm my-1">
+                                    {t("deleteBusinessCardContent2")}
+                                </Text>
                             </View>
-                            <View className="flex-row justify-around items-center">
-                                <Pressable
-                                    activeOpacity={1}
-                                    onPress={closeDeleteModal}
-                                    className="px-6 py-2 bg-gray-200 rounded-[15px]"
-                                >
-                                    <Text className="text-black">{t('close')}</Text>
-                                </Pressable>
-                                <Pressable
-                                    activeOpacity={1}
-                                    onPress={() => handleDeleteBusinessApi(item._id)}
-                                    className="px-6 py-2 bg-red-500 rounded-[15px]"
-                                >
-                                    <Text className="text-white font-semibold">{t('delete')}</Text>
-                                </Pressable>
+
+
+                            <View className="flex-row justify-around items-center py-2">
+
+                                <Animated.View style={[{ transform: [{ scale: cancelDeleteModalScale }] }]}>
+                                    <TouchableOpacity
+                                        activeOpacity={1}
+                                        onPressIn={onPressCancelDeleteModalIn}
+                                        onPressOut={onPressCancelDeleteModalOut}
+                                        onPress={closeDeleteModal}
+                                        className="px-6 py-2 bg-gray-200 rounded-[15px]"
+                                    >
+                                        <Text className="text-black">{t('close')}</Text>
+                                    </TouchableOpacity>
+                                </Animated.View>
+
+                                <Animated.View style={[{ transform: [{ scale: deleteModalScale }] }]}>
+                                    <TouchableOpacity
+                                        activeOpacity={1}
+                                        onPressIn={onPressDeleteModalIn}
+                                        onPressOut={onPressDeleteModalOut}
+                                        onPress={() => handleDeleteBusinessApi(item._id)}
+                                        className="px-6 py-2 bg-red-500 rounded-[15px]"
+                                    >
+                                        <Text className="text-white font-semibold">{t('delete')}</Text>
+                                    </TouchableOpacity>
+                                </Animated.View>
+
                             </View>
+
                         </View>
                     </View>
                 </Modal>
