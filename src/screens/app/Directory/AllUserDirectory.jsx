@@ -9,6 +9,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import ApiContext from '../../../context/ApiContext';
 
+
 const { width } = Dimensions.get('screen');
 const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
 const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
@@ -144,9 +145,14 @@ export default function AllUserDirectory() {
         <View className="bg-[#E9EDF7]" style={styles.container}>
             <View className="w-full px-3 mt-4">
                 <View className="bg-white h-20 p-2 rounded-2xl flex items-center">
-                    <View className="flex flex-row h-full items-center justify-between w-full">
+                    <View className="flex px-5 flex-row h-full items-center justify-between w-full">
                         <View>
-                            <Image className="w-16 h-16" source={require("../../../assets/allUser.png")} />
+                            <AnimatedFeatherIcon
+                                name="users"
+                                size={32}
+                                color="black"
+                            />
+                            {/* <Image className="w-16 h-16" source={require("../../../assets/allUser.png")} /> */}
                         </View>
                         <View>
                             <Text className="text-2xl text-black font-bold">{t("AllUser")}</Text>
@@ -157,7 +163,7 @@ export default function AllUserDirectory() {
 
                 <View className="w-full flex flex-row bg-white rounded-xl shadow-custom-elevation shadow-black shadow-2xl items-center mt-5 mb-3" style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4, elevation: 5 }}>
                     <TextInput
-                        placeholder="search user"
+                        placeholder="Search user"
                         placeholderTextColor="grey"
                         className={`basis-[90%] ${Platform.OS == "ios" ? "p-3" : ""} tracking-wider text-neutral-700 pl-2`}
                         value={search}

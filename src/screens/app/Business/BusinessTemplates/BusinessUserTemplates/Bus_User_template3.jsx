@@ -184,7 +184,7 @@ const Bus_User_template3 = ({ route }) => {
             Linking.openURL(url);
         }
     };
-
+    console.log(item, "::::item")
     return (
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.userImageContainer}>
@@ -197,7 +197,7 @@ const Bus_User_template3 = ({ route }) => {
                     <Text className="text-sm text-black font-semibold">{item?.name}</Text>
                     <Text className="text-black text-sm font-semibold">{item?.role}</Text>
                     <Text className="text-lg text-black font-semibold">{item?.businessType}</Text>
-                    <Text className="text-sm font-semibold text-black"> {item?.businessType} - Since {getYear(item?.dateOfOpeningJob)}</Text>
+                    <Text className="text-sm font-semibold text-black">{item?.businessType} - Since {getYear(item?.dateOfOpeningJob)}</Text>
                 </View>
 
             </View>
@@ -209,66 +209,64 @@ const Bus_User_template3 = ({ route }) => {
                     <Text className="font-semibold text-sm text-left w-[100%] text-black">{item?.businessName}</Text>
                 </View>
 
-                <View className="flex flex-row items-center flex-wrap mb-2 mt-2">
-                    <Text className="text-black text-base font-bold tracking-wide">Mobile Number: </Text>
-                    <TouchableOpacity onPress={() => handleCallOpenLink("+91" + item.businessContactNumber)}>
-                        <View>
-                            <Text style={{ color: '#5176df', fontSize: 14, fontWeight: 'bold' }}>
+                <View className="flex flex-1  w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
+                    <Text className="font-bold text-black text-base">Mobile Number: </Text>
+                    <View className="flex-row">
+                        <TouchableOpacity onPress={() => handleCallOpenLink("+91" + item.businessContactNumber)}>
+                            <Text className="font-semibold text-sm text-left w-[100%] text-blue-500">
                                 +91 {item.businessContactNumber}
                             </Text>
-                        </View>
-                    </TouchableOpacity>
-                    {item?.phoneNumber2 &&
-                        <>
-                            <Text> , </Text>
-                            <TouchableOpacity onPress={() => handleCallOpenLink("+91" + item.phoneNumber2)}>
-                                <View>
-                                    <Text className="text-[#5176df] tracking-wider text-sm font-semibold">
+                        </TouchableOpacity>
+                        {item?.phoneNumber2 &&
+                            <>
+                                <Text> , </Text>
+                                <TouchableOpacity onPress={() => handleCallOpenLink("+91" + item.phoneNumber2)}>
+                                    <Text className="font-semibold text-sm text-left w-[100%] text-blue-500">
                                         +91 {item.phoneNumber2}
                                     </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </>
-                    }
+                                </TouchableOpacity>
+                            </>
+                        }
+                    </View>
                 </View>
 
-                <View className="flex flex-row items-center flex-wrap mb-2">
-                    <Text className="text-black text-base font-bold tracking-wide">Address: </Text>
+                <View className="flex flex-1 w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
+                    <Text className="font-bold text-black text-base">Company Address: </Text>
                     <TouchableOpacity
                         className="ms-2"
                         onPress={() => Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.address))}
                     >
-                        <Text className="text-[#5176df] text-md font-medium">{item.address}</Text>
+                        <Text className="font-semibold text-sm text-left w-[100%] text-blue-500">{item.address}</Text>
                     </TouchableOpacity>
                 </View>
 
-                <View className="flex flex-row items-center flex-wrap mb-2">
-                    <Text className="text-black text-base font-bold tracking-wide">Company Email: </Text>
+                <View className="flex flex-1 w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
+                    <Text className="font-bold text-black text-base">Company Email: </Text>
                     <TouchableOpacity onPress={() => handleClickOnMail(item.businessEmail)}>
-                        <Text className="text-[#5176df] text-md font-medium">{item.businessEmail}</Text>
+                        <Text className="font-semibold text-sm text-left w-[100%] text-blue-500">{item.businessEmail}</Text>
                     </TouchableOpacity>
                 </View>
 
                 {item?.businessWebsite &&
-                    <View className="flex flex-row items-center flex-wrap mb-2">
-                        <Text className="text-black text-base font-bold tracking-wide">Website: </Text>
+                    <View className="flex flex-1 w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
+                        <Text className="font-bold text-black text-base">Website: </Text>
                         <TouchableOpacity onPress={() => openLink(item.businessWebsite)}>
-                            <Text className="text-[#5176df] text-sm font-semibold">{item.businessWebsite}</Text>
+                            <Text className="font-semibold text-sm text-left w-[100%] text-blue-500">{item.businessWebsite}</Text>
                         </TouchableOpacity>
                     </View>
                 }
 
-                <View className="flex flex-1 w-[100%] flex-col flex-wrap py-1 border-b-[1px] border-gray-300">
+                {item?.businessShortDetail && <View className="flex flex-1 w-[100%] flex-col flex-wrap py-1 border-b-[1px] border-gray-300">
                     <Text className="font-bold text-black text-base">Short Description :</Text>
                     <Text className="font-medium text-sm text-left w-[100%] text-black my-2">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa fuga iusto laudantium excepturi sit.
+                        {item.businessShortDetail}
                     </Text>
-                </View>
+                </View>}
 
                 {item?.businessLongDetail &&
-                    <View className="flex flex-row items-center flex-wrap">
-                        <Text className="text-black text-base font-bold tracking-wide">Long Description: </Text>
-                        <Text className="font-medium text-sm text-left w-[100%] text-black my-2">{item.businessLongDetail}</Text>
+                    <View className="flex flex-1 w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
+                        <Text className="font-bold text-black text-base">Long Description: </Text>
+                        <Text className="ffont-semibold text-sm text-left w-[100%] text-black">{item.businessLongDetail}</Text>
                     </View>
                 }
 

@@ -108,7 +108,7 @@ const MyBusinessCards = ({ navigation }) => {
 
         let selectedTemplate = getTemplateById(item.template_id);
 
-        const backgroundColor = '#0056b3';
+        const backgroundColor = { bg1: '#5846DC', bg2: '#267E91' };
         const animation = new Animated.Value(0);
         const editAnimation = new Animated.Value(0);
         const deleteAnimation = new Animated.Value(0);
@@ -196,7 +196,7 @@ const MyBusinessCards = ({ navigation }) => {
                             onPress={handleNavigation}
                         >
                             <LinearGradient
-                                colors={[backgroundColor, '#b5d9f0']}
+                                colors={[backgroundColor.bg1, backgroundColor.bg2]}
                                 className="overflow-hidden rounded-lg"
                             >
                                 <View className="p-4 flex flex-row">

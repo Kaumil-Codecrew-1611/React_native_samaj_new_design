@@ -392,7 +392,7 @@ const ProfilePage = ({ navigation }) => {
                         <Text className="text-rose-700 font-bold text-2xl">{allUserInfo?.firstname} {allUserInfo?.lastname}</Text>
 
                         <View className="flex flex-row items-center justify-center">
-                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("MemberId")}:</Text>
+                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">{t("MemberId")}: </Text>
                             <Text className="text-rose-700 text-xl font-bold tracking-wider">{allUserInfo?.personal_id}</Text>
                         </View>
 

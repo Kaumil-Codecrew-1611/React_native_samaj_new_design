@@ -41,8 +41,8 @@ const BusinessListing = ({ navigation }) => {
     };
 
     const renderItem = ({ item, index }) => {
-
-        const backgroundColor = index % 2 === 0 ? '#0056b3' : 'orange';
+        //   const backgroundColor = { bg1: '#0056b3', bg2: '#b5d9f0' };
+        const backgroundColor = index % 2 === 0 ? { bg1: '#5846DC', bg2: '#267E91' } : { bg1: '#CA5202', bg2: '#E0AD72' };
         const animation = new Animated.Value(0);
         const inputRange = [0, 1];
         const outputRange = [1, 0.8];
@@ -76,7 +76,7 @@ const BusinessListing = ({ navigation }) => {
                         onPress={() => handleOpenCardOfBusiness(item.images)}
                     >
                         <LinearGradient
-                            colors={[backgroundColor, backgroundColor]}
+                            colors={[backgroundColor.bg1, backgroundColor.bg2]}
                             className="overflow-hidden rounded-lg"
                         >
                             <View className="p-4 flex flex-row">
