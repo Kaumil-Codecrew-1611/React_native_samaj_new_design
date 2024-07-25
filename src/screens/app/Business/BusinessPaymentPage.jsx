@@ -66,7 +66,7 @@ const BusinessPaymentPage = ({ route, navigation }) => {
             const paymentResponse = await RazorpayCheckout.open(options);
             setLoading(false);
             const { razorpay_payment_id } = paymentResponse;
-            const updatedRegisterData = { payment_id: razorpay_payment_id, business_id: responseOfData._id };
+            const updatedRegisterData = { payment_id: razorpay_payment_id, business_id: responseOfData._id, is_recurring: true };
             await activeBusinessData(updatedRegisterData);
             navigation.navigate('BusinessPaymentSuccess', { name: responseOfData.name, businessEmail: responseOfData.businessEmail, businessName: responseOfData.businessName });
         } catch (error) {

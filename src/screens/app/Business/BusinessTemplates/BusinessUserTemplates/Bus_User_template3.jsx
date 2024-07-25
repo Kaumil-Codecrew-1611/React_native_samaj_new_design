@@ -214,6 +214,7 @@ const Bus_User_template3 = ({ route }) => {
     }
 
     return (
+
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.userImageContainer}>
 
@@ -225,7 +226,9 @@ const Bus_User_template3 = ({ route }) => {
                             onPressOut={onPressLogoOut}
                             onPress={openProfileImage}
                         >
-                            <Image source={{ uri: process.env.IMAGE_URL + item?.businessLogo }} style={styles.image} />
+                            <View className="border-2 rounded-full border-[#1b83bd] p-1">
+                                <Image source={{ uri: process.env.IMAGE_URL + item?.businessLogo }} style={styles.image} />
+                            </View>
                         </Pressable>
                     </Animated.View>
                 </View>
@@ -247,13 +250,17 @@ const Bus_User_template3 = ({ route }) => {
                 </View>
 
                 <View className="flex flex-1  w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
+
                     <Text className="font-bold text-black text-base">Mobile Number: </Text>
+
                     <View className="flex-row">
+
                         <TouchableOpacity onPress={() => handleCallOpenLink("+91" + item.businessContactNumber)}>
                             <Text className="font-semibold text-sm text-left w-[100%] text-blue-500">
                                 +91 {item.businessContactNumber}
                             </Text>
                         </TouchableOpacity>
+
                         {item?.phoneNumber2 &&
                             <>
                                 <Text> , </Text>
@@ -264,16 +271,18 @@ const Bus_User_template3 = ({ route }) => {
                                 </TouchableOpacity>
                             </>
                         }
+
                     </View>
+
                 </View>
 
-                <View className="flex flex-1 w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
+                <View className="flex flex-1 flex-wrap w-[100%] flex-col gap-3 py-1 border-b-[1px] border-gray-300">
                     <Text className="font-bold text-black text-base">Company Address: </Text>
                     <TouchableOpacity
                         className="ms-2"
                         onPress={() => Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.address))}
                     >
-                        <Text className="font-semibold text-sm text-left w-[100%] text-blue-500">{item.address}</Text>
+                        <Text className="font-semibold text-sm text-left w-[80%] text-blue-500">{item.address}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -293,12 +302,12 @@ const Bus_User_template3 = ({ route }) => {
                     </View>
                 }
 
-                {item?.businessShortDetail && <View className="flex flex-1 w-[100%] flex-col flex-wrap py-1 border-b-[1px] border-gray-300">
-                    <Text className="font-bold text-black text-base">Short Description :</Text>
-                    <Text className="font-medium text-sm text-left w-[100%] text-black my-2">
-                        {item.businessShortDetail}
-                    </Text>
-                </View>}
+                {item?.businessShortDetail &&
+                    <View className="flex flex-1 w-[100%] flex-col flex-wrap py-1 border-b-[1px] border-gray-300">
+                        <Text className="font-bold text-black text-base">Short Description :</Text>
+                        <Text className="font-medium text-sm tracking-wider text-left w-[100%] text-black my-2">{item.businessShortDetail}</Text>
+                    </View>
+                }
 
                 {item?.businessLongDetail &&
                     <View className="flex flex-1 w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">

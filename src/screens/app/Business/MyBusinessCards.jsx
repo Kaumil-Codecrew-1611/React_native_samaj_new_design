@@ -209,7 +209,7 @@ const MyBusinessCards = ({ navigation }) => {
         }
 
         const handleEditBusinessCard = (id) => {
-            navigation.navigate("EditBusinessDetails", { businessId: id, userId: userCardId })
+            navigation.navigate("EditBusinessDetails", { businessId: id, userId: userCardId, recuring: myBusinessCard?.is_recurring })
         }
 
         const handleNavigation = () => {
@@ -277,6 +277,7 @@ const MyBusinessCards = ({ navigation }) => {
                                     }
                                     <View className="flex flex-row justify-between items-center mt-2">
                                         <View className="flex flex-row items-center gap-2">
+
                                             <Animated.View style={[{ transform: [{ scale: editBusinessCardScale }] }]}>
                                                 <TouchableOpacity
                                                     activeOpacity={1}
@@ -289,19 +290,23 @@ const MyBusinessCards = ({ navigation }) => {
                                                     </View>
                                                 </TouchableOpacity>
                                             </Animated.View>
-                                            <Animated.View style={[{ transform: [{ scale: deleteBusinessCardScale }] }]}>
-                                                <TouchableOpacity
-                                                    activeOpacity={1}
-                                                    onPressIn={onPressDeleteCardIn}
-                                                    onPressOut={onPressDeleteCardOut}
-                                                    onPress={() => handleDeleteBusinessModalOpen()}
-                                                    className="justify-center items-center rounded-full w-9 h-9"
-                                                >
-                                                    <View>
-                                                        <Image className="w-9 h-9" source={require("../../../assets/deleteIcon.png")} />
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </Animated.View>
+
+                                            {!myBusinessCard.is_recurring &&
+                                                <Animated.View style={[{ transform: [{ scale: deleteBusinessCardScale }] }]}>
+                                                    <TouchableOpacity
+                                                        activeOpacity={1}
+                                                        onPressIn={onPressDeleteCardIn}
+                                                        onPressOut={onPressDeleteCardOut}
+                                                        onPress={() => handleDeleteBusinessModalOpen()}
+                                                        className="justify-center items-center rounded-full w-9 h-9"
+                                                    >
+                                                        <View>
+                                                            <Image className="w-9 h-9" source={require("../../../assets/deleteIcon.png")} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </Animated.View>
+                                            }
+
                                         </View>
                                         {!!statusName &&
                                             <View className={`${statusColor.bgColor}  w-fit  rounded-md p-2`}>
@@ -448,8 +453,8 @@ const MyBusinessCards = ({ navigation }) => {
 
     const handleCacelSubSucess = async () => {
         setLoading(true)
-        const userIdForCancelSubscription = allUserInfo?._id;
-        await cancelSubscriptionForUser(userIdForCancelSubscription)
+        await cancelSubscriptionForUser(myBusinessCard?._id)
+        await fetchData()
         setLoading(false)
         setCancelSubscriptionmodalVisible(false)
         toastMessage("subscription cancel sucessfully", 'Success');
