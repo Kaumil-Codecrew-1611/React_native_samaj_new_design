@@ -37,6 +37,14 @@ const Bus_User_template2 = ({ route }) => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     };
+
+    const onPressFacebookIn = () => {
+        Animated.spring(faceBookAnimation, {
+            toValue: 1,
+            useNativeDriver: true,
+        }).start();
+    };
+
     const onPressFacebookOut = () => {
         Animated.spring(faceBookAnimation, {
             toValue: 0,
