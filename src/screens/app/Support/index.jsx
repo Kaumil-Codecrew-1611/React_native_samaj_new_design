@@ -181,10 +181,16 @@ function Support({ navigation }) {
                                 <View className="bg-white p-3 mb-2 rounded-[20px] shadow-2xl" style={styles.shadowOfCard}>
                                     <View className="flex flex-row justify-between items-center">
                                         <View className="w-[40px] h-[40px] overflow-hidden">
-                                            <Image
+                                            <AnimatedFeatherIcon
+                                                name="file-text"
+                                                size={28}
+                                                // color="blue"
+                                                className="text-blue-600"
+                                            />
+                                            {/*  <Image
                                                 source={require("../../../assets/termAndCondition.png")}
                                                 className="w-full h-full object-cover"
-                                            />
+                                            /> */}
                                         </View>
                                         <View className="w-[200px]">
                                             <View>

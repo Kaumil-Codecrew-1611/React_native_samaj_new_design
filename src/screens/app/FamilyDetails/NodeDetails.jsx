@@ -315,19 +315,27 @@ const NodeDetails = ({ navigation, route }) => {
 
                                 </SkeletonPlaceholder>
                             ) : (
-                                Object.entries(filteredUserData).map(([key, value], index) => (
-                                    <View key={index + "keyyyss"}>
-                                        <View className="w-full p-3 rounded-[15px]">
-                                            <View>
-                                                <Text className="font-bold tracking-wider text-lg text-neutral-700 capitalize">{key && key.replace(/_/g, " ")}</Text>
-                                                <Text className="tracking-wider text-[15px] text-neutral-700">{value}</Text>
+                                Object.entries(filteredUserData).map(([key, value], index) => {
+                                    if (value) { // Check if value exists
+                                        return (
+                                            <View key={index + "keyyyss"}>
+                                                <View className="w-full p-3 rounded-[15px]">
+                                                    <View>
+                                                        <Text className="font-bold tracking-wider text-lg text-neutral-700 capitalize">
+                                                            {key === "middlename" ? "Middle Name" : key.replace(/_/g, " ")}
+                                                        </Text>
+                                                        <Text className="tracking-wider text-[15px] text-neutral-700">{value}</Text>
+                                                    </View>
+                                                </View>
+                                                <View className="w-full overflow-hidden">
+                                                    <View className="h-[1px] bg-[#747272]"></View>
+                                                </View>
                                             </View>
-                                        </View>
-                                        <View className="w-full overflow-hidden">
-                                            <View className="h-[1px] bg-[#747272]"></View>
-                                        </View>
-                                    </View>
-                                ))
+                                        );
+                                    }
+                                    return null; // Return null if value doesn't exist
+                                })
+
                             )}
                         </ScrollView>
                     </View>

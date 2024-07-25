@@ -102,7 +102,7 @@ const ChangePassword = ({ navigation }) => {
                                 <View className="pb-[50%] h-[90%] w-[100%] px-8">
                                     <View>
                                         <View className="w-full flex flex-row gap-[0.5px]">
-                                            <Text className="font-extrabold text-base tracking-wider text-black">{t('changePassword')}:</Text>
+                                            <Text className="font-extrabold text-base tracking-wider text-black">{t('currentpassword')}:</Text>
                                             <Text style={{ color: 'red', fontSize: 17, height: 13 }}>*</Text>
                                         </View>
                                         <View className={`w-full my-1 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 shadow-custom-elevation shadow-md ${Platform.OS == "android" ? "shadow-black" : "border border-gray-200 shadow-sm"} `}>
