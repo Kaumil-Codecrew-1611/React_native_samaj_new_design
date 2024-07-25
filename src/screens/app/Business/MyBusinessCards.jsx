@@ -452,28 +452,25 @@ const MyBusinessCards = ({ navigation }) => {
                     </View>
                 </View>}
 
-            {myBusinessCard &&
-                <>
-                    {(statusName == "Active" || statusName == "payment_failed") &&
-                        <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
-                            <Pressable
-                                activeOpacity={1}
-                                onPressIn={onPressCacelSubscriptionIn}
-                                onPressOut={onPressCancelSubscriptionOut}
-                                onPress={openCancelSubscriptionModal}
-                                className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
-                            >
-                                <View className="flex-row justify-between gap-2 items-center">
-                                    <AnimatedFeatherIcon name="users" size={30} color={"black"} />
-                                    <Text className="text-neutral-700 font-normal text-xl tracking-wider">
-                                        {t("CancelSubscription")}
-                                    </Text>
-                                </View>
-                                <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                            </Pressable>
-                        </Animated.View>
-                    }
-                </>
+            {myBusinessCard && myBusinessCard.is_recurring && <>
+                {(statusName == "Active" || statusName == "payment_failed") && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                    <Pressable
+                        activeOpacity={1}
+                        onPressIn={onPressCacelSubscriptionIn}
+                        onPressOut={onPressCancelSubscriptionOut}
+                        onPress={openCancelSubscriptionModal}
+                        className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
+                    >
+                        <View className="flex-row justify-between gap-2 items-center">
+                            <AnimatedFeatherIcon name="users" size={30} color={"black"} />
+                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">
+                                {t("CancelSubscription")}
+                            </Text>
+                        </View>
+                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                    </Pressable>
+                </Animated.View>}
+            </>
             }
 
             {loading ? (

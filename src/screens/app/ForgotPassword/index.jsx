@@ -13,124 +13,138 @@ import {
     Text,
     TextInput,
     TouchableWithoutFeedback,
-    View,
+    View
 } from "react-native";
-import Animated from "react-native-reanimated";
 import Feather from "react-native-vector-icons/Feather";
 import * as yup from "yup";
 import Button from "../../../components/Button";
 import ApiContext from "../../../context/ApiContext";
+import { useFabVisibility } from "../../../hooks/useFabVisibility";
 
 const ForgotPassword = ({ navigation }) => {
+
     const { t } = useTranslation();
     const [userId, setUserId] = useState("");
     const [loading, setLoading] = useState(false);
-    const [newPassword, setNewPassword] = useState('');
-    const [isEmailValid, setEmailValid] = useState(false)
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [isNewPasswordValid, setNewPasswordValid] = useState(false);
-    const [emailForgotPassword, setEmailForgotPassword] = useState('');
-    const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
+    const [emailSent, setEmailSent] = useState(false);
+    const [otpVerified, setOtpVerified] = useState(false);
+    const [emailForgotPassword, setEmailForgotPassword] = useState("");
     const [isCurrentPasswordHidden, setCurrentPasswordHidden] = useState(true);
-    const [isConfirmPasswordHidden, setCOnfirmPasswordHidden] = useState(true);
-    const { sendOTPForgotPassword, checkOtpForForgotPassword, forgotPasswordApi } = useContext(ApiContext);
+    const [isConfirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
+    const {
+        sendOTPForgotPassword,
+        checkOtpForForgotPassword,
+        forgotPasswordApi,
+    } = useContext(ApiContext);
 
-    const schema = yup.object().shape({
+    const emailSchema = yup.object().shape({
         EnterEmail: yup
             .string()
             .required(t("EmailIsRequired"))
             .email(t("Invalidemailaddress")),
+    });
 
-        otp: yup.string().when("isEmailValid", {
-            is: true,
-            then: yup.string().required(t("OTPisrequired")),
-        }),
+    const otpSchema = yup.object().shape({
+        otp: yup.string().required(t("OTPisrequired")),
+    });
 
-        newPassword: yup.string().when("isNewPasswordValid", {
-            is: true,
-            then: yup
-                .string()
-                .required(t("NewPasswordIsRequired"))
-                .min(8, t("PasswordMinLength"))
-                .matches(/[a-zA-Z]/, t("PasswordContainsLetter"))
-                .matches(/[0-9]/, t("PasswordContainsNumber")),
-        }),
-
-        confirmPassword: yup.string().when("isNewPasswordValid", {
-            is: true,
-            then: yup
-                .string()
-                .required(t("ConfirmPasswordIsRequired"))
-                .oneOf([yup.ref("newPassword")], t("PasswordsMustMatch")),
-        }),
+    const passwordSchema = yup.object().shape({
+        newPassword: yup
+            .string()
+            .required('Password is required')
+            .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character'
+            ),
+        confirmPassword: yup
+            .string()
+            .required('Confirm password is required')
+            .oneOf([yup.ref('newPassword')], 'Passwords must match'),
     });
 
     const {
-        control,
-        getValues,
-        handleSubmit,
-        reset,
-        formState: { errors },
+        control: emailControl,
+        handleSubmit: handleEmailSubmit,
+        formState: { errors: emailErrors },
+        reset: resetEmailForm,
     } = useForm({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            EnterEmail: "",
-            otp: "",
-            newPassword: "",
-            confirmPassword: "",
-        },
+        resolver: yupResolver(emailSchema),
+        defaultValues: { EnterEmail: "" },
     });
 
-    const onSubmit = async (data, key) => {
-        if (key === "1") {
-            try {
-                const payload = { email: data.EnterEmail.toLowerCase() };
-                setEmailForgotPassword(data.EnterEmail);
-                setLoading(true);
-                await sendOTPForgotPassword(payload);
-                setLoading(false);
-                setEmailValid(true);
-                reset({ otp: "", newPassword: "", confirmPassword: "" });
-            } catch (error) {
-                console.error("Error sending OTP", error);
-            }
-        }
+    const {
+        control: otpControl,
+        handleSubmit: handleOtpSubmit,
+        formState: { errors: otpErrors, isValid: isOtpValid },
+        reset: resetOtpForm,
+    } = useForm({
+        resolver: yupResolver(otpSchema),
+        mode: "onChange",
+        defaultValues: { otp: "" },
+    });
 
-        if (key === "2") {
-            try {
-                const payload = {
-                    email: emailForgotPassword,
-                    otp: data.otp,
-                };
-                setLoading(true);
-                const response = await checkOtpForForgotPassword(payload);
-                setLoading(false);
+    const {
+        control: passwordControl,
+        handleSubmit: handlePasswordSubmit,
+        formState: { errors: passwordErrors },
+        reset: resetPasswordForm,
+    } = useForm({
+        resolver: yupResolver(passwordSchema),
+        defaultValues: { newPassword: "", confirmPassword: "" },
+    });
+
+    const onEmailSubmit = async (data) => {
+        try {
+            const payload = { email: data.EnterEmail.toLowerCase() };
+            setEmailForgotPassword(data.EnterEmail);
+            setLoading(true);
+            await sendOTPForgotPassword(payload);
+            setEmailSent(true);
+            setLoading(false);
+            resetEmailForm();
+        } catch (error) {
+            setLoading(false);
+            console.error("Error sending OTP", error);
+        }
+    };
+
+    const onOtpSubmit = async (data) => {
+        try {
+            const payload = { email: emailForgotPassword, otp: data.otp };
+            setLoading(true);
+            const response = await checkOtpForForgotPassword(payload);
+            if (response.status) {
                 setUserId(response.user_id);
-                setNewPasswordValid(response.status);
-            } catch (error) {
-                console.error("Error verifying OTP", error);
+                setOtpVerified(true);
+            } else {
+                setOtpVerified(false);
+                console.error("Invalid OTP", response.message);
             }
+            setLoading(false);
+            resetOtpForm();
+        } catch (error) {
+            setLoading(false);
+            console.error("Error verifying OTP", error);
         }
+    };
 
-        if (key === "3") {
-            try {
-                const payload = {
-                    userId: userId,
-                    newPassword: data.newPassword,
-                    confirmPassword: data.confirmPassword,
-                };
-                setLoading(true);
-                console.log(payload, ":::payload");
-                const response = await forgotPasswordApi(payload);
-                console.log(response, "response");
-                setLoading(false);
-                if (response.status) {
-                    navigation.navigate("Login");
-                    setLoading(false);
-                }
-            } catch (error) {
-                console.error("Error of new password api", error);
+    const onPasswordSubmit = async (data) => {
+        try {
+            const payload = {
+                userId: userId,
+                newPassword: data.newPassword,
+                confirmPassword: data.confirmPassword,
+            };
+            setLoading(true);
+            const response = await forgotPasswordApi(payload);
+            if (response.status) {
+                navigation.navigate("Login");
+                resetPasswordForm();
             }
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.error("Error changing password", error);
         }
     };
 
@@ -139,252 +153,264 @@ const ForgotPassword = ({ navigation }) => {
     };
 
     const onPressConfirmPassword = () => {
-        setCOnfirmPasswordHidden(!isConfirmPasswordHidden);
+        setConfirmPasswordHidden(!isConfirmPasswordHidden);
     };
+    const [showFab, processScrollEvent] = useFabVisibility();
 
     return (
-        <View className="flex-1 bg-[#E9EDF7] px-2 relative">
-            <View className="w-full bg-white mx-2 h-[83%] pt-24 rounded-t-[30px] absolute bottom-0">
+
+        <View className="flex-1 h-full bg-[#E9EDF7] relative">
+            <View className=" h-[90%] mt-24 rounded-t-[30px] bg-white">
                 <View className="w-full absolute top-[-60px] z-10 h-28 flex-row justify-center">
                     <View className="w-72 rounded-xl bg-[#4e63ac] h-full flex-row justify-center items-center">
-                        <Text className="text-white text-2xl tracking-wider font-extrabold">Create New Password</Text>
+                        <Text className="text-white text-xl tracking-wider font-extrabold">{t('changePassword')}</Text>
                     </View>
                 </View>
-
-                <View className="flex-1 px-8">
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.container}
-                    >
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={styles.container}
+                >
+                    <View className=" h-full  pt-10 ">
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                            <View className="flex-1">
-                                {!isEmailValid && (
-                                    <>
-                                        <ScrollView
-                                            contentContainerStyle={{ flexGrow: 1 }}
-                                            showsVerticalScrollIndicator={false}
-                                        >
-                                            <View className="my-9 relative flex-1 h-screen">
-                                                <View className="w-full flex flex-row gap-1">
-                                                    <Text className="font-bold text-base text-neutral-700 ">
-                                                        {t('PleaseEnterEmail')}
-                                                    </Text>
-                                                    <Text style={{ color: "red", fontSize: 17, height: 13 }}>*</Text>
-                                                </View>
-                                                <View className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}>
-                                                    <Controller
-                                                        control={control}
-                                                        name="EnterEmail"
-                                                        render={({ field: { onChange, onBlur, value } }) => (
-                                                            <TextInput
-                                                                style={styles.input}
-                                                                placeholder={t("PleaseEnterEmail")}
-                                                                onBlur={onBlur}
-                                                                placeholderTextColor="grey"
-                                                                onChangeText={onChange}
-                                                                value={value}
-                                                                className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px] lowercase`}
-                                                            />
-                                                        )}
-                                                    />
-                                                </View>
-                                                {errors.EnterEmail && (
-                                                    <Text style={styles.error}>
-                                                        {errors.EnterEmail.message}
-                                                    </Text>
-                                                )}
-
-                                            </View>
-                                        </ScrollView>
-                                        {loading ? (
-                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-[#4e63ac] py-4 rounded-lg">
-                                                <Text className="mr-4 text-lg text-white ">
-                                                    {t("Loading")}
+                            <View className="h-full justify-between flex ">
+                                <View className=" h-[90%]">
+                                    {!emailSent && (
+                                        <View className="my-9 relative flex-1 h-full px-8">
+                                            <View className="w-full flex flex-row gap-1">
+                                                <Text className="font-bold text-base text-neutral-700 ">
+                                                    {t("PleaseEnterEmail")}
                                                 </Text>
-                                                <ActivityIndicator size="small" color="white" />
+                                                <Text
+                                                    style={{ color: "red", fontSize: 17, height: 13 }}
+                                                >
+                                                    *
+                                                </Text>
                                             </View>
-                                        ) : (
-                                            <View className="w-full absolute bottom-4">
-                                                <Button
-                                                    className="bg-[#4e63ac] py-4 rounded-lg"
-                                                    title={"Send OTP"}
-                                                    onPress={handleSubmit((data) => onSubmit(data, "1"))}
+                                            <View
+                                                className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"}`}
+                                            >
+                                                <Controller
+                                                    control={emailControl}
+                                                    name="EnterEmail"
+                                                    render={({
+                                                        field: { onChange, onBlur, value },
+                                                    }) => (
+                                                        <TextInput
+                                                            placeholder={t("PleaseEnterEmail")}
+                                                            onBlur={onBlur}
+                                                            placeholderTextColor="grey"
+                                                            onChangeText={onChange}
+                                                            value={value}
+                                                            className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px] lowercase`}
+                                                        />
+                                                    )}
                                                 />
                                             </View>
-                                        )}
-                                    </>
-                                )}
+                                            {emailErrors.EnterEmail && (
+                                                <Text className="text-red-500 mt-0">
+                                                    {emailErrors.EnterEmail.message}
+                                                </Text>
+                                            )}
+                                        </View>
+                                    )}
 
-                                {isEmailValid && !isNewPasswordValid && (
-                                    <>
+                                    {emailSent && !otpVerified && (
                                         <ScrollView
                                             contentContainerStyle={{ flexGrow: 1 }}
                                             showsVerticalScrollIndicator={false}
                                         >
-                                            <View className="my-9 relative flex-1">
+                                            <View className="my-9 relative flex-1 px-8">
                                                 <View className="w-full flex flex-row gap-1">
-                                                    <Text className="font-bold text-base text-natural-700">
+                                                    <Text className="font-bold text-base text-neutral-700">
                                                         OTP
                                                     </Text>
-                                                    <Text style={{ color: "red", fontSize: 17, height: 13 }}>
+                                                    <Text
+                                                        style={{ color: "red", fontSize: 17, height: 13 }}
+                                                    >
                                                         *
                                                     </Text>
                                                 </View>
                                                 <View
-                                                    className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}
+                                                    className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"}`}
                                                 >
                                                     <Controller
-                                                        control={control}
+                                                        control={otpControl}
                                                         name="otp"
-                                                        render={({ field: { onChange, onBlur, value } }) => (
+                                                        render={({
+                                                            field: { onChange, onBlur, value },
+                                                        }) => (
                                                             <TextInput
-                                                                style={styles.input}
-                                                                placeholder="Enter OTP"
+                                                                placeholder={t("EnterOTP")}
                                                                 onBlur={onBlur}
+                                                                placeholderTextColor="grey"
                                                                 onChangeText={onChange}
                                                                 value={value}
-                                                                placeholderTextColor="grey"
                                                                 className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
+                                                                keyboardType="numeric"
                                                             />
                                                         )}
                                                     />
                                                 </View>
-                                                {errors.otp && (
-                                                    <Text style={styles.error}>{errors.otp.message}</Text>
+                                                {otpErrors.otp && (
+                                                    <Text className="text-red-500 mt-0">
+                                                        {otpErrors.otp.message}
+                                                    </Text>
                                                 )}
-
                                             </View>
                                         </ScrollView>
+                                    )}
+
+                                    {otpVerified && (
+                                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                                            <ScrollView
+                                                contentContainerStyle={{ height: "100%" }}
+                                                onScroll={processScrollEvent}
+                                                showsHorizontalScrollIndicator={false}
+                                                showsVerticalScrollIndicator={false}
+
+                                            >
+                                                <View className="my-5 pb-[50%]  h-[90%]">
+                                                    <View className=" relative  px-8">
+                                                        <View className="w-full flex flex-row gap-1">
+                                                            <Text className="font-bold text-base text-neutral-700">
+                                                                New Password
+                                                            </Text>
+                                                            <Text
+                                                                style={{ color: "red", fontSize: 17, height: 13 }}
+                                                            >
+                                                                *
+                                                            </Text>
+                                                        </View>
+                                                        <View
+                                                            className={`w-full my-1 px-4 h-12 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow "}`}
+                                                        >
+                                                            <Controller
+                                                                control={passwordControl}
+                                                                name="newPassword"
+                                                                render={({
+                                                                    field: { onChange, onBlur, value },
+                                                                }) => (
+                                                                    <TextInput
+
+                                                                        placeholder={"New Password"}
+                                                                        onBlur={onBlur}
+                                                                        placeholderTextColor="grey"
+                                                                        onChangeText={onChange}
+                                                                        value={value}
+                                                                        secureTextEntry={isCurrentPasswordHidden}
+                                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
+                                                                    />
+                                                                )}
+                                                            />
+                                                            <Pressable
+                                                                onPress={onPressCurrentPassword}
+                                                                className="h-full justify-center"
+                                                            >
+                                                                <Feather
+                                                                    name={isCurrentPasswordHidden ? "eye-off" : "eye"}
+                                                                    size={20}
+                                                                    color="#B7B7B7"
+                                                                />
+                                                            </Pressable>
+                                                        </View>
+                                                        {passwordErrors.newPassword && (
+                                                            <Text className="text-red-500 mt-0">
+                                                                {passwordErrors.newPassword.message}
+                                                            </Text>
+                                                        )}
+                                                    </View>
+                                                    <View className="relative flex px-8 mt-3">
+                                                        <View className="w-full flex flex-row gap-1">
+                                                            <Text className="font-bold text-base text-neutral-700">
+                                                                Confirm Password
+                                                            </Text>
+                                                            <Text
+                                                                style={{ color: "red", fontSize: 17, height: 13 }}
+                                                            >
+                                                                *
+                                                            </Text>
+                                                        </View>
+                                                        <View
+                                                            className={`w-full my-2 px-4 h-12 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"}`}
+                                                        >
+                                                            <Controller
+                                                                control={passwordControl}
+                                                                name="confirmPassword"
+                                                                render={({
+                                                                    field: { onChange, onBlur, value },
+                                                                }) => (
+                                                                    <TextInput
+                                                                        placeholder={"Confirm Password"}
+                                                                        onBlur={onBlur}
+                                                                        placeholderTextColor="grey"
+                                                                        onChangeText={onChange}
+                                                                        value={value}
+                                                                        secureTextEntry={isConfirmPasswordHidden}
+                                                                        className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
+                                                                    />
+                                                                )}
+                                                            />
+                                                            <Pressable
+                                                                onPress={onPressConfirmPassword}
+                                                                className="h-full justify-center"
+                                                            >
+                                                                <Feather
+                                                                    name={isConfirmPasswordHidden ? "eye-off" : "eye"}
+                                                                    size={20}
+                                                                    color="#B7B7B7"
+                                                                />
+                                                            </Pressable>
+                                                        </View>
+                                                        {passwordErrors.confirmPassword && (
+                                                            <Text className="text-red-500 mt-0">
+                                                                {passwordErrors.confirmPassword.message}
+                                                            </Text>
+                                                        )}
+                                                    </View>
+                                                </View>
+                                            </ScrollView>
+                                        </TouchableWithoutFeedback>
+                                    )}
+
+                                    <View className="w-full px-8">
                                         {loading ? (
-                                            <View className="flex flex-row items-center justify-center absolute bottom-0 w-full bg-[#4e63ac] py-4 rounded-lg">
+                                            <View className="flex flex-row items-center justify-center  w-full bg-[#4e63ac] py-4 rounded-lg">
                                                 <Text className="mr-4 text-lg text-white">
                                                     {t("Loading")}
                                                 </Text>
                                                 <ActivityIndicator size="small" color="white" />
                                             </View>
                                         ) : (
-                                            <View className="absolute bottom-4 w-full">
-                                                <Button
-                                                    className="bg-[#4e63ac] py-4 rounded-lg"
-                                                    title={t("Submit")}
-                                                    onPress={() => onSubmit(getValues(), "2")}
-                                                />
+                                            <View className=" w-full">
+                                                {!emailSent ? (
+                                                    <Button
+                                                        className="bg-[#4e63ac] py-4 rounded-lg"
+                                                        title={t("Submit")}
+                                                        onPress={handleEmailSubmit(onEmailSubmit)}
+                                                    />
+                                                ) : !otpVerified ? (
+                                                    <Button
+                                                        className={`bg-[#4e63ac] py-4 rounded-lg ${!isOtpValid ? "opacity-50" : ""}`}
+                                                        title={t("Verify OTP")}
+                                                        onPress={handleOtpSubmit(onOtpSubmit)}
+                                                        disabled={!isOtpValid}
+                                                    />
+                                                ) : (
+                                                    <Button
+                                                        className="bg-[#4e63ac] py-4 rounded-lg"
+                                                        title={t("Change Password")}
+                                                        onPress={handlePasswordSubmit(onPasswordSubmit)}
+                                                    />
+                                                )}
                                             </View>
                                         )}
-                                    </>
-                                )}
-
-                                <View style={{ flex: 1 }}>
-                                    {isNewPasswordValid && (
-                                        <>
-                                            <ScrollView
-                                                contentContainerStyle={{ flexGrow: 1 }}
-                                                showsVerticalScrollIndicator={false}
-                                            >
-                                                <View className="my-5 relative flex-1  h-screen">
-                                                    <View className="w-full flex flex-row gap-2">
-                                                        <Text className="font-extrabold text-base tracking-wider text-natural-700">
-                                                            New Password
-                                                        </Text>
-                                                        <Text style={{ color: "red", fontSize: 17, height: 13 }}>
-                                                            *
-                                                        </Text>
-                                                    </View>
-                                                    <View
-                                                        className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5 ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}
-                                                    >
-                                                        <TextInput
-                                                            style={styles.input}
-                                                            placeholder="Enter New Password"
-                                                            onChangeText={(text) => setNewPassword(text)}
-                                                            value={newPassword}
-                                                            placeholderTextColor="grey"
-                                                            className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
-                                                            secureTextEntry={isCurrentPasswordHidden}
-                                                        />
-                                                        <View>
-                                                            <Pressable onPress={onPressCurrentPassword}>
-                                                                <AnimatedFeatherIcon
-                                                                    name={
-                                                                        isCurrentPasswordHidden ? "eye" : "eye-off"
-                                                                    }
-                                                                    size={25}
-                                                                    color="black"
-                                                                />
-                                                            </Pressable>
-                                                        </View>
-                                                    </View>
-                                                    {errors.newPassword && (
-                                                        <Text style={styles.error}>
-                                                            {errors.newPassword.message}
-                                                        </Text>
-                                                    )}
-
-                                                    <View className="w-full flex flex-row gap-2">
-                                                        <Text className="font-extrabold text-base tracking-wider text-natural-700 mt-5">
-                                                            Confirm Password
-                                                        </Text>
-                                                        <Text style={{ color: "red", fontSize: 17, height: 13 }}>
-                                                            *
-                                                        </Text>
-                                                    </View>
-                                                    <View
-                                                        className={`w-full my-2 px-4 flex-row justify-between bg-[#F3F5F7] rounded-[15px] items-center shadow-input mx-0.5   ${Platform.OS == "android" ? "shadow-black shadow-custom-elevation" : "border border-gray-200 shadow"} `}
-                                                    >
-                                                        <TextInput
-                                                            style={styles.input}
-                                                            placeholder="Confirm New Password"
-                                                            onChangeText={(text) => setConfirmPassword(text)}
-                                                            value={confirmPassword}
-                                                            placeholderTextColor="grey"
-                                                            className={`basis-[85%] text-black ${Platform.OS == "ios" ? "p-3" : ""} pl-[10px]`}
-                                                            secureTextEntry={isConfirmPasswordHidden}
-                                                        />
-                                                        <View>
-                                                            <Pressable onPress={onPressConfirmPassword}>
-                                                                <AnimatedFeatherIcon
-                                                                    name={
-                                                                        isConfirmPasswordHidden ? "eye" : "eye-off"
-                                                                    }
-                                                                    size={25}
-                                                                    color="black"
-                                                                />
-                                                            </Pressable>
-                                                        </View>
-                                                    </View>
-                                                    {errors.confirmPassword && (
-                                                        <Text style={styles.error}>
-                                                            {errors.confirmPassword.message}
-                                                        </Text>
-                                                    )}
-
-                                                </View>
-                                            </ScrollView>
-                                            {loading ? (
-                                                <View className="flex flex-row mt-16 items-center justify-center w-full bg-[#4e63ac] py-4 rounded-lg">
-                                                    <ActivityIndicator size="small" color="white" />
-                                                    <Text className="ml-4 text-lg text-white font-semibold">
-                                                        {t("Loading")}
-                                                    </Text>
-                                                </View>
-                                            ) : (
-                                                <View className="w-full absolute bottom-4">
-                                                    <Button
-                                                        className="bg-[#4e63ac] py-4 rounded-lg mt-4"
-                                                        title="Set New Password"
-                                                        onPress={() =>
-                                                            onSubmit({ newPassword, confirmPassword }, "3")
-                                                        }
-                                                    />
-                                                </View>
-                                            )}
-                                        </>
-                                    )}
+                                    </View>
                                 </View>
+
                             </View>
                         </TouchableWithoutFeedback>
-                    </KeyboardAvoidingView>
-                </View>
+                    </View>
+                </KeyboardAvoidingView>
             </View>
         </View>
     );
@@ -394,21 +420,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    input: {
-        color: "#333",
-        paddingLeft: 10,
-    },
-    inputView: {
-        shadowColor: "#423f40",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-        marginHorizontal: 2,
-        elevation: 4,
-    },
     error: {
-        color: "red",
-        marginBottom: 10,
+        color: 'red',
+        marginTop: 0,
+
     },
 });
 

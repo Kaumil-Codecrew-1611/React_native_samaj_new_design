@@ -29,6 +29,7 @@
     "i18next": "^23.11.5",
     "intl": "^1.2.5",
     "intl-pluralrules": "^2.0.1",
+    "lodash.debounce": "^4.0.8",
     "native-base": "^3.4.28",
     "nativewind": "^2.0.11",
     "popup-ui": "^1.2.2",

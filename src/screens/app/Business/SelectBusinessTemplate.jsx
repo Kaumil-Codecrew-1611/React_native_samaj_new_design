@@ -87,7 +87,7 @@ const SelectBusinessTemplate = ({ navigation }) => {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                             <View>
                                 <Text style={{ fontSize: 18, color: 'black', fontWeight: 'bold' }}>
-                                    {item.name}
+                                    {item.show_label}
                                 </Text>
                                 <Animated.View style={{ transform: [{ scale: template_scale }], justifyContent: 'center', paddingTop: 10, paddingBottom: 3 }}>
                                     <TouchableOpacity
