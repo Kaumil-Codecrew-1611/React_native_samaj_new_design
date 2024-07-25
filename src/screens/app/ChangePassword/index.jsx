@@ -11,6 +11,7 @@ import ApiContext from '../../../context/ApiContext';
 import { GlobalContext } from '../../../context/globalState';
 
 const ChangePassword = ({ navigation }) => {
+
     const { t } = useTranslation();
     const AnimatedFeatherIcon = Animated.createAnimatedComponent(Feather);
     const { allUserInfo } = useContext(GlobalContext);
@@ -76,6 +77,7 @@ const ChangePassword = ({ navigation }) => {
     const [windowHeight] = useState(Dimensions.get('window').height);
 
     return (
+
         <View className="flex-1 bg-[#E9EDF7] px-2 selection: relative">
             <View className="w-full bg-white mx-2 h-[83%] pt-24 rounded-t-[30px] absolute bottom-0">
                 <View className="w-full absolute top-[-60px] z-10 h-32 flex-row justify-center">
@@ -194,8 +196,7 @@ const ChangePassword = ({ navigation }) => {
                             </ScrollView>
                         </TouchableWithoutFeedback>
                     </KeyboardAvoidingView>
-                    <View className={`${windowHeight > 668 ? 'mb-16' : 'mb-5'}`}>
-
+                    <View>
                         {loading ? (
                             <View className="flex flex-row items-center justify-center bg-[#4e63ac] py-4 cursor-pointer p-4 rounded-lg">
                                 <Text className="mr-4 text-lg font-bold text-white ">{t("Loading")}</Text>
@@ -204,7 +205,6 @@ const ChangePassword = ({ navigation }) => {
                         ) : (
                             <Button className="bg-[#4e63ac] py-4 rounded-lg" title={t('changePassword')} disabled={loading} onPress={handleSubmit(onSubmit)} />
                         )}
-
                     </View>
                 </View>
             </View>

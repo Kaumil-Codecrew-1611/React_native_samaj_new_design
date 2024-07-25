@@ -344,7 +344,7 @@ const NodeDetails = ({ navigation, route }) => {
                         <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                     )}
                     <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-14">
-                        <Text className="font-bold text-lg mb-4">{t('deleteconfirm')}</Text>
+                        <Text className="font-bold text-black text-lg mb-4">{t('deleteconfirm')}</Text>
                         <View className="flex-row justify-around items-center">
                             <Animated.View style={[{ transform: [{ scale: cancelScale }] }]}>
                                 <Pressable

@@ -5,7 +5,6 @@ import React, { useCallback, useContext, useState } from 'react';
 import {
     ActivityIndicator,
     Animated,
-    FlatList,
     Image,
     Linking,
     Modal,
@@ -17,6 +16,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AddBusinessIcon from '../../../assets/addBusiness.svg';
 import AppIcon from '../../../components/AppIcon';
@@ -32,6 +32,7 @@ const MyBusinessCards = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [myBusinessCard, setMyBusinessCard] = useState("");
     const [statusName, setStatusName] = useState("");
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
     const [statusColor, setStatusColor] = useState({
         color: "",
         bgColor: ""
@@ -111,8 +112,10 @@ const MyBusinessCards = ({ navigation }) => {
         const backgroundColor = '#0056b3';
         const animation = new Animated.Value(0);
         const editAnimation = new Animated.Value(0);
+        const deleteAnimation = new Animated.Value(0);
         const scale = animation.interpolate({ inputRange, outputRange });
         const editBusinessCardScale = editAnimation.interpolate({ inputRange, outputRange });
+        const deleteBusinessCardScale = deleteAnimation.interpolate({ inputRange, outputRange });
 
         const onPressIn = () => {
             Animated.spring(animation, {
@@ -142,94 +145,168 @@ const MyBusinessCards = ({ navigation }) => {
             }).start();
         };
 
+        const onPressDeleteCardIn = () => {
+            Animated.spring(deleteAnimation, {
+                toValue: 1,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const onPressDeleteCardOut = () => {
+            Animated.spring(deleteAnimation, {
+                toValue: 0,
+                useNativeDriver: true,
+            }).start();
+        };
+
+        const handleDeleteBusinessModalOpen = () => {
+            setDeleteModalOpen(true)
+        }
+
+        const closeDeleteModal = () => {
+            setDeleteModalOpen(false);
+        };
+
+
         const handleEditBusinessCard = (id) => {
             navigation.navigate("EditBusinessDetails", { businessId: id, userId: userCardId })
         }
-        const handleNavigation = () => {
 
+        const handleNavigation = () => {
             navigation.navigate(selectedTemplate.user_templ, { item })
         }
 
         return (
-            <View className="p-3">
-                <Animated.View style={[{ transform: [{ scale }] }]}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPressIn={onPressIn}
-                        onPressOut={onPressOut}
-                        onPress={handleNavigation}
-                    >
-                        <LinearGradient
-                            colors={[backgroundColor, '#b5d9f0']}
-                            className="overflow-hidden rounded-lg"
+            <>
+                <View className="p-3">
+                    <Animated.View style={[{ transform: [{ scale }] }]}>
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPressIn={onPressIn}
+                            onPressOut={onPressOut}
+                            onPress={handleNavigation}
                         >
-                            <View className="p-4 flex flex-row">
-                                <View>
-                                    <Text className="text-white text-2xl w-64 font-bold">{item.name}</Text>
-                                    <Text className="text-white text-lg w-64 mb-4">{item.role} of {item.businessName}</Text>
+                            <LinearGradient
+                                colors={[backgroundColor, '#b5d9f0']}
+                                className="overflow-hidden rounded-lg"
+                            >
+                                <View className="p-4 flex flex-row">
+                                    <View>
+                                        <Text className="text-white text-2xl w-64 font-bold">{item.name}</Text>
+                                        <Text className="text-white text-lg w-64 mb-4">{item.role} of {item.businessName}</Text>
+                                    </View>
+                                    <View className="w-40 h-50" style={{ height: 40, backgroundColor: '#ffffff', transform: [{ rotate: '45deg' }], position: 'absolute', top: -20, right: -20 }} />
                                 </View>
-                                <View className="w-40 h-50" style={{ height: 40, backgroundColor: '#ffffff', transform: [{ rotate: '45deg' }], position: 'absolute', top: -20, right: -20 }} />
-                            </View>
 
-                            <View className="bg-white p-4">
-                                <View className="flex flex-row flex-wrap items-center">
-                                    <Text className="text-black text-lg font-bold">Mobile Number : </Text>
-                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.businessContactNumber)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessContactNumber}</Text>
-                                    </TouchableOpacity>
-                                    {item.phoneNumber2 &&
-                                        <Text> , </Text>
-                                    }
-                                    <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber2)}>
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber2}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View className="flex flex-row flex-wrap items-center">
-                                    <Text className="text-black text-lg font-bold">Address : </Text>
-                                    <TouchableOpacity
-                                        className="ms-2"
-                                        onPress={() => Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.address))}
-                                    >
-                                        <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.address}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                {item.businessWebsite &&
+                                <View className="bg-white p-4">
                                     <View className="flex flex-row flex-wrap items-center">
-                                        <Text className="text-black text-lg font-bold">Website Link : </Text>
-                                        <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
-                                            <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
+                                        <Text className="text-black text-lg font-bold">Mobile Number : </Text>
+                                        <TouchableOpacity onPress={() => handleCallOpenLink(item.businessContactNumber)}>
+                                            <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessContactNumber}</Text>
+                                        </TouchableOpacity>
+                                        {item.phoneNumber2 &&
+                                            <Text> , </Text>
+                                        }
+                                        <TouchableOpacity onPress={() => handleCallOpenLink(item.phoneNumber2)}>
+                                            <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.phoneNumber2}</Text>
                                         </TouchableOpacity>
                                     </View>
-                                }
-                                <View className="flex flex-row justify-between items-center mt-2">
-                                    <Animated.View style={[{ transform: [{ scale: editBusinessCardScale }] }]}>
+                                    <View className="flex flex-row flex-wrap items-center">
+                                        <Text className="text-black text-lg font-bold">Address : </Text>
                                         <TouchableOpacity
-                                            activeOpacity={1}
-                                            onPressIn={onPressEditCardIn}
-                                            onPressOut={onPressEditCardOut}
-                                            onPress={() => handleEditBusinessCard(item._id)}
+                                            className="ms-2"
+                                            onPress={() => Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(item.address))}
                                         >
-                                            <View>
-                                                <Image className="w-9 h-9" source={require("../../../assets/edit.png")} />
-                                            </View>
+                                            <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.address}</Text>
                                         </TouchableOpacity>
-                                    </Animated.View>
-                                    {/* //statusName  statusColor */}
-                                    {!!statusName &&
-                                        <View className={`${statusColor.bgColor}  w-fit  rounded-md p-2`}>
-                                            <Text className={`${statusColor.color} font-bold text-xs text-center`}>{statusName}</Text>
+                                    </View>
+                                    {item.businessWebsite &&
+                                        <View className="flex flex-row flex-wrap items-center">
+                                            <Text className="text-black text-lg font-bold">Website Link : </Text>
+                                            <TouchableOpacity onPress={() => handleClickOnMail(item.businessWebsite)}>
+                                                <Text className="text-[#5176df] tracking-wider text-md font-medium">{item.businessWebsite}</Text>
+                                            </TouchableOpacity>
                                         </View>
-                                        /*  :
-                                         <View className="bg-blue-100 w-[22%] rounded-md p-1">
-                                             <Text className="text-blue-700">Published</Text>
-                                         </View> */
                                     }
+                                    <View className="flex flex-row justify-between items-center mt-2">
+                                        <Animated.View style={[{ transform: [{ scale: editBusinessCardScale }] }]}>
+                                            <View className="flex flex-row items-center gap-2">
+                                                <TouchableOpacity
+                                                    activeOpacity={1}
+                                                    onPressIn={onPressEditCardIn}
+                                                    onPressOut={onPressEditCardOut}
+                                                    onPress={() => handleEditBusinessCard(item._id)}
+                                                >
+                                                    <View>
+                                                        <Image className="w-9 h-9" source={require("../../../assets/edit.png")} />
+                                                    </View>
+                                                </TouchableOpacity>
+                                                <Animated.View style={[{ transform: [{ scale: deleteBusinessCardScale }] }]}>
+                                                    <TouchableOpacity
+                                                        activeOpacity={1}
+                                                        onPressIn={onPressDeleteCardIn}
+                                                        onPressOut={onPressDeleteCardOut}
+                                                        onPress={() => handleDeleteBusinessModalOpen()}
+                                                        className="justify-center items-center rounded-full w-9 h-9"
+                                                    >
+                                                        <View>
+                                                            <Image className="w-9 h-9" source={require("../../../assets/deleteIcon.png")} />
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </Animated.View>
+                                            </View>
+                                        </Animated.View>
+                                        {!!statusName &&
+                                            <View className={`${statusColor.bgColor}  w-fit  rounded-md p-2`}>
+                                                <Text className={`${statusColor.color} font-bold text-xs text-center`}>{statusName}</Text>
+                                            </View>
+                                        }
+                                    </View>
                                 </View>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    </Animated.View>
+                </View >
+                <Modal
+                    transparent={true}
+                    visible={isDeleteModalOpen}
+                    animationType="slideTop"
+                    onRequestClose={closeDeleteModal}
+                >
+                    <View className="flex-1 justify-top items-center">
+                        {isDeleteModalOpen && (
+                            <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
+                        )}
+                        <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-14">
+                            <Text className="font-bold text-black text-lg mb-4">Are you sure want to remove subscription ?</Text>
+                            <View className="flex-row justify-around items-center">
+                                {/* <Animated.View style={[{ transform: [{ scale: cancelScale }] }]}> */}
+                                <Pressable
+                                    activeOpacity={1}
+                                    // onPressIn={onPressCancelIn}
+                                    // onPressOut={onPressCancelOut}
+                                    onPress={closeDeleteModal}
+                                    className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2"
+                                >
+                                    <Text className="text-black">{t('cancel')}</Text>
+                                </Pressable>
+                                {/* </Animated.View>
+                                <Animated.View style={[{ transform: [{ scale: DeleteScale }] }]}> */}
+                                <Pressable
+                                    activeOpacity={1}
+                                    // onPressIn={onPressDeleteIn}
+                                    // onPressOut={onPressDeleteOut}
+                                    // onPress={() => handleDelete(userData?._id)}
+                                    className="px-6 py-2 bg-red-500 rounded-[15px]"
+                                >
+                                    <Text className="text-white">{t('delete')}</Text>
+                                </Pressable>
+                                {/* </Animated.View> */}
                             </View>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                </Animated.View>
-            </View >
+                        </View>
+                    </View>
+                </Modal>
+            </>
         );
     };
 
@@ -435,7 +512,6 @@ const MyBusinessCards = ({ navigation }) => {
                     </View>
                 </View>
             </Modal>
-
         </View>
     );
 }
