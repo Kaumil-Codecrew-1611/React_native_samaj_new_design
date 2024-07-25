@@ -75,8 +75,8 @@ const MyBusinessCards = ({ navigation }) => {
                     break;
 
                 default:
-                    setStatusName(myBusinessCard?.status);
-                    setStatusColor(myBusinessCard?.status);
+                    // setStatusName(myBusinessCard?.status);
+                    // setStatusColor(myBusinessCard?.status);
                     break;
             }
         } catch (error) {
@@ -328,10 +328,11 @@ const MyBusinessCards = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
+    console.log(myBusinessCard, ":::statusName")
     return (
 
         <View className="bg-[#E9EDF7] h-full">
-            {!myBusinessCard ?
+            {!myBusinessCard &&
                 <View className="px-3">
                     <View className="bg-white rounded-lg p-2 flex flex-row items-center mt-2 mb-2" style={styles.shadowOfCard}>
                         <View className="mr-3">
@@ -353,27 +354,27 @@ const MyBusinessCards = ({ navigation }) => {
                             </TouchableOpacity>
                         </Animated.View>
                     </View>
-                </View>
-                :
-                <>
-                    {statusName == "Active" || statusName == "payment_failed" && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
-                        <Pressable
-                            activeOpacity={1}
-                            onPressIn={onPressCacelSubscriptionIn}
-                            onPressOut={onPressCancelSubscriptionOut}
-                            onPress={openCancelSubscriptionModal}
-                            className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
-                        >
-                            <View className="flex-row justify-between gap-2 items-center">
-                                <AnimatedFeatherIcon name="users" size={30} color={"black"} />
-                                <Text className="text-neutral-700 font-normal text-xl tracking-wider">
-                                    {t("CancelSubscription")}
-                                </Text>
-                            </View>
-                            <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                        </Pressable>
-                    </Animated.View>}
-                </>
+                </View>}
+
+            {myBusinessCard && <>
+                {(statusName == "Active" || statusName == "payment_failed") && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                    <Pressable
+                        activeOpacity={1}
+                        onPressIn={onPressCacelSubscriptionIn}
+                        onPressOut={onPressCancelSubscriptionOut}
+                        onPress={openCancelSubscriptionModal}
+                        className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
+                    >
+                        <View className="flex-row justify-between gap-2 items-center">
+                            <AnimatedFeatherIcon name="users" size={30} color={"black"} />
+                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">
+                                {t("CancelSubscription")}
+                            </Text>
+                        </View>
+                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                    </Pressable>
+                </Animated.View>}
+            </>
             }
 
             {loading ? (
