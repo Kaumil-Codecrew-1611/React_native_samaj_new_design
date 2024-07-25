@@ -1,11 +1,8 @@
 import { Image, ScrollView } from 'native-base';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Animated, Linking, Text, TouchableOpacity, View } from 'react-native';
-import ImageViewing from 'react-native-image-viewing';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import TwitterIcon from '../../../../assets/twitter.svg';
-import { GlobalContext } from '../../../../context/globalState';
-
 
 const Template1 = () => {
 
@@ -19,16 +16,11 @@ const Template1 = () => {
     const instaAnimation = new Animated.Value(0);
     const faceBookAnimation = new Animated.Value(0);
     const linkedinAnimation = new Animated.Value(0);
-    const profileAnimation = new Animated.Value(0);
-    const [isVisible, setIsVisible] = useState(false);
     const AnimatedFontistoIcon = Animated.createAnimatedComponent(Fontisto);
     const twitterScale = twitterAnimation.interpolate({ inputRange, outputRange });
     const instaScale = instaAnimation.interpolate({ inputRange, outputRange });
     const faceBookScale = faceBookAnimation.interpolate({ inputRange, outputRange });
     const linkedinScale = linkedinAnimation.interpolate({ inputRange, outputRange });
-    const profileBusinessScale = profileAnimation.interpolate({ inputRange, outputRange });
-    const { allUserInfo } = useContext(GlobalContext);
-    const images = [(allUserInfo && allUserInfo.photo) ? { uri: `${process.env.IMAGE_URL}${allUserInfo.photo}` } : require("../../../../assets/profile_img.png")];
 
     const onPressInTwitter = () => {
         Animated.spring(twitterAnimation, {
@@ -86,20 +78,6 @@ const Template1 = () => {
         }).start();
     };
 
-    const onPressInBusinessProfile = () => {
-        Animated.spring(profileAnimation, {
-            toValue: 1,
-            useNativeDriver: true,
-        }).start();
-    };
-
-    const onPressOutBusinessProfile = () => {
-        Animated.spring(profileAnimation, {
-            toValue: 0,
-            useNativeDriver: true,
-        }).start();
-    };
-
     const openLink = (url) => {
         if (url) {
             Linking.openURL(url);
@@ -129,20 +107,11 @@ const Template1 = () => {
                     <View className="bg-white h-full rounded-2xl p-5 w-full max-w-md shadow-lg relative overflow-hidden">
                         <View className="items-center mb-4">
                             <View className="border-2 rounded-full border-red-800 p-2">
-                                <Animated.View style={[{ transform: [{ scale: profileBusinessScale }] }]}>
-                                    <TouchableOpacity
-                                        activeOpacity={1}
-                                        onPressIn={onPressInBusinessProfile}
-                                        onPressOut={onPressOutBusinessProfile}
-                                        onPress={() => setIsVisible(true)}
-                                    >
-                                        <Image
-                                            className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
-                                            source={{ uri: process.env.IMAGE_URL + allUserInfo?.photo ? process.env.IMAGE_URL + allUserInfo?.photo : 'https://eclatsuperior.com/wp-content/uploads/2021/04/man4.jpg' }}
-                                            alt='profile-img'
-                                        />
-                                    </TouchableOpacity>
-                                </Animated.View>
+                                <Image
+                                    className="inline-block h-36 w-36 rounded-full ring-2 ring-white"
+                                    source={{ uri: 'https://eclatsuperior.com/wp-content/uploads/2021/04/man4.jpg' }}
+                                    alt='profile-img'
+                                />
                             </View>
                             <Text className="text-2xl text-black font-bold mt-4">
                                 Vishw Prajapati
@@ -211,7 +180,7 @@ const Template1 = () => {
 
                             <View className="flex flex-row items-center flex-wrap mb-2">
                                 <Text className="text-black text-base font-bold tracking-wide">Long description :- </Text>
-                                <Text className="text-black text-sm text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Nulla facilisi. Morbi ut ultrices felis. Curabitur ultricies, nisi nec interdum facilisis, nulla dolor.</Text>
+                                <Text className="text-black text-sm text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</Text>
                             </View>
 
                         </View>
@@ -231,7 +200,7 @@ const Template1 = () => {
                                 <Animated.View style={[{ transform: [{ scale: faceBookScale }] }]}>
                                     <AnimatedFontistoIcon
                                         name="facebook"
-                                        size={40}
+                                        size={25}
                                         color="#0866ff"
                                     />
                                 </Animated.View>
@@ -246,7 +215,7 @@ const Template1 = () => {
                                 <Animated.View style={[{ transform: [{ scale: linkedinScale }] }]}>
                                     <AnimatedFontistoIcon
                                         name="linkedin"
-                                        size={40}
+                                        size={25}
                                         color="#0866ff"
                                     />
                                 </Animated.View>
@@ -261,7 +230,7 @@ const Template1 = () => {
                                 <Animated.View style={[{ transform: [{ scale: instaScale }] }]}>
                                     <AnimatedFontistoIcon
                                         name="instagram"
-                                        size={40}
+                                        size={25}
                                         color="#f700b2"
                                     />
                                 </Animated.View>
@@ -274,19 +243,12 @@ const Template1 = () => {
                                 onPress={() => openLink(twitterLink)}
                             >
                                 <Animated.View style={[{ transform: [{ scale: twitterScale }] }]}>
-                                    <TwitterIcon width={40} height={40} color='red' />
+                                    <TwitterIcon width={25} height={25} color='red' />
                                 </Animated.View>
                             </TouchableOpacity>
 
                         </View>
                     </View>
-
-                    <ImageViewing
-                        images={images}
-                        imageIndex={0}
-                        visible={isVisible}
-                        onRequestClose={() => setIsVisible(false)}
-                    />
                 </View>
             </ScrollView>
         </View>

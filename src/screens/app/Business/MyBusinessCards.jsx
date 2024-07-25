@@ -16,7 +16,6 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AddBusinessIcon from '../../../assets/addBusiness.svg';
 import AppIcon from '../../../components/AppIcon';
@@ -43,7 +42,7 @@ const MyBusinessCards = ({ navigation }) => {
     const cancelSubSucessAnimation = new Animated.Value(0);
     const animationOnPressOfAddBusiness = new Animated.Value(0);
     const cancelsubscriptionpopupAnimation = new Animated.Value(0);
-    const { userBusinessCard, cancelSubscriptionForUser } = useContext(ApiContext);
+    const { userBusinessCard, cancelSubscriptionForUser, deleteBusinessCard } = useContext(ApiContext);
     const scale = animationOnPressOfAddBusiness.interpolate({ inputRange, outputRange });
     const [cancelSubscriptionmodalVisible, setCancelSubscriptionmodalVisible] = useState(false);
     const cancelSubscriptionPopUpScale = cancelsubscriptionpopupAnimation.interpolate({ inputRange, outputRange });
@@ -167,6 +166,16 @@ const MyBusinessCards = ({ navigation }) => {
             setDeleteModalOpen(false);
         };
 
+        const handleDeleteBusinessApi = async (id) => {
+            try {
+                const response = await deleteBusinessCard(id);
+                await fetchData()
+                closeDeleteModal()
+                console.log("response", response)
+            } catch (error) {
+                console.log("error", error)
+            }
+        }
 
         const handleEditBusinessCard = (id) => {
             navigation.navigate("EditBusinessDetails", { businessId: id, userId: userCardId })
@@ -229,8 +238,8 @@ const MyBusinessCards = ({ navigation }) => {
                                         </View>
                                     }
                                     <View className="flex flex-row justify-between items-center mt-2">
-                                        <Animated.View style={[{ transform: [{ scale: editBusinessCardScale }] }]}>
-                                            <View className="flex flex-row items-center gap-2">
+                                        <View className="flex flex-row items-center gap-2">
+                                            <Animated.View style={[{ transform: [{ scale: editBusinessCardScale }] }]}>
                                                 <TouchableOpacity
                                                     activeOpacity={1}
                                                     onPressIn={onPressEditCardIn}
@@ -241,21 +250,21 @@ const MyBusinessCards = ({ navigation }) => {
                                                         <Image className="w-9 h-9" source={require("../../../assets/edit.png")} />
                                                     </View>
                                                 </TouchableOpacity>
-                                                <Animated.View style={[{ transform: [{ scale: deleteBusinessCardScale }] }]}>
-                                                    <TouchableOpacity
-                                                        activeOpacity={1}
-                                                        onPressIn={onPressDeleteCardIn}
-                                                        onPressOut={onPressDeleteCardOut}
-                                                        onPress={() => handleDeleteBusinessModalOpen()}
-                                                        className="justify-center items-center rounded-full w-9 h-9"
-                                                    >
-                                                        <View>
-                                                            <Image className="w-9 h-9" source={require("../../../assets/deleteIcon.png")} />
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                </Animated.View>
-                                            </View>
-                                        </Animated.View>
+                                            </Animated.View>
+                                            <Animated.View style={[{ transform: [{ scale: deleteBusinessCardScale }] }]}>
+                                                <TouchableOpacity
+                                                    activeOpacity={1}
+                                                    onPressIn={onPressDeleteCardIn}
+                                                    onPressOut={onPressDeleteCardOut}
+                                                    onPress={() => handleDeleteBusinessModalOpen()}
+                                                    className="justify-center items-center rounded-full w-9 h-9"
+                                                >
+                                                    <View>
+                                                        <Image className="w-9 h-9" source={require("../../../assets/deleteIcon.png")} />
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </Animated.View>
+                                        </View>
                                         {!!statusName &&
                                             <View className={`${statusColor.bgColor}  w-fit  rounded-md p-2`}>
                                                 <Text className={`${statusColor.color} font-bold text-xs text-center`}>{statusName}</Text>
@@ -270,38 +279,48 @@ const MyBusinessCards = ({ navigation }) => {
                 <Modal
                     transparent={true}
                     visible={isDeleteModalOpen}
-                    animationType="slideTop"
+                    animationType="slide"
                     onRequestClose={closeDeleteModal}
                 >
-                    <View className="flex-1 justify-top items-center">
+                    <View className="flex-1 justify-center items-center">
                         {isDeleteModalOpen && (
                             <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
                         )}
                         <View className="w-4/5 bg-white rounded-[15px] p-4 shadow-lg mt-14">
-                            <Text className="font-bold text-black text-lg mb-4">Are you sure want to remove subscription ?</Text>
+                            <Text className="font-bold text-black text-lg mb-4">Are you sure you want to delete the subscription?</Text>
+                            <Text className="text-black mb-4">
+                                Deleting your subscription will have the following consequences:
+                            </Text>
+                            <View className="mb-4">
+                                <Text className="text-black">1. Any remaining time on your current subscription will be forfeited.</Text>
+                                <Text className="text-black">2. You may be charged a cancellation fee as per the subscription policy.</Text>
+                                <Text className="text-black">3. You will lose access to all premium features immediately upon deletion.</Text>
+                                <Text className="text-black">4. Any pending repayments or dues will need to be settled.</Text>
+                            </View>
+                            <Text className="text-black mb-4">
+                                Follow the steps below to complete the deletion process:
+                            </Text>
+                            <View className="mb-4">
+                                <Text className="text-black">1. Review your subscription details and ensure you understand the implications.</Text>
+                                <Text className="text-black">2. Contact support if you have any questions or concerns.</Text>
+                                <Text className="text-black">3. Confirm your decision to delete the subscription.</Text>
+                                <Text className="text-black">4. Complete any necessary payment or administrative steps.</Text>
+                            </View>
                             <View className="flex-row justify-around items-center">
-                                {/* <Animated.View style={[{ transform: [{ scale: cancelScale }] }]}> */}
                                 <Pressable
                                     activeOpacity={1}
-                                    // onPressIn={onPressCancelIn}
-                                    // onPressOut={onPressCancelOut}
                                     onPress={closeDeleteModal}
-                                    className="px-6 py-2 bg-gray-200 rounded-[15px] mr-2"
+                                    className="px-6 py-2 bg-gray-200 rounded-[15px]"
                                 >
-                                    <Text className="text-black">{t('cancel')}</Text>
+                                    <Text className="text-black">{t('close')}</Text>
                                 </Pressable>
-                                {/* </Animated.View>
-                                <Animated.View style={[{ transform: [{ scale: DeleteScale }] }]}> */}
                                 <Pressable
                                     activeOpacity={1}
-                                    // onPressIn={onPressDeleteIn}
-                                    // onPressOut={onPressDeleteOut}
-                                    // onPress={() => handleDelete(userData?._id)}
+                                    onPress={() => handleDeleteBusinessApi(item._id)}
                                     className="px-6 py-2 bg-red-500 rounded-[15px]"
                                 >
-                                    <Text className="text-white">{t('delete')}</Text>
+                                    <Text className="text-white font-semibold">{t('delete')}</Text>
                                 </Pressable>
-                                {/* </Animated.View> */}
                             </View>
                         </View>
                     </View>
@@ -405,7 +424,7 @@ const MyBusinessCards = ({ navigation }) => {
             useNativeDriver: true,
         }).start();
     };
-    console.log(myBusinessCard, ":::statusName")
+
     return (
 
         <View className="bg-[#E9EDF7] h-full">
@@ -433,25 +452,28 @@ const MyBusinessCards = ({ navigation }) => {
                     </View>
                 </View>}
 
-            {myBusinessCard && <>
-                {(statusName == "Active" || statusName == "payment_failed") && <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
-                    <Pressable
-                        activeOpacity={1}
-                        onPressIn={onPressCacelSubscriptionIn}
-                        onPressOut={onPressCancelSubscriptionOut}
-                        onPress={openCancelSubscriptionModal}
-                        className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
-                    >
-                        <View className="flex-row justify-between gap-2 items-center">
-                            <AnimatedFeatherIcon name="users" size={30} color={"black"} />
-                            <Text className="text-neutral-700 font-normal text-xl tracking-wider">
-                                {t("CancelSubscription")}
-                            </Text>
-                        </View>
-                        <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
-                    </Pressable>
-                </Animated.View>}
-            </>
+            {myBusinessCard &&
+                <>
+                    {(statusName == "Active" || statusName == "payment_failed") &&
+                        <Animated.View className="px-3" style={[{ transform: [{ scale: cancelSubscriptionScale }] }]} >
+                            <Pressable
+                                activeOpacity={1}
+                                onPressIn={onPressCacelSubscriptionIn}
+                                onPressOut={onPressCancelSubscriptionOut}
+                                onPress={openCancelSubscriptionModal}
+                                className="flex flex-row items-center justify-between shadow-black bg-white rounded-[15px] shadow-input mx-0.5 shadow-md p-3 mt-2"
+                            >
+                                <View className="flex-row justify-between gap-2 items-center">
+                                    <AnimatedFeatherIcon name="users" size={30} color={"black"} />
+                                    <Text className="text-neutral-700 font-normal text-xl tracking-wider">
+                                        {t("CancelSubscription")}
+                                    </Text>
+                                </View>
+                                <AnimatedFontistoIcon name="angle-right" size={15} color={"black"} />
+                            </Pressable>
+                        </Animated.View>
+                    }
+                </>
             }
 
             {loading ? (

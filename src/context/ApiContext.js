@@ -9,6 +9,7 @@ import {
     allUserReview,
     allVillageListing,
     cancelSubscription,
+    deleteBusinessCardApi,
     changePassword,
     committeeMembers,
     contactUsDetails,
@@ -96,6 +97,7 @@ export const ApiProvider = ({ children }) => {
     const register = (userData) => apiRequest(registerUser, userData, setData, 'registerResponse');
     const subscriptionForBusiness = (subscriptionData) => apiRequest(subscriptionSelected, subscriptionData, setData, 'subscriptionForBusiness');
     const cancelSubscriptionForUser = (UserIdCancelSubscription) => apiRequest(cancelSubscription, UserIdCancelSubscription, setData, 'cancelSubscriptionForUser');
+    const deleteBusinessCard = (businessCardId) => apiRequest(deleteBusinessCardApi, businessCardId, setData, 'deleteBusinessCard');
     const activeBusinessData = (businessKeyData) => apiRequest(activeBusiness, businessKeyData, setData, 'activeBusinessData');
     const updateCardBusinessData = (businessData, updateBusinessId) => apiRequest(updateBusinessCard, { businessData, updateBusinessId }, setData, 'updateCardBusinessData');
     const aboutUsContentApi = () => apiRequest(aboutUsContent, null, setData, 'aboutusallcontent');
@@ -148,6 +150,7 @@ export const ApiProvider = ({ children }) => {
             homePageAllSlider,
             aboutUsContentApi,
             activeBusinessData,
+            deleteBusinessCard,
             updateCardBusinessData,
             villagesListing,
             allUserByVillageId,

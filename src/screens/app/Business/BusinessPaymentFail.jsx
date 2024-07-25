@@ -16,7 +16,7 @@ function BusinessPaymentFail({ navigation, route }) {
         <View className="flex-1 bg-red-200 relative">
             <View className={`w-full absolute  ${windowHeight < 670 ? "top-[90px]" : "top-[160px]"} z-10 h-16 flex-row justify-center`}>
                 <View className=" w-72 rounded-xl bg-red-400 h-full flex-row justify-center items-center">
-                    <Text className="text-white text-xl font-extrabold">Business Payment Unsuccessful</Text>
+                    <Text className="text-white text-lg font-extrabold">Business Payment Unsuccessful</Text>
                 </View>
             </View>
             <View className="w-full bg-white h-[75%] pt-24 px-8 rounded-t-[45px] overflow-hidden absolute bottom-0">

@@ -25,7 +25,6 @@ const Bus_User_template2 = ({ route }) => {
     const linkedinScale = linkedinAnimation.interpolate({ inputRange, outputRange });
     const dateObject = new Date(item.dateOfOpeningJob);
 
-    // Extract the year from the Date object
     const year = dateObject.getFullYear();
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "July", "Aug", "Sep", "Oct", "Nov", "Dec"

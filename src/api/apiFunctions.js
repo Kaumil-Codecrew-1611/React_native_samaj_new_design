@@ -262,3 +262,8 @@ export const cancelSubscription = async (UserIdCancelSubscription) => {
     const response = await axiosInstance.delete(`/cancelSubscription/${UserIdCancelSubscription}`);
     return response.data
 };
+
+export const deleteBusinessCardApi = async (businessCardId) => {
+    const response = await axiosInstance.delete(`/deleteBusiness/${businessCardId}`);
+    return response.data
+};
