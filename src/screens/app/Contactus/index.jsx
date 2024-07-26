@@ -63,8 +63,8 @@ function ContactUs({ navigation }) {
             </View>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false} >
-                <View className="bg-white p-2 mr-2 rounded-lg mx-4" style={styles.shadowOfCard}>
-                    <Text className="tracking-wider text-neutral-700 px-3 text-justify">{t('contactusheading')}</Text>
+                <View className="bg-white p-2 mr-2 rounded-lg mx-4 flex-1 justify-around" style={styles.shadowOfCard}>
+                    <Text className="tracking-wider text-neutral-700 text-justify">{t('contactusheading')}</Text>
                 </View>
                 <ContactUsCard />
             </ScrollView>
