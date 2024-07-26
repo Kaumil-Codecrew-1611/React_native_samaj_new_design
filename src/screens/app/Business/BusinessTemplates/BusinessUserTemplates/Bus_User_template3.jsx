@@ -235,7 +235,7 @@ const Bus_User_template3 = ({ route }) => {
 
                 <View>
                     <Text className="text-sm text-black font-semibold">{item?.name}</Text>
-                    <Text className="text-black text-sm font-semibold">{item?.role}</Text>
+                    <Text className="text-black text-sm font-semibold">{item?.role} of {item?.businessName}</Text>
                     <Text className="text-lg text-black font-semibold">{item?.businessType}</Text>
                     <Text className="text-sm font-semibold text-black">{item?.businessType} - Since {getYear(item?.dateOfOpeningJob)}</Text>
                 </View>

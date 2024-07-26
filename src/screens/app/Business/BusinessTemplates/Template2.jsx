@@ -50,16 +50,16 @@ const BusinessCard = () => {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <LinearGradient
                 colors={['#5c86f7', '#9ab1e1', "#fff"]}
-                className="h-36  flex flex-row justify-between items-center"
+                className="h-36 flex flex-row justify-between items-center gap-5"
             >
-                <View className="left-4 w-24 h-24 shadow-md shadow-gray-500">
+                <View className="left-4 w-24 h-24 shadow-md m-2 shadow-gray-500">
                     <Image
                         className="w-full h-full rounded-full"
                         source={require("../../../../assets/card02.png")}
                         alt='profile-img'
                     />
                 </View>
-                <View className="flex flex-col">
+                <View className="flex-1 flex-col">
                     <Text className="text-gray-700 text-xl w-64 font-bold">Asgard Tours and Travels</Text>
 
                 </View>
