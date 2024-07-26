@@ -245,7 +245,7 @@ const Bus_User_template3 = ({ route }) => {
             <View className="m-3">
 
                 <View className="flex flex-1 w-[100%] flex-col gap-3 flex-wrap py-1 border-b-[1px] border-gray-300">
-                    <Text className="font-bold text-black text-base">Company Name :</Text>
+                    <Text className="font-bold text-black text-base">Company Name:</Text>
                     <Text className="font-semibold text-sm text-left w-[100%] text-black">{item?.businessName}</Text>
                 </View>
 
@@ -304,7 +304,7 @@ const Bus_User_template3 = ({ route }) => {
 
                 {item?.businessShortDetail &&
                     <View className="flex flex-1 w-[100%] flex-col flex-wrap py-1 border-b-[1px] border-gray-300">
-                        <Text className="font-bold text-black text-base">Short Description :</Text>
+                        <Text className="font-bold text-black text-base">Short Description:</Text>
                         <Text className="font-medium text-sm tracking-wider text-left w-[100%] text-black my-2">{item.businessShortDetail}</Text>
                     </View>
                 }
