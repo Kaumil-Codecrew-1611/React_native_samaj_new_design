@@ -14,8 +14,8 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const EditUserProfile = ({ navigation }) => {
     const { t } = useTranslation();
-    const { getLocation, updateUserProfileUser, updateUserPostProfile } = useContext(ApiContext);
-    const { allUserInfo, setuserDataInStorage } = useContext(GlobalContext);
+    const { getLocation, updateUserProfileUser, updateUserPostProfile, state } = useContext(ApiContext);
+    const { allUserInfo, setuserDataInStorage, setAllUserInfo } = useContext(GlobalContext);
     const [userData, setUserData] = useState({});
     const [loading, setLoading] = useState(false);
     const [showPicker, setShowPicker] = useState(false);
@@ -23,6 +23,8 @@ const EditUserProfile = ({ navigation }) => {
     useEffect(() => {
         getLocation();
     }, []);
+
+
 
     const schema = yup.object().shape({
         firstname: yup.string().required(t('pleaseenterfirstname')),
@@ -50,6 +52,9 @@ const EditUserProfile = ({ navigation }) => {
         }
     });
 
+
+
+
     const dob = watch('dob') || new Date();
 
     const onSubmit = async (data) => {
@@ -59,11 +64,14 @@ const EditUserProfile = ({ navigation }) => {
         }
         setLoading(true)
         const response = await updateUserPostProfile(payload)
+
+
         if (response.status) {
             await setuserDataInStorage('user', response.newsave);
+            setAllUserInfo(response.userData)
             navigation.navigate('Profile');
         }
-        navigation.navigate('Profile');
+        // navigation.navigate('Profile');
         setLoading(false)
     };
 
